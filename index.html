@@ -1,4 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>AI财富助手</title>
+</head>
+
+<body>
+
+<h1>💰 AI财富助手</h1>
+
+<p>请输入你的财务情况：</p>
+
+<textarea id="text" rows="5" cols="30"></textarea>
+
+<br><br>
+
+<button onclick="run()">分析</button>
+
+<h3 id="result">等待分析</h3>
+
+<script>
+
+function run(){
+
+let a=document.getElementById("text").value;
+
+document.getElementById("result").innerHTML=
+"你的输入："+a+
+"<br>建议：保持投资、增加现金流、控制风险";
+
+}
+
+</script>
+
+</body>
+</html>
