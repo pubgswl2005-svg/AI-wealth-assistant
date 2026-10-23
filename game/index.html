@@ -236,6 +236,22 @@
   #actions{ border-top:3px solid #8a6a3c; background:linear-gradient(180deg, rgba(122,82,45,0), rgba(84,56,28,.5) 34%, rgba(46,29,14,.88)); }
   .act .ic{ border:3px solid #e9c766; box-shadow:0 0 0 2px #6e4f16, inset 0 3px 0 rgba(255,255,255,.65), inset 0 -5px 0 rgba(0,0,0,.22), 0 5px 0 rgba(30,18,4,.5), 0 9px 14px rgba(0,0,0,.45); }
   .act .nm{ color:#ffe9a8; }
+
+  /* ===== v22：关闭钮固定右上角 + 战场左右填满 + 倍速缩小 ===== */
+  #sheetX{ position:absolute; top:10px; right:10px; z-index:70; width:40px; height:40px; border-radius:50%; display:none;
+    background:linear-gradient(180deg,#ff8a7a,#d9392b); border:2.5px solid var(--ol); color:#fff; font-size:19px; font-weight:900; line-height:1;
+    box-shadow:0 3px 0 #7a1a10, inset 0 2px 0 rgba(255,255,255,.5); cursor:pointer; font-family:inherit; }
+  #mask.on #sheetX{ display:block; }
+  #sheetX:active{ transform:translateY(2px); box-shadow:0 1px 0 #7a1a10; }
+  #speedRow{ gap:5px; padding:5px 7px; }
+  .spd{ padding:4px 0; font-size:12.5px; }
+  #spdSlider{ height:16px; }
+  #spdVal{ font-size:12px; min-width:56px; }
+  @media (orientation:landscape) and (max-height:640px){
+    #cvWrap{ width:100%; height:100%; justify-self:stretch; align-self:stretch; }
+    #speedRow{ gap:4px; }
+    .spd{ flex:1 1 21%; padding:4px 0; }
+  }
 </style>
 </head>
 <body>
@@ -273,9 +289,9 @@
 
 
   <button id="pickFloat">🎁 奖励<b id="pickFloatN">0</b></button>
-  <div id="mask"><div id="sheet"></div></div>
+  <div id="mask"><div id="sheet"></div><button id="sheetX" aria-label="关闭面板">✕</button></div>
   <div id="toast"></div>
-  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-21 · 原版石塔风 · 横屏大画面 · 怪物免疫无敌 · 中文大数单位 · 面板自适应版</footer>
+  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-22 · 原版石塔风 · 战场填满 · 平衡调整 · 离线收益成长版</footer>
 
 <script>
 "use strict";
@@ -397,8 +413,10 @@ function softE(n){ return n<=500? n : 500 + 400*Math.log(1+(n-500)/400) + (n-500
 function stagePow(n){ const v=Math.pow(1.045, softE(n)); return v>BIG? BIG : v; }
 /* 怪物几何倍数成长（用户要求）：500 关起额外叠一条几何曲线——关卡越深涨得越凶，
    对数项只负责收尾防数值爆表；低关（≤500）完全不动，不影响前期与转生重爬 */
-function monGeoE(n){ if(n<=500) return 0; const m=n-500; return 0.00233*m + 200*Math.log(1+m/2000); }
+function monGeoE(n){ if(n<=500) return 0; const m=n-500; return 0.0029*m + 260*Math.log(1+m/2000); }   // v22 平衡：后期成长提速，不再一路平推
 function monGeo(n){ const v=Math.pow(1.045, monGeoE(n)); return v>BIG? BIG : v; }
+/* 离线收益效率：基础 50%，每过 100 关 +2%，最高 200%（层数越高离线越值钱） */
+function offlineRate(stage){ return Math.min(2, 0.5 + Math.floor(stage/100)*0.02); }
 const growthMul=()=>stagePow(G.stage-1);
 /* ================= 兵种表（配置驱动，学 Godot Resource/TinyDefence 数据表） =================
    20 个兵种按顺序变强；每种最多 20 个；招募价随已拥有数上涨；可升级，每级攻击 +35% */
@@ -462,7 +480,7 @@ function elemOf(kind, idx){ return kind==="h"? (idx*2+3)%8 : kind==="p"? 6 : (id
 function elemFactor(ae, de){ if(ae==null || de==null) return 1; if(EBEATS[ae]===de) return 1.35; if(EBEATS[de]===ae) return 0.8; return 1; }
 const towerElem=stage=>((stage%8)+8)%8;
 const defPts=()=>equipStat("def") + (G.shopDef||0) + 10*pickN("def");
-const dodgeC=()=>equipStat("dodge")/100 + (G.shopDodge||0);
+const dodgeC=()=>Math.min(0.6, equipStat("dodge")/100 + (G.shopDodge||0));   // v22 公平：闪避率封顶 60%——原先装备叠满后 ≥100% 全闪，怪物永远打不中人
 const stealC=()=>equipStat("steal")/100 + (G.shopSteal||0);
 const blockC=()=>equipStat("block")/100;
 const comboC=()=>0.05 + equipStat("combo")/100;
@@ -556,12 +574,16 @@ const monsterGold=stage=>Math.max(4,Math.round(9*goldFactor(stage)*rnd(0.8,1.25)
 const gemGain=n=>{ const v=n*(1+G.shopGem)*(1+0.10*pickN("gem")), w=Math.floor(v); return w+(Math.random()<v-w?1:0); };
 /* ================= 画布 ================= */
 const cv=$("cv"), ctx=cv.getContext("2d");
-const VW=960, VH=440, GY=388;           // 逻辑尺寸 / 草地线
+let VW=960; const VH=440, GY=388;           // 逻辑尺寸 / 草地线
 let DPR=1, SC=1;
 function resize(){
-  const w=$("cvWrap").clientWidth-0; DPR=Math.min(2, window.devicePixelRatio||1);
-  cv.width=Math.round(w*DPR); cv.height=Math.round(w*(VH/VW)*DPR);
-  cv.style.height=Math.round(w*(VH/VW))+"px"; SC=cv.width/VW;
+  const wrap=$("cvWrap"); const w=wrap.clientWidth; const land=window.innerWidth>window.innerHeight;
+  let h = land? wrap.clientHeight : 0;
+  VW = (land && h>40)? Math.max(960, Math.min(1560, Math.round(VH*w/h))) : 960;   // 横屏：逻辑宽度随屏变宽，战场左右填满不留空
+  if(!(h>40)) h=Math.round(w*VH/VW);
+  DPR=Math.min(2, window.devicePixelRatio||1);
+  cv.width=Math.round(w*DPR); cv.height=Math.round(h*DPR);
+  cv.style.height=h+"px"; SC=cv.width/VW;
   buildSky(); buildGroundTile();
 }
 window.addEventListener("resize", resize);
@@ -664,7 +686,7 @@ function makeTower(stage, x){
       let isElite=false, isRare=false;
       if(!isBoss){ if(elitePity>=14 || Math.random() < 0.06+(G.luck||0)*0.0005){ isElite=true; elitePity=0; }
         else { elitePity++; if(Math.random() < 0.015+(G.luck||0)*0.0003) isRare=true; } }
-      const hp = hp0 * (isElite? 8 : isRare? 3 : 1);
+      let hp = hp0 * (isElite? 8 : isRare? 3 : 1); if(stage%10===0) hp *= isBoss? 2.5 : 3;   // 每 10 关守关塔：全塔强化
       fl.monsters.push({ type: isBoss? "boss" : pick(MTYPES), hp, maxHp:hp,
         ox: 46 + (n===1? (w/2-46) : i*((w-92)/Math.max(1,n-1))) + rnd(-6,6),
         flash:0, ph:rnd(0,6.28), dead:false, boss:isBoss, elite:isElite, rare:isRare, elem:towerElem(stage), phase:0 }); rollMonTraits(fl.monsters[fl.monsters.length-1], isBoss);
@@ -766,6 +788,25 @@ function burst(x,y,color,n,spd){
     p.alive=true; p.x=x; p.y=y; p.vx=Math.cos(a)*s; p.vy=Math.sin(a)*s-40; p.t=0; p.life=rnd(.3,.6); p.color=color; p.r=rnd(1.5,3.4);
   }
 }
+/* 怪物出手打我方单位一次（定时攻击与挨打即时反击共用）：闪避/格挡/防御/保底破防/封顶 25% */
+function monsterStrike(tw, f, m, u, nA){
+  if(!u || u.down) return;
+  const fastM=G.speed>=20;
+  const mul=FLOOR_DMG[f]*(m.boss?1.8:1)*(m.enraged?1.5:1)*(tw.affix==="rage"?1.3:1)*rnd(.9,1.1);
+  m.lunge=1; m.tdir=u.x>=tw.x+m.ox? 1 : -1;
+  if(Math.random()<dodgeC()){ if(!fastM) dmgTxt(u.x, u.y-40, "闪避", "#a8ecff", 11); return; }
+  if(u.invT>0) return;   // 复活后的无敌帧
+  let realDmg=8*stagePow(tw.stage-1)*Math.pow(monGeo(tw.stage-1),0.6)*mul*(nA||1);
+  if(Math.random()<blockC()){ realDmg*=0.4; if(!fastM) dmgTxt(u.x, u.y-40, "格挡", "#ffe9a8", 11); }
+  realDmg/= (1 + defPts()*growthMul()/(25*stagePow(tw.stage-1)));   // 防御减伤
+  let frac=realDmg/Math.max(1,unitHpMax(u));
+  const floorF = m.boss? 0.08 : 0.035; if(frac<floorF) frac=floorF; if(frac>0.25) frac=0.25;   // 命中必破防（普通 3.5%/BOSS 8%）、单次封顶 25%
+  realDmg=frac*Math.max(1,unitHpMax(u)); u.hp-=frac;
+  if(tw.affix==="leech" && !m.dead) m.hp=Math.min(m.maxHp, m.hp+m.maxHp*0.02);
+  if(!fastM) dmgNum(u.x, u.y-40, realDmg, "#ff6a5a", 11+f);
+  if(reflectB()>0) hitMonster(tw, f, m, realDmg*reflectB(), false, false, null);
+  if(u.hp<=0){ u.hp=0; u.down=true; u.downT=DOWN_SEC; dmgTxt(u.x, u.y-46, "倒下", "#ff9a8a", 11); }
+}
 function hitMonster(t, f, m, dmg, byHero, crit, elem){
   if(m.dead) return 0;
   if(m.invT>0){ if(!m._invTx || timeNow-m._invTx>0.5){ m._invTx=timeNow; dmgTxt(t.x+m.ox, floorBaseY(f)-54, "🛡️ 无敌！", "#ffd24d", 12); } return 0; }
@@ -777,7 +818,11 @@ function hitMonster(t, f, m, dmg, byHero, crit, elem){
   { const df=defFactorFor(t.stage, f, m.boss) * (t.affix==="thick"? 0.65 : 1), tb=Math.min(1, trueB());
     dmg = dmg * (tb + (1-tb)*df); }
   if(m.hp/m.maxHp < 0.08) dmg *= 1.5;   // 处决：濒死目标额外 +50%
+  if(dmg > m.maxHp*0.35) dmg = m.maxHp*0.35;   // v22 平衡：单次伤害封顶怪物 35% 血——数值平整、不一击秒杀、每只怪至少挨 3 下（与玩家成长无关的硬阻挡）
   m.hp-=dmg; m.flash=0.09;
+  if(m.hp>0 && !(m.stunT>0) && !(m.cbT>0)){ m.cbT=1.2;   // v22：怪物挨打立刻还手（自动攻击人物），每只怪 1.2 秒最多还手一次
+    const foes2=units.filter(u=>u.state==="fight"&&u.tower===t&&u.floor===f&&!u.down);
+    if(foes2.length) monsterStrike(t, f, m, foes2[(Math.random()*foes2.length)|0], 1); }
   t.totalDmg+=dmg; t.pop=1; G.totalDmg+=dmg;
   const mx=t.x+m.ox, my=floorBaseY(f)-34;
   const killed = m.hp<=0 && !m.dead;
@@ -843,6 +888,7 @@ function update(dt){
     let msg = af? "🎲 本关词缀 "+af.em+" "+af.name+"："+af.desc : "";
     let hasTrait=false; for(const fl of t.floors) for(const mm of fl.monsters) if(!mm.dead && (mm.imm || mm.invTrait)) hasTrait=true;
     if(hasTrait) msg += (msg? " · ":"") + "⚠️ 有免疫/无敌怪，看头顶标记";
+    if(t.stage%10===0) msg += (msg? " · ":"") + "🛡️ 守关塔：怪物大幅强化";
     if(msg) miniMsg(msg); }
   // 镜头：跟随当前塔
   if(t){ const want = t.x + t.w/2 - VW*0.44; const gap=want-camX;
@@ -935,24 +981,13 @@ function update(dt){
           if(m.hp<=0){ hitMonster(tw, f, m, 1, false, false, null); if(m.dead) continue; } }
         if(m.stunT>0){ m.stunT-=dt; continue; }   // 眩晕/麻痹：本步进不出手
         if(m.atkT===undefined) m.atkT=rnd(.6,1.7);
+        if(m.cbT>0) m.cbT-=dt;   // 即时反击冷却
         m.atkT-=dt*(m.slowT>0? 0.55 : 1); if(m.slowT>0) m.slowT-=dt;   // 减速/冰冻
         if(m.atkT>0) continue;
         const rt=(m.boss? (m.enraged? 0.8 : 1.3) : 1.7) * (tw.affix==="swift"? 0.7 : 1), nA=1+Math.floor(-m.atkT/rt); m.atkT=rt*rnd(.9,1.1);
         if(!foes) foes=units.filter(u=>u.state==="fight"&&u.tower===tw&&u.floor===f&&!u.down);
         if(!foes.length) continue;
-        const u=foes[(Math.random()*foes.length)|0];
-        const mul=FLOOR_DMG[f]*(m.boss?1.8:1)*(m.enraged?1.5:1)*(tw.affix==="rage"?1.3:1)*rnd(.9,1.1);
-        m.lunge=1; m.tdir=u.x>=tw.x+m.ox? 1 : -1;
-        if(Math.random()<dodgeC()){ if(!fastM) dmgTxt(u.x, u.y-40, "闪避", "#a8ecff", 11); continue; }
-        if(u.invT>0) continue;   // 复活后的无敌帧
-        let realDmg=8*stagePow(tw.stage-1)*Math.sqrt(monGeo(tw.stage-1))*mul*nA;   // 怪物攻击吃几何成长的一半（平方根）
-        if(Math.random()<blockC()){ realDmg*=0.4; if(!fastM) dmgTxt(u.x, u.y-40, "格挡", "#ffe9a8", 11); }
-        realDmg/= (1 + defPts()*growthMul()/(25*stagePow(tw.stage-1)));   // 防御减伤
-        u.hp-=realDmg/Math.max(1,unitHpMax(u));
-        if(tw.affix==="leech" && !m.dead) m.hp=Math.min(m.maxHp, m.hp+m.maxHp*0.02);   // 嗜血词缀
-        if(!fastM) dmgNum(u.x, u.y-40, realDmg, "#ff6a5a", 11+f);
-        if(reflectB()>0) hitMonster(tw, f, m, realDmg*reflectB(), false, false, null);   // 伤害反弹
-        if(u.hp<=0){ u.hp=0; u.down=true; u.downT=DOWN_SEC; foes.splice(foes.indexOf(u),1); dmgTxt(u.x, u.y-46, "倒下", "#ff9a8a", 11); }
+        monsterStrike(tw, f, m, foes[(Math.random()*foes.length)|0], nA);
       }
     }
   }
@@ -1546,7 +1581,7 @@ function wireRecruitAll(renderFn){ const btn=$("recruitAll"); if(!btn) return; b
   buildParty(); sfx("clear"); toast("🛒 一键招募 "+got.length+" 位英雄："+got.map(i=>HEROES[i].name).join("、"));
   refreshUI(); save(); renderFn(); }; }
 /* ---------- 弹窗 ---------- */
-function setSheet(html){ $("sheet").className=""; $("sheet").innerHTML=html+'<button id="closeSheet">关闭</button>'; $("closeSheet").onclick=closeSheet; }
+function setSheet(html){ $("sheet").className=""; $("sheet").innerHTML=html; }
 function refreshPickFloat(){ const b=document.getElementById("pickFloat"); if(!b) return;
   if(!b.dataset.wired){ b.dataset.wired=1; b.onclick=()=>openPickSheet(); }
   const n=G.pickPending||0; b.style.display=n>0? "block":"none";
@@ -1584,6 +1619,7 @@ function openPickSheet(){ if(!((G.pickPending||0)>0)) return;
 function openSheet(html){ setSheet(html); $("mask").classList.add("on"); }
 function closeSheet(){ $("mask").classList.remove("on"); }
 $("mask").addEventListener("click", e=>{ if(e.target.id==="mask") closeSheet(); });
+$("sheetX").onclick=closeSheet;
 function costTxt(c){ const a=[]; if(c.gold) a.push("🪙 "+fmt(c.gold)); if(c.gems) a.push("💎 "+c.gems); if(c.stage) a.push("需 "+c.stage+" 关"); return a.join(" "); }
 function canPay(c){ if(c.gold && G.gold<c.gold) return false; if(c.gems && G.gems<c.gems) return false; if(c.stage && G.stage<c.stage) return false; return true; }
 function pay(c){ if(c.gold) G.gold-=c.gold; if(c.gems) G.gems-=c.gems; }
@@ -1753,7 +1789,7 @@ $("btnRank").onclick=()=>{
   openSheet(h);
 };
 $("btnStat").onclick=()=>{
-  openSheet('<h3>📜 统计</h3><div class="sub">你的征战记录</div><div class="stat-grid">'
+  openSheet('<h3>📜 统计</h3><div class="sub">你的征战记录 · 离线收益效率 '+Math.round(offlineRate(G.stage)*100)+'%（每 100 关 +2%，最高 200%）</div><div class="stat-grid">'
     +'<div><b>'+G.stage+'</b><span>当前关卡</span></div>'
     +'<div><b>'+fmt(G.totalDmg)+'</b><span>累计总伤害</span></div>'
     +'<div><b>'+fmtFull(G.kills)+'</b><span>击破怪物</span></div>'
@@ -1799,7 +1835,7 @@ $("btnStat").onclick=()=>{
   const gjB=$("gmJump"); if(gjB){ let arm=false; gjB.onclick=()=>{ if(!arm){ arm=true; gjB.textContent="⚠️ 再点一次确认跳关 +10"; return; }
     G.stage+=10; towers=[]; const a1=makeTower(G.stage, 60); nextTowerX=60+a1.w+GAP; const a2=makeTower(G.stage+1, nextTowerX); nextTowerX+=a2.w+GAP;
     camX=0; for(const u of units){ u.tower=null; u.floor=-1; u.state="ground"; u.x=-40-Math.random()*220; u.hp=1; }
-    buildParty(); save(); refreshUI(); closeSheet(); toast("🛠️ GM：已跳到第 "+G.stage+" 关"); }; }
+    buildParty(); save(); refreshUI(); const stt=$("sheet").scrollTop; $("btnStat").onclick(); $("sheet").scrollTop=stt; toast("🛠️ GM：已跳到第 "+G.stage+" 关"); }; }
   function doImportCode(txt){
     try{ const s=JSON.parse(decodeURIComponent(escape(atob((txt||"").trim()))));
       if(!s || !(s.stage>=1)) return toast("存档码不对，导入失败");
@@ -1854,12 +1890,12 @@ resize();
   buildParty(); refreshUI();
   if(G.stage===1 && G.kills===0 && G.playSec<5)
     setTimeout(()=>toast("👆 点画面放神雷打怪 · 点「士兵招募」扩军变强"), 1200);
-  /* 离线收益（学 Evolve）：按队伍 DPS 折算每秒金币 × 离线时长（封顶 8 小时）× 0.5 系数 */
+  /* 离线收益（学 Evolve）：按队伍 DPS 折算每秒金币 × 离线时长（封顶 8 小时）× 离线效率（随关卡成长） */
   const offSec=Math.floor((Date.now()-(G.lastSeen||Date.now()))/1000);
   if(offSec>120){
-    const gain=Math.round(partyDPS()/Math.max(1,monsterHP(Math.max(1,G.stage),1,false)) * 9*goldFactor(Math.max(1,G.stage)) * Math.min(offSec,8*3600) * 0.5 * 0.85);
+    const gain=Math.round(partyDPS()/Math.max(1,monsterHP(Math.max(1,G.stage),1,false)) * 9*goldFactor(Math.max(1,G.stage)) * Math.min(offSec,8*3600) * offlineRate(G.stage) * 0.85);
     if(gain>0){ G.gold+=gain; save();
-      setTimeout(()=>toast("🕒 离线 "+Math.floor(offSec/60)+" 分钟，士兵们替你打下金币 +"+fmt(gain)), 700); }
+      setTimeout(()=>toast("🕒 离线 "+Math.floor(offSec/60)+" 分钟（离线效率 "+Math.round(offlineRate(G.stage)*100)+"%），士兵们替你打下金币 +"+fmt(gain)), 700); }
   }
 })();
 /* 主循环：固定时间步长 1/60 + 累加器（学 Kontra GameLoop）——速度倍率只放大累加时间，
