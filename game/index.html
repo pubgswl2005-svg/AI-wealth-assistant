@@ -199,6 +199,20 @@
     footer { display:none; }
     #sheet { max-height:94dvh; }
   }
+
+  /* ===== v18：选项一排横置（塔下面）+ 横屏大画面 ===== */
+  #actions{ display:flex; flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; align-items:flex-start; }
+  #actions::-webkit-scrollbar{ display:none; }
+  #actions .act{ flex:0 0 78px; }
+  #actions .act .ds{ display:none; }
+  @media (orientation:landscape) and (max-height:640px){
+    #cvWrap{ width:min(100%, calc((100dvh - 156px) * 2.1818)); }
+    #tagRow{ grid-row:1 / span 3; align-self:start; }
+    #speedRow{ grid-row:1 / span 3; align-self:end; }
+    #actions{ overflow-x:auto; }
+    #actions .act{ flex:1 1 0; min-width:0; }
+    .act .ic{ width:36px; height:36px; font-size:18px; }
+  }
 </style>
 </head>
 <body>
@@ -221,8 +235,6 @@
     <div id="miniMsg"></div>
   </div>
 
-  <div id="speedRow"><span class="spdLab">⚡ 速度</span><div id="spdChips"></div><div id="spdRow2"><input id="spdSlider" type="range" min="0" max="4" step="0.02" value="0"><span id="spdVal">×1</span></div></div>
-
   <div id="actions">
     <div class="act" id="btnSoldier"><div class="ic">🪖</div><div class="nm">士兵招募</div><div class="ds" id="soldierDs">20 兵种可招募升级</div><div class="cost" id="soldierCost"></div></div>
     <div class="act" id="btnHero"><div class="ic">🦸</div><div class="nm">英雄招募</div><div class="ds">12 位英雄待招募</div><div class="cost">查看名册 ›</div></div>
@@ -234,10 +246,13 @@
     <div class="act" id="btnCode"><div class="ic">🎁</div><div class="nm">礼包码</div><div class="ds">输入礼包码领奖</div><div class="cost">兑换 ›</div></div>
   </div>
 
+  <div id="speedRow"><span class="spdLab">⚡ 速度</span><div id="spdChips"></div><div id="spdRow2"><input id="spdSlider" type="range" min="0" max="4" step="0.02" value="0"><span id="spdVal">×1</span></div></div>
+
+
   <button id="pickFloat">🎁 奖励<b id="pickFloatN">0</b></button>
   <div id="mask"><div id="sheet"></div></div>
   <div id="toast"></div>
-  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261022-17 · Q版界面 · 怪物几何成长版</footer>
+  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-18 · Q版界面 · 横屏大画面 · 怪物免疫无敌版</footer>
 
 <script>
 "use strict";
@@ -464,6 +479,7 @@ function statLine2(kind, idx){ const e=ELEMS[elemOf(kind,idx)];
 function healSteal(u, dealt){ if(!u || u.down || dealt<=0 || stealC()<=0) return;
   u.hp=Math.min(1, u.hp + dealt*stealC()/Math.max(1,unitHpMax(u))); }
 function applyAbn(u, tw, f, m, atk){ if(!u || m.dead || Math.random()>=abnC()) return;
+  if(m.imm && m.imm.k==="abn") return;   // 异常免疫：不吃眩晕/减速/持续伤害
   const kind=ABN_BY_ELEM[elemOf(u.kind, u.kind==="h"? u.hi : u.ti)];
   if(kind==="眩晕" || kind==="麻痹"){ if(!(m.boss && Math.random()<0.5)) m.stunT=Math.max(m.stunT||0, 0.6); }
   else if(kind==="减速" || kind==="冰冻"){ m.slowT=Math.max(m.slowT||0, 2); if(kind==="冰冻" && !(m.boss && Math.random()<0.5)) m.stunT=Math.max(m.stunT||0, 0.4); }
@@ -614,14 +630,21 @@ function makeTower(stage, x){
       const hp = hp0 * (isElite? 8 : isRare? 3 : 1);
       fl.monsters.push({ type: isBoss? "boss" : pick(MTYPES), hp, maxHp:hp,
         ox: 46 + (n===1? (w/2-46) : i*((w-92)/Math.max(1,n-1))) + rnd(-6,6),
-        flash:0, ph:rnd(0,6.28), dead:false, boss:isBoss, elite:isElite, rare:isRare, elem:towerElem(stage), phase:0 });
+        flash:0, ph:rnd(0,6.28), dead:false, boss:isBoss, elite:isElite, rare:isRare, elem:towerElem(stage), phase:0 }); rollMonTraits(fl.monsters[fl.monsters.length-1], isBoss);
     }
     t.floors.push(fl);
   }
   towers.push(t); t.dirty=true;
   return t;
 }
-function floorBaseY(f){ return GY - (f+1)*FH + FH - 12; }   // 该层地面线（逻辑坐标，塔内）
+function floorBaseY(f){ return GY - (f+1)*FH + FH - 12; }
+/* 怪物特性（v18）：随机免疫 + 周期无敌——普通怪 12%/6%，精英稀有 30%/18%，BOSS 必带免疫+无敌 */
+function rollMonTraits(m, isBoss){
+  const ip = isBoss? 1 : (m.elite||m.rare)? 0.30 : 0.12;
+  if(Math.random()<ip){ const k=pick(["elem","abn","crit"]); m.imm = k==="elem"? {k, e:irnd(0,7)} : {k}; }
+  const vp = isBoss? 1 : (m.elite||m.rare)? 0.18 : 0.06;
+  if(Math.random()<vp){ m.invTrait=true; m.invT=0; m.invCd=rnd(2.5,4.5); }
+}   // 该层地面线（逻辑坐标，塔内）
 function curTower(){ return towers.find(t=>!t.cleared) || null; }
 
 /* 队伍组建：每兵种按数量派 1~5 名「代表」上场（代表的单次伤害 = 整队同兵种折算），
@@ -708,6 +731,9 @@ function burst(x,y,color,n,spd){
 }
 function hitMonster(t, f, m, dmg, byHero, crit, elem){
   if(m.dead) return 0;
+  if(m.invT>0){ if(!m._invTx || timeNow-m._invTx>0.5){ m._invTx=timeNow; dmgTxt(t.x+m.ox, floorBaseY(f)-54, "🛡️ 无敌！", "#ffd24d", 12); } return 0; }
+  if(m.imm && m.imm.k==="elem" && elem!=null && elem===m.imm.e){ if(!m._immTx || timeNow-m._immTx>0.6){ m._immTx=timeNow; dmgTxt(t.x+m.ox, floorBaseY(f)-54, ELEMS[elem].e+" 免疫！", "#7ee0ff", 11); } return 0; }
+  if(m.imm && m.imm.k==="crit" && crit){ dmg/=critMult(); crit=false; }
   /* 伤害结算管线：最终伤害 → 元素克制 → 防御/破甲/真伤 → 处决（全部不设上限） */
   dmg *= (1+finalB());
   dmg *= elemFactor(elem, m.elem) * (1+elemB());
@@ -728,7 +754,7 @@ function hitMonster(t, f, m, dmg, byHero, crit, elem){
     if((r<0.66 && m.phase===0) || (r<0.33 && m.phase===1)){ m.phase++;
       const fl2=t.floors[f];
       for(let k2=0;k2<2;k2++){ const hp2=monsterHP(t.stage, f, false);
-        fl2.monsters.push({ type:pick(MTYPES), hp:hp2, maxHp:hp2, ox:Math.max(30, Math.min(t.w-30, m.ox+rnd(-50,50))), flash:0, ph:rnd(0,6.28), dead:false, boss:false, elem:m.elem }); }
+        fl2.monsters.push({ type:pick(MTYPES), hp:hp2, maxHp:hp2, ox:Math.max(30, Math.min(t.w-30, m.ox+rnd(-50,50))), flash:0, ph:rnd(0,6.28), dead:false, boss:false, elem:m.elem }); rollMonTraits(fl2.monsters[fl2.monsters.length-1], false); }
       dmgTxt(mx, my-58, "BOSS 召唤小怪！", "#ff9a8a", 12); }
     if(r<0.30 && !m.enraged){ m.enraged=true; dmgTxt(mx, my-58, "💢 BOSS 狂暴！", "#ff6a5a", 13); } }
   if(killed){
@@ -777,7 +803,10 @@ function update(dt){
   assignUnits();
   const t=curTower();
   if(t && t.stage!==lastCurStage){ lastCurStage=t.stage; const af=affixOf(t);
-    if(af) miniMsg("🎲 本关词缀 "+af.em+" "+af.name+"："+af.desc); }
+    let msg = af? "🎲 本关词缀 "+af.em+" "+af.name+"："+af.desc : "";
+    let hasTrait=false; for(const fl of t.floors) for(const mm of fl.monsters) if(!mm.dead && (mm.imm || mm.invTrait)) hasTrait=true;
+    if(hasTrait) msg += (msg? " · ":"") + "⚠️ 有免疫/无敌怪，看头顶标记";
+    if(msg) miniMsg(msg); }
   // 镜头：跟随当前塔
   if(t){ const want = t.x + t.w/2 - VW*0.44; const gap=want-camX;
     if(Math.abs(gap) > VW*0.75) camX = want;   // 推关速度超过镜头跟随速度时直接对齐当前塔，不再满屏已攻破的旧塔
@@ -864,6 +893,7 @@ function update(dt){
     for(let f=0;f<3;f++){ const fl=tw.floors[f]; if(fl.cleared) continue; let foes=null;
       for(const m of fl.monsters){ if(m.dead) continue;
         if(m.lunge>0) m.lunge-=dt*5;
+        if(m.invTrait){ if(m.invT>0) m.invT-=dt; else { m.invCd-=dt; if(m.invCd<=0){ m.invT=1.6; m.invCd=rnd(3.5,5.5); } } }
         if(m.dotT>0){ m.dotT-=dt; m.hp-=m.dotDps*dt;   // 异常持续伤害（灼烧/中毒/流血）
           if(m.hp<=0){ hitMonster(tw, f, m, 1, false, false, null); if(m.dead) continue; } }
         if(m.stunT>0){ m.stunT-=dt; continue; }   // 眩晕/麻痹：本步进不出手
@@ -1181,6 +1211,10 @@ function drawMonster(m,x,baseY){
   ctx.restore();
   if(m.flash>0){ m.flash-=0.016; ctx.save(); ctx.globalAlpha=Math.min(m.boss?0.3:0.75, m.flash*7);
     ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(x, baseY-16, m.boss?26:15, 0, 7); ctx.fill(); ctx.restore(); }
+  if(m.invT>0){ ctx.save(); ctx.strokeStyle="rgba(255,210,77,.95)"; ctx.fillStyle="rgba(255,210,77,.14)"; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.arc(x, baseY-16, m.boss?31:21, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.font="900 9px "+FNT; ctx.textAlign="center"; ctx.lineWidth=2.5; ctx.strokeStyle="rgba(60,35,0,.85)";
+    ctx.strokeText("无敌", x, baseY-12); ctx.fillStyle="#ffd24d"; ctx.fillText("无敌", x, baseY-12); ctx.restore(); }
 }
 
 /* ================= 主绘制 ================= */
@@ -1242,9 +1276,11 @@ function draw(){
       const fl=t.floors[f]; if(fl.cleared) continue;
       for(const m of fl.monsters){ if(m.dead) continue;
         drawMonster(m, t.x+m.ox, floorBaseY(f));
-        if(m.elite || m.rare || m.enraged || m.dotT>0 || m.stunT>0){ ctx.save(); ctx.translate(t.x+m.ox, floorBaseY(f)-(m.boss?92:62));
+        if(m.elite || m.rare || m.enraged || m.dotT>0 || m.stunT>0 || m.imm || m.invTrait){ ctx.save(); ctx.translate(t.x+m.ox, floorBaseY(f)-(m.boss?92:62));
           ctx.font="11px "+FNT; ctx.textAlign="center"; ctx.fillStyle="#ffd24d";
           let tag=""; if(m.elite) tag+="👑精英 "; if(m.rare) tag+="✨稀有 "; if(m.enraged) tag+="💢狂暴";
+          if(m.imm) tag += m.imm.k==="elem"? ELEMS[m.imm.e].e+"免 " : m.imm.k==="crit"? "🛡️暴免 " : "✨异常免 ";
+          if(m.invTrait) tag += m.invT>0? "🛡️无敌中 " : "🛡️无敌 ";
           if(tag) ctx.fillText(tag, 0, 0);
           if(m.stunT>0) ctx.fillText("💫", 0, 13); else if(m.dotT>0) ctx.fillText("🔥", 0, 13);
           ctx.restore(); }
