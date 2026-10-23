@@ -182,11 +182,11 @@
   /* 横屏布局：左侧战场（顶牌+画布+八按钮），右侧标签与速度，一屏装下 */
   @media (orientation:landscape) and (max-height:640px){
     body { max-width:none; display:grid; grid-template-columns:1fr 182px; grid-template-rows:auto minmax(0,1fr) auto;
-      height:100dvh; column-gap:9px; padding:6px 9px; }
+      height:100vh; height:100dvh; column-gap:9px; padding:6px 9px; }
     #topbar { grid-column:1; grid-row:1; margin:0; position:relative; z-index:2; padding:3px 8px; }
     #tagRow { grid-column:2; grid-row:1 / span 2; flex-direction:column; margin:0; align-content:flex-start; position:relative; z-index:2; }
     #cvWrap { grid-column:1; grid-row:2; margin:0; align-self:center; justify-self:center; min-height:0;
-      width:min(100%, calc((100dvh - 192px) * 2.1818)); }
+      width:min(100%, calc((100vh - 192px) * 2.1818)); width:min(100%, calc((100dvh - 192px) * 2.1818)); }
     #speedRow { grid-column:2; grid-row:3; margin:0; flex-direction:column; align-items:stretch; gap:5px; }
     #spdChips { flex-wrap:wrap; }
     .spd { flex:1 1 28%; padding:5px 0; }
@@ -197,7 +197,7 @@
     .act .cost { font-size:9.5px; }
     .res { min-width:70px; }
     footer { display:none; }
-    #sheet { max-height:94dvh; }
+    #sheet { max-height:94vh; max-height:94dvh; }
   }
 
   /* ===== v18：选项一排横置（塔下面）+ 横屏大画面 ===== */
@@ -206,13 +206,36 @@
   #actions .act{ flex:0 0 78px; }
   #actions .act .ds{ display:none; }
   @media (orientation:landscape) and (max-height:640px){
-    #cvWrap{ width:min(100%, calc((100dvh - 156px) * 2.1818)); }
+    #cvWrap{ width:min(100%, calc((100vh - 156px) * 2.1818)); width:min(100%, calc((100dvh - 156px) * 2.1818)); }
     #tagRow{ grid-row:1 / span 3; align-self:start; }
     #speedRow{ grid-row:1 / span 3; align-self:end; }
     #actions{ overflow-x:auto; }
     #actions .act{ flex:1 1 0; min-width:0; }
     .act .ic{ width:36px; height:36px; font-size:18px; }
   }
+
+  /* ===== v20：面板自适应（横屏居中大面板、内容铺满、一屏装下） ===== */
+  .row .l{ flex:1; display:flex; align-items:center; gap:10px; min-width:0; }
+  @media (orientation:landscape) and (max-height:640px){
+    #mask{ align-items:center; }
+    #sheet{ width:min(96vw,1100px); max-width:1100px; max-height:96vh; border-radius:24px; border-bottom:3px solid var(--ol);
+      display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; align-content:start; }
+    #sheet > h3, #sheet > .sub, #sheet > .bulkRow, #sheet > #closeSheet, #sheet > .stat-grid{ grid-column:1 / -1; }
+    #sheet > div:not(.row):not(.sub):not(.bulkRow):not(.stat-grid){ grid-column:1 / -1; }
+    #sheet .row{ margin-bottom:0; }
+    #sheet .stat-grid{ grid-template-columns:repeat(4,1fr); }
+    #sheet.pickMode{ grid-template-columns:repeat(3,1fr); }
+    #sheet.pickMode .row{ flex-direction:column; align-items:stretch; }
+    #sheet.pickMode .row .l{ flex-direction:column; align-items:flex-start; gap:4px; }
+    #sheet.pickMode .row .buy{ width:100%; padding:10px; }
+    #sheet{ padding-top:10px; }
+    #sheet h3{ margin-bottom:2px; }
+  }
+
+  /* ===== v21：原版风——华丽金徽按钮 + 泥土基座条 ===== */
+  #actions{ border-top:3px solid #8a6a3c; background:linear-gradient(180deg, rgba(122,82,45,0), rgba(84,56,28,.5) 34%, rgba(46,29,14,.88)); }
+  .act .ic{ border:3px solid #e9c766; box-shadow:0 0 0 2px #6e4f16, inset 0 3px 0 rgba(255,255,255,.65), inset 0 -5px 0 rgba(0,0,0,.22), 0 5px 0 rgba(30,18,4,.5), 0 9px 14px rgba(0,0,0,.45); }
+  .act .nm{ color:#ffe9a8; }
 </style>
 </head>
 <body>
@@ -252,7 +275,7 @@
   <button id="pickFloat">🎁 奖励<b id="pickFloatN">0</b></button>
   <div id="mask"><div id="sheet"></div></div>
   <div id="toast"></div>
-  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-19 · Q版界面 · 横屏大画面 · 怪物免疫无敌 · 中文大数单位版</footer>
+  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-21 · 原版石塔风 · 横屏大画面 · 怪物免疫无敌 · 中文大数单位 · 面板自适应版</footer>
 
 <script>
 "use strict";
@@ -566,7 +589,15 @@ function buildSky(){
   const ridge=(base,amp,col,hl,ph)=>{ m.beginPath(); m.moveTo(0,190);
     for(let x=0;x<=W;x+=8){ const a=x/W*6.2832; m.lineTo(x, base-amp*(.55*Math.sin(a*2+ph)+.3*Math.sin(a*5+ph*2)+.15*Math.sin(a*11+ph))); }
     m.lineTo(W,190); m.closePath(); const gg=m.createLinearGradient(0,base-amp,0,190); gg.addColorStop(0,hl); gg.addColorStop(1,col); m.fillStyle=gg; m.fill(); };
-  ridge(100,58,"#a9cde8","#d3e8f8",0); ridge(140,38,"#7fb7a8","#a6d6b6",2);
+  ridge(100,58,"#a9cde8","#d3e8f8",0);
+  for(const mx of [90,430,760,1050,-150]){   // 红岩台地：平顶、层理（原版远景）
+    const mw=185, mt=64+((mx*7)%23), mb=168;
+    const mg=m.createLinearGradient(0,190-mb,0,190); mg.addColorStop(0,"#cf8752"); mg.addColorStop(1,"#9d5830");
+    m.fillStyle=mg; m.beginPath(); m.moveTo(mx,190); m.lineTo(mx+18,190-mb+mt*.42); m.lineTo(mx+30,190-mb); m.lineTo(mx+mw-30,190-mb); m.lineTo(mx+mw-18,190-mb+mt*.42); m.lineTo(mx+mw,190); m.closePath(); m.fill();
+    m.fillStyle="#e2a76a"; m.fillRect(mx+30,190-mb,mw-60,5);
+    m.fillStyle="rgba(90,45,20,.28)"; for(let st=1;st<=3;st++) m.fillRect(mx+14,190-mb+st*(mb-mt*.4)/3.4,mw-28,2.4);
+    m.fillStyle="rgba(60,25,8,.16)"; m.fillRect(mx+mw-40,190-mb+8,22,mb-16); }
+  ridge(140,38,"#7fb7a8","#a6d6b6",2);
 }
 function buildGroundTile(){
   const W=480, h=VH-GY+2;
@@ -993,17 +1024,17 @@ function renderTowerSpr(t){
   const c=t.spr.getContext("2d"); c.clearRect(0,0,t.w,H);
   let sd=t.stage*7919+13; const R=()=>{ sd=(sd*9301+49297)%233280; return sd/233280; };
   for(const px of [0,t.w-16]){   // 砖石立柱
-    const g=c.createLinearGradient(px,0,px+16,0); g.addColorStop(0,"#b9af9a"); g.addColorStop(.5,"#9a9080"); g.addColorStop(1,"#6f675b");
+    const g=c.createLinearGradient(px,0,px+16,0); g.addColorStop(0,"#e8d9b2"); g.addColorStop(.5,"#cdb287"); g.addColorStop(1,"#a1814f");
     c.fillStyle=g; c.fillRect(px,ROOF-6,16,H-ROOF+6);
-    c.strokeStyle="rgba(40,30,20,.35)"; c.lineWidth=1;
+    c.strokeStyle="rgba(96,72,38,.42)"; c.lineWidth=1;
     for(let y=ROOF;y<H;y+=14){ const o=((y/14)|0)%2?5:11; c.beginPath(); c.moveTo(px,y); c.lineTo(px+16,y); c.moveTo(px+o,y); c.lineTo(px+o,y+14); c.stroke(); }
-    c.fillStyle="#c9a44e"; c.fillRect(px-1,ROOF+30,18,4); c.fillRect(px-1,H-60,18,4);
+    c.fillStyle="#a98f5f"; c.fillRect(px-1,ROOF+30,18,4); c.fillRect(px-1,H-60,18,4);
     c.fillStyle="rgba(255,240,200,.5)"; c.fillRect(px-1,ROOF+30,18,1.4); c.fillRect(px-1,H-60,18,1.4);
   }
   for(let f=0;f<3;f++){
     const fl=t.floors[f], yTop=H-(f+1)*FH, yBot=H-f*FH;
     if(fl.cleared){
-      c.fillStyle="#2a1e13"; c.fillRect(16,yTop,t.w-32,FH);
+      c.fillStyle="#38291a"; c.fillRect(16,yTop,t.w-32,FH);
       const dg2=c.createLinearGradient(0,yTop,0,yBot); dg2.addColorStop(0,"rgba(84,62,36,.5)"); dg2.addColorStop(1,"rgba(46,32,18,.5)");
       c.fillStyle=dg2; c.fillRect(16,yTop,t.w-32,FH);
       c.strokeStyle="rgba(205,170,115,.30)"; c.lineWidth=1.4;   // 攻破痕迹：破门轮廓 + 交叉裂木（不是黑屏）
@@ -1012,7 +1043,7 @@ function renderTowerSpr(t){
       c.strokeStyle="rgba(130,110,80,.22)"; c.lineWidth=1;
       for(let k=0;k<6;k++){ const cx=20+R()*(t.w-50), cy=yTop+8+R()*(FH-30); c.beginPath(); c.moveTo(cx,cy); c.lineTo(cx+8,cy+7); c.lineTo(cx+3,cy+15); c.stroke(); }
     } else {
-      const g=c.createLinearGradient(0,yTop,0,yBot); g.addColorStop(0,"#42301c"); g.addColorStop(1,"#614529");
+      const g=c.createLinearGradient(0,yTop,0,yBot); g.addColorStop(0,"#2c1f12"); g.addColorStop(1,"#4e3a22");
       c.fillStyle=g; c.fillRect(16,yTop,t.w-32,FH);
       for(let x=16;x<t.w-16;x+=22){ c.fillStyle="rgba(0,0,0,.18)"; c.fillRect(x,yTop,1.6,FH); c.fillStyle="rgba(255,220,160,.06)"; c.fillRect(x+2,yTop,5,FH); }
       c.fillStyle="#2f2112"; c.fillRect(16,yTop,t.w-32,5); c.fillStyle="#8a6a3c"; c.fillRect(16,yTop+5,t.w-32,1.4);
@@ -1022,6 +1053,7 @@ function renderTowerSpr(t){
         c.fillStyle=dg; c.fill(); c.save(); c.clip();
         c.fillStyle="rgba(30,18,8,.45)"; for(let p=1;p<4;p++) c.fillRect(dx+p*13.5-.7,yTop,1.4,FH);
         c.fillStyle="#3a3f48"; c.fillRect(dx,yTop+48,54,4); c.fillRect(dx,yTop+66,54,3);
+        c.strokeStyle="rgba(43,26,12,.6)"; c.lineWidth=3.4; c.beginPath(); c.moveTo(dx+5,yTop+47); c.lineTo(dx+49,yBot-11); c.moveTo(dx+49,yTop+47); c.lineTo(dx+5,yBot-11); c.stroke();
         c.restore(); c.strokeStyle="#2c1c0d"; c.lineWidth=2; c.stroke();
         c.fillStyle="#f0c14a"; c.beginPath(); c.arc(dx<mid?dx+46:dx+8,yTop+59,2.8,0,7); c.fill(); c.strokeStyle="#7a5a1a"; c.lineWidth=1; c.stroke();
       }
@@ -1037,15 +1069,15 @@ function renderTowerSpr(t){
       c.fillRect(20,yTop+8,3,FH-14); c.fillRect(31,yTop+8,3,FH-14); c.fillRect(t.w-34,yTop+8,3,FH-14); c.fillRect(t.w-23,yTop+8,3,FH-14);
       for(let r=0;r<5;r++){ c.fillRect(20,yTop+14+r*14,14,3); c.fillRect(t.w-34,yTop+14+r*14,14,3); }
     }
-    c.fillStyle="#9a7640"; c.fillRect(10,yBot-7,t.w-20,7);
-    c.fillStyle="#6e5228"; c.fillRect(10,yBot-2,t.w-20,2);
+    c.fillStyle="#b39b6e"; c.fillRect(10,yBot-7,t.w-20,7);
+    c.fillStyle="#7d6540"; c.fillRect(10,yBot-2,t.w-20,2);
     c.fillStyle="rgba(255,230,170,.35)"; c.fillRect(10,yBot-7,t.w-20,1.4);
   }
   // 屋顶：石板 + 垛口 + 金边
-  const rg=c.createLinearGradient(0,8,0,ROOF+2); rg.addColorStop(0,"#aaa59a"); rg.addColorStop(1,"#6c685f");
+  const rg=c.createLinearGradient(0,8,0,ROOF+2); rg.addColorStop(0,"#bdb7a8"); rg.addColorStop(1,"#7e7767");
   c.fillStyle=rg; c.fillRect(-2,10,t.w+4,ROOF-8);
   c.strokeStyle="rgba(40,30,20,.3)"; c.lineWidth=1; for(let x=0;x<t.w;x+=26){ c.beginPath(); c.moveTo(x,10); c.lineTo(x,ROOF+2); c.stroke(); }
-  for(let x=0;x<t.w-10;x+=22){ c.fillStyle="#a9a498"; c.fillRect(x+2,1,14,10); c.fillStyle="#cfcabd"; c.fillRect(x+2,1,14,2.4); c.strokeStyle="rgba(40,30,20,.4)"; c.strokeRect(x+2,1,14,10); }
+  for(let x=0;x<t.w-10;x+=22){ c.fillStyle="#c9c3b2"; c.fillRect(x+2,1,14,10); c.fillStyle="#e3ddcd"; c.fillRect(x+2,1,14,2.4); c.strokeStyle="rgba(40,30,20,.4)"; c.strokeRect(x+2,1,14,10); }
   c.fillStyle="rgba(0,0,0,.28)"; c.fillRect(16,ROOF+2,t.w-32,4);
   c.fillStyle="#caa24a"; c.fillRect(-2,ROOF-2,t.w+4,3);
   if(t.boss){ c.fillStyle="#a52a1e"; c.beginPath(); c.moveTo(mid-34,4); c.lineTo(mid+34,4); c.lineTo(mid+34,24); c.lineTo(mid,31); c.lineTo(mid-34,24); c.closePath(); c.fill();
@@ -1054,6 +1086,11 @@ function renderTowerSpr(t){
   for(let v=0;v<7;v++){ const vx=14+v*(t.w-28)/6+(R()-.5)*12;
     c.beginPath(); c.ellipse(vx,ROOF+2,7,4.5,0,0,7); c.fill();
     if(v%2===0){ c.fillRect(vx-1,ROOF+2,2,12+v*3); c.fillStyle="#58a23d"; c.beginPath(); c.ellipse(vx+3,ROOF+12+v*3,5,3.4,.6,0,7); c.fill(); c.fillStyle="#3f7d2c"; } }
+  for(const vx of [22, t.w-30]){   // 两侧垂藤
+    c.strokeStyle="#477a2e"; c.lineWidth=2; c.beginPath(); c.moveTo(vx,ROOF+4);
+    c.quadraticCurveTo(vx+5,ROOF+44,vx-2,ROOF+82); c.quadraticCurveTo(vx-6,ROOF+112,vx+1,ROOF+138); c.stroke();
+    for(let l=0;l<6;l++){ const ly=ROOF+16+l*21, lx=vx+(l%2? 5:-5);
+      c.fillStyle=l%2? "#5da53f":"#6fb84c"; c.beginPath(); c.ellipse(lx,ly,5.6,3.6,(l%2?.5:-.5),0,7); c.fill(); } }
 }
 
 /* ================= 角色绘制：Q 版 2.5 头身，统一描边 + 渐变明暗 ================= */
@@ -1509,7 +1546,7 @@ function wireRecruitAll(renderFn){ const btn=$("recruitAll"); if(!btn) return; b
   buildParty(); sfx("clear"); toast("🛒 一键招募 "+got.length+" 位英雄："+got.map(i=>HEROES[i].name).join("、"));
   refreshUI(); save(); renderFn(); }; }
 /* ---------- 弹窗 ---------- */
-function setSheet(html){ $("sheet").innerHTML=html+'<button id="closeSheet">关闭</button>'; $("closeSheet").onclick=closeSheet; }
+function setSheet(html){ $("sheet").className=""; $("sheet").innerHTML=html+'<button id="closeSheet">关闭</button>'; $("closeSheet").onclick=closeSheet; }
 function refreshPickFloat(){ const b=document.getElementById("pickFloat"); if(!b) return;
   if(!b.dataset.wired){ b.dataset.wired=1; b.onclick=()=>openPickSheet(); }
   const n=G.pickPending||0; b.style.display=n>0? "block":"none";
@@ -1531,6 +1568,7 @@ function openPickSheet(){ if(!((G.pickPending||0)>0)) return;
   for(const o of opts) h+='<div class="row"><div class="l"><em>'+o.em+'</em><div><b>'+o.name+'</b><p>'+o.desc+' · 已选 '+pickN(o.id)+' 次</p></div></div><button class="buy" data-pick="'+o.id+'">选择</button></div>';
   h+='<div class="sub" style="margin-top:8px">懒得一个个点？批量随机分配（从 8 种强化里随机抽）：</div><div style="display:flex;gap:6px"><button class="buy" data-pickall="10" style="flex:1;padding:9px">🎲 连选 ×10</button><button class="buy" data-pickall="100" style="flex:1;padding:9px">🎲 连选 ×100</button><button class="buy" data-pickall="all" style="flex:1;padding:9px">🎲 全部选完</button></div>';
   openSheet(h);
+  $("sheet").classList.add("pickMode");
   $("sheet").querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{ const id=b.dataset.pick;
     G.pick=G.pick||{}; G.pick[id]=(G.pick[id]||0)+1; G.pickPending--; save();
     toast("🎁 "+PICKPOOL.find(x=>x.id===id).name+" 已生效！");
