@@ -252,7 +252,7 @@
   <button id="pickFloat">🎁 奖励<b id="pickFloatN">0</b></button>
   <div id="mask"><div id="sheet"></div></div>
   <div id="toast"></div>
-  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-18 · Q版界面 · 横屏大画面 · 怪物免疫无敌版</footer>
+  <footer>仿抖音小游戏《英雄世界》玩法复刻 · 人物与城堡为原创绘制 · 关卡无上限 · 最高 10000 倍速 · 横屏体验最佳（点右上角 ⛶）<br>版本 v20261023-19 · Q版界面 · 横屏大画面 · 怪物免疫无敌 · 中文大数单位版</footer>
 
 <script>
 "use strict";
@@ -263,14 +263,20 @@ const clamp=(v,a,b)=>v<a?a:v>b?b:v;
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const irnd=(a,b)=>Math.floor(rnd(a,b+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
-function fmt(n){ if(!isFinite(n)) return "∞"; n=Math.floor(n);
-  if(n<10000) return ""+n;
-  const U=["万","亿","兆","京","垓","秭","穰","沟","涧","正","载","极"];
+/* 计数单位（用户定版）：中文大数全套——万亿兆京垓秭穰沟涧正载极→恒河沙→阿僧祇→那由他→不可思议→无量大数→古戈尔；
+   超过无量大数以它进位叠用（万无量大数…），小数用分厘毫丝忽微纤沙尘埃渺漠。金币/钻石/伤害/价格/统计全走这里。 */
+const BIGU=["万","亿","兆","京","垓","秭","穰","沟","涧","正","载","极","恒河沙","阿僧祇","那由他","不可思议","无量大数"];
+const SMLU=["分","厘","毫","丝","忽","微","纤","沙","尘","埃","渺","漠"];
+function fmtCoef(v){ if(v>=1000) return ""+Math.floor(v);
+  const r=Math.round(v*10)/10; return (r%1===0? ""+Math.floor(r) : r.toFixed(1)); }
+function fmt(n){ if(!isFinite(n)) return "无量大数"; if(n<0) return "-"+fmt(-n); if(n===0) return "0";
+  if(n<1){ const k=Math.min(12, Math.max(1, Math.ceil(-Math.log10(n)))); return fmtCoef(n*Math.pow(10,k))+SMLU[k-1]; }
+  if(n<10000) return ""+Math.floor(n);
+  if(n>=1e100){ const c=n/1e100; return (c<10000? fmtCoef(c) : fmt(c)) + "古戈尔"; }
   const e=Math.floor(Math.log10(n)), ui=Math.floor(e/4)-1;
-  if(ui>=U.length) return n.toExponential(2).replace("e+","e");
-  const v=n/Math.pow(10,4*(ui+1));
-  return (v>=100? Math.round(v) : v.toFixed(1).replace(/\.0$/,"")) + U[ui]; }
-function fmtFull(n){ return Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,","); }
+  if(ui<BIGU.length) return fmtCoef(n/Math.pow(10,4*(ui+1))) + BIGU[ui];
+  return fmt(n/1e68) + "无量大数"; }
+function fmtFull(n){ return fmt(n); }
 
 /* ================= 存档 ================= */
 const SAVE_KEY="hema-hero-world-v2";
