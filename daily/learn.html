@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>每日学习成果 · 小坏蛋</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    background: linear-gradient(180deg, #c3d0df 0%, #aebfd3 100%);
+    background-attachment: scroll;
+    color: #07182b;
+    padding: 14px 12px 30px;
+  }
+  /* ===== 顶部功能栏：复制 + 收听（以后每份信息都带） ===== */
+  .topbar {
+    position: sticky; top:0; z-index:50;
+    margin:-14px -12px 0; padding:10px 12px;
+    background:#ffffff; border-bottom:2px solid #1447c8;
+    display:flex; gap:10px; align-items:stretch;
+    box-shadow:0 2px 10px rgba(7,24,43,.18);
+  }
+  .topbar button {
+    flex:1; min-height:52px; border:none; border-radius:12px;
+    font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  #btnCopy { background:#1447c8; }
+  #btnCopy:active { background:#0d3396; }
+  #btnListen { background:#065f46; }
+  #btnListen:active { background:#04402f; }
+  #btnStop { flex:0 0 64px; background:#b91c1c; display:none; }
+  .hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#243b55; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(7,24,43,.12);
+  }
+  .hero h1 { font-size: 24px; font-weight: 800; letter-spacing: .5px; }
+  .hero .sub { margin-top: 6px; font-size: 14px; font-weight: 700; color: #243b55; line-height: 1.6; }
+  .datebar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 12px; padding-top: 12px; border-top: 2px solid #dbe4ee;
+  }
+  .datebar .d { font-size: 15px; font-weight: 800; color: #0d47a1; }
+  .datebar .r { font-size: 13px; font-weight: 700; color: #243b55; }
+  h2.sec { font-size: 18px; font-weight: 800; margin: 18px 2px 10px; }
+  h2.sec .tag { font-size: 12px; font-weight: 800; color:#ffffff; background:#0d47a1; border-radius: 8px; padding: 2px 8px; margin-left: 6px; vertical-align: 2px; }
+  .round-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #e3ebf3; }
+  .round-row:last-child { border-bottom: none; }
+  .round-row .n { width: 26px; height: 26px; border-radius: 50%; background: #0d47a1; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .round-row .t { flex: 1; }
+  .round-row .t b { font-size: 15px; font-weight: 800; display: block; }
+  .round-row .t span { font-size: 13px; font-weight: 700; color: #243b55; }
+  .round-row .st { font-size: 13px; font-weight: 800; color: #1b5e20; white-space: nowrap; }
+  .nextline { margin-top: 10px; font-size: 13.5px; font-weight: 800; color: #0d47a1; }
+  .item { border-left: 5px solid #0d47a1; }
+  .item.fin { border-left-color: #bf360c; }
+  .item.web { border-left-color: #00695c; }
+  .item h3 { font-size: 17px; font-weight: 800; line-height: 1.4; }
+  .item h3 .no { color: #0d47a1; margin-right: 4px; }
+  .item .star { font-size: 13px; font-weight: 800; color: #0d47a1; margin-top: 4px; }
+  .item .intro { margin-top: 6px; font-size: 14.5px; font-weight: 600; line-height: 1.65; color: #10283f; }
+  .item .use { margin-top: 8px; font-size: 14px; font-weight: 700; line-height: 1.6; color: #243b55; background: #eef4fa; border-radius: 10px; padding: 8px 10px; }
+  .item .use b { color: #0d47a1; }
+  .item .meta { margin-top: 8px; font-size: 13px; font-weight: 700; color: #41597a; line-height: 1.6; }
+  .item .meta a { color: #0d47a1; font-weight: 800; text-decoration: none; word-break: break-all; }
+  .sum li { font-size: 14.5px; font-weight: 700; line-height: 1.7; margin-left: 18px; margin-bottom: 4px; }
+  .sum li b { color: #c62828; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: #ffffff; border-radius: 14px; padding: 14px 12px; box-shadow: 0 2px 8px rgba(7,24,43,.12); }
+  .stat .num { font-size: 24px; font-weight: 800; color: #0d47a1; }
+  .stat .lab { margin-top: 2px; font-size: 13.5px; font-weight: 800; line-height: 1.5; }
+  .stat .det { font-size: 12.5px; font-weight: 700; color: #41597a; line-height: 1.5; margin-top: 2px; }
+  .foot { text-align: center; font-size: 12.5px; font-weight: 700; color: #33475e; margin-top: 16px; line-height: 1.7; }
+  .red { color: #c62828; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button id="btnCopy" type="button">📋 复制全文</button>
+  <button id="btnListen" type="button">🔊 收听</button>
+  <button id="btnStop" type="button">⏹</button>
+</div>
+<p class="hint">👆 顶部这两个按钮是固定格式：左边一键复制全文，右边点开朗读给你听，⏹ 是停止键。</p>
+
+<div class="wrap">
+
+  <div class="card hero">
+    <h1>📚 每日学习成果</h1>
+    <p class="sub">小坏蛋每天早上 06:50 自动学习，三个方向轮着学；学完不是存着好看，做事时直接从知识库取材套用。这一页就是学习成果的展示窗。</p>
+    <div class="datebar">
+      <span class="d">2026年10月23日 · 周五</span>
+      <span class="r">今日主题：投资财经</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="round-row">
+      <div class="n">1</div>
+      <div class="t"><b>AI 工具</b><span>新发布的工具、模型重大更新</span></div>
+      <div class="st">✅ 10月21日已学 10 条</div>
+    </div>
+    <div class="round-row">
+      <div class="n">2</div>
+      <div class="t"><b>GitHub 新星项目</b><span>最近 30 天内新建、涨星最快的仓库</span></div>
+      <div class="st">✅ 10月22日已学 10 条</div>
+    </div>
+    <div class="round-row">
+      <div class="n">3</div>
+      <div class="t"><b>投资财经</b><span>重点跟踪：存储芯片 · 半导体设备</span></div>
+      <div class="st">✅ 今日已学 10 条</div>
+    </div>
+    <p class="nextline">🔁 下一轮：明天 10月24日（周六）→ AI 工具，开始新一轮循环。</p>
+  </div>
+
+  <h2 class="sec">今日成果 · 存储芯片<span class="tag">持仓跟踪</span></h2>
+
+  <div class="card item fin">
+    <h3><span class="no">1.</span>DRAM 合约价 Q4 再涨约 20%，华天科技涨停</h3>
+    <p class="star">📅 2026年10月21–22日 · 集邦咨询 / 快科技 / 韩国央行行长</p>
+    <p class="intro">集邦咨询预计 2026 年 Q4 DRAM 合约价环比再涨约 20%（Q2 约 80% → Q3 约 40% → Q4 约 20%，涨幅收窄但绝对价格仍在高位）。DDR5 渠道现货一周再涨 10%–15%，有供应商直接取消已签低价订单。10 月 22 日华天科技午后直线封涨停；韩国央行行长申铉松表态"当前芯片价格没有下跌迹象，可能进一步上涨"。</p>
+    <p class="use">🎯 <b>对你的用处：</b>涨价的底层是 AI 推理吞噬存储＋原厂把产能优先给 HBM、挤出通用 DRAM。涨价远未到头，但逻辑从"价格暴涨"转向"高位持续＋利润兑现"——下一步盯谁能把高价变成利润率（封测的 TSV/2.5D/3D 先进封装能力正被市场重新定价）。</p>
+    <p class="meta">持仓关联：存储芯片（重点持仓）<br>来源：<a href="https://www.sohu.com/a/1090536143_114838">sohu.com/a/1090536143_114838</a> · <a href="https://feng.ifeng.com/c/8xQvOOgwCI4">feng.ifeng.com/c/8xQvOOgwCI4</a> · <a href="https://finance.sina.com.cn/tech/roll/2026-10-22/doc-iniwchpf5875441.shtml">finance.sina.com.cn/tech/roll/2026-10-22/doc-iniwchpf5875441.shtml</a></p>
+  </div>
+
+  <div class="card item fin">
+    <h3><span class="no">2.</span>英伟达被传 Rubin Ultra HBM 从 12 层降至 8 层</h3>
+    <p class="star">📅 2026年10月14–22日 · TrendForce / Wccftech / 英伟达官方回应</p>
+    <p class="intro">多方报道称英伟达正评估把 Rubin Ultra 的 HBM 堆叠从 12 层降至 8 层：单颗 GPU 的 HBM 容量减少约 33%，但同等 DRAM 颗粒理论上可多支撑 50% 的 GPU 出货；8 层方案 2027 年每 Gb 成本预计反而比 12 层高 10%–20%。英伟达 10 月 20 日回应称这是"面向多元需求的灵活 SKU 部署"而非降级。TrendForce 预计 2027 年 DRAM 整体供给仍然紧张。</p>
+    <p class="use">🎯 <b>对你的用处：</b>连英伟达都要为省颗粒改设计，说明存储紧缺是结构性问题不是短期扰动——这正是存储涨价周期"长尾化"的底层支撑，也是原厂（三星/SK 海力士/美光）定价权的来源。</p>
+    <p class="meta">持仓关联：存储芯片（HBM 紧缺）<br>来源：<a href="https://www.163.com/dy/article/L9OEA9BD05561FZK.html">163.com/dy/article/L9OEA9BD05561FZK.html</a> · <a href="https://www.taisounds.com/news/content/76/293865">taisounds.com/news/content/76/293865</a></p>
+  </div>
+
+  <div class="card item fin">
+    <h3><span class="no">3.</span>江波龙：前三季度净利翻近 20 倍，但 Q3 环比降 35%–49%</h3>
+    <p class="star">📅 2026年10月15–19日 · 公司预告 / 21世纪经济报道</p>
+    <p class="intro">江波龙前三季度归母净利预计 140–149 亿元，同比 +1864%–1990%。但拆到单季：Q3 净利预计 34.23–43.23 亿元，环比 Q2 的 67.15 亿元下降 35%–49%，是 2025 年以来首次季度环比负增长。公司解释：前期高基数下 DRAM/NAND 涨幅明显收窄，涨价对盈利的边际贡献趋缓。股价 7 月 1 日高点 749.88 元 → 10 月 15 日收 244 元，三个半月回撤约 67%。</p>
+    <p class="use">🎯 <b>对你的用处：</b>"涨价 ≠ 利润"——同一条涨价链上，模组厂的低价底仓红利在二三季度之交消耗完，新补货成本上行，单季净利率从约 47% 回落到约 26%。看存储板块不能只看价格涨多少，要看利润率保得住多少；有自研芯片、先进封装、企业级客户的公司才能保住利润。</p>
+    <p class="meta">持仓关联：存储芯片（盈利分化）<br>来源：<a href="https://www.cnjzfm.com/articles/daily-bb4492153e8c.html">cnjzfm.com/articles/daily-bb4492153e8c.html</a> · <a href="https://www.21jingji.com/article/20261019/herald/40b579b5438c5d8e285cd33ed15b6a17.html">21jingji.com/article/20261019/herald/40b579b5438c5d8e285cd33ed15b6a17.html</a></p>
+  </div>
+
+  <div class="card item fin">
+    <h3><span class="no">4.</span>原厂展望：戴尔称 2027 年更紧，美光/SK 海力士看到 2028–2030 年</h3>
+    <p class="star">📅 2026年10月21日 · 华尔街日报采访 / IT168</p>
+    <p class="intro">戴尔 CEO 迈克尔·戴尔：AI 数据中心持续消耗 DRAM 与 HBM，2027 年供应还会更紧；新建内存工厂约需 4 年，显著新增产能要到 2029–2030 年。美光 CEO：2027、2028 年的紧张程度会远超今年；SK 海力士 CEO：短缺窗口看到 2030 年。戴尔手握约 950 亿美元未交付 AI 服务器订单（历史最高），卡住交付的不是需求而是内存。</p>
+    <p class="use">🎯 <b>对你的用处：</b>这是存储"长周期"叙事的源头：供给侧没有快速响应能力（4 年建厂周期），未来 2–4 年供给基本锁定，需求侧 AI 推理持续吞噬——原厂天然强定价。但也要注意价格基数已高（12 个月现货累计涨近 500%），后续驱动从"价格暴涨"转向"高位持续＋利润兑现"，波动会加大。</p>
+    <p class="meta">持仓关联：存储芯片（长周期）<br>来源：<a href="https://www.sohu.com/a/1090536143_114838">sohu.com/a/1090536143_114838</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 半导体与 A 股<span class="tag">持仓跟踪</span></h2>
+
+  <div class="card item web">
+    <h3><span class="no">5.</span>Lam Research Q3 创纪录，长川科技净利接近翻倍</h3>
+    <p class="star">📅 2026年10月21–22日 · Lam 财报 / 长川科技预告 / 腾讯新闻</p>
+    <p class="intro">美国 Lam Research 公布截至 9 月 27 日的季度业绩：营收 82.19 亿美元（环比 +22%），GAAP 毛利率 52.3%，经营利润率 40.0%，摊薄 EPS 2.19 美元，三项指标均创新高；预计下一季营收 86 亿美元；中国区收入占比 35%。长川科技同日发布前三季度业绩预告：归母净利润 17.15–18.15 亿元，同比 +98.17%–109.73%。</p>
+    <p class="use">🎯 <b>对你的用处：</b>AI 算力投资正从芯片设计向制造端传导：晶圆厂要造先进逻辑芯片和高性能存储，必须在沉积、刻蚀、清洗环节投设备。中美两家龙头处在不同工序却同时交出好业绩，说明 AI 资本开支正在全工序扩散——国产设备端订单充裕、交付偏紧，是国产化加速的直接证据。</p>
+    <p class="meta">持仓关联：半导体设备（重点持仓）<br>来源：<a href="https://news.qq.com/rain/a/20261022A0AGR200">news.qq.com/rain/a/20261022A0AGR200</a> · <a href="https://cn.tradingview.com/news/reuters.com,2026:newsml_L4S46803V:0/">cn.tradingview.com/news/reuters.com,2026:newsml_L4S46803V:0/</a></p>
+  </div>
+
+  <div class="card item web">
+    <h3><span class="no">6.</span>A 股半导体三季报浪：澜起、长电、力源信息集体报喜</h3>
+    <p class="star">📅 2026年10月20–22日 · 科创板日报 / 中新经纬</p>
+    <p class="intro">澜起科技预计 Q3 归母净利 12–13 亿元，同比 +153.6%–174.7%，或创单季历史新高（DDR5 第三至第五子代 RCD 芯片出货占比提升）；海光信息 Q3 净利 10.48 亿元，同比 +37.9%；长电科技前三季度净利 16.17 亿元，同比 +69.58%；力源信息前三季度净利 4.8 亿元，同比 +208%；深科达净利同比 +205%。中信证券称三季度电子行业"AI 通胀"方向最佳。</p>
+    <p class="use">🎯 <b>对你的用处：</b>半导体板块的上涨逻辑正在从"涨价概念"切换到"订单和利润兑现"：多家公司 Q3 利润创单季新高，说明 AI 订单是真实的。市场定价逻辑也在从"远期叙事"切换到"当期景气"——你的两个持仓板块（存储芯片、半导体设备）恰恰是当期景气最硬的方向。</p>
+    <p class="meta">持仓关联：半导体设备＋存储芯片（业绩兑现）<br>来源：<a href="https://finance.sina.cn/2026-10-20/detail-inivwpzi5789522.d.html">finance.sina.cn/2026-10-20/detail-inivwpzi5789522.d.html</a> · <a href="https://finance.sina.com.cn/roll/2026-10-22/doc-iniwchpf5940875.shtml">finance.sina.com.cn/roll/2026-10-22/doc-iniwchpf5940875.shtml</a></p>
+  </div>
+
+  <div class="card item web">
+    <h3><span class="no">7.</span>A 股大盘：沪指跌 1.48% 报 3658 点，工行创历史新高</h3>
+    <p class="star">📅 2026年10月22日收盘 · 腾讯新闻 / 新浪财经</p>
+    <p class="intro">上证指数跌 1.48% 报 3658.03 点，深成指跌 2.96%，创业板指跌 4.37%，全市场近 5000 只下跌、成交 15287 亿元放量。工商银行收涨 1.66%，总市值 3.06 万亿元再创历史新高。半导体盘中逆势反弹：华天科技直线涨停、云汉芯城 20% 涨停；光通信/CPO 领跌。黄仁勋最新回应：GPU 折旧期从 4 年重估为 7–8 年，高残值可作贷款抵押。</p>
+    <p class="use">🎯 <b>对你的用处：</b>AI 板块内部大分化：有订单有业绩的（设备、存储封测）盘中反弹，没业绩的题材股领跌——"真正有订单、有业绩支撑的科技龙头可能估值修复，题材股可能低迷"。资金同时在往高股息（银行）抱团避险。你的持仓板块恰恰是"当期景气"最硬的方向，盘中逆势表现就是注脚。</p>
+    <p class="meta">持仓关联：大盘环境＋半导体结构<br>来源：<a href="https://news.qq.com/rain/a/20261022A08DFU00">news.qq.com/rain/a/20261022A08DFU00</a> · <a href="https://finance.sina.com.cn/jjxw/2026-10-22/doc-iniwarrp5976732.shtml">finance.sina.com.cn/jjxw/2026-10-22/doc-iniwarrp5976732.shtml</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 定投与关注板块<span class="tag">定投相关</span></h2>
+
+  <div class="card item">
+    <h3><span class="no">8.</span>美股：纳指涨 1.05%，标普 500 涨 0.58%，存储概念股集体收升</h3>
+    <p class="star">📅 美东时间 2026年10月21日收盘 · 澎湃新闻</p>
+    <p class="intro">道指涨 0.69% 报 52856.09 点，标普 500 涨 0.58% 报 7757.17 点，纳指涨 1.05% 报 26702.86 点。SpaceX 上市后首份财报：Q3 超级智能业务营收 75.60 亿美元，同比 +830%、环比 +195%，股价涨 7.79%。Meta Q3 营收 646 亿美元，同比 +26%。费城半导体指数涨 1.97%；存储概念股西部数据 +3.89%、SK 海力士 +2.48%、美光 +1.96%。</p>
+    <p class="use">🎯 <b>对你的用处：</b>你的每月定投组合（标普 500ETF 博时 513500、纳斯达克 ETF 华夏 513300）跟踪的正是这两个指数的长期趋势。SpaceX 财报显示 AI 业务已能产生数十亿美元量级的收入（不再是纯烧钱故事），这是支撑美股科技权重、也是支撑长期定投逻辑的一个正面注脚。</p>
+    <p class="meta">持仓关联：每月定投（标普500/纳斯达克）<br>来源：<a href="https://www.thepaper.cn/newsDetail_forward_34305441">thepaper.cn/newsDetail_forward_34305441</a></p>
+  </div>
+
+  <div class="card item">
+    <h3><span class="no">9.</span>港股：恒生科技跌 5.03%，AI 资本开支增速预期下修</h3>
+    <p class="star">📅 2026年10月22日收盘 · 腾讯新闻 / 澎湃新闻</p>
+    <p class="intro">恒生指数跌 3.09% 报 22934.68 点（失守 23000），恒生科技指数跌 5.03% 报 3793.93 点。阿里巴巴跌 6.12%、腾讯跌 2.89%；半导体股壁仞科技跌 10.56%、中芯国际跌 6.24%。中金：美国 AI 七巨头资本开支同比增速预计由 2026 年的约 90% 降至 2027 年的 36%。国信证券：截至 10 月 13 日当周，港股通流出硬件设备 26 亿港元、半导体 24 亿港元。</p>
+    <p class="use">🎯 <b>对你的用处：</b>恒生科技是你关注的板块之一。这轮回调的导火索是对 AI 资本开支"后劲"的怀疑——这正是需要持续跟踪的变量：云厂商的资本开支指引、设备厂的订单、存储价格，三者是回答这个问题的三张成绩单。</p>
+    <p class="meta">持仓关联：恒生科技（关注板块）<br>来源：<a href="https://news.qq.com/rain/a/20261022A0CPLH00">news.qq.com/rain/a/20261022A0CPLH00</a> · <a href="https://m.thepaper.cn/newsDetail_forward_34309825">m.thepaper.cn/newsDetail_forward_34309825</a></p>
+  </div>
+
+  <div class="card item">
+    <h3><span class="no">10.</span>宁德时代三季报：增收不增利，单日跌 12.03%</h3>
+    <p class="star">📅 2026年10月20–22日 · 21世纪经济报道 / 财经日报</p>
+    <p class="intro">Q3 营收 1652.21 亿元，同比 +58.58%；归母净利 212.46 亿元，同比 +14.54%（明显低于上半年超 40% 的增速），环比下降约 6%。单季净利率逐季回落：16.1% → 15.3% → 12.9%；Q3 单季毛利率降至 20.69%，创 2022 年四季度以来新低。10 月 21 日 A 股跌 12.03%，10 月 22 日再跌超 3%。电池级碳酸锂约 10 万元/吨，较 5 月约 20.9 万元/吨的高点回落。</p>
+    <p class="use">🎯 <b>对你的用处：</b>宁德是新能源链的风向标，"增收不增利"说明电池环节的价格战和成本压力仍在消化中。观察新能源板块跟踪三个变量：锂价回落能否传导为利润修复、政策扰动（消费税、出口退税）对明年需求的透支程度、储能业务占比提升对收入确认节奏的影响。</p>
+    <p class="meta">持仓关联：新能源（关注板块）<br>来源：<a href="https://www.21jingji.com/article/20261022/5c04698082ffb2f12a1057b4d20062ed.html">21jingji.com/article/20261022/5c04698082ffb2f12a1057b4d20062ed.html</a> · <a href="https://news.jkn.co.kr/editions/chinese/post/1041506">news.jkn.co.kr/editions/chinese/post/1041506</a></p>
+  </div>
+
+  <div class="card sum">
+    <h2 style="font-size:17px;font-weight:800;margin-bottom:8px;">本轮小结：学完马上能用的</h2>
+    <ul>
+      <li><b>存储是主线：</b>涨价（Q4 合约价再涨约 20%）、紧缺（英伟达为省颗粒改设计）、长周期（原厂把短缺看到 2028–2030 年）三条线互相印证。</li>
+      <li><b>但"涨价 ≠ 利润"：</b>江波龙 Q3 环比降 35%–49% 说明利润率分化是下一阶段关键词——跟踪存储持仓，盯利润率比盯价格更重要。</li>
+      <li><b>设备是兑现：</b>Lam 和长川同时交出创纪录/翻倍业绩，AI 资本开支正在变成设备厂的订单和现金流，国产设备交付偏紧。</li>
+      <li><b>市场在切换定价逻辑：</b>从"AI 叙事"到"当期景气"——有业绩的半导体 10 月 22 日盘中逆势反弹，没业绩的题材股领跌；美股靠财报回暖，港股却因担心 AI 资本开支后劲大跌 5%。</li>
+      <li><b>新能源的变量：</b>宁德"增收不增利"（净利率逐季回落、毛利率创近四年新低）＋锂价回落＋政策扰动，是观察新能源板块的三个跟踪点。</li>
+    </ul>
+  </div>
+
+  <h2 class="sec">知识库家底（此前已学完的）</h2>
+  <div class="stats">
+    <div class="stat"><div class="num">70</div><div class="lab">个 GitHub 项目学透</div><div class="det">创作/网页/App 三线 36 个 ＋ Trending 与高收藏 24 个 ＋ 每日轮学 10 个</div></div>
+    <div class="stat"><div class="num">100</div><div class="lab">本书第一遍学完</div><div class="det">第二遍深学进行中：每晚只写补漏与新联系</div></div>
+    <div class="stat"><div class="num">111</div><div class="lab">个收藏夹网站学完</div><div class="det">每个站一篇笔记，做东西时先查库取材</div></div>
+    <div class="stat"><div class="num">88</div><div class="lab">条提示词入库</div><div class="det">12 个分类，含反推提示词 9 组、开源精选 16 条</div></div>
+    <div class="stat"><div class="num">36</div><div class="lab">条漫剧老李应用清单</div><div class="det">台词工程＋机检质检，做漫剧前逐条对照</div></div>
+    <div class="stat"><div class="num">10</div><div class="lab">条投资财经笔记</div><div class="det">首轮完成：存储/设备/美股/港股/新能源全覆盖</div></div>
+    <div class="stat"><div class="num">190</div><div class="lab">页《OpenClaw 蓝皮书》读完</div><div class="det">含 20 个变现案例，技能变现路线已对标你的提示词包</div></div>
+  </div>
+
+  <p class="foot">每日学习成果 · v20261023-1<br>每天 06:50 学完新的一轮，这一页会出新版发你；<span class="red">旧文件可删，看页脚版本号认新版</span>。</p>
+
+</div>
+
+<script>
+var PLAIN = [
+"每日学习成果",
+"2026年10月23日 星期五，今日主题：投资财经。",
+"",
+"轮换进度：",
+"1. AI 工具：10月21日已学 10 条。",
+"2. GitHub 新星项目：10月22日已学 10 条。",
+"3. 投资财经：今日已学 10 条。",
+"下一轮：明天 10月24日学 AI 工具，开始新一轮循环。",
+"",
+"1. DRAM 合约价 Q4 再涨约 20%，华天科技涨停。",
+"2026年10月21到22日。集邦咨询预计 2026 年第四季度 DRAM 合约价环比再涨约 20%。DDR5 渠道现货一周再涨 10% 到 15%，有供应商取消已签低价订单。10 月 22 日华天科技午后直线封涨停。韩国央行行长称芯片价格没有下跌迹象，可能进一步上涨。",
+"对你的用处：涨价的底层是 AI 推理吞噬存储，加上原厂把产能优先给 HBM。但逻辑已从价格暴涨转向高位持续加利润兑现，下一步盯谁能把高价变成利润率。",
+"持仓关联：存储芯片，重点持仓。",
+"来源：https://www.sohu.com/a/1090536143_114838 ， https://feng.ifeng.com/c/8xQvOOgwCI4 ， https://finance.sina.com.cn/tech/roll/2026-10-22/doc-iniwchpf5875441.shtml",
+"",
+"2. 英伟达被传 Rubin Ultra HBM 从 12 层降至 8 层。",
+"2026年10月14到22日。英伟达正评估把 Rubin Ultra 的 HBM 堆叠从 12 层降至 8 层：单颗 GPU 的 HBM 容量减少约 33%，但同等 DRAM 颗粒理论上可多支撑 50% 的 GPU 出货。英伟达 10 月 20 日回应称这是面向多元需求的灵活 SKU 部署而非降级。集邦预计 2027 年 DRAM 整体供给仍然紧张。",
+"对你的用处：连英伟达都要为省颗粒改设计，说明存储紧缺是结构性问题，这是存储涨价周期长尾化的底层支撑，也是原厂定价权的来源。",
+"持仓关联：存储芯片，HBM 紧缺。",
+"来源：https://www.163.com/dy/article/L9OEA9BD05561FZK.html ， https://www.taisounds.com/news/content/76/293865",
+"",
+"3. 江波龙：前三季度净利翻近 20 倍，但第三季度环比降 35% 到 49%。",
+"2026年10月15到19日。江波龙前三季度归母净利预计 140 到 149 亿元，同比增长约 19 倍。但第三季度净利预计 34 亿到 43 亿元，环比第二季度下降 35% 到 49%，是 2025 年以来首次季度环比负增长。股价从 7 月 1 日高点 749.88 元跌到 10 月 15 日收盘 244 元，三个半月回撤约 67%。",
+"对你的用处：涨价不等于利润。模组厂的低价底仓红利消耗完，新补货成本上行，单季净利率从约 47% 回落到约 26%。看存储板块要看利润率保得住多少，而不是价格涨多少。",
+"持仓关联：存储芯片，盈利分化。",
+"来源：https://www.cnjzfm.com/articles/daily-bb4492153e8c.html ， https://www.21jingji.com/article/20261019/herald/40b579b5438c5d8e285cd33ed15b6a17.html",
+"",
+"4. 原厂展望：戴尔称 2027 年更紧，美光、SK 海力士看到 2028 到 2030 年。",
+"2026年10月21日。戴尔 CEO 称 2027 年供应还会更紧，新建内存工厂约需 4 年，显著新增产能要到 2029 到 2030 年。美光 CEO 认为 2027、2028 年的紧张程度远超今年。SK 海力士 CEO 把短缺窗口看到 2030 年。戴尔手握约 950 亿美元未交付 AI 服务器订单，卡住交付的是内存。",
+"对你的用处：这是存储长周期叙事的源头。供给侧没有快速响应能力，未来几年供给基本锁定。但价格基数已高，后续驱动从价格暴涨转向高位持续加利润兑现，波动会加大。",
+"持仓关联：存储芯片，长周期。",
+"来源：https://www.sohu.com/a/1090536143_114838",
+"",
+"5. Lam Research 第三季度创纪录，长川科技净利接近翻倍。",
+"2026年10月21到22日。Lam 第三季度营收 82.19 亿美元，环比增长 22%，毛利率 52.3%，经营利润率 40%，每股收益 2.19 美元，均创新高。长川科技前三季度归母净利润预计 17.15 亿到 18.15 亿元，同比增长约一倍。",
+"对你的用处：AI 算力投资正从芯片设计向制造端传导，中美两家龙头处在不同工序却同时交出好业绩，说明 AI 资本开支正在全工序扩散。国产设备端订单充裕、交付偏紧，是国产化加速的直接证据。",
+"持仓关联：半导体设备，重点持仓。",
+"来源：https://news.qq.com/rain/a/20261022A0AGR200 ， https://cn.tradingview.com/news/reuters.com,2026:newsml_L4S46803V:0/",
+"",
+"6. A 股半导体三季报浪：澜起、长电、力源信息集体报喜。",
+"2026年10月20到22日。澜起科技预计第三季度净利 12 到 13 亿元，同比增长约 1.6 倍，或创单季历史新高。长电科技前三季度净利 16.17 亿元，同比增长约 70%。力源信息前三季度净利 4.8 亿元，同比增长约 2 倍。",
+"对你的用处：半导体板块的上涨逻辑正在从涨价概念切换到订单和利润兑现。市场定价逻辑也在从远期叙事切换到当期景气，你的两个持仓板块恰恰是当期景气最硬的方向。",
+"持仓关联：半导体设备加存储芯片，业绩兑现。",
+"来源：https://finance.sina.cn/2026-10-20/detail-inivwpzi5789522.d.html ， https://finance.sina.com.cn/roll/2026-10-22/doc-iniwchpf5940875.shtml",
+"",
+"7. A 股大盘：沪指跌 1.48% 报 3658 点，工行创历史新高。",
+"2026年10月22日收盘。上证指数跌 1.48% 报 3658.03 点，创业板指跌 4.37%，全市场近 5000 只下跌。工商银行总市值 3.06 万亿元再创历史新高。半导体盘中逆势反弹，华天科技直线涨停。黄仁勋回应：GPU 折旧期从 4 年重估为 7 到 8 年。",
+"对你的用处：AI 板块内部分化，有订单有业绩的盘中反弹，没业绩的题材股领跌。资金同时在往高股息的银行抱团避险。你的持仓板块恰恰是当期景气最硬的方向，盘中逆势表现就是注脚。",
+"持仓关联：大盘环境加半导体结构。",
+"来源：https://news.qq.com/rain/a/20261022A08DFU00 ， https://finance.sina.com.cn/jjxw/2026-10-22/doc-iniwarrp5976732.shtml",
+"",
+"8. 美股：纳指涨 1.05%，标普 500 涨 0.58%，存储概念股集体收升。",
+"美东时间 2026年10月21日收盘。标普 500 涨 0.58% 报 7757.17 点，纳指涨 1.05% 报 26702.86 点。SpaceX 上市后首份财报：第三季度超级智能业务营收 75.60 亿美元，同比增长 830%。存储概念股西部数据涨 3.89%，SK 海力士涨 2.48%，美光涨 1.96%。",
+"对你的用处：你的每月定投组合跟踪的正是这两个指数的长期趋势。SpaceX 财报显示 AI 业务已能产生数十亿美元量级的收入，这是支撑长期定投逻辑的一个正面注脚。",
+"持仓关联：每月定投，标普 500 和纳斯达克。",
+"来源：https://www.thepaper.cn/newsDetail_forward_34305441",
+"",
+"9. 港股：恒生科技跌 5.03%，AI 资本开支增速预期下修。",
+"2026年10月22日收盘。恒生科技指数跌 5.03% 报 3793.93 点，恒生指数跌 3.09% 失守 23000 点。中金预计美国 AI 七巨头资本开支同比增速由 2026 年的约 90% 降至 2027 年的 36%。南向资金加速减持港股半导体及硬件设备。",
+"对你的用处：恒生科技是你关注的板块。这轮回调的导火索是对 AI 资本开支后劲的怀疑，需要持续跟踪的变量是：云厂商的资本开支指引、设备厂的订单、存储价格。",
+"持仓关联：恒生科技，关注板块。",
+"来源：https://news.qq.com/rain/a/20261022A0CPLH00 ， https://m.thepaper.cn/newsDetail_forward_34309825",
+"",
+"10. 宁德时代三季报：增收不增利，单日跌 12.03%。",
+"2026年10月20到22日。第三季度营收 1652.21 亿元，同比增长约 59%。归母净利 212.46 亿元，同比增长约 15%，明显低于上半年超 40% 的增速。单季净利率逐季回落：16.1%、15.3%、12.9%。第三季度单季毛利率降至 20.69%，创近四年新低。10 月 21 日 A 股跌 12.03%。",
+"对你的用处：宁德是新能源链的风向标，增收不增利说明电池环节的价格战和成本压力仍在消化。观察新能源跟踪三个变量：锂价回落能否传导为利润修复、政策扰动对明年需求的透支程度、储能占比提升对收入节奏的影响。",
+"持仓关联：新能源，关注板块。",
+"来源：https://www.21jingji.com/article/20261022/5c04698082ffb2f12a1057b4d20062ed.html ， https://news.jkn.co.kr/editions/chinese/post/1041506",
+"",
+"知识库家底：",
+"70 个 GitHub 项目学透，100 本书第一遍学完，111 个收藏夹网站学完，88 条提示词入库，36 条漫剧老李应用清单，10 条投资财经笔记（首轮完成），190 页《OpenClaw 蓝皮书》读完。",
+"",
+"每日学习成果 v20261023-1。旧文件可删，看页脚版本号认新版。"
+].join("\n");
+
+/* ---------- 复制全文 ---------- */
+var btnCopy = document.getElementById('btnCopy');
+function copyDone(){
+var old = btnCopy.textContent;
+btnCopy.textContent = '✅ 已复制';
+setTimeout(function(){ btnCopy.textContent = old;}, 1600);
+}
+btnCopy.addEventListener('click', function(){
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy();});
+} else { fallbackCopy();}
+});
+function fallbackCopy(){
+var ta = document.createElement('textarea');
+ta.value = PLAIN;
+ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand('copy'); copyDone();} catch(e) {}
+document.body.removeChild(ta);
+}
+
+/* ---------- 收听朗读 ---------- */
+var btnListen = document.getElementById('btnListen');
+var btnStop = document.getElementById('btnStop');
+var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
+
+function pickVoice(){
+try {
+var vs = window.speechSynthesis.getVoices();
+for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break;}}
+} catch(e) {}
+}
+if ('speechSynthesis' in window) {
+pickVoice();
+window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function splitChunks(text){
+var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+var out = [];
+for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t);}
+return out;
+}
+function resetListenUI(){
+speaking = false; paused = false;
+btnListen.textContent = '🔊 收听';
+btnStop.style.display = 'none';
+}
+function speakNext(){
+if (ci >= chunks.length) { resetListenUI(); return;}
+var u = new SpeechSynthesisUtterance(chunks[ci]);
+u.lang = 'zh-CN';
+if (zhVoice) u.voice = zhVoice;
+u.rate = 1.02;
+u.onend = function(){ ci++; speakNext();};
+u.onerror = function(){ ci++; speakNext();};
+window.speechSynthesis.speak(u);
+}
+btnListen.addEventListener('click', function(){
+if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
+var ss = window.speechSynthesis;
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+ss.cancel();
+chunks = splitChunks(PLAIN);
+ci = 0;
+speaking = true; paused = false;
+btnListen.textContent = '⏸ 暂停';
+btnStop.style.display = 'flex';
+speakNext();
+});
+btnStop.addEventListener('click', function(){
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+resetListenUI();
+});
+/* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
+setInterval(function(){
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+window.speechSynthesis.resume();
+}
+}, 10000);
+</script>
+<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a></body>
+</html>

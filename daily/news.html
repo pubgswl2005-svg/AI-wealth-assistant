@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>全球新闻速览 · 10月23日</title>
+<style>
+:root{
+  --bg:#080B12; --bg2:#0D121C; --card:#121824;
+  --glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
+  --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
+  --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.6;
+  background-image:
+    radial-gradient(600px 300px at 15% 0%, rgba(114,213,255,.07), transparent 70%),
+    radial-gradient(500px 260px at 90% 12%, rgba(167,139,250,.06), transparent 70%),
+    radial-gradient(700px 400px at 50% 100%, rgba(102,240,208,.04), transparent 70%);
+  background-attachment:fixed;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom));
+}
+/* ===== 顶部功能栏：复制 + 收听（固定顶栏） ===== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  display:flex; gap:10px; align-items:stretch;
+  padding:10px 16px;
+  background:rgba(8,11,18,.92);
+  border-bottom:1px solid var(--stroke);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  max-width:640px; margin:0 auto;
+}
+.topbar button{
+  flex:1; min-height:54px; border:none; border-radius:14px;
+  font-size:18px; font-weight:800; color:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  letter-spacing:.04em;
+}
+#btnCopy{ background:#1668DC; box-shadow:0 0 12px rgba(114,213,255,.35);}
+#btnCopy:active{ background:#0f4faf;}
+#btnListen{ background:#0E9F6E; box-shadow:0 0 12px rgba(102,240,208,.30);}
+#btnListen:active{ background:#0b7a55;}
+#btnStop{ flex:0 0 64px; background:#C81E1E; display:none;}
+.hintbar{max-width:640px;margin:0 auto;padding:8px 16px 0;font-size:12px;color:var(--dim)}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header.top{padding:22px 0 6px}
+.date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
+h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
+.sub{font-size:13px;color:var(--dim)}
+.hero{
+  margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
+  border:1px solid var(--stroke);
+  background:linear-gradient(160deg, rgba(255,122,122,.10), rgba(114,213,255,.10) 55%, rgba(18,24,36,.9));
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  padding:22px 20px;
+}
+.hero::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;
+  padding:3px 10px;border-radius:999px;margin-bottom:10px;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
+.tag.hot{color:#0A0E16;background:linear-gradient(120deg,var(--cyan),var(--teal));border:none}
+.hero h2{font-size:21px;font-weight:800;line-height:1.45;margin-bottom:8px}
+.hero p{font-size:14px;color:#C9D3E4}
+.meta{margin-top:12px;font-size:11px;color:var(--dim);letter-spacing:.06em}
+.sec{margin:26px 0 4px}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.dot{width:8px;height:8px;border-radius:50%}
+.sec-head h3{font-size:15px;font-weight:700;letter-spacing:.08em}
+.sec-head .line{flex:1;height:1px;background:linear-gradient(90deg,var(--stroke),transparent)}
+.card{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
+  padding:15px 16px;margin-bottom:10px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  position:relative;
+}
+.card::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
+.card h4{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
+.card h4 .t{color:var(--cyan);font-weight:600;font-size:12px;margin-right:8px;letter-spacing:.04em}
+.card p{font-size:13.5px;color:#B9C3D6}
+.card .src{margin-top:8px;font-size:11px;color:var(--dim)}
+footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);letter-spacing:.08em}
+.c-pol{color:var(--cyan)} .c-war{color:var(--red)} .c-eco{color:var(--teal)} .c-bra{color:var(--amber)}
+.d-pol{background:var(--cyan)} .d-war{background:var(--red)} .d-eco{background:var(--teal)} .d-bra{background:var(--amber)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<button id="btnCopy" type="button">📋 复制全文</button>
+<button id="btnListen" type="button">🔊 收听</button>
+<button id="btnStop" type="button">⏹</button>
+</div>
+<div class="hintbar">👆 左边一键复制全文，右边点开朗读给你听。</div>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="date">2026 · 10 · 23 &nbsp;星期五</div>
+  <h1>全球新闻速览</h1>
+  <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
+</header>
+
+<div class="hero">
+  <span class="tag hot">头 条</span>
+  <h2>沙特阿美油田遭无人机袭击，美方下令驻沙特外交官撤离</h2>
+  <p>沙特通讯社报道，沙特阿美一处油田遭无人机袭击，造成两人死亡。路透称美国国务院正准备下令驻海湾地区使馆部分人员及其家属撤离，美方称相关指示限于沙特阿拉伯；胡塞武装称同时打击了亚丁机场等沙特目标。全球市场走势弥漫"大战前夕"味道，布伦特原油逼近110美元。</p>
+  <div class="meta">路透社 · SCMP · 华尔街情报圈 · 10月22日</div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-22</span>新墨西哥州判 Meta 赔 250 亿美元，创州级隐私案纪录</h4>
+    <p>新墨西哥州法院依陪审团裁定判决 Meta 违反消费者保护法，判赔 250 亿美元，源于 Facebook 用户个人资料被不当利用。Meta 表示将上诉。这是美国州级隐私诉讼中的最高判赔金额。</p>
+    <div class="src">CNBC · 纽约时报</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-22</span>俄罗斯释放被关押美国人，俄称愿重启俄美乌三方会谈</h4>
+    <p>俄罗斯释放了 2022 年以来被关押的美国公民斯蒂芬·哈伯德，据称是应特朗普向普京的请求。俄方表示"原则上"愿重启俄美乌三方会谈，乌方称同意冻结战场现状。</p>
+    <div class="src">央视新闻 · The Hill</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-22</span>民主党诉特朗普政府干预选举，距中期选举不到两周</h4>
+    <p>民主党阵营向法院提起诉讼，要求阻止特朗普政府干预各州选举管理、施压地方清除选民名册。联邦政府与各州围绕选举管理的法律战再度升温。</p>
+    <div class="src">中时新闻网</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-22</span>俄同意重启和谈后乌克兰遭三波导弹打击</h4>
+    <p>俄罗斯表态愿重启和谈数小时后，乌克兰多地遭三波导弹袭击。同时乌军在库皮扬斯克方向发动代号"韦列斯"的行动，利用地下管线向俄军后方渗透约 15 公里。</p>
+    <div class="src">BBC · 中时新闻网</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-22</span>法国骚乱后续：巴黎延长宵禁，马赛、里昂禁止抗议</h4>
+    <p>骚乱过后巴黎延长宵禁，马赛和里昂宣布禁止抗议活动，顶级博物馆周六关闭。当局依靠社交媒体追踪、抓捕参与打砸抢的骚乱分子。</p>
+    <div class="src">BBC · IOL</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-22</span>中东消息搅动市场，布伦特原油逼近 110 美元</h4>
+    <p>受中东局势消息影响，标普500指数期货开盘跳水回吐昨日涨幅，黄金小幅下跌，布伦特原油走高逼近 110 美元。市场在中东局势与 AI 融资压力的双重作用下波动加剧。</p>
+    <div class="src">华尔街情报圈</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-22</span>黄仁勋柏林称 AI 灭世论是"编造"；Meta、亚马逊各投 10 亿美元建数据中心社区</h4>
+    <p>英伟达掌门黄仁勋在柏林公司大会上称 AI 消灭人类的说法"纯属编造、廉价"，呼吁以"负责任的乐观"支持 AI。同时 Meta 与亚马逊承诺各投资 10 亿美元，用于安置数据中心社区的激励措施。</p>
+    <div class="src">BriefTea · BBC</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-22</span>西藏那曲巴青县发生 7.0 级极浅层地震，伤亡不明</h4>
+    <p>22 日 22 时 33 分，西藏那曲市巴青县发生 7.0 级地震，震源深度仅 10 公里。据新华社深夜快讯，目前伤亡情况尚未明确。</p>
+    <div class="src">新华社 · 中时新闻网</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-22</span>法国现全球首例人类感染"沙门达病毒"死亡病例</h4>
+    <p>法国卫生当局宣布东部地区一名感染沙门达病毒的患者死亡。这是全球文献首次记录的人类感染该病毒病例，此前该病毒只在牛身上被发现。</p>
+    <div class="src">中时新闻网 · BBC 科学版</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-22</span>PHP 惊现严重安全漏洞，多国政府企业紧急关闭网站修补</h4>
+    <p>全球大量网站使用的底层编程语言 PHP 被发现严重安全漏洞。从日本东京到芬兰赫尔辛基，银行、航空、铁路、税务、政府 IT 人员连夜关闭网站、分秒必争打补丁。</p>
+    <div class="src">中时新闻网 · BBC</div>
+  </div>
+</div>
+
+<footer>Little Rascal · 全球新闻速览 · 每日早上推送</footer>
+
+</div>
+
+<script>
+var PLAIN = [
+"全球新闻速览 · 2026年10月23日 星期五",
+"过去 24 小时，全球重要事件 10 条。",
+"",
+"头条：沙特阿美油田遭无人机袭击，美方下令驻沙特外交官撤离。",
+"沙特通讯社报道，沙特阿美一处油田遭无人机袭击，造成两人死亡。路透称美国国务院正准备下令驻海湾地区使馆部分人员及其家属撤离，美方称相关指示限于沙特阿拉伯。胡塞武装称同时打击了亚丁机场等沙特目标。全球市场走势弥漫大战前夕的味道，布伦特原油逼近110美元。",
+"",
+"国际政治一：新墨西哥州判 Meta 赔 250 亿美元，创州级隐私案纪录。",
+"新墨西哥州法院依陪审团裁定判决 Meta 违反消费者保护法，判赔 250 亿美元，源于 Facebook 用户个人资料被不当利用。Meta 表示将上诉。这是美国州级隐私诉讼中的最高判赔金额。",
+"",
+"国际政治二：俄罗斯释放被关押美国人，俄称愿重启俄美乌三方会谈。",
+"俄罗斯释放了 2022 年以来被关押的美国公民斯蒂芬·哈伯德，据称是应特朗普向普京的请求。俄方表示原则上愿重启俄美乌三方会谈，乌方称同意冻结战场现状。",
+"",
+"国际政治三：民主党诉特朗普政府干预选举，距中期选举不到两周。",
+"民主党阵营向法院提起诉讼，要求阻止特朗普政府干预各州选举管理、施压地方清除选民名册。联邦政府与各州围绕选举管理的法律战再度升温。",
+"",
+"地区冲突一：俄同意重启和谈后乌克兰遭三波导弹打击。",
+"俄罗斯表态愿重启和谈数小时后，乌克兰多地遭三波导弹袭击。同时乌军在库皮扬斯克方向发动代号韦列斯的行动，利用地下管线向俄军后方渗透约15公里。",
+"",
+"地区冲突二：法国骚乱后续：巴黎延长宵禁，马赛、里昂禁止抗议。",
+"骚乱过后巴黎延长宵禁，马赛和里昂宣布禁止抗议活动，顶级博物馆周六关闭。当局依靠社交媒体追踪、抓捕参与打砸抢的骚乱分子。",
+"",
+"全球经济一：中东消息搅动市场，布伦特原油逼近 110 美元。",
+"受中东局势消息影响，标普500指数期货开盘跳水回吐昨日涨幅，黄金小幅下跌，布伦特原油走高逼近110美元。市场在中东局势与 AI 融资压力的双重作用下波动加剧。",
+"",
+"全球经济二：黄仁勋柏林称 AI 灭世论是编造；Meta、亚马逊各投 10 亿美元建数据中心社区。",
+"英伟达掌门黄仁勋在柏林公司大会上称 AI 消灭人类的说法纯属编造、廉价，呼吁以负责任的乐观支持 AI。同时 Meta 与亚马逊承诺各投资10亿美元，用于安置数据中心社区的激励措施。",
+"",
+"突发灾难一：西藏那曲巴青县发生 7.0 级极浅层地震，伤亡不明。",
+"22日22时33分，西藏那曲市巴青县发生7.0级地震，震源深度仅10公里。据新华社深夜快讯，目前伤亡情况尚未明确。",
+"",
+"突发灾难二：法国现全球首例人类感染沙门达病毒死亡病例。",
+"法国卫生当局宣布东部地区一名感染沙门达病毒的患者死亡。这是全球文献首次记录的人类感染该病毒病例，此前该病毒只在牛身上被发现。",
+"",
+"突发灾难三：PHP 惊现严重安全漏洞，多国政府企业紧急关闭网站修补。",
+"全球大量网站使用的底层编程语言 PHP 被发现严重安全漏洞。从日本东京到芬兰赫尔辛基，银行、航空、铁路、税务、政府 IT 人员连夜关闭网站、分秒必争打补丁。"
+].join("\n");
+
+/* ---------- 复制全文 ---------- */
+var btnCopy = document.getElementById('btnCopy');
+function copyDone(){
+var old = btnCopy.textContent;
+btnCopy.textContent = '✅ 已复制';
+setTimeout(function(){ btnCopy.textContent = old;}, 1600);
+}
+btnCopy.addEventListener('click', function(){
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy();});
+} else { fallbackCopy();}
+});
+function fallbackCopy(){
+var ta = document.createElement('textarea');
+ta.value = PLAIN;
+ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand('copy'); copyDone();} catch(e) {}
+document.body.removeChild(ta);
+}
+
+/* ---------- 收听朗读 ---------- */
+var btnListen = document.getElementById('btnListen');
+var btnStop = document.getElementById('btnStop');
+var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
+
+function pickVoice(){
+try {
+var vs = window.speechSynthesis.getVoices();
+for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break;}}
+} catch(e) {}
+}
+if ('speechSynthesis' in window) {
+pickVoice();
+window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function splitChunks(text){
+var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+var out = [];
+for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t);}
+return out;
+}
+function resetListenUI(){
+speaking = false; paused = false;
+btnListen.textContent = '🔊 收听';
+btnStop.style.display = 'none';
+}
+function speakNext(){
+if (ci >= chunks.length) { resetListenUI(); return;}
+var u = new SpeechSynthesisUtterance(chunks[ci]);
+u.lang = 'zh-CN';
+if (zhVoice) u.voice = zhVoice;
+u.rate = 1.02;
+u.onend = function(){ ci++; speakNext();};
+u.onerror = function(){ ci++; speakNext();};
+window.speechSynthesis.speak(u);
+}
+btnListen.addEventListener('click', function(){
+if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
+var ss = window.speechSynthesis;
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+ss.cancel();
+chunks = splitChunks(PLAIN);
+ci = 0;
+speaking = true; paused = false;
+btnListen.textContent = '⏸ 暂停';
+btnStop.style.display = 'flex';
+speakNext();
+});
+btnStop.addEventListener('click', function(){
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+resetListenUI();
+});
+/* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
+setInterval(function(){
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+window.speechSynthesis.resume();
+}
+}, 10000);
+</script>
+<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a></body>
+</html>
