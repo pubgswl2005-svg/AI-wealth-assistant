@@ -281,5 +281,59 @@ window.speechSynthesis.resume();
 }
 }, 10000);
 </script>
-<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a></body>
+<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a>
+<!-- hema-audio-fix -->
+<script>
+(function(){
+  var KEY = "panqian";
+  var URLS = [
+    "https://cdn.jsdelivr.net/gh/pubgswl2005-svg/AI-wealth-assistant@main/daily/audio/" + KEY + ".b64",
+    "https://raw.githubusercontent.com/pubgswl2005-svg/AI-wealth-assistant/main/daily/audio/" + KEY + ".b64"
+  ];
+  var audio = null, state = "idle";
+  function btn(){ return document.getElementById("btnSpeak"); }
+  function stopBtn(){ return document.getElementById("btnStop"); }
+  function label(t){ var b = btn(); if (b) b.textContent = t; }
+  function showStop(v){ var s = stopBtn(); if (s) s.style.display = v ? "block" : "none"; }
+  function toast(msg){ var d = document.createElement("div"); d.textContent = msg; d.style.cssText = "position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(7,24,43,.92);color:#fff;font-size:14px;font-weight:700;padding:10px 16px;border-radius:999px;z-index:99999;max-width:86vw;text-align:center"; document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 2600); }
+  function decode(b64){
+    var bin = atob(b64.replace(/\s+/g, ""));
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return URL.createObjectURL(new Blob([arr], {type: "audio/mpeg"}));
+  }
+  function fetchAudio(idx){
+    return fetch(URLS[idx]).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(decode)
+      .catch(function(e){ if (idx + 1 < URLS.length) return fetchAudio(idx + 1); throw e; });
+  }
+  function play(){
+    if (state === "playing"){ audio.pause(); return; }
+    if (state === "paused"){ audio.play(); return; }
+    if (state === "loading") return;
+    state = "loading"; label("⏳ 加载语音");
+    fetchAudio(0).then(function(u){
+      audio = new Audio(u);
+      audio.onplay = function(){ state = "playing"; label("⏸ 暂停"); showStop(true); };
+      audio.onpause = function(){ if (state === "playing"){ state = "paused"; label("▶️ 继续"); } };
+      audio.onended = function(){ state = "idle"; label("🔊 收听"); showStop(false); };
+      audio.onerror = function(){ state = "idle"; label("🔊 收听"); showStop(false); toast("语音加载失败，请检查网络后重试"); };
+      var p = audio.play(); if (p && p.catch) p.catch(function(){ state = "idle"; label("🔊 收听"); toast("语音播放失败，请再点一次"); });
+    }).catch(function(){ state = "idle"; label("🔊 收听"); toast("语音还在生成中或网络不通，请稍后再试"); });
+  }
+  function stopAll(){
+    if (audio){ try{ audio.pause(); audio.currentTime = 0; }catch(e){} }
+    if (window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
+    state = "idle"; label("🔊 收听"); showStop(false);
+  }
+  window.speakAll = play;
+  window.stopSpeak = stopAll;
+  function rebind(){
+    var b = btn(); if (b) b.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } play(); };
+    var s = stopBtn(); if (s) s.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } stopAll(); };
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rebind); else rebind();
+})();
+</script>
+
+</body>
 </html>

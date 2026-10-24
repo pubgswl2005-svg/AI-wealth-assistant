@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>每日资讯 · 2026年10月23日</title>
+<title>每日资讯 · 2026年10月24日</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:linear-gradient(180deg,#c3d0df,#aebfd3);color:#07182b;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6;padding-bottom:34px}
@@ -31,9 +31,9 @@ h1{font-size:27px;font-weight:800}
 </div>
 <div class="wrap" id="content">
 <h1>📰 每日资讯</h1>
-<p class="date">2026年10月23日 · 打开 APP 自动同步最新版</p>
-<a class="card" href="news.html"><div class="ct">🌍 全球新闻速览 · 10月23日</div><div class="cs">沙特阿美油田遭无人机袭击，美方下令驻沙特外交官撤离</div><div class="go">查看全文 ›</div></a><a class="card" href="panqian.html"><div class="ct">📊 每日盘前预判 · 10月23日</div><div class="cs">📌 先给结论</div><div class="go">查看全文 ›</div></a><a class="card" href="hotlist.html"><div class="ct">🔥 每日两榜 · 热榜与机会 · 10月23日</div><div class="cs">【24H热榜】</div><div class="go">查看全文 ›</div></a><a class="card" href="learn.html"><div class="ct">📚 每日学习成果 · 10月23日</div><div class="cs">今日成果 · 存储芯片持仓跟踪</div><div class="go">查看全文 ›</div></a><a class="card" href="gmail.html"><div class="ct">📧 Gmail 安全汇总</div><div class="cs">10月23日检查 · 覆盖过去 24 小时 🔴 高风险，需你确认 10月22日 19:43，你的 Gmail（pubgswl2005@gma</div><div class="go">查看全文 ›</div></a>
-<p class="foot">内容版本 20261023-2 · 全球新闻 07:50 / 盘前预判·两榜 08:00 / Gmail 汇总 08:50 更新</p>
+<p class="date">2026年10月24日 · 打开 APP 自动同步最新版</p>
+<a class="card" href="news.html"><div class="ct">🌍 全球新闻速览 · 10月24日</div><div class="cs">约旦教堂葬礼枪击案：7死34伤，国王誓言报复</div><div class="go">查看全文 ›</div></a><a class="card" href="panqian.html"><div class="ct">📊 每日盘前预判 · 10月23日</div><div class="cs">📌 先给结论</div><div class="go">查看全文 ›</div></a><a class="card" href="hotlist.html"><div class="ct">🔥 每日两榜 · 热榜与机会 · 10月24日</div><div class="cs">【24H热榜】</div><div class="go">查看全文 ›</div></a><a class="card" href="learn.html"><div class="ct">📚 每日学习成果 · 10月24日</div><div class="cs">今日成果 · 做游戏 / App做游戏用</div><div class="go">查看全文 ›</div></a><a class="card" href="gmail.html"><div class="ct">📧 Gmail 安全汇总</div><div class="cs">10月24日检查 · 覆盖过去 24 小时 过去 24 小时没有收到账号安全提醒，一切正常。</div><div class="go">查看全文 ›</div></a>
+<p class="foot">内容版本 20261024-14 · 全球新闻 07:50 / 盘前预判·两榜 08:00 / Gmail 汇总 08:50 更新</p>
 </div>
 <!-- hema-daily-info -->
 <script>
@@ -61,5 +61,59 @@ function speakAll(){
 }
 function stopSpeak(){window.speechSynthesis.cancel();speaking=false;document.getElementById('btnSpeak').textContent='🔊 收听';document.getElementById('btnStop').style.display='none';}
 </script>
+
+<!-- hema-audio-fix -->
+<script>
+(function(){
+  var KEY = "index";
+  var URLS = [
+    "https://cdn.jsdelivr.net/gh/pubgswl2005-svg/AI-wealth-assistant@main/daily/audio/" + KEY + ".b64",
+    "https://raw.githubusercontent.com/pubgswl2005-svg/AI-wealth-assistant/main/daily/audio/" + KEY + ".b64"
+  ];
+  var audio = null, state = "idle";
+  function btn(){ return document.getElementById("btnSpeak"); }
+  function stopBtn(){ return document.getElementById("btnStop"); }
+  function label(t){ var b = btn(); if (b) b.textContent = t; }
+  function showStop(v){ var s = stopBtn(); if (s) s.style.display = v ? "block" : "none"; }
+  function toast(msg){ var d = document.createElement("div"); d.textContent = msg; d.style.cssText = "position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(7,24,43,.92);color:#fff;font-size:14px;font-weight:700;padding:10px 16px;border-radius:999px;z-index:99999;max-width:86vw;text-align:center"; document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 2600); }
+  function decode(b64){
+    var bin = atob(b64.replace(/\s+/g, ""));
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return URL.createObjectURL(new Blob([arr], {type: "audio/mpeg"}));
+  }
+  function fetchAudio(idx){
+    return fetch(URLS[idx]).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(decode)
+      .catch(function(e){ if (idx + 1 < URLS.length) return fetchAudio(idx + 1); throw e; });
+  }
+  function play(){
+    if (state === "playing"){ audio.pause(); return; }
+    if (state === "paused"){ audio.play(); return; }
+    if (state === "loading") return;
+    state = "loading"; label("⏳ 加载语音");
+    fetchAudio(0).then(function(u){
+      audio = new Audio(u);
+      audio.onplay = function(){ state = "playing"; label("⏸ 暂停"); showStop(true); };
+      audio.onpause = function(){ if (state === "playing"){ state = "paused"; label("▶️ 继续"); } };
+      audio.onended = function(){ state = "idle"; label("🔊 收听"); showStop(false); };
+      audio.onerror = function(){ state = "idle"; label("🔊 收听"); showStop(false); toast("语音加载失败，请检查网络后重试"); };
+      var p = audio.play(); if (p && p.catch) p.catch(function(){ state = "idle"; label("🔊 收听"); toast("语音播放失败，请再点一次"); });
+    }).catch(function(){ state = "idle"; label("🔊 收听"); toast("语音还在生成中或网络不通，请稍后再试"); });
+  }
+  function stopAll(){
+    if (audio){ try{ audio.pause(); audio.currentTime = 0; }catch(e){} }
+    if (window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
+    state = "idle"; label("🔊 收听"); showStop(false);
+  }
+  window.speakAll = play;
+  window.stopSpeak = stopAll;
+  function rebind(){
+    var b = btn(); if (b) b.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } play(); };
+    var s = stopBtn(); if (s) s.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } stopAll(); };
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rebind); else rebind();
+})();
+</script>
+
 </body>
 </html>
