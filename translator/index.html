@@ -31,8 +31,8 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 <h2>📱 全手机翻译：先开这一步（只设一次）</h2>
 <ol>
 <li>点下面 <b>去开启无障碍</b>，在系统设置里找到 <b>河马的专属翻译</b>，打开开关。</li>
-<li>回到任意英文 App（比如你截图那个 GitHub 页面），屏幕上会出现小一号的河马悬浮球（带小“译”字），球可以拖到不挡字的地方。</li>
-<li><b>不用打开这个 App、不用点球、不会弹出翻译界面：</b>实时模式默认就是开的，切到英文界面，屏幕上的英文会<b>原地直接盖上中文</b>（白底黑字，盖在原来英文的位置上），同一屏滚动/翻页也会自动刷新。底下的 App 照常能点、能滑，翻译层不挡操作；点一下河马球就关掉本屏翻译、恢复英文原样，再点一下又换回中文。</li>
+<li>回到任意英文 App（比如你截图那个 GitHub 页面），屏幕右侧会出现视频里那种蓝色“译”字悬浮球（应用图标仍是河马，悬浮球按视频样式做成蓝色），球可以拖动，松手会自动贴到左右边缘。</li>
+<li><b>跟视频里一样：</b>点一下右侧蓝色悬浮球（或实时模式自动），屏幕顶部会出现一条翻译条：<b>自动 ⇄ 中文简体 | 显示原文 | ✕</b>，同时屏幕上的英文会<b>原地直接盖上中文</b>（白底黑字，盖在原来英文的位置上），同一屏滚动/翻页也会自动刷新。底下的 App 照常能点、能滑，翻译层不挡操作；点“显示原文”就看回英文、再点“显示译文”又换回中文，点 ✕ 或再点悬浮球就彻底关掉翻译。</li>
 </ol>
 <button class="btn blue" onclick="openAcc()">去开启无障碍</button>
 <button class="btn grey" onclick="checkAcc()">检查无障碍开了没有</button>
@@ -55,7 +55,7 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 </div>
 
 <div class="card"><h2>🕘 最近翻译</h2><div class="hist" id="hist">还没有记录。</div><button class="btn grey" onclick="clearHist()">清空记录</button></div>
-<div class="card"><p class="small">v20261024-4 · 英译中为主，也可互换中译英。翻译走免费公开接口，不用填 Key；长段落会自动分段，断网时翻不了请联网再试。更新方式：打开 App 就会自己去云端检查新版翻译页，有新版就同步，不用重装；也可以点上面“检查云端更新”手动同步一次。注意：原地覆盖、悬浮球、实时自动这些原生代码改动，云端翻译页推不上去，必须装一次新 APK 才能生效，装完之后页面改动就都走云端同步了。</p></div>
+<div class="card"><p class="small">v20261024-5 · 英译中为主，也可互换中译英。翻译走免费公开接口，不用填 Key；长段落会自动分段，断网时翻不了请联网再试。更新方式：打开 App 就会自己去云端检查新版翻译页，有新版就同步，不用重装；也可以点上面“检查云端更新”手动同步一次。注意：原地覆盖、视频样式悬浮球、顶部翻译条这些原生代码改动，云端翻译页推不上去，必须装一次新 APK 才能生效，装完之后页面改动就都走云端同步了。</p></div>
 </div>
 
 <div id="fs"><div class="bar"><button class="btn green" style="width:auto" onclick="copyOut();event.stopPropagation()">📋 复制</button><button class="btn grey" style="width:auto" onclick="hideFs()">✕ 关闭全屏</button></div><div class="txt" id="fstxt" onclick="hideFs()"></div><p class="small" style="text-align:center">点中文任意处退出全屏</p></div>
