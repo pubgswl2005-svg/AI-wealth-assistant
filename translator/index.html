@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>河马翻译 · 全手机双语翻译</title>
+<title>河马的专属翻译 · 全手机双语翻译</title>
 <!-- hema-translator -->
 <style>
 *{box-sizing:border-box}body{margin:0;background:#e8edf3;color:#07182b;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
@@ -24,13 +24,13 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 </style>
 </head>
 <body>
-<div class="top"><h1>河马翻译</h1><p>像流利阅读（FluentRead）那样双语对照，但不只限于浏览器：<b>整个手机的英文界面都能翻成中文</b>。主界面直接打英文、立刻翻；去别的 App，点悬浮球就翻本屏。</p></div>
+<div class="top"><h1>河马的专属翻译</h1><p>像流利阅读（FluentRead）那样双语对照，但不只限于浏览器：<b>整个手机的英文界面都能翻成中文</b>。主界面直接打英文、立刻翻；去别的 App，点悬浮球就翻本屏。</p></div>
 <div class="wrap">
 
 <div class="card">
 <h2>📱 全手机翻译：先开这一步（只设一次）</h2>
 <ol>
-<li>点下面 <b>去开启无障碍</b>，在系统设置里找到 <b>河马翻译</b>，打开开关。</li>
+<li>点下面 <b>去开启无障碍</b>，在系统设置里找到 <b>河马的专属翻译</b>，打开开关。</li>
 <li>回到任意英文 App（比如你截图那个 GitHub 页面），屏幕上会出现蓝色 <b>“译”悬浮球</b>，球可以拖到不挡字的地方。</li>
 <li>点球 → 弹出<b>全屏双语对照面板</b>：上面是英文原文，下面是大字中文，面板里能复制全部中文、刷新、关闭。</li>
 </ol>
@@ -54,7 +54,7 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 </div>
 
 <div class="card"><h2>🕘 最近翻译</h2><div class="hist" id="hist">还没有记录。</div><button class="btn grey" onclick="clearHist()">清空记录</button></div>
-<div class="card"><p class="small">v20261024-1 · 英译中为主，也可互换中译英。翻译走免费公开接口，不用填 Key；长段落会自动分段，断网时翻不了请联网再试。更新方式：打开 App 会自动检查云端新版翻译页，有新版就同步，不用重装。</p></div>
+<div class="card"><p class="small">v20261024-2 · 英译中为主，也可互换中译英。翻译走免费公开接口，不用填 Key；长段落会自动分段，断网时翻不了请联网再试。更新方式：打开 App 会自动检查云端新版翻译页，有新版就同步，不用重装。</p></div>
 </div>
 
 <div id="fs"><div class="bar"><button class="btn green" style="width:auto" onclick="copyOut();event.stopPropagation()">📋 复制</button><button class="btn grey" style="width:auto" onclick="hideFs()">✕ 关闭全屏</button></div><div class="txt" id="fstxt" onclick="hideFs()"></div><p class="small" style="text-align:center">点中文任意处退出全屏</p></div>
@@ -63,7 +63,7 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 var timer=null,lastOut='';
 function isAndroid(){return !!(window.HemaTranslator&&window.HemaTranslator.openAccessibilitySettings)}
 function openAcc(){if(isAndroid()){window.HemaTranslator.openAccessibilitySettings()}else{alert('请在安卓 App 里打开：安装 APK 后点这个按钮会直接跳到系统无障碍设置。')}}
-function checkAcc(){if(isAndroid()){var ok=window.HemaTranslator.isAccessibilityEnabled();document.getElementById('status').textContent=ok?'✅ 已开启，悬浮球应该已经出现了，去英文 App 点球就能翻本屏':'❌ 还没开，请点“去开启无障碍”，在设置里打开河马翻译开关';document.getElementById('status').style.color=ok?'#0ea968':'#d21f1f'}else{document.getElementById('status').textContent='当前不是在 APK 里预览，装上 APK 再检查'}}
+function checkAcc(){if(isAndroid()){var ok=window.HemaTranslator.isAccessibilityEnabled();document.getElementById('status').textContent=ok?'✅ 已开启，悬浮球应该已经出现了，去英文 App 点球就能翻本屏':'❌ 还没开，请点“去开启无障碍”，在设置里打开河马的专属翻译开关';document.getElementById('status').style.color=ok?'#0ea968':'#d21f1f'}else{document.getElementById('status').textContent='当前不是在 APK 里预览，装上 APK 再检查'}}
 function setAuto(v){if(isAndroid()){window.HemaTranslator.setAutoTranslate(v)}}
 function swapLang(){var f=document.getElementById('from'),t=document.getElementById('to');var x=f.value;f.value=t.value;t.value=x;doTranslate()}
 function fill(s){document.getElementById('inp').value=s;doTranslate()}
