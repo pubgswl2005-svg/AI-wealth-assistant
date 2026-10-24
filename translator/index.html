@@ -31,11 +31,12 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 <h2>📱 全手机翻译：先开这一步（只设一次）</h2>
 <ol>
 <li>点下面 <b>去开启无障碍</b>，在系统设置里找到 <b>河马的专属翻译</b>，打开开关。</li>
-<li>回到任意英文 App（比如你截图那个 GitHub 页面），屏幕上会出现蓝色 <b>“译”悬浮球</b>，球可以拖到不挡字的地方。</li>
-<li>点球 → 弹出<b>全屏双语对照面板</b>：上面是英文原文，下面是大字中文，面板里能复制全部中文、刷新、关闭。</li>
+<li>回到任意英文 App（比如你截图那个 GitHub 页面），屏幕上会出现小一号的河马悬浮球（带小“译”字），球可以拖到不挡字的地方，点球是手动翻一屏的备用办法。</li>
+<li><b>不用打开这个 App、不用点球：</b>实时模式默认就是开的，切到英文界面会自动弹出<b>全屏双语对照面板</b>，同一屏滚动/翻页也会自动刷新；上面是英文原文，下面是大字中文，面板里能复制全部中文、刷新、关闭、暂停实时。</li>
 </ol>
 <button class="btn blue" onclick="openAcc()">去开启无障碍</button>
 <button class="btn grey" onclick="checkAcc()">检查无障碍开了没有</button>
+<button class="btn grey" onclick="checkCloud()">🔄 检查云端更新（自己同步，不用重下载）</button>
 <p class="small">当前状态：<span id="status">未知，点“检查”看一下</span></p>
 <label class="small" style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="auto" onchange="setAuto(this.checked)" style="width:20px;height:20px"> <span><b>自动模式（可选）：</b>切到新 App 就自动弹出双语面板。觉得烦就关掉，改回手动点球。</span></label>
 <p class="small">🔴 注意：这是安卓系统规定的安全步骤，App 自己不能偷偷替你打开，必须你本人在设置里点一下开关。另外银行、支付类安全窗口和图片里的英文、视频字幕，系统不让抓，v1 翻不了，这是系统限制不是 Bug。</p>
@@ -54,7 +55,7 @@ textarea{width:100%;min-height:130px;border:1.5px solid #c3d0df;border-radius:11
 </div>
 
 <div class="card"><h2>🕘 最近翻译</h2><div class="hist" id="hist">还没有记录。</div><button class="btn grey" onclick="clearHist()">清空记录</button></div>
-<div class="card"><p class="small">v20261024-2 · 英译中为主，也可互换中译英。翻译走免费公开接口，不用填 Key；长段落会自动分段，断网时翻不了请联网再试。更新方式：打开 App 会自动检查云端新版翻译页，有新版就同步，不用重装。</p></div>
+<div class="card"><p class="small">v20261024-3 · 英译中为主，也可互换中译英。翻译走免费公开接口，不用填 Key；长段落会自动分段，断网时翻不了请联网再试。更新方式：打开 App 就会自己去云端检查新版翻译页，有新版就同步，不用重装；也可以点上面“检查云端更新”手动同步一次。注意：悬浮球大小、点按、实时自动这些原生代码改动，云端翻译页推不上去，必须装一次新 APK 才能生效，装完之后页面改动就都走云端同步了。</p></div>
 </div>
 
 <div id="fs"><div class="bar"><button class="btn green" style="width:auto" onclick="copyOut();event.stopPropagation()">📋 复制</button><button class="btn grey" style="width:auto" onclick="hideFs()">✕ 关闭全屏</button></div><div class="txt" id="fstxt" onclick="hideFs()"></div><p class="small" style="text-align:center">点中文任意处退出全屏</p></div>
@@ -65,6 +66,7 @@ function isAndroid(){return !!(window.HemaTranslator&&window.HemaTranslator.open
 function openAcc(){if(isAndroid()){window.HemaTranslator.openAccessibilitySettings()}else{alert('请在安卓 App 里打开：安装 APK 后点这个按钮会直接跳到系统无障碍设置。')}}
 function checkAcc(){if(isAndroid()){var ok=window.HemaTranslator.isAccessibilityEnabled();document.getElementById('status').textContent=ok?'✅ 已开启，悬浮球应该已经出现了，去英文 App 点球就能翻本屏':'❌ 还没开，请点“去开启无障碍”，在设置里打开河马的专属翻译开关';document.getElementById('status').style.color=ok?'#0ea968':'#d21f1f'}else{document.getElementById('status').textContent='当前不是在 APK 里预览，装上 APK 再检查'}}
 function setAuto(v){if(isAndroid()){window.HemaTranslator.setAutoTranslate(v)}}
+function checkCloud(){if(isAndroid()){window.HemaTranslator.checkCloudUpdate()}else{alert('在 APK 里点这个按钮，会自己去云端查新版翻译页，有新版就同步')}}
 function swapLang(){var f=document.getElementById('from'),t=document.getElementById('to');var x=f.value;f.value=t.value;t.value=x;doTranslate()}
 function fill(s){document.getElementById('inp').value=s;doTranslate()}
 function clearAll(){document.getElementById('inp').value='';document.getElementById('out').textContent='译文会显示在这里。';document.getElementById('fstxt').textContent=''}
