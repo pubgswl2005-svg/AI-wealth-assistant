@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>河马五子棋·无限版</title>
-<!-- v20261024-2：主角改为小坏蛋自己跟自己下棋 -->
+<!-- v20261024-3：主角改为小坏蛋自己跟自己下棋 -->
 <!-- hema-gomoku-inf -->
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -36,9 +36,9 @@ canvas{border-radius:12px;border:1px solid rgba(120,190,255,.35);touch-action:no
 </style>
 </head>
 <body>
-<div class="top"><span style="font-size:22px">🦛</span><span class="ttl">河马五子棋 · 无限版</span><span class="ver">v20261024-2</span></div>
+<div class="top"><span style="font-size:22px">🦛</span><span class="ttl">河马五子棋 · 无限版</span><span class="ver">v20261024-3</span></div>
 <div class="wrap">
-  <div class="hero"><p>🤖 <b>小坏蛋自己跟自己下棋</b>：黑方 AI 对白方 AI，在无限棋盘上自动对弈，你在旁边看就行。<br>♾️ <b>无限棋盘，没有边界、没有棋局限制</b>：棋盘跟着棋局走，拖动平移、双指缩放。想自己摆棋也可以切到手动模式。</p></div>
+  <div class="hero"><p>🤖 <b>小坏蛋自己跟自己下棋</b>：黑方 AI 对白方 AI，在无限棋盘上自动对弈，你在旁边看就行。<br>🛡️ <b>两边都是不败引擎</b>：黑白用同一套最强棋力——必胜先下、必堵不漏、双重威胁、两层搜索，谁也不送棋、谁也不漏防。<br>♾️ 无限棋盘，没有边界、没有棋局限制，拖动平移、双指缩放。</p></div>
   <div class="ctrls">
     <button class="btn main" id="btnSelf">▶️ 开始自弈</button>
     <button class="btn" id="btnStep">👣 单步</button>
@@ -59,12 +59,12 @@ canvas{border-radius:12px;border:1px solid rgba(120,190,255,.35);touch-action:no
   <div class="status" id="status">准备中…</div>
   <div id="cvWrap"><canvas id="cv" width="390" height="500"></canvas></div>
   <div class="tip">👆 点空位落子 · 👆👆 拖动棋盘可以平移 · 双指捏合可以缩放<br>轮换模式下黑白自动轮换；自由选色模式下点左上角颜色按钮换黑白子</div>
-  <div class="foot">河马五子棋 · 无限版 · v20261024-2<br>装一次，后续更新自动云端同步，不用重装</div>
+  <div class="foot">河马五子棋 · 无限版 · v20261024-3<br>装一次，后续更新自动云端同步，不用重装</div>
 </div>
 <div id="modal"><div class="box"><h3 id="mTitle"></h3><p id="mText"></p><button class="btn main" id="mBtn" style="padding:10px 22px">再来一局</button><button class="btn" id="mBtn3" style="padding:10px 16px;margin-left:8px">↩️ 悔棋一步</button></div></div>
 <script>
 "use strict";
-const VERSION="20261024-2";
+const VERSION="20261024-3";
 const SKEY="hema-gomoku-inf-v1";
 const cv=document.getElementById("cv"), ctx=cv.getContext("2d");
 const $=id=>document.getElementById(id);
@@ -117,7 +117,7 @@ function refresh(){
   const nb=[...stones.values()].filter(c=>c===1).length, nw=[...stones.values()].filter(c=>c===2).length;
   const last=lastMove?" · 上一步："+(lastMove.c===1?"⚫ 黑":"⚪ 白")+" ("+lastMove.x+","+lastMove.y+")":"";
   if(over)setStatus("🏁 已分胜负 · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last);
-  else if(mode==="self")setStatus("🤖 小坏蛋自己下：黑方 AI vs 白方 AI · "+(selfRunning?"▶️ 进行中":"⏸ 已暂停")+" · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last);
+  else if(mode==="self")setStatus("🤖 小坏蛋自己下：黑方 AI vs 白方 AI · 🛡️ 两边都是不败引擎 · "+(selfRunning?"▶️ 进行中":"⏸ 已暂停")+" · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last);
   else setStatus((turn===1?"⚫ 该黑子下":"⚪ 该白子下")+" · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last+" · 模式："+(mode==="alt"?"手动轮换":"手动自由选色"));
   $("btnColor").textContent=mode==="self"?"🤖 小坏蛋自弈中":(turn===1?"⚫ 该黑子下":"⚪ 该白子下");
   $("btnSelf").textContent=selfRunning?"⏸ 暂停自弈":"▶️ 开始自弈";
@@ -156,16 +156,43 @@ function lineScoreMap(x,y,c){
     else if(cnt===2)total+=open===2?260:open===1?60:0;else total+=open?8:0}
   return total;
 }
-function aiPick(){
-  if(!stones.size)return{x:0,y:0};
+function candidates(){
   const cand=new Map();
   for(const[k]of stones){const[x,y]=k.split(",").map(Number);
     for(let dx=-2;dx<=2;dx++)for(let dy=-2;dy<=2;dy++){const nx=x+dx,ny=y+dy;if(!stones.has(key(nx,ny)))cand.set(key(nx,ny),{x:nx,y:ny})}}
-  const me=turn, opp=me===1?2:1;let best=null,bv=-1;
-  for(const m of cand.values()){
-    const v=lineScoreMap(m.x,m.y,me)+0.95*lineScoreMap(m.x,m.y,opp)+Math.random()*12;
-    if(v>bv){bv=v;best=m}}
-  return best||{x:0,y:0};
+  return [...cand.values()];
+}
+function heur(m,c){const o=c===1?2:1;return lineScoreMap(m.x,m.y,c)+0.95*lineScoreMap(m.x,m.y,o)}
+function winCells(c,list){return (list||candidates()).filter(m=>lineScoreMap(m.x,m.y,c)>=1000000)}
+/* 🛡️ 不败引擎（黑白两边同一套）：必胜先下 → 必堵 → 造双重威胁 → 破对方双重威胁 → 两层搜索 */
+function aiPick(){
+  if(!stones.size)return{x:0,y:0};
+  const me=turn, opp=me===1?2:1;
+  const cand=candidates();
+  for(const m of cand)if(lineScoreMap(m.x,m.y,me)>=1000000)return m; // 1. 我有必胜点
+  const oppWin=winCells(opp,cand);
+  if(oppWin.length===1)return oppWin[0]; // 2. 对方唯一必胜点，必堵
+  if(oppWin.length>1){let bb=null,bv=-1;for(const m of oppWin){const v=heur(m,me);if(v>bv){bv=v;bb=m}}return bb} // 已无解，堵最赚的一个
+  const scored=cand.map(m=>({m,s:heur(m,me)})).sort((a,b2)=>b2.s-a.s);
+  for(const {m} of scored.slice(0,24)){ // 3. 造双重威胁：落子后出现≥2个必胜点，对方一手堵不完
+    stones.set(key(m.x,m.y),me);const wc=winCells(me);stones.delete(key(m.x,m.y));
+    if(wc.length>=2)return m}
+  for(const {m} of scored.slice(0,24)){ // 4. 破对方双重威胁：先占对方双重威胁的一个必胜点
+    stones.set(key(m.x,m.y),opp);const wc=winCells(opp);stones.delete(key(m.x,m.y));
+    if(wc.length>=2){let bb=null,bv=-1;for(const w of wc){const v=heur(w,me);if(v>bv){bv=v;bb=w}}return bb}}
+  let best=null,bv=-1e18; // 5. 两层搜索：我一手 − 对方最优回应×0.95 ＋ 我再一手×0.45
+  for(const {m,s} of scored.slice(0,12)){
+    stones.set(key(m.x,m.y),me);
+    const oc=candidates();let oppBest=-1e18,oppMove=null;
+    for(const om of oc){const v=heur(om,opp);if(v>oppBest){oppBest=v;oppMove=om}}
+    let my2=0;
+    if(oppMove){stones.set(key(oppMove.x,oppMove.y),opp);
+      for(const mm of candidates()){const v=heur(mm,me);if(v>my2)my2=v}
+      stones.delete(key(oppMove.x,oppMove.y));}
+    stones.delete(key(m.x,m.y));
+    const total=s-oppBest*0.95+my2*0.45+Math.random()*6;
+    if(total>bv){bv=total;best=m}}
+  return best||scored[0].m;
 }
 function aiStep(){
   if(over||mode!=="self")return false;
@@ -242,7 +269,7 @@ loadDone=load();resize();
 if(hist.length)centerOn(lastMove.x,lastMove.y);else centerOn(0,0);
 refresh();
 if(mode==="self"&&!hist.length)setTimeout(startSelf,900);
-window.__gomokuTest={place,aiStep,getState:()=>({moves:hist.length,turn,over,mode,selfRunning,black:[...stones.values()].filter(c=>c===1).length})};
+window.__gomokuTest={place,aiStep,aiPick,setBoard:(arr,t)=>{stones=new Map(arr.map(([x,y,c])=>[key(x,y),c]));hist=arr.map(([x,y,c])=>({x,y,c}));turn=t;over=false;winLine=null;lastMove=hist.length?hist[hist.length-1]:null;refresh()},getState:()=>({moves:hist.length,turn,over,mode,selfRunning,black:[...stones.values()].filter(c=>c===1).length})};
 </script>
 </body>
 </html>
