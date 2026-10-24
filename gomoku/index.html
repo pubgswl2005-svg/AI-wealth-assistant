@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>河马五子棋·无限版</title>
+<!-- v20261024-2：主角改为小坏蛋自己跟自己下棋 -->
 <!-- hema-gomoku-inf -->
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -35,14 +36,19 @@ canvas{border-radius:12px;border:1px solid rgba(120,190,255,.35);touch-action:no
 </style>
 </head>
 <body>
-<div class="top"><span style="font-size:22px">🦛</span><span class="ttl">河马五子棋 · 无限版</span><span class="ver">v20261024-1</span></div>
+<div class="top"><span style="font-size:22px">🦛</span><span class="ttl">河马五子棋 · 无限版</span><span class="ver">v20261024-2</span></div>
 <div class="wrap">
-  <div class="hero"><p>♾️ <b>无限棋盘，没有边界、没有棋局限制</b>：想往哪下就往哪下，棋盘跟着你走。<br>👤 <b>一个人下两边</b>：黑子白子都由你一个人操作，想练布局、摆残局、自己跟自己复盘都行，棋局自动存在手机里。</p></div>
+  <div class="hero"><p>🤖 <b>小坏蛋自己跟自己下棋</b>：黑方 AI 对白方 AI，在无限棋盘上自动对弈，你在旁边看就行。<br>♾️ <b>无限棋盘，没有边界、没有棋局限制</b>：棋盘跟着棋局走，拖动平移、双指缩放。想自己摆棋也可以切到手动模式。</p></div>
   <div class="ctrls">
-    <button class="btn color" id="btnColor">⚫ 该黑子下</button>
-    <select id="selMode"><option value="alt" selected>🔄 轮换模式（黑白自动换）</option><option value="free">🎨 自由选色（点颜色按钮换子）</option></select>
-    <button class="btn main" id="btnUndo">↩️ 悔棋</button>
+    <button class="btn main" id="btnSelf">▶️ 开始自弈</button>
+    <button class="btn" id="btnStep">👣 单步</button>
+    <select id="selSpeed"><option value="1200">🐢 慢速</option><option value="600" selected>🚶 中速</option><option value="260">⚡ 快速</option></select>
+    <button class="btn" id="btnUndo">↩️ 悔棋</button>
     <button class="btn warn" id="btnNew">🗑️ 新棋局</button>
+  </div>
+  <div class="ctrls">
+    <button class="btn color" id="btnColor">🤖 小坏蛋自弈中</button>
+    <select id="selMode"><option value="self" selected>🤖 小坏蛋自弈（AI 黑 vs AI 白）</option><option value="alt">🔄 手动轮换（你下两边）</option><option value="free">🎨 手动自由选色（你下两边）</option></select>
   </div>
   <div class="ctrls">
     <button class="btn" id="btnZoomIn">🔍＋ 放大</button>
@@ -53,25 +59,26 @@ canvas{border-radius:12px;border:1px solid rgba(120,190,255,.35);touch-action:no
   <div class="status" id="status">准备中…</div>
   <div id="cvWrap"><canvas id="cv" width="390" height="500"></canvas></div>
   <div class="tip">👆 点空位落子 · 👆👆 拖动棋盘可以平移 · 双指捏合可以缩放<br>轮换模式下黑白自动轮换；自由选色模式下点左上角颜色按钮换黑白子</div>
-  <div class="foot">河马五子棋 · 无限版 · v20261024-1<br>装一次，后续更新自动云端同步，不用重装</div>
+  <div class="foot">河马五子棋 · 无限版 · v20261024-2<br>装一次，后续更新自动云端同步，不用重装</div>
 </div>
 <div id="modal"><div class="box"><h3 id="mTitle"></h3><p id="mText"></p><button class="btn main" id="mBtn" style="padding:10px 22px">再来一局</button><button class="btn" id="mBtn3" style="padding:10px 16px;margin-left:8px">↩️ 悔棋一步</button></div></div>
 <script>
 "use strict";
-const VERSION="20261024-1";
+const VERSION="20261024-2";
 const SKEY="hema-gomoku-inf-v1";
 const cv=document.getElementById("cv"), ctx=cv.getContext("2d");
 const $=id=>document.getElementById(id);
 let W=390,H=500, base=36, scale=1, ox=0, oy=0; // ox,oy = 棋盘(0,0)在画布上的像素位置
 let stones=new Map(); // "x,y" -> 1黑/2白
 let hist=[]; // {x,y,c}
-let turn=1, mode="alt", over=false, winLine=null, lastMove=null;
+let turn=1, mode="self", over=false, winLine=null, lastMove=null;
+let selfRunning=false, selfTimer=null;
 const key=(x,y)=>x+","+y;
 function cell(){return base*scale}
-function save(){try{localStorage.setItem(SKEY,JSON.stringify({stones:[...stones.entries()].map(([k,c])=>{const[x,y]=k.split(",").map(Number);return[x,y,c]}),turn,mode,scale}))}catch(e){}}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify({v:2,stones:[...stones.entries()].map(([k,c])=>{const[x,y]=k.split(",").map(Number);return[x,y,c]}),turn,mode,scale}))}catch(e){}}
 function load(){try{const d=JSON.parse(localStorage.getItem(SKEY)||"null");if(!d)return false;
   stones=new Map(d.stones.map(([x,y,c])=>[key(x,y),c]));hist=d.stones.map(([x,y,c])=>({x,y,c}));
-  turn=d.turn||1;mode=d.mode||"alt";scale=d.scale||1;return true}catch(e){return false}}
+  turn=d.turn||1;mode=d.v===2?(d.mode||"self"):"self";scale=d.scale||1;return true}catch(e){return false}}
 function resize(){
   const w=Math.min(window.innerWidth-24,560);
   cv.width=w; cv.height=Math.min(Math.round(w*1.28),640); W=cv.width; H=cv.height;
@@ -110,8 +117,10 @@ function refresh(){
   const nb=[...stones.values()].filter(c=>c===1).length, nw=[...stones.values()].filter(c=>c===2).length;
   const last=lastMove?" · 上一步："+(lastMove.c===1?"⚫ 黑":"⚪ 白")+" ("+lastMove.x+","+lastMove.y+")":"";
   if(over)setStatus("🏁 已分胜负 · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last);
-  else setStatus((turn===1?"⚫ 该黑子下":"⚪ 该白子下")+" · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last+" · 模式："+(mode==="alt"?"轮换":"自由选色"));
-  $("btnColor").textContent=turn===1?"⚫ 该黑子下":"⚪ 该白子下";
+  else if(mode==="self")setStatus("🤖 小坏蛋自己下：黑方 AI vs 白方 AI · "+(selfRunning?"▶️ 进行中":"⏸ 已暂停")+" · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last);
+  else setStatus((turn===1?"⚫ 该黑子下":"⚪ 该白子下")+" · 共 "+hist.length+" 手 · ⚫ "+nb+" 子 · ⚪ "+nw+" 子"+last+" · 模式："+(mode==="alt"?"手动轮换":"手动自由选色"));
+  $("btnColor").textContent=mode==="self"?"🤖 小坏蛋自弈中":(turn===1?"⚫ 该黑子下":"⚪ 该白子下");
+  $("btnSelf").textContent=selfRunning?"⏸ 暂停自弈":"▶️ 开始自弈";
   $("selMode").value=mode;draw();save();
 }
 function checkWin(x,y,c){
@@ -124,6 +133,7 @@ function checkWin(x,y,c){
 }
 function place(x,y,byUser){
   if(over)return false;
+  if(byUser&&mode==="self"){setStatus("🤖 自弈模式下棋子由小坏蛋自己下，你在旁边看就行；想自己下请切到手动轮换 / 自由选色。");return false}
   if(stones.has(key(x,y))){if(byUser)setStatus("⛔ 这里已经有子了，换个空位。");return false}
   stones.set(key(x,y),turn);hist.push({x,y,c:turn});lastMove={x,y,c:turn};
   const wl=checkWin(x,y,turn);
@@ -131,14 +141,53 @@ function place(x,y,byUser){
     $("mTitle").textContent=turn===1?"⚫ 黑方五连，胜！":"⚪ 白方五连，胜！";
     $("mText").innerHTML="第 "+hist.length+" 手分出胜负，位置 ("+x+","+y+")。<br>一个人下两边，复盘就点「↩️ 悔棋一步」退回去，或者直接再来一局。";
     $("modal").style.display="flex";return true}
-  if(mode==="alt")turn=turn===1?2:1;
+  if(mode==="alt"||mode==="self")turn=turn===1?2:1;
   refresh();return true;
 }
+/* ---------- 小坏蛋自弈 AI（无限棋盘版） ---------- */
+function lineScoreMap(x,y,c){
+  const dirs=[[1,0],[0,1],[1,1],[1,-1]];let total=0;
+  for(const[dx,dy]of dirs){let cnt=1,open=0;
+    for(const sgn of[1,-1]){let nx=x+dx*sgn,ny=y+dy*sgn;
+      while(stones.get(key(nx,ny))===c){cnt++;nx+=dx*sgn;ny+=dy*sgn}
+      if(!stones.has(key(nx,ny)))open++}
+    if(cnt>=5)total+=1000000;else if(cnt===4)total+=open===2?120000:open===1?15000:0;
+    else if(cnt===3)total+=open===2?3500:open===1?500:0;
+    else if(cnt===2)total+=open===2?260:open===1?60:0;else total+=open?8:0}
+  return total;
+}
+function aiPick(){
+  if(!stones.size)return{x:0,y:0};
+  const cand=new Map();
+  for(const[k]of stones){const[x,y]=k.split(",").map(Number);
+    for(let dx=-2;dx<=2;dx++)for(let dy=-2;dy<=2;dy++){const nx=x+dx,ny=y+dy;if(!stones.has(key(nx,ny)))cand.set(key(nx,ny),{x:nx,y:ny})}}
+  const me=turn, opp=me===1?2:1;let best=null,bv=-1;
+  for(const m of cand.values()){
+    const v=lineScoreMap(m.x,m.y,me)+0.95*lineScoreMap(m.x,m.y,opp)+Math.random()*12;
+    if(v>bv){bv=v;best=m}}
+  return best||{x:0,y:0};
+}
+function aiStep(){
+  if(over||mode!=="self")return false;
+  const m=aiPick();if(!m)return false;
+  const ok=place(m.x,m.y,false);
+  if(ok&&lastMove)centerOn(lastMove.x,lastMove.y);
+  if(over)stopSelf();
+  return ok;
+}
+function startSelf(){
+  if(mode!=="self")return;
+  if(over)return;
+  stopSelf();selfRunning=true;
+  selfTimer=setInterval(()=>{if(!aiStep())stopSelf()},+$("selSpeed").value);
+  refresh();
+}
+function stopSelf(){selfRunning=false;if(selfTimer){clearInterval(selfTimer);selfTimer=null}refresh()}
 function undo(){
   if(!hist.length)return false;
   const m=hist.pop();stones.delete(key(m.x,m.y));
   lastMove=hist.length?hist[hist.length-1]:null;winLine=null;over=false;
-  if(mode==="alt")turn=m.c; // 退回被悔掉的那一方的回合
+  if(mode==="alt"||mode==="self")turn=m.c; // 退回被悔掉的那一方的回合
   $("modal").style.display="none";refresh();return true;
 }
 function centerOn(x,y){ox=W/2-x*cell();oy=H/2-y*cell();draw()}
@@ -147,14 +196,20 @@ function zoomAt(f,cx,cy){
   scale=Math.min(2.6,Math.max(0.45,scale*f));
   ox=cx-bx*cell();oy=cy-by*cell();draw();
 }
-$("btnColor").onclick=()=>{if(mode==="free"){turn=turn===1?2:1;refresh()}else setStatus("轮换模式下颜色自动轮换；想手动选子请切到「自由选色」模式。")};
-$("selMode").onchange=e=>{mode=e.target.value;refresh()};
-$("btnUndo").onclick=()=>{if(!undo())setStatus("没棋可悔，这才刚开局。")};
+$("btnColor").onclick=()=>{if(mode==="free"){turn=turn===1?2:1;refresh()}else if(mode==="self")setStatus("🤖 自弈模式：黑白都由小坏蛋自己下，不用你选颜色。");
+  else setStatus("轮换模式下颜色自动轮换；想手动选子请切到「自由选色」模式。")};
+$("selMode").onchange=e=>{const v=e.target.value;stopSelf();mode=v;refresh()};
+$("btnSelf").onclick=()=>{if(mode!=="self"){mode="self";$("selMode").value="self"}
+  if(selfRunning)stopSelf();else startSelf()};
+$("btnStep").onclick=()=>{stopSelf();if(mode!=="self"){mode="self";$("selMode").value="self"}if(!aiStep())setStatus("这局已经结束了，点新棋局重开一盘自弈。")};
+$("selSpeed").onchange=()=>{if(selfRunning)startSelf()};
+$("btnUndo").onclick=()=>{stopSelf();if(!undo())setStatus("没棋可悔，这才刚开局。")};
 let armNew=false,armTimer=null;
 $("btnNew").onclick=()=>{
   if(!armNew){armNew=true;$("btnNew").textContent="⚠️ 点我确认清空？";armTimer=setTimeout(()=>{armNew=false;$("btnNew").textContent="🗑️ 新棋局"},3000);return}
   clearTimeout(armTimer);armNew=false;$("btnNew").textContent="🗑️ 新棋局";
-  stones=new Map();hist=[];turn=1;over=false;winLine=null;lastMove=null;ox=W/2;oy=H/2;refresh();
+  stopSelf();stones=new Map();hist=[];turn=1;over=false;winLine=null;lastMove=null;ox=W/2;oy=H/2;refresh();
+  if(mode==="self")setTimeout(startSelf,400);
 };
 $("btnZoomIn").onclick=()=>zoomAt(1.25,W/2,H/2);
 $("btnZoomOut").onclick=()=>zoomAt(0.8,W/2,H/2);
@@ -186,7 +241,8 @@ window.addEventListener("resize",resize);
 loadDone=load();resize();
 if(hist.length)centerOn(lastMove.x,lastMove.y);else centerOn(0,0);
 refresh();
-window.__gomokuTest={place,getState:()=>({moves:hist.length,turn,over,black:[...stones.values()].filter(c=>c===1).length})};
+if(mode==="self"&&!hist.length)setTimeout(startSelf,900);
+window.__gomokuTest={place,aiStep,getState:()=>({moves:hist.length,turn,over,mode,selfRunning,black:[...stones.values()].filter(c=>c===1).length})};
 </script>
 </body>
 </html>
