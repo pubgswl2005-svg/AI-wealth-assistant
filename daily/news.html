@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 10月24日</title>
+<title>全球新闻速览 · 10月25日</title>
 <style>
 :root{
   --bg:#080B12; --bg2:#0D121C; --card:#121824;
@@ -12,7 +12,7 @@
   --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
   --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
   background:var(--bg); color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -24,37 +24,34 @@ body{
   background-attachment:fixed;
   padding-bottom:calc(28px + env(safe-area-inset-bottom));
 }
-/* ===== 顶部功能栏：复制 + 收听（固定顶栏） ===== */
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+/* ===== 顶部功能栏：复制 + 收听 ===== */
 .topbar{
   position:sticky; top:0; z-index:50;
+  margin:0 -16px; padding:10px 16px;
+  background:rgba(8,11,18,.96); border-bottom:2px solid #72D5FF;
   display:flex; gap:10px; align-items:stretch;
-  padding:10px 16px;
-  background:rgba(8,11,18,.92);
-  border-bottom:1px solid var(--stroke);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  max-width:640px; margin:0 auto;
+  box-shadow:0 2px 12px rgba(0,0,0,.5);
 }
 .topbar button{
-  flex:1; min-height:54px; border:none; border-radius:14px;
-  font-size:18px; font-weight:800; color:#fff; cursor:pointer;
+  flex:1; min-height:52px; border:none; border-radius:12px;
+  font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
   display:flex; align-items:center; justify-content:center; gap:6px;
-  letter-spacing:.04em;
 }
-#btnCopy{ background:#1668DC; box-shadow:0 0 12px rgba(114,213,255,.35);}
-#btnCopy:active{ background:#0f4faf;}
-#btnListen{ background:#0E9F6E; box-shadow:0 0 12px rgba(102,240,208,.30);}
-#btnListen:active{ background:#0b7a55;}
-#btnStop{ flex:0 0 64px; background:#C81E1E; display:none;}
-.hintbar{max-width:640px;margin:0 auto;padding:8px 16px 0;font-size:12px;color:var(--dim)}
-.wrap{max-width:640px;margin:0 auto;padding:0 16px}
-header.top{padding:22px 0 6px}
+#btnCopy{background:#0B5FFF;}
+#btnCopy:active{background:#0847c2;}
+#btnListen{background:#065f46;}
+#btnListen:active{background:#04402f;}
+#btnStop{flex:0 0 64px; background:#b91c1c; display:none;}
+.hint{margin:12px 2px 0; font-size:13px; font-weight:700; color:#929DB0;}
+header.top{padding:28px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
   margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
   border:1px solid var(--stroke);
-  background:linear-gradient(160deg, rgba(255,122,122,.10), rgba(114,213,255,.10) 55%, rgba(18,24,36,.9));
+  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   padding:22px 20px;
 }
@@ -90,87 +87,86 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 </style>
 </head>
 <body>
+<div class="wrap">
 
 <div class="topbar">
 <button id="btnCopy" type="button">📋 复制全文</button>
 <button id="btnListen" type="button">🔊 收听</button>
 <button id="btnStop" type="button">⏹</button>
 </div>
-<div class="hintbar">👆 左边一键复制全文，右边点开朗读给你听。</div>
-
-<div class="wrap">
+<p class="hint">👆 顶部两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
 <header class="top">
-  <div class="date">2026 · 10 · 24 &nbsp;星期六</div>
+  <div class="date">2026 · 10 · 25 &nbsp;星期日</div>
   <h1>全球新闻速览</h1>
   <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
   <span class="tag hot">头 条</span>
-  <h2>约旦教堂葬礼枪击案：7死34伤，国王誓言报复</h2>
-  <p>南部卡拉克省一座教堂在举行葬礼期间遭枪手闯入扫射，造成至少7人死亡、34人受伤。约旦国王发表声明誓言展开报复，安全部门已展开大规模搜捕。这是在以逊尼派穆斯林为主的约旦境内罕见的针对基督徒的袭击。</p>
-  <div class="meta">SCMP · IOL · BBC · 10月23日</div>
+  <h2>金正恩突访中国丹东，王沪宁陪同访问并向抗美援朝纪念塔敬献花篮</h2>
+  <p>朝鲜最高领导人金正恩24日经新鸭绿江大桥抵达辽宁丹东，开启访华行程，全国政协主席王沪宁陪同访问。近日网络频传金正恩死讯，朝韩均已辟谣，此次公开访华引发外界高度关注。</p>
+  <div class="meta">TVB News · 韩联社 · 光华日报 · 10月24日</div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-23</span>梅拉尼娅促成俄占乌克兰城市奥列什基停火，俄乌双方确认</h4>
-    <p>白宫称，第一夫人梅拉尼娅·特朗普协助在俄占乌克兰城市奥列什基促成停火，使人道主义援助得以进入。该市居民已数月缺粮缺药，此前处于"灾难边缘"；俄乌双方均确认停火。</p>
-    <div class="src">SCMP · BBC · 快视点</div>
+    <h4><span class="t">10-24</span>法国24日再爆大规模示威，全国部署7万军警，近千人被捕</h4>
+    <p>法国多地24日再度爆发示威，抗议学校与警务问题，数十万人上街；巴黎等地出现骚乱，警方动用催泪瓦斯并逮捕近千人。总统马克龙据报押后访问非洲行程。</p>
+    <div class="src">TVB News · The Guardian · 10月24日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-23</span>和谈动态：克宫证实11月上半月阿布扎比重启美俄乌三方会谈</h4>
-    <p>克里姆林宫证实，有关乌克兰问题的美俄乌三方最新一轮和谈规划11月上半月在阿联酋首都阿布扎比举行。另据《华尔街日报》报道，普京提议11月在深圳举行美中俄三方峰会，西方媒体担忧出现"新雅尔达时刻"。</p>
-    <div class="src">中时新闻网 · 华尔街日报</div>
+    <h4><span class="t">10-24</span>特朗普警告伊朗：不签协议或再动武，称可能发动一次“史诗怒火”行动</h4>
+    <p>美国总统特朗普23日表示，不排除再次对伊朗采取军事行动；伊朗则扬言，若美以重启攻击，将把报复扩大至波斯湾的海底通讯电缆。霍尔木兹海峡两艘超级油轮同日触雷爆炸，八国外长反对军事打击伊朗。</p>
+    <div class="src">中新社 · 光华日报 · 10月24日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-23</span>特朗普政府起诉阻止阿拉斯加州参议院选举结果认证</h4>
-    <p>美国司法部提起诉讼，要求阻止阿拉斯加州即将举行的参议院选举结果认证，理由是两名同名候选人可能混淆选民；特朗普承认是他下令提起该诉讼。另据报道，白宫宣布自10月30日起对部分加拿大商品降低关税，距11月3日中期选举已不足两周。</p>
-    <div class="src">BBC · 快视点</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">10-23</span>泽连斯基希望北京动用对俄"影响力"助停战</h4>
-    <p>泽连斯基表示，希望北京能动用对莫斯科的影响力帮助结束乌克兰战争，并强调拟议中的美中俄领导人峰会绝不能导致其饱经战火的国家被瓜分。</p>
-    <div class="src">SCMP</div>
+    <h4><span class="t">10-24</span>泽连斯基确认乌美俄三方会谈11月上半月举行，星链服务恢复运行</h4>
+    <p>乌克兰总统泽连斯基确认，乌美俄三方会谈将于11月上半月举行；俄方称谈判将于11月上旬启动，俄军宣布27日在赫尔松方向实施停火。SpaceX已恢复乌克兰星链及军用版星盾系统运行。</p>
+    <div class="src">中新社 · 新唐人 · 10月24日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-23</span>以军两士兵约旦河西岸遇袭身亡，以方全面关闭西岸</h4>
-    <p>两名以色列士兵在约旦河西岸一处检查站遭两名巴勒斯坦枪手袭击身亡，以军随后击毙枪手。内塔尼亚胡下令全面关闭约旦河西岸并展开大规模行动，以军已开始拆除希伯伦的巴勒斯坦建筑。</p>
-    <div class="src">BBC · 快视点</div>
+    <h4><span class="t">10-24</span>约旦教堂葬礼遇枪击，7死40伤，政府定性恐袭并全国哀悼三天</h4>
+    <p>不明身份武装分子23日在约旦南部卡拉克省一间教堂葬礼上开枪，造成7人死亡、40人受伤。当局已定性为恐怖袭击，正追捕涉案人员并调查动机，联合国及埃及等邻国予以谴责。</p>
+    <div class="src">中新社 · TVB News · 10月24日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-23</span>据外媒报道：胡塞武装空袭沙特达曼附近机场</h4>
-    <p>据外媒报道，胡塞武装以无人机和导弹袭击了沙特达曼附近一处机场设施，造成商业运营中断；美方已指示部分外交人员执行预防性撤离。海湾地区安全局势再度趋紧。</p>
-    <div class="src">据外媒报道</div>
+    <h4><span class="t">10-24</span>内塔尼亚胡下令约旦河西岸大规模行动，两名以军士兵遇袭身亡</h4>
+    <p>两名以色列士兵在约旦河西岸遇袭身亡后，总理内塔尼亚胡下令实施大规模军事行动，包括封锁与逐户搜查。以军总参谋长称已在所有战线进入最高戒备状态。</p>
+    <div class="src">Axios · 中新社 · 10月24日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-23</span>全球市场因AI开支担忧与油价走高回调；苹果折叠机上市</h4>
-    <p>全球市场走弱，投资者担忧科技巨头的AI资本开支回报，同时油价走高加剧通胀忧虑；美国对华出口下滑正损害美国本土企业和就业。消费电子端，苹果首款折叠手机iPhone Duo全球上市，多地门店出现排队潮。</p>
-    <div class="src">CLSTR 全球媒体聚合 · 快视点 · 新唐人</div>
+    <h4><span class="t">10-24</span>布伦特原油冲上116美元，创5个月新高，美伊紧张推升供应忧虑</h4>
+    <p>布伦特原油升至每桶116美元，为5个月来最高。美伊紧张局势、沙特遇袭与航运风险持续推高油价，市场关注霍尔木兹海峡航运安全。</p>
+    <div class="src">Financial Express · 10月23-24日</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-24</span>白宫豁免加拿大部分产品50%关税，距美国中期选举仅剩10天</h4>
+    <p>白宫宣布豁免对加拿大一些农林产品征收的50%关税，同时将另一些产品纳入征税清单。分析认为，此举与共和党在缅因州、密歇根州等地的中期选举选情有关。</p>
+    <div class="src">Financial Express · 新唐人 · 10月24日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-23</span>超强台风"蔷琵"逼近台湾，全岛停班停课</h4>
-    <p>超强台风"蔷琵"逼近台湾以东海域，台湾全岛停班停课防范，台日之间上千架次航班取消，美日联合军演也相应调整。</p>
-    <div class="src">SCMP · IOL · 新唐人</div>
+    <h4><span class="t">10-24</span>瓦努阿图附近海域发生7.2级地震，已触发海啸预警</h4>
+    <p>瓦努阿图群岛附近海域发生7.2级地震，震源深度10千米，已触发海啸预警。同日日本岩手县附近海域也发生5.0级地震，多地有震感。</p>
+    <div class="src">中新社 · FMT · 10月24日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-23</span>肯尼亚报告第二例埃博拉死亡病例</h4>
-    <p>肯尼亚报告第二例埃博拉死亡病例，死者为首例患者的近亲，65岁女性，出现症状10天后在传染病隔离病房不治。肯尼亚红十字会已加强防控。</p>
-    <div class="src">SCMP</div>
+    <h4><span class="t">10-24</span>台风蔷琵袭台致1死500余伤，直扑日本；菲律宾两架军机相撞4人死亡</h4>
+    <p>台风蔷琵横扫台湾，造成1人死亡、500多人受伤，随后向日本方向移动。菲律宾空军两架教练机训练飞行时相撞，4名飞行员全部遇难。</p>
+    <div class="src">新唐人 · 中新社 · 10月24日</div>
   </div>
 </div>
 
@@ -180,37 +176,17 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 
 <script>
 var PLAIN = [
-"全球新闻速览，10月24日，星期六。过去24小时，全球重要事件10条。",
-"",
-"头条：约旦教堂葬礼枪击案，7死34伤，国王誓言报复。",
-"约旦南部卡拉克省一座教堂在举行葬礼期间遭枪手闯入扫射，造成至少7人死亡、34人受伤。约旦国王发表声明誓言展开报复，安全部门已展开大规模搜捕。这是在以逊尼派穆斯林为主的约旦境内罕见的针对基督徒的袭击。",
-"",
-"国际政治第一条：梅拉尼娅促成俄占乌克兰城市奥列什基停火，俄乌双方确认。",
-"白宫称，第一夫人梅拉尼娅·特朗普协助在俄占乌克兰城市奥列什基促成停火，使人道主义援助得以进入。该市居民已数月缺粮缺药，此前处于灾难边缘。俄乌双方均确认停火。",
-"",
-"国际政治第二条：和谈动态，克宫证实11月上半月阿布扎比重启美俄乌三方会谈。",
-"克里姆林宫证实，有关乌克兰问题的美俄乌三方最新一轮和谈规划11月上半月在阿联酋首都阿布扎比举行。另据华尔街日报报道，普京提议11月在深圳举行美中俄三方峰会，西方媒体担忧出现新雅尔达时刻。",
-"",
-"国际政治第三条：特朗普政府起诉阻止阿拉斯加州参议院选举结果认证。",
-"美国司法部提起诉讼，要求阻止阿拉斯加州即将举行的参议院选举结果认证，理由是两名同名候选人可能混淆选民。特朗普承认是他下令提起该诉讼。另据报道，白宫宣布自10月30日起对部分加拿大商品降低关税，距11月3日中期选举已不足两周。",
-"",
-"国际政治第四条：泽连斯基希望北京动用对俄影响力助停战。",
-"泽连斯基表示，希望北京能动用对莫斯科的影响力帮助结束乌克兰战争，并强调拟议中的美中俄领导人峰会绝不能导致其饱经战火的国家被瓜分。",
-"",
-"地区冲突第一条：以军两士兵约旦河西岸遇袭身亡，以方全面关闭西岸。",
-"两名以色列士兵在约旦河西岸一处检查站遭两名巴勒斯坦枪手袭击身亡，以军随后击毙枪手。内塔尼亚胡下令全面关闭约旦河西岸并展开大规模行动，以军已开始拆除希伯伦的巴勒斯坦建筑。",
-"",
-"地区冲突第二条：据外媒报道，胡塞武装空袭沙特达曼附近机场。",
-"据外媒报道，胡塞武装以无人机和导弹袭击了沙特达曼附近一处机场设施，造成商业运营中断。美方已指示部分外交人员执行预防性撤离。海湾地区安全局势再度趋紧。",
-"",
-"全球经济：全球市场因AI开支担忧与油价走高回调，苹果折叠机上市。",
-"全球市场走弱，投资者担忧科技巨头的AI资本开支回报，同时油价走高加剧通胀忧虑。美国对华出口下滑正损害美国本土企业和就业。消费电子端，苹果首款折叠手机iPhone Duo全球上市，多地门店出现排队潮。",
-"",
-"突发灾难第一条：超强台风蔷琵逼近台湾，全岛停班停课。",
-"超强台风蔷琵逼近台湾以东海域，台湾全岛停班停课防范，台日之间上千架次航班取消，美日联合军演也相应调整。",
-"",
-"突发灾难第二条：肯尼亚报告第二例埃博拉死亡病例。",
-"肯尼亚报告第二例埃博拉死亡病例，死者为首例患者的近亲，65岁女性，出现症状10天后在传染病隔离病房不治。肯尼亚红十字会已加强防控。"
+"全球新闻速览，2026年10月25日，星期日。过去24小时，全球重要事件10条。",
+"头条：金正恩突访中国丹东，王沪宁陪同访问并向抗美援朝纪念塔敬献花篮。朝鲜最高领导人金正恩24日经新鸭绿江大桥抵达辽宁丹东，开启访华行程。近日网络频传金正恩死讯，朝韩均已辟谣。",
+"法国24日再爆大规模示威，全国部署7万军警，近千人被捕。法国多地再度爆发示威，数十万人上街，巴黎等地出现骚乱。",
+"特朗普警告伊朗：不签协议或再动武，称可能发动一次史诗怒火行动。伊朗则扬言，若美以重启攻击，将把报复扩大至波斯湾的海底通讯电缆。霍尔木兹海峡两艘超级油轮同日触雷爆炸。",
+"泽连斯基确认乌美俄三方会谈11月上半月举行，星链服务恢复运行。俄军宣布27日在赫尔松方向实施停火。",
+"约旦教堂葬礼遇枪击，7死40伤，政府定性恐袭并全国哀悼三天。",
+"内塔尼亚胡下令约旦河西岸大规模行动，两名以军士兵遇袭身亡。",
+"布伦特原油冲上116美元，创5个月新高，美伊紧张推升供应忧虑。",
+"白宫豁免加拿大部分产品50%关税，距美国中期选举仅剩10天。",
+"瓦努阿图附近海域发生7.2级地震，已触发海啸预警。",
+"台风蔷琵袭台致1死500余伤，直扑日本；菲律宾两架军机相撞，4人死亡。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
