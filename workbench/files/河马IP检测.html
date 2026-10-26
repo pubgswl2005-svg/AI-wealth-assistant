@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>河马IP检测</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#080B12;color:#E8F1FF;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:44px}
+.hero{background:radial-gradient(120% 90% at 50% 0%,#12324a 0%,#080B12 62%);padding:44px 20px 30px;text-align:center}
+.logo{font-size:15px;font-weight:700;color:#72D5FF;letter-spacing:2px;margin-bottom:20px}
+.myip-lab{font-size:12px;color:#7E93B0;margin-bottom:6px}
+.myip{font-size:34px;font-weight:800;letter-spacing:.5px;word-break:break-all;line-height:1.25}
+.loc{margin-top:10px;font-size:15px;color:#B9CBE4}
+.loc .flag{font-size:19px;margin-right:6px}
+.status{margin-top:12px;font-size:12px;color:#7E93B0;min-height:18px}
+.hbtns{margin-top:18px;display:flex;gap:10px;justify-content:center}
+.hbtns button{border:1px solid rgba(114,213,255,.45);background:rgba(114,213,255,.08);color:#72D5FF;font-size:13px;font-weight:700;padding:9px 20px;border-radius:999px;cursor:pointer}
+.netwarn{display:none;max-width:640px;margin:16px auto 0;padding:16px 18px;background:rgba(255,60,60,.12);border:1px solid rgba(255,90,90,.55);border-radius:14px;font-size:13px;line-height:1.9;color:#FFD9D9}
+.netwarn b{color:#FF5A5A}
+.search{max-width:640px;margin:20px auto 0;padding:0 18px;display:flex;gap:8px}
+.search input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:13px 14px;color:#E8F1FF;font-size:15px;outline:none;min-width:0}
+.search button{flex:none;background:linear-gradient(135deg,#72D5FF,#3B9BFF);color:#04121F;font-weight:800;font-size:14px;border:none;padding:0 22px;border-radius:12px;cursor:pointer}
+.search-lab{max-width:640px;margin:14px auto 0;padding:0 18px;font-size:11px;color:#5C7189}
+.wrap{max-width:640px;margin:0 auto;padding:22px 18px 0}
+.card{margin-bottom:16px;padding:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:16px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.card h2{font-size:16px;margin-bottom:14px}
+.card h2 .n{color:#72D5FF;margin-right:8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:13px}
+.kv .k{color:#7E93B0;white-space:nowrap}
+.kv .v{color:#E8F1FF;word-break:break-all;text-align:right}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+th{color:#72D5FF;font-size:12px;font-weight:600}
+td:last-child{color:#9FB3CC}
+.badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{font-size:12px;font-weight:700;padding:6px 13px;border-radius:999px}
+.b-ok{background:rgba(53,208,127,.15);color:#35D07F;border:1px solid rgba(53,208,127,.4)}
+.b-bad{background:rgba(255,90,90,.13);color:#FF7A7A;border:1px solid rgba(255,90,90,.4)}
+.b-mid{background:rgba(255,190,60,.13);color:#FFBE3C;border:1px solid rgba(255,190,60,.4)}
+.b-grey{background:rgba(255,255,255,.06);color:#9FB3CC;border:1px solid rgba(255,255,255,.14)}
+.attr-rows{margin-top:14px}
+.gauge{margin-top:6px}
+.gauge .bar{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,#1d9e63 0%,#7bc043 25%,#f5c542 45%,#f08c2e 65%,#e03c31 100%)}
+.gauge .mark{position:absolute;top:-5px;width:4px;height:22px;background:#fff;border-radius:2px;box-shadow:0 0 6px rgba(0,0,0,.6);transform:translateX(-2px)}
+.gauge .ticks{display:flex;justify-content:space-between;font-size:10px;color:#5C7189;margin-top:6px}
+.score-line{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.score-num{font-size:34px;font-weight:800}
+.score-lab{font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px}
+.conn-list{display:flex;flex-direction:column}
+.conn-row{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
+.conn-row:last-child{border-bottom:none}
+.dot{flex:none;width:9px;height:9px;border-radius:50%;background:#5C7189}
+.dot.ok{background:#35D07F}.dot.fail{background:#FF5A5A}.dot.wait{background:#FFBE3C}
+.conn-row .nm{flex:1}
+.conn-row .ms{color:#9FB3CC;font-size:12px}
+.bigbtn{display:block;width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#72D5FF,#3B9BFF);color:#04121F;font-weight:800;font-size:14px;cursor:pointer;margin-top:12px}
+.speed-res{text-align:center;padding:8px 0 2px}
+.speed-res b{font-size:32px;color:#72D5FF}
+.speed-res span{display:block;font-size:12px;color:#7E93B0;margin-top:4px}
+.note{font-size:11px;color:#5C7189;line-height:1.9;margin-top:10px}
+.foot{text-align:center;font-size:11px;color:#4A5F78;margin-top:26px;line-height:2}
+.loading{color:#7E93B0;font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo">🦛 河马 · IP 检测</div>
+  <div class="myip-lab">你当前的 IP（自动检测）</div>
+  <div class="myip" id="myIp">检测中…</div>
+  <div class="loc" id="myLoc"></div>
+  <div class="status" id="statusLine">正在初始化…</div>
+  <div class="hbtns">
+    <button onclick="copyIp()">📋 复制 IP</button>
+    <button onclick="init(true)">🔄 重新检测</button>
+  </div>
+</div>
+
+<div class="netwarn" id="netWarn">
+🔴 <b>网络被当前窗口拦截了</b><br>
+这个页面要连几个 IP 数据库，现在一个都连不上——说明你是在聊天/应用的内置预览里打开的，它不让页面发网络请求。<br>
+解决方法：在浏览器（Chrome）里打开本文件，打开即自动检测，什么都不用你输。
+</div>
+
+<div class="search-lab">想查别人的 IP？输入后再点查询。只查自己请直接看上面，已经自动检测了。</div>
+<div class="search">
+  <input id="q" type="text" placeholder="输入任意 IP，如 8.8.8.8" inputmode="decimal">
+  <button onclick="queryIp()">查询</button>
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2><span class="n">01</span>基本信息</h2>
+    <div class="kv" id="basicKv"><span class="loading">加载中…</span></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">02</span>多源定位对比</h2>
+    <table>
+      <tr><th>数据源</th><th>定位结果</th><th>运营商</th></tr>
+      <tbody id="srcTable"><tr><td colspan="3" class="loading">加载中…</td></tr></tbody>
+    </table>
+    <div class="note">多个数据库定位一致 = 结果可信；差异大说明这个 IP 的归属登记比较乱。</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">03</span>IP 属性</h2>
+    <div class="badges" id="attrBadges"><span class="loading">检测中…</span></div>
+    <div class="kv attr-rows" id="attrKv"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">04</span>纯净度评分</h2>
+    <div class="score-line">
+      <div class="score-num" id="scoreNum">—</div>
+      <div class="score-lab b-grey" id="scoreLab">计算中</div>
+    </div>
+    <div class="gauge">
+      <div class="bar"><div class="mark" id="scoreMark" style="left:0%"></div></div>
+      <div class="ticks"><span>0 极纯</span><span>25</span><span>50</span><span>75</span><span>100 高风险</span></div>
+    </div>
+    <div class="note" id="scoreWhy">分数越低越纯净，加载中…</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">05</span>WebRTC 泄露检测</h2>
+    <div class="kv" id="rtcKv"><span class="loading">检测中…</span></div>
+    <div class="note">WebRTC 可能绕过代理暴露真实出口 IP。若这里出现的 IP 和上方不一致，说明你的代理没盖住 WebRTC。</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">06</span>连通性检测</h2>
+    <div class="conn-list" id="connList"></div>
+    <button class="bigbtn" onclick="runConn()">重新检测连通性</button>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">07</span>网速测试</h2>
+    <div class="speed-res"><b id="speedVal">—</b><span id="speedLab">点下方按钮，下载 10MB 测当前出口速度</span></div>
+    <button class="bigbtn" onclick="runSpeed()">开始测速</button>
+  </div>
+
+</div>
+
+<div class="foot">河马IP检测 · 专属版 v1.1（全自动检测，无需手动输入）<br>数据来源：proxycheck / ipwho.is / ipapi.is / ipinfo.io / db-ip / ipify 等公开接口</div>
+
+<script>
+var curIp = '';
+var flag = function(cc){ if(!cc||cc.length!==2) return '🌐'; return cc.toUpperCase().replace(/./g,function(c){return String.fromCodePoint(127397+c.charCodeAt(0))}); };
+function $(id){return document.getElementById(id)}
+function statusLine(t){ $('statusLine').textContent = t; }
+function setKv(id, rows){
+  $(id).innerHTML = rows.map(function(r){return '<span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span>'}).join('');
+}
+function copyIp(){
+  if(!curIp) return;
+  if(navigator.clipboard){ navigator.clipboard.writeText(curIp).then(function(){alert('已复制：'+curIp)}); }
+}
+async function jget(url, timeout){
+  var ctl = new AbortController(); var t = setTimeout(function(){ctl.abort()}, timeout||8000);
+  try{ var r = await fetch(url, {signal: ctl.signal}); clearTimeout(t); if(!r.ok) throw 0; return await r.json(); }
+  catch(e){ clearTimeout(t); return null; }
+}
+/* JSONP 兜底：连 fetch 都被拦时用 <script> 方式取数 */
+function jsonp(url, timeout){
+  return new Promise(function(resolve){
+    var cb = 'hema'+Math.random().toString(36).slice(2,9);
+    var s = document.createElement('script');
+    var done = false;
+    var data = null;
+    function finish(){ if(done) return; done = true; clearTimeout(timer); try{delete window[cb]}catch(e){window[cb]=undefined} if(s.parentNode) s.parentNode.removeChild(s); resolve(data); }
+    var timer = setTimeout(finish, timeout||9000);
+    window[cb] = function(d){ data = d; finish(); };
+    s.onerror = finish;
+    s.src = url + (url.indexOf('?')<0?'?':'&') + 'callback=' + cb;
+    document.head.appendChild(s);
+  });
+}
+
+/* ============ 自动检测本机 IP（多层兜底，拿到一个算一个，优先 IPv4） ============ */
+async function detectSelfIp(){
+  var cands = [];
+  var pair = await Promise.all([ jget('https://ipwho.is/'), jget('https://api.ipapi.is/') ]);
+  if(pair[0] && pair[0].ip) cands.push({ip: pair[0].ip, who: pair[0]});
+  if(pair[1] && pair[1].ip) cands.push({ip: pair[1].ip, apiis: pair[1]});
+  var v4 = cands.filter(function(c){return c.ip.indexOf('.')>0});
+  if(v4.length) return {ip: v4[0].ip, cache: [pair[0], pair[1]]};
+  if(cands.length) return {ip: cands[0].ip, cache: [pair[0], pair[1]]};
+  var r = await jget('https://api.ipify.org?format=json');
+  if(r && r.ip) return {ip: r.ip, cache: [null, null]};
+  var j = await jsonp('https://api.ipify.org?format=jsonp');
+  if(j && j.ip) return {ip: j.ip, cache: [null, null]};
+  j = await jsonp('https://ipinfo.io/json');
+  if(j && j.ip) return {ip: j.ip, cache: [null, null]};
+  return null;
+}
+
+/* ============ 主检测 ============ */
+async function detect(ip){
+  var target = ip || '';
+  var selfCache = null;
+  if(!target){
+    statusLine('正在检测你的 IP…');
+    var self = await detectSelfIp();
+    if(self){ target = self.ip; selfCache = self.cache; }
+  }
+  if(!target){
+    $('myIp').textContent = '检测失败';
+    statusLine('自动检测失败');
+    setKv('basicKv', [['提示','所有检测通道都被拦住了']]);
+    showNetWarn();
+    return;
+  }
+  curIp = target;
+  $('myIp').textContent = target;
+  statusLine('已锁定你的 IP，正在查属性和风险分…');
+
+  /* 主源 proxycheck：基本信息 + 属性 + 风险分 */
+  var pc = await jget('https://proxycheck.io/v2/'+target+'?vpn=1&asn=1&risk=1', 12000);
+  var d = pc && pc[target];
+  var sources = [];
+  var typeMap = {'Residential':'住宅 IP','Hosting':'机房 IP','VPN':'VPN 出口','Business':'商业 IP','Wireless':'移动网络'};
+  if(d){
+    $('myLoc').innerHTML = '<span class="flag">'+flag(d.isocode)+'</span>'+[d.country, d.region, d.city].filter(Boolean).join(' · ');
+    setKv('basicKv', [
+      ['IP 地址', target],
+      ['ASN', (d.asn||'—') + (d.organisation?(' · '+d.organisation):'')],
+      ['IP 段', d.range||'—'],
+      ['服务商', d.provider||'—'],
+      ['国家/地区', (d.country||'—') + (d.isocode?(' ('+d.isocode+')'):'')],
+      ['城市', [d.region, d.city].filter(Boolean).join(' · ')||'—'],
+      ['经纬度', (d.latitude!=null? d.latitude+', '+d.longitude : '—')],
+      ['时区', d.timezone||'—'],
+      ['邮编', d.postcode||'—']
+    ]);
+    sources.push(['proxycheck', [d.country, d.city].filter(Boolean).join(' · ')||'—', d.provider||'—']);
+    var badges = [], t = d.type||'';
+    if(t==='Residential') badges.push('<span class="badge b-ok">住宅 IP</span>');
+    else if(t==='Hosting') badges.push('<span class="badge b-bad">机房 IP</span>');
+    else if(t==='VPN') badges.push('<span class="badge b-bad">VPN 出口</span>');
+    else if(t==='Business') badges.push('<span class="badge b-ok">商业 IP</span>');
+    else if(t==='Wireless') badges.push('<span class="badge b-grey">移动网络</span>');
+    else if(t) badges.push('<span class="badge b-grey">'+t+'</span>');
+    if(d.proxy==='yes') badges.push('<span class="badge b-bad">代理标记：是</span>');
+    else if(d.proxy==='no') badges.push('<span class="badge b-ok">无代理标记</span>');
+    $('attrBadges').innerHTML = badges.join('');
+    setKv('attrKv', [
+      ['网络类型', typeMap[t]||t||'—'],
+      ['代理检测', d.proxy==='yes'?'是（代理/VPN 出口）':(d.proxy==='no'?'否':'—')],
+      ['同段设备数', (d.devices && d.devices.subnet!=null)? d.devices.subnet : '—']
+    ]);
+    if(typeof d.risk === 'number'){
+      var score = d.risk, lab, cls;
+      if(score<15){lab='极纯净';cls='b-ok';} else if(score<35){lab='较纯净';cls='b-ok';}
+      else if(score<55){lab='中性';cls='b-mid';} else if(score<75){lab='风险较高';cls='b-bad';}
+      else {lab='高风险';cls='b-bad';}
+      $('scoreNum').textContent = score;
+      var sl = $('scoreLab'); sl.textContent = lab; sl.className = 'score-lab badge '+cls;
+      $('scoreMark').style.left = score+'%';
+      $('scoreWhy').textContent = '风险分由 proxycheck 数据库给出（0 最纯净，100 最高风险）。本机参考：类型「'+(typeMap[t]||t||'未知')+'」、代理「'+(d.proxy==='yes'?'是':'否')+'」。';
+    }
+  }
+
+  /* 多源定位对比 */
+  statusLine('正在对比多个定位数据库…');
+  var jobs;
+  if(ip){
+    jobs = await Promise.all([
+      jget('https://ipwho.is/'+target),
+      jget('https://api.ipapi.is/?q='+encodeURIComponent(target)),
+      jget('https://ipinfo.io/'+target+'/json'),
+      jget('https://api.db-ip.com/v2/free/'+target)
+    ]);
+  } else {
+    var rest = await Promise.all([
+      jget('https://ipinfo.io/json'),
+      jget('https://api.db-ip.com/v2/free/self')
+    ]);
+    jobs = [ selfCache && selfCache[0], selfCache && selfCache[1], rest[0], rest[1] ];
+  }
+  var w2=jobs[0], a2=jobs[1], i2=jobs[2], db2=jobs[3];
+  if(w2 && w2.success!==false && w2.ip) sources.push(['ipwho.is', [w2.country, w2.city].filter(Boolean).join(' · ')||'—', (w2.connection&&w2.connection.isp)||'—']);
+  if(a2 && a2.ip) sources.push(['ipapi.is', [a2.country, a2.city].filter(Boolean).join(' · ')||'—', a2.company||'—']);
+  if(i2 && !i2.bogon && i2.ip) sources.push(['ipinfo.io', [i2.country, i2.city].filter(Boolean).join(' · ')||'—', i2.org||'—']);
+  if(db2 && db2.ipAddress) sources.push(['db-ip', [db2.countryName, db2.city].filter(Boolean).join(' · ')||'—', '—']);
+  $('srcTable').innerHTML = sources.length ? sources.map(function(s){return '<tr><td>'+s[0]+'</td><td>'+s[1]+'</td><td>'+s[2]+'</td></tr>'}).join('') : '<tr><td colspan="3">无数据</td></tr>';
+
+  /* proxycheck 挂了，用 ipwho.is 兜底 */
+  if(!d && w2 && w2.ip){
+    $('myLoc').innerHTML = '<span class="flag">'+flag(w2.country_code)+'</span>'+[w2.country, w2.region, w2.city].filter(Boolean).join(' · ');
+    setKv('basicKv', [
+      ['IP 地址', target],
+      ['ASN', (w2.connection&&w2.connection.asn)?('AS'+w2.connection.asn+' · '+(w2.connection.isp||'')):'—'],
+      ['国家/地区', (w2.country||'—') + (w2.country_code?(' ('+w2.country_code+')'):'')],
+      ['城市', [w2.region, w2.city].filter(Boolean).join(' · ')||'—'],
+      ['经纬度', (w2.latitude!=null? w2.latitude+', '+w2.longitude : '—')],
+      ['时区', (w2.timezone&&w2.timezone.id)||'—']
+    ]);
+    $('attrBadges').innerHTML = '<span class="badge b-grey">属性源暂不可用，仅显示定位</span>';
+  }
+  if(!d && !w2){
+    statusLine('检测通道受限');
+    showNetWarn();
+  } else {
+    statusLine('✅ 自动检测完成');
+  }
+}
+
+function showNetWarn(){ $('netWarn').style.display = 'block'; }
+
+/* ============ WebRTC ============ */
+function detectRtc(){
+  var found = {};
+  try{
+    var pc = new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+    pc.createDataChannel('');
+    pc.onicecandidate = function(e){
+      if(!e.candidate){ renderRtc(found); pc.close(); return; }
+      var m = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9-]+\.local)/i.exec(e.candidate.candidate||'');
+      if(m) found[m[1]] = true;
+    };
+    pc.createOffer().then(function(o){ pc.setLocalDescription(o); });
+    setTimeout(function(){ renderRtc(found); }, 3500);
+  }catch(e){ setKv('rtcKv', [['WebRTC','当前浏览器不支持或已禁用']]); }
+}
+function renderRtc(found){
+  var ips = Object.keys(found);
+  if(!ips.length){ setKv('rtcKv', [['结果','未检出（浏览器已屏蔽 WebRTC 泄露）']]); return; }
+  setKv('rtcKv', ips.map(function(ip,i){ return ['检出 IP '+(i+1), ip + (curIp && ip===curIp ? '（与上方一致 ✅）':'（与上方不同 ⚠️）')]; }));
+}
+
+/* ============ 连通性 ============ */
+var SITES = [
+  ['百度','https://www.baidu.com/favicon.ico'],
+  ['Bilibili','https://www.bilibili.com/favicon.ico'],
+  ['微博','https://weibo.com/favicon.ico'],
+  ['GitHub','https://github.com/favicon.ico'],
+  ['Google','https://www.google.com/favicon.ico'],
+  ['YouTube','https://www.youtube.com/favicon.ico'],
+  ['X (Twitter)','https://x.com/favicon.ico'],
+  ['ChatGPT','https://chatgpt.com/favicon.ico'],
+  ['Telegram','https://telegram.org/favicon.ico'],
+  ['Wikipedia','https://www.wikipedia.org/favicon.ico']
+];
+function renderConn(state){
+  $('connList').innerHTML = SITES.map(function(s,i){
+    var st = state[i];
+    var cls = st==null?'wait':(st==='fail'?'fail':'ok');
+    var ms = st==null?'检测中':(st==='fail'?'不通':st+' ms');
+    return '<div class="conn-row"><span class="dot '+cls+'"></span><span class="nm">'+s[0]+'</span><span class="ms">'+ms+'</span></div>';
+  }).join('');
+}
+async function probe(url){
+  var t0 = performance.now();
+  try{
+    await fetch(url+(url.indexOf('?')<0?'?':'&')+'_t='+Date.now(), {mode:'no-cors', cache:'no-store'});
+    return Math.round(performance.now()-t0);
+  }catch(e){ return 'fail'; }
+}
+async function runConn(){
+  var state = SITES.map(function(){return null});
+  renderConn(state);
+  await Promise.all(SITES.map(async function(s,i){ state[i] = await probe(s[1]); renderConn(state); }));
+}
+
+/* ============ 测速 ============ */
+async function runSpeed(){
+  $('speedVal').textContent = '测速中…'; $('speedLab').textContent = '正在从 Cloudflare 下载 10MB 数据…';
+  var bytes = 10000000, t0 = performance.now();
+  try{
+    var r = await fetch('https://speed.cloudflare.com/__down?bytes='+bytes, {cache:'no-store'});
+    var reader = r.body.getReader(), got = 0;
+    while(true){ var d = await reader.read(); if(d.done) break; got += d.value.length; }
+    var sec = (performance.now()-t0)/1000;
+    var mbps = (got*8/sec/1000000);
+    $('speedVal').textContent = mbps.toFixed(1)+' Mbps';
+    $('speedLab').textContent = '下载 '+(got/1000000).toFixed(1)+'MB 用时 '+sec.toFixed(1)+' 秒（约 '+(mbps/8).toFixed(1)+' MB/s）';
+  }catch(e){
+    $('speedVal').textContent = '失败'; $('speedLab').textContent = '测速节点不可达，换个网络再试';
+  }
+}
+
+/* ============ 入口 ============ */
+function queryIp(){
+  var v = $('q').value.trim();
+  if(!v){ alert('先输入一个 IP'); return; }
+  if(!/^[0-9a-fA-F.:]+$/.test(v)){ alert('IP 格式不对'); return; }
+  $('myIp').textContent = '查询中…'; $('myLoc').textContent = '';
+  statusLine('正在查询 '+v+' …');
+  detect(v);
+}
+async function init(manual){
+  $('netWarn').style.display = 'none';
+  await detect('');
+  detectRtc();
+  runConn();
+}
+init(false);
+</script>
+</body>
+</html>

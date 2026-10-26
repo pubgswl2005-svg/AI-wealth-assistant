@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="deep">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>长钱 · 定投复利台 · v20261020-4</title>
+<meta name="description" content="每月定投模拟：复利曲线、年度明细、两只产品拆分、每月打卡防漏扣。数据只存本地，离线可用。">
+<style>
+:root{
+  --bg:#060a15; --bg2:#0c1425; --card:rgba(255,255,255,.08); --card2:rgba(255,255,255,.05);
+  --stroke:rgba(255,255,255,.16); --text:#eef4ff; --sub:#9db1d2; --primary:#5ec8ff; --violet:#7c5cff;
+  --ok:#2ee6a8; --gold:#ffc85e; --red:#ff453a; --radius:20px; --shadow:0 12px 32px rgba(0,0,0,.35);
+  --chart-ok:#2ee6a8; --chart-pri:#5ec8ff; --chart-gold:#ffc85e; --chart-fill:rgba(46,230,168,.13); --grid:rgba(150,170,200,.22);
+}
+html[data-theme="bright"]{
+  --bg:#c3d0df; --bg2:#aebfd3; --card:#ffffff; --card2:#e8eef5;
+  --stroke:rgba(10,30,60,.30); --text:#07182b; --sub:#243b55; --shadow:0 10px 24px rgba(20,40,70,.22);
+  --primary:#004da3; --violet:#4526c9; --ok:#005f3d; --gold:#7a5000; --red:#b80f1a;
+  --chart-ok:#005f3d; --chart-pri:#004da3; --chart-gold:#96650a; --chart-fill:rgba(0,95,61,.10); --grid:rgba(20,45,80,.30);
+}
+html[data-theme="bright"] body{background:linear-gradient(180deg,#c3d0df,#aebfd3)}
+html[data-theme="bright"] .glass{backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-theme="bright"] header p,
+html[data-theme="bright"] section .desc{font-size:14.5px;font-weight:600;color:#243b55;line-height:1.75}
+html[data-theme="bright"] .kpi span,
+html[data-theme="bright"] .prod span,
+html[data-theme="bright"] .legend,
+html[data-theme="bright"] th,
+html[data-theme="bright"] .month small,
+html[data-theme="bright"] footer{color:#243b55;font-weight:700}
+html[data-theme="bright"] .field label,
+html[data-theme="bright"] .month,
+html[data-theme="bright"] table,
+html[data-theme="bright"] input[type=number]{font-weight:700}
+html[data-theme="bright"] .big{color:#243b55;font-weight:700}
+html[data-theme="bright"] .badge{background:#d3e4f7;border-color:#004da3;color:#004da3}
+html[data-theme="bright"] .fund{background:#fdecec;border-color:rgba(184,15,26,.5)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(900px 480px at 12% -5%,rgba(94,200,255,.26),transparent 60%),radial-gradient(760px 460px at 96% 8%,rgba(124,92,255,.20),transparent 55%),linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);min-height:100vh;padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+.wrap{max-width:760px;margin:0 auto;padding:16px 14px 6px}
+.glass{background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:var(--shadow)}
+header{padding:20px 18px 18px}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(94,200,255,.15);border:1px solid rgba(94,200,255,.35);color:var(--primary);font-size:12px;font-weight:700}
+h1{margin:10px 0 0;font-size:25px}
+header p{margin:8px 0 0;color:var(--sub);font-size:13.5px;line-height:1.65}
+.big{margin-top:16px;font-size:15px;color:var(--sub)}
+.big b{display:block;font-size:38px;line-height:1.15;color:var(--text);letter-spacing:.3px;font-variant-numeric:tabular-nums}
+.big b em{font-style:normal;color:var(--ok)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.kpi{padding:12px 10px;border-radius:16px;background:var(--card2);border:1px solid var(--stroke)}
+.kpi span{font-size:11.5px;color:var(--sub);display:block}
+.kpi b{font-size:16.5px;display:block;margin-top:4px;font-variant-numeric:tabular-nums}
+section{margin-top:14px;padding:16px}
+section h2{margin:0 0 4px;font-size:17px}
+section .desc{margin:0 0 12px;color:var(--sub);font-size:12.8px;line-height:1.6}
+.field{margin-top:12px}
+.field label{font-size:13.5px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline}
+.field label output{color:var(--primary);font-size:15px;font-variant-numeric:tabular-nums}
+input[type=number]{width:100%;min-height:48px;margin-top:8px;padding:0 14px;border-radius:14px;border:1px solid var(--stroke);background:var(--card2);color:var(--text);font-size:17px;outline:none}
+input[type=range]{width:100%;height:44px;accent-color:var(--primary)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--stroke);background:var(--card2);color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
+.chip.on{background:linear-gradient(135deg,var(--primary),var(--violet));color:#fff;border:none}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.prod{padding:12px;border-radius:16px;background:var(--card2);border:1px solid var(--stroke)}
+.prod span{font-size:12px;color:var(--sub);display:block;line-height:1.5}
+.prod b{font-size:18px;display:block;margin-top:4px;font-variant-numeric:tabular-nums}
+canvas{width:100%;height:230px;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--sub);margin-top:8px}
+.legend i{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 6px;text-align:right;border-bottom:1px solid var(--stroke)}
+th{color:var(--sub);font-weight:600}
+td:first-child,th:first-child{text-align:left}
+details summary{min-height:44px;display:flex;align-items:center;font-weight:700;font-size:15px;cursor:pointer}
+.months{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.month{min-height:52px;border-radius:14px;border:1px solid var(--stroke);background:var(--card2);color:var(--text);font-size:14px;font-weight:700;cursor:pointer}
+.month.done{background:linear-gradient(135deg,rgba(46,230,168,.28),rgba(94,200,255,.22));border-color:rgba(46,230,168,.55);color:var(--ok)}
+.month small{display:block;font-size:10.5px;font-weight:600;color:var(--sub);margin-top:2px}
+.month.done small{color:var(--ok)}
+.fund{display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:13px 12px;border-radius:16px;background:rgba(255,69,58,.09);border:1px solid rgba(255,69,58,.35);cursor:pointer}
+.fund input{width:23px;height:23px;margin-top:1px;accent-color:#ff453a;flex:0 0 auto}
+.fund b{font-size:14.5px}
+.fund p{margin:3px 0 0;color:var(--sub);font-size:12.5px;line-height:1.55}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+button.tool{min-height:44px;padding:0 14px;border-radius:14px;border:1px solid var(--stroke);background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
+button.tool.primary{background:linear-gradient(135deg,var(--primary),var(--violet));color:#fff;border:none}
+footer{color:var(--sub);font-size:12px;text-align:center;line-height:1.75;padding:16px 12px 4px}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="glass">
+    <span class="badge">每月 1 号定投 · 标普500 + 纳斯达克</span>
+    <h1>🌱 长钱 · 定投复利台</h1>
+    <p>钱是慢慢长大的。这台小算盘只干三件事：算清你每月这笔定投长期滚下去的样子、拆清两只产品各投多少、每月提醒你别再漏扣。</p>
+    <div class="big">按当前假设，<span id="yearsEcho">20</span> 年后估算总值<b><em>¥</em><span id="bigNum">0</span></b></div>
+    <div class="kpis">
+      <div class="kpi"><span>累计本金</span><b id="kPrincipal">—</b></div>
+      <div class="kpi"><span>估算收益</span><b id="kGain" style="color:var(--ok)">—</b></div>
+      <div class="kpi"><span>收益占本金</span><b id="kRatio">—</b></div>
+    </div>
+  </header>
+
+  <section class="glass">
+    <h2>⚙️ 我的定投</h2>
+    <p class="desc">数字都按你现在的情况预填，随手改，改完立刻重算。所有数据只存在这台手机里。</p>
+    <div class="field">
+      <label>每月定投金额</label>
+      <input type="number" id="monthly" inputmode="numeric" min="0" step="100">
+      <div class="chips" id="amtChips">
+        <button class="chip" data-v="1000">¥1000</button>
+        <button class="chip" data-v="2000">¥2000</button>
+        <button class="chip" data-v="3000">¥3000</button>
+        <button class="chip" data-v="5000">¥5000</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>已经投入的本金</label>
+      <input type="number" id="initial" inputmode="numeric" min="0" step="500">
+    </div>
+    <div class="field">
+      <label>打算坚持 <output id="yearsOut"></output></label>
+      <input type="range" id="years" min="3" max="35" step="1">
+    </div>
+    <div class="field">
+      <label>年化收益假设 <output id="rateOut"></output></label>
+      <input type="range" id="rate" min="0" max="15" step="0.5">
+      <div class="chips" id="rateChips">
+        <button class="chip" data-v="4">保守 4%</button>
+        <button class="chip" data-v="7">稳健 7%</button>
+        <button class="chip" data-v="10">进取 10%</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>两只产品怎么分（合计 100%）</label>
+      <div class="chips" id="splitChips">
+        <button class="chip" data-v="50">五五开</button>
+        <button class="chip" data-v="60">标普 60 / 纳指 40</button>
+        <button class="chip" data-v="40">标普 40 / 纳指 60</button>
+      </div>
+      <div class="split">
+        <div class="prod"><span>标普500ETF博时（513500）· <span id="spPct"></span></span><b id="spAmt">—</b></div>
+        <div class="prod"><span>纳斯达克ETF华夏（513300）· <span id="ndPct"></span></span><b id="ndAmt">—</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="glass">
+    <h2>📈 复利曲线</h2>
+    <p class="desc">绿线是估算总值，蓝线是你实际掏出去的本金。两条线拉开的距离，就是时间在帮你干活的部分。</p>
+    <canvas id="chart"></canvas>
+    <div class="legend"><span><i style="background:var(--chart-ok)"></i>估算总值</span><span><i style="background:var(--chart-pri)"></i>累计本金</span><span><i style="background:var(--chart-gold)"></i>保守情形 4%</span></div>
+    <details>
+      <summary>看年度明细表</summary>
+      <table>
+        <thead><tr><th>第几年</th><th>累计本金</th><th>估算总值</th><th>估算收益</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </details>
+  </section>
+
+  <section class="glass">
+    <h2>🗓️ <span id="yrTitle">2026</span> 年定投打卡</h2>
+    <p class="desc">每月扣款成功后点一下，点亮就是投进去了。已连续点亮 <b id="streak" style="color:var(--ok)">0</b> 个月。</p>
+    <div class="months" id="months"></div>
+    <label class="fund">
+      <input type="checkbox" id="fundReady">
+      <div><b style="color:var(--red)">本月扣款前，账户里留足钱</b><p>你的条件单是每月 1 号扣款。10 月那次就是因为可用资金不足，两只都买入失败——扣款前一天把钱留够，这一步比选哪只更重要。</p></div>
+    </label>
+  </section>
+
+  <div class="toolbar">
+    <button class="tool primary" id="copyBtn">复制我的定投计划</button>
+    <button class="tool" id="themeBtn">☀️ 明亮</button>
+    <button class="tool" id="exportBtn">导出备份</button>
+    <button class="tool" id="importBtn">导入</button>
+    <button class="tool" id="resetBtn">重置</button>
+    <input type="file" id="file" accept="application/json" class="hidden">
+  </div>
+
+  <footer>
+    本页所有金额都是按你填的「年化假设」做的数学模拟，<b style="color:var(--red)">不是收益预测，更不是承诺</b>；真实涨跌没人能算准，定投的意义是纪律，不是算命。<br>
+    版本 v20261020-4 · 单文件离线可用 · 数据版本号 v1 · 认页脚版本号是新版，旧文件删掉别留缓存
+  </footer>
+</div>
+
+<script>
+const CONFIG = {
+  version: "v20261020-4",
+  storageKey: "changqian-dca-v1",
+  dataVersion: 1,
+  defaults: { monthly:2000, initial:0, years:20, rate:7, spShare:50, theme:"deep", checks:{}, fundReadyMonths:{} }
+};
+let S = structuredClone(CONFIG.defaults);
+try{ const raw=localStorage.getItem(CONFIG.storageKey); if(raw){ const p=JSON.parse(raw); if(p && p.dataVersion===CONFIG.dataVersion && p.state) S = Object.assign(structuredClone(CONFIG.defaults), p.state); } }catch(e){}
+const $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString("zh-CN");
+function fvSeries(monthly, initial, years, annualPct){
+  const n = years*12, rm = Math.pow(1+annualPct/100, 1/12)-1;
+  const series=[];
+  for(let y=0; y<=years; y++){
+    const m=y*12;
+    const base = initial + monthly*m;
+    let val;
+    if(rm===0){ val = base; }
+    else{ val = initial*Math.pow(1+rm,m) + monthly*((Math.pow(1+rm,m)-1)/rm); }
+    series.push({year:y, principal:base, value:val});
+  }
+  return series;
+}
+let lastBig = 0;
+function countUp(to){
+  const el=$("bigNum"); const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce){ el.textContent=fmt(to); lastBig=to; return; }
+  const from=lastBig, t0=performance.now(), dur=450;
+  function step(t){ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=fmt(from+(to-from)*e); if(k<1) requestAnimationFrame(step); else lastBig=to; }
+  requestAnimationFrame(step);
+}
+function draw(){
+  const cv=$("chart"), dpr=devicePixelRatio||1, W=cv.clientWidth, H=cv.clientHeight;
+  cv.width=W*dpr; cv.height=H*dpr;
+  const c=cv.getContext("2d"); c.scale(dpr,dpr); c.clearRect(0,0,W,H);
+  const main=fvSeries(S.monthly,S.initial,S.years,S.rate);
+  const low=fvSeries(S.monthly,S.initial,S.years,4);
+  const maxV=Math.max(...main.map(p=>p.value),1);
+  const padL=8,padR=10,padT=12,padB=22, iw=W-padL-padR, ih=H-padT-padB;
+  const X=y=>padL+iw*(y/S.years), Y=v=>padT+ih*(1-v/maxV);
+  c.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--grid").trim()||"rgba(140,160,190,.25)"; c.lineWidth=1; c.fillStyle=getComputedStyle(document.body).getPropertyValue("--sub"); c.font="700 11px sans-serif";
+  for(let g=0; g<=3; g++){ const v=maxV*g/3, y=Y(v); c.beginPath(); c.moveTo(padL,y); c.lineTo(W-padR,y); c.stroke(); c.fillText("¥"+fmt(v), padL, y-4); }
+  c.fillText("第0年", X(0), H-6); c.fillText("第"+S.years+"年", X(S.years)-34, H-6);
+  function line(series,color,fill){
+    c.beginPath(); series.forEach((p,i)=>{ const x=X(p.year),y=Y(p.value); i?c.lineTo(x,y):c.moveTo(x,y); });
+    c.strokeStyle=color; c.lineWidth=2.4; c.lineJoin="round"; c.stroke();
+    if(fill){ c.lineTo(X(S.years),Y(0)); c.lineTo(X(0),Y(0)); c.closePath(); c.fillStyle=fill; c.fill(); }
+  }
+  const cs=getComputedStyle(document.documentElement);
+  line(low.map((p,i)=>({year:p.year,value:p.value})), cs.getPropertyValue("--chart-gold").trim(), null);
+  line(main.map(p=>({year:p.year,value:p.principal})), cs.getPropertyValue("--chart-pri").trim(), null);
+  line(main, cs.getPropertyValue("--chart-ok").trim(), cs.getPropertyValue("--chart-fill").trim());
+}
+function render(){
+  document.documentElement.dataset.theme=S.theme;
+  $("themeBtn").textContent = S.theme==="bright" ? "🌙 深空" : "☀️ 明亮";
+  $("monthly").value=S.monthly; $("initial").value=S.initial;
+  $("years").value=S.years; $("rate").value=S.rate;
+  $("yearsOut").textContent=S.years+" 年"; $("rateOut").textContent=S.rate+"%";
+  $("yearsEcho").textContent=S.years;
+  document.querySelectorAll("#amtChips .chip").forEach(ch=>ch.classList.toggle("on", +ch.dataset.v===S.monthly));
+  document.querySelectorAll("#rateChips .chip").forEach(ch=>ch.classList.toggle("on", +ch.dataset.v===S.rate));
+  document.querySelectorAll("#splitChips .chip").forEach(ch=>ch.classList.toggle("on", +ch.dataset.v===S.spShare));
+  const sp=Math.round(S.monthly*S.spShare/100), nd=S.monthly-sp;
+  $("spPct").textContent="占 "+S.spShare+"%"; $("ndPct").textContent="占 "+(100-S.spShare)+"%";
+  $("spAmt").textContent="¥"+fmt(sp)+" / 月"; $("ndAmt").textContent="¥"+fmt(nd)+" / 月";
+  const s=fvSeries(S.monthly,S.initial,S.years,S.rate), last=s[s.length-1];
+  countUp(last.value);
+  $("kPrincipal").textContent="¥"+fmt(last.principal);
+  $("kGain").textContent="¥"+fmt(last.value-last.principal);
+  $("kRatio").textContent=last.principal? Math.round((last.value-last.principal)/last.principal*100)+"%" : "—";
+  $("tbody").innerHTML=s.slice(1).map(p=>`<tr><td>第 ${p.year} 年</td><td>¥${fmt(p.principal)}</td><td>¥${fmt(p.value)}</td><td style="color:var(--ok)">¥${fmt(p.value-p.principal)}</td></tr>`).join("");
+  const now=new Date(), yr=now.getFullYear(), mo=now.getMonth()+1;
+  $("yrTitle").textContent=yr;
+  const box=$("months"); box.innerHTML="";
+  for(let m=1;m<=12;m++){
+    const key=yr+"-"+m, b=document.createElement("button");
+    b.className="month"+(S.checks[key]?" done":"");
+    b.innerHTML=m+"月<small>"+(S.checks[key]?"已定投 ✓":"未打卡")+"</small>";
+    b.onclick=()=>{ S.checks[key]=!S.checks[key]; if(!S.checks[key]) delete S.checks[key]; save(); render(); };
+    box.appendChild(b);
+  }
+  let streak=0, y=yr, m=mo; if(!S.checks[y+"-"+m]){ m--; if(m<1){m=12;y--;} }
+  while(S.checks[y+"-"+m]){ streak++; m--; if(m<1){m=12;y--;} }
+  $("streak").textContent=streak;
+  const fk=yr+"-"+mo; $("fundReady").checked=!!S.fundReadyMonths[fk];
+  $("fundReady").onchange=e=>{ S.fundReadyMonths[fk]=e.target.checked; if(!e.target.checked) delete S.fundReadyMonths[fk]; save(); };
+  draw();
+}
+function save(){ try{ localStorage.setItem(CONFIG.storageKey, JSON.stringify({dataVersion:CONFIG.dataVersion, version:CONFIG.version, state:S})); }catch(e){} }
+$("monthly").addEventListener("input",e=>{ S.monthly=Math.max(0,+e.target.value||0); save(); render(); });
+$("initial").addEventListener("input",e=>{ S.initial=Math.max(0,+e.target.value||0); save(); render(); });
+$("years").addEventListener("input",e=>{ S.years=+e.target.value; save(); render(); });
+$("rate").addEventListener("input",e=>{ S.rate=+e.target.value; save(); render(); });
+document.querySelectorAll("#amtChips .chip").forEach(ch=>ch.onclick=()=>{ S.monthly=+ch.dataset.v; save(); render(); });
+document.querySelectorAll("#rateChips .chip").forEach(ch=>ch.onclick=()=>{ S.rate=+ch.dataset.v; save(); render(); });
+document.querySelectorAll("#splitChips .chip").forEach(ch=>ch.onclick=()=>{ S.spShare=+ch.dataset.v; save(); render(); });
+$("themeBtn").onclick=()=>{ S.theme=S.theme==="bright"?"deep":"bright"; save(); render(); };
+$("resetBtn").onclick=()=>{ if(confirm("重置全部数据？打卡记录也会清掉。")){ S=structuredClone(CONFIG.defaults); save(); lastBig=0; render(); } };
+$("exportBtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify({app:"changqian-dca",version:CONFIG.version,dataVersion:CONFIG.dataVersion,state:S},null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="定投复利台备份-"+CONFIG.version+".json"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),800);
+};
+$("importBtn").onclick=()=>$("file").click();
+$("file").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{ try{ const p=JSON.parse(r.result); if(p.dataVersion!==CONFIG.dataVersion||!p.state){ alert("备份版本不匹配，已拒绝导入"); return; } S=Object.assign(structuredClone(CONFIG.defaults),p.state); save(); lastBig=0; render(); alert("导入成功"); }catch(err){ alert("导入失败：文件不对"); } };
+  r.readAsText(f);
+});
+$("copyBtn").onclick=async()=>{
+  const s=fvSeries(S.monthly,S.initial,S.years,S.rate), last=s[s.length-1];
+  const txt=[`我的定投计划（${CONFIG.version}）`,`每月定投 ¥${fmt(S.monthly)}：标普500（513500）¥${fmt(Math.round(S.monthly*S.spShare/100))} + 纳斯达克（513300）¥${fmt(S.monthly-Math.round(S.monthly*S.spShare/100))}`,`已投入本金 ¥${fmt(S.initial)}，计划坚持 ${S.years} 年，年化假设 ${S.rate}%`,`按假设估算：累计本金 ¥${fmt(last.principal)}，期末估算 ¥${fmt(last.value)}（模拟值，非收益承诺）`,`纪律：每月1号扣款，提前一天留足资金。`].join("\n");
+  try{ await navigator.clipboard.writeText(txt); alert("已复制，去粘贴就行"); }catch(e){ prompt("复制这份计划",txt); }
+};
+let rto; addEventListener("resize",()=>{ clearTimeout(rto); rto=setTimeout(draw,140); });
+render();
+</script>
+</body>
+</html>
