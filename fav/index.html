@@ -652,6 +652,8 @@ body.select-mode .star{display:none}
 .fav-empty{text-align:center;color:var(--dim);font-size:13.5px;padding:26px 0;line-height:2.1}
 .fav-empty span{display:block;font-size:12px;color:var(--dim2)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.fav-pop{background:rgba(255,255,255,.94)}}
+/* 20261026：手机点按去掉双击缩放等待，点下去立刻响应 */
+a,button,.tile,.card{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 </style>
 </head>
 <body>
@@ -694,7 +696,7 @@ body.select-mode .star{display:none}
 <footer>
   <span id="footNote">河马的网页收藏夹 · 收藏数据保存在浏览器 localStorage 中，刷新页面不会丢失</span><br>
   点击卡片新标签页打开 · 右下角 <b>+</b> 添加新网页<br>
-  <span id="verTag" style="opacity:.55;font-size:11px">版本 v20261025-1</span>
+  <span id="verTag" style="opacity:.55;font-size:11px">版本 v20261026-1</span>
 </footer>
 
 <button id="toTop" title="返回顶部">
@@ -1012,6 +1014,18 @@ function safeLink(a){
     return {cat:String(cat || "life"), title:String(title || domain), domain, url};
   }catch(e){ return null; }
 }
+/* 20261026：在 APP 内嵌浏览器里 window.open / 新标签页会被直接吞掉，点卡片就没反应。
+   先试新窗口打开，打不开（返回 null）就改走本页跳转，手机返回键能回到收藏夹。 */
+function openLink(url){
+  try{
+    /* 注意：window.open 带 'noopener' 时按规范一定返回 null（即使成功打开），
+       所以不能用它判断成败。改成不带 noopener 打开，拿到窗口后立刻把 opener 置空，
+       同样防住反向劫持；只有真正打不开（返回 null，如 APP 内嵌浏览器）才走本页跳转。 */
+    var w = window.open(url, "_blank");
+    if(w){ try{ w.opener = null; }catch(e){} return; }
+  }catch(e){}
+  location.href = url;
+}
 const shareMatch = location.hash.match(/^#s=([A-Za-z0-9\-_]+)$/) || (location.search || "").match(/[?&]s=([A-Za-z0-9\-_]+)/);
 if(shareMatch){
   try{
@@ -1269,7 +1283,7 @@ function buildChangyong(){
     n.className = "cy-n";
     n.textContent = "\u6253\u5f00 " + (visits[l.url] || 0) + " \u6b21";
     a.appendChild(fav); a.appendChild(t); a.appendChild(d); a.appendChild(n);
-    a.addEventListener("click", ()=>{ bumpVisit(l.url); });
+    a.addEventListener("click", e=>{ e.preventDefault(); bumpVisit(l.url); openLink(l.url); });
     strip.appendChild(a);
   });
   sec.appendChild(head);
@@ -1386,7 +1400,7 @@ function buildSections(){
           showToast(`已删除「${l.title}」`, true);
         });
       }
-      card.addEventListener("click", e=>{ if(selectMode){ e.preventDefault(); togglePick(l.url); return; } bumpVisit(l.url); });
+      card.addEventListener("click", e=>{ if(selectMode){ e.preventDefault(); togglePick(l.url); return; } e.preventDefault(); bumpVisit(l.url); openLink(l.url); });
       const star = card.querySelector(".star");
       if(star){
         star.classList.toggle("on", favSet.has(l.url));
@@ -1767,7 +1781,7 @@ function buildFavList(){
     un.type = "button"; un.className = "fav-un"; un.title = "取消收藏"; un.textContent = "×";
     un.addEventListener("click", e=>{ e.stopPropagation(); toggleFav(l.url); });
     row.appendChild(dot); row.appendChild(info); row.appendChild(un);
-    row.addEventListener("click", ()=>window.open(l.url, "_blank", "noopener"));
+    row.addEventListener("click", ()=>openLink(l.url));
     list.appendChild(row);
   });
 }
@@ -1898,7 +1912,7 @@ document.getElementById("shareCopy").addEventListener("click", async ()=>{
   showToast("分享链接已复制，发给朋友即可（打开为只读）");
 });
 document.getElementById("shareOpen").addEventListener("click", ()=>{
-  window.open(shareLinkEl.value, "_blank");
+  openLink(shareLinkEl.value);
 });
 
 /* 清理已移除的功能（音乐、触控粒子）留在浏览器里的数据 */
