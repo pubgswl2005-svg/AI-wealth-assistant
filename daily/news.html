@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 10月25日</title>
+<title>全球新闻速览 · 10月26日</title>
 <style>
 :root{
   --bg:#080B12; --bg2:#0D121C; --card:#121824;
@@ -12,7 +12,7 @@
   --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
   --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   background:var(--bg); color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -24,34 +24,34 @@ body{
   background-attachment:fixed;
   padding-bottom:calc(28px + env(safe-area-inset-bottom));
 }
-.wrap{max-width:640px;margin:0 auto;padding:0 16px}
-/* ===== 顶部功能栏：复制 + 收听 ===== */
+/* ===== 顶部功能栏：复制 + 收听（固定顶栏） ===== */
 .topbar{
   position:sticky; top:0; z-index:50;
   margin:0 -16px; padding:10px 16px;
-  background:rgba(8,11,18,.96); border-bottom:2px solid #72D5FF;
+  background:rgba(8,11,18,.96); border-bottom:2px solid var(--cyan);
   display:flex; gap:10px; align-items:stretch;
   box-shadow:0 2px 12px rgba(0,0,0,.5);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
 }
 .topbar button{
   flex:1; min-height:52px; border:none; border-radius:12px;
   font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
   display:flex; align-items:center; justify-content:center; gap:6px;
 }
-#btnCopy{background:#0B5FFF;}
-#btnCopy:active{background:#0847c2;}
+#btnCopy{background:#0e7fd6;}
+#btnCopy:active{background:#0a5ea3;}
 #btnListen{background:#065f46;}
 #btnListen:active{background:#04402f;}
 #btnStop{flex:0 0 64px; background:#b91c1c; display:none;}
-.hint{margin:12px 2px 0; font-size:13px; font-weight:700; color:#929DB0;}
-header.top{padding:28px 0 6px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header.top{padding:34px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
   margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
-  border:1px solid var(--stroke);
   background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
+  border:1px solid var(--stroke);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   padding:22px 20px;
 }
@@ -94,79 +94,78 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 <button id="btnListen" type="button">🔊 收听</button>
 <button id="btnStop" type="button">⏹</button>
 </div>
-<p class="hint">👆 顶部两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
 <header class="top">
-  <div class="date">2026 · 10 · 25 &nbsp;星期日</div>
+  <div class="date">2026 · 10 · 26 &nbsp;星期一</div>
   <h1>全球新闻速览</h1>
   <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
   <span class="tag hot">头 条</span>
-  <h2>金正恩突访中国丹东，王沪宁陪同访问并向抗美援朝纪念塔敬献花篮</h2>
-  <p>朝鲜最高领导人金正恩24日经新鸭绿江大桥抵达辽宁丹东，开启访华行程，全国政协主席王沪宁陪同访问。近日网络频传金正恩死讯，朝韩均已辟谣，此次公开访华引发外界高度关注。</p>
-  <div class="meta">TVB News · 韩联社 · 光华日报 · 10月24日</div>
+  <h2>巴西总统选举第二轮投票举行，卢拉对阵博索纳罗之子</h2>
+  <p>巴西总统选举第二轮投票10月25日举行，现任总统卢拉与前总统之子弗拉维奥·博索纳罗对决，海外选民同步参与投票。投票一度因最高法院应卢拉阵营请求延长两小时而引发混乱，两名候选人民调胶着，结果备受全球关注。</p>
+  <div class="meta">中国新闻网 · BBC · 南华早报 · 10月25日</div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-24</span>法国24日再爆大规模示威，全国部署7万军警，近千人被捕</h4>
-    <p>法国多地24日再度爆发示威，抗议学校与警务问题，数十万人上街；巴黎等地出现骚乱，警方动用催泪瓦斯并逮捕近千人。总统马克龙据报押后访问非洲行程。</p>
-    <div class="src">TVB News · The Guardian · 10月24日</div>
+    <h4><span class="t">10-25</span>普京提议与特朗普、习近平举行三方峰会讨论乌克兰战争</h4>
+    <p>普京提议下月与特朗普、习近平举行三方峰会，讨论结束乌克兰战争，乌克兰未在提议之列。泽连斯基同日在奥斯陆会晤美国特使威特科夫。</p>
+    <div class="src">见闻 · 10月25日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-24</span>特朗普警告伊朗：不签协议或再动武，称可能发动一次“史诗怒火”行动</h4>
-    <p>美国总统特朗普23日表示，不排除再次对伊朗采取军事行动；伊朗则扬言，若美以重启攻击，将把报复扩大至波斯湾的海底通讯电缆。霍尔木兹海峡两艘超级油轮同日触雷爆炸，八国外长反对军事打击伊朗。</p>
-    <div class="src">中新社 · 光华日报 · 10月24日</div>
+    <h4><span class="t">10-25</span>美国中期选举临近，特朗普支持率跌至33%创新低</h4>
+    <p>距11月3日中期选举约两周，特朗普支持率跌至33%，共和党两院选情告急，多名本党候选人与其保持距离。特朗普政府还提起诉讼，试图阻止阿拉斯加参议员选举结果认证。</p>
+    <div class="src">见闻 · 南华早报 · 10月25日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-24</span>泽连斯基确认乌美俄三方会谈11月上半月举行，星链服务恢复运行</h4>
-    <p>乌克兰总统泽连斯基确认，乌美俄三方会谈将于11月上半月举行；俄方称谈判将于11月上旬启动，俄军宣布27日在赫尔松方向实施停火。SpaceX已恢复乌克兰星链及军用版星盾系统运行。</p>
-    <div class="src">中新社 · 新唐人 · 10月24日</div>
+    <h4><span class="t">10-25</span>塞尔维亚武契奇承认败选，学生抗议运动赢得选举</h4>
+    <p>执政12年的塞尔维亚总统武契奇承认，其领导的政党已输掉选举，败给学生抗议运动主导的反对阵营。</p>
+    <div class="src">BBC · 10月25日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-24</span>约旦教堂葬礼遇枪击，7死40伤，政府定性恐袭并全国哀悼三天</h4>
-    <p>不明身份武装分子23日在约旦南部卡拉克省一间教堂葬礼上开枪，造成7人死亡、40人受伤。当局已定性为恐怖袭击，正追捕涉案人员并调查动机，联合国及埃及等邻国予以谴责。</p>
-    <div class="src">中新社 · TVB News · 10月24日</div>
+    <h4><span class="t">10-25</span>胡塞武装称对沙特境内多处目标发动7次袭击，沙特首都机场部分恢复运营</h4>
+    <p>也门胡塞武装称对沙特境内多处目标发动7次袭击，回应沙特一天内发动百次空袭。沙特首都利雅得国际机场25日部分恢复运营；教宗利奥十四世呼吁停止也门战事。</p>
+    <div class="src">中国新闻网 · 新华网 · 印度快报 · 10月25日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-24</span>内塔尼亚胡下令约旦河西岸大规模行动，两名以军士兵遇袭身亡</h4>
-    <p>两名以色列士兵在约旦河西岸遇袭身亡后，总理内塔尼亚胡下令实施大规模军事行动，包括封锁与逐户搜查。以军总参谋长称已在所有战线进入最高戒备状态。</p>
-    <div class="src">Axios · 中新社 · 10月24日</div>
+    <h4><span class="t">10-25</span>俄乌将为阿列什基人道主义行动同步停火</h4>
+    <p>俄乌双方将为阿列什基人道主义行动同步停火。泽连斯基同日表示，不会为结束冲突放弃更多领土。</p>
+    <div class="src">中国新闻网 · 新华网 · 10月25日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-24</span>布伦特原油冲上116美元，创5个月新高，美伊紧张推升供应忧虑</h4>
-    <p>布伦特原油升至每桶116美元，为5个月来最高。美伊紧张局势、沙特遇袭与航运风险持续推高油价，市场关注霍尔木兹海峡航运安全。</p>
-    <div class="src">Financial Express · 10月23-24日</div>
+    <h4><span class="t">10-25</span>马斯克推动SpaceX与特斯拉合并讨论</h4>
+    <p>马斯克说，SpaceX和特斯拉已成立特别委员会，讨论两家公司合并的可能。据外媒报道，巴克莱预计两家公司或于12月前公布合并方案。</p>
+    <div class="src">见闻 · 10月25日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-24</span>白宫豁免加拿大部分产品50%关税，距美国中期选举仅剩10天</h4>
-    <p>白宫宣布豁免对加拿大一些农林产品征收的50%关税，同时将另一些产品纳入征税清单。分析认为，此举与共和党在缅因州、密歇根州等地的中期选举选情有关。</p>
-    <div class="src">Financial Express · 新唐人 · 10月24日</div>
+    <h4><span class="t">10-25</span>海湾经济体加速多元化，伊朗战争阴影下地区经济承压</h4>
+    <p>即使地区经济下行预期加剧，海湾国家仍计划在基础设施上投入数百亿美元，加速经济多元化，以对冲伊朗战争带来的衰退风险。</p>
+    <div class="src">南华早报 · 10月25日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-24</span>瓦努阿图附近海域发生7.2级地震，已触发海啸预警</h4>
-    <p>瓦努阿图群岛附近海域发生7.2级地震，震源深度10千米，已触发海啸预警。同日日本岩手县附近海域也发生5.0级地震，多地有震感。</p>
-    <div class="src">中新社 · FMT · 10月24日</div>
+    <h4><span class="t">10-25</span>日本小笠原群岛附近海域发生7.0级地震</h4>
+    <p>日本小笠原群岛附近海域10月25日发生7.0级左右地震，震源深度480千米。同日，瓦努阿图附近海域发生7.2级地震，已触发海啸预警。</p>
+    <div class="src">中国新闻网 · 10月25日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-24</span>台风蔷琵袭台致1死500余伤，直扑日本；菲律宾两架军机相撞4人死亡</h4>
-    <p>台风蔷琵横扫台湾，造成1人死亡、500多人受伤，随后向日本方向移动。菲律宾空军两架教练机训练飞行时相撞，4名飞行员全部遇难。</p>
-    <div class="src">新唐人 · 中新社 · 10月24日</div>
+    <h4><span class="t">10-24</span>约旦教堂枪击事件致7人死亡，全国哀悼三天</h4>
+    <p>不明身份武装分子23日在约旦南部卡拉克省一间教堂内开枪，造成7人死亡、约40人受伤。约旦政府称系恐袭，已宣布全国哀悼三天。</p>
+    <div class="src">中国新闻网 · 光华日报 · 10月24日</div>
   </div>
 </div>
 
@@ -176,17 +175,22 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 
 <script>
 var PLAIN = [
-"全球新闻速览，2026年10月25日，星期日。过去24小时，全球重要事件10条。",
-"头条：金正恩突访中国丹东，王沪宁陪同访问并向抗美援朝纪念塔敬献花篮。朝鲜最高领导人金正恩24日经新鸭绿江大桥抵达辽宁丹东，开启访华行程。近日网络频传金正恩死讯，朝韩均已辟谣。",
-"法国24日再爆大规模示威，全国部署7万军警，近千人被捕。法国多地再度爆发示威，数十万人上街，巴黎等地出现骚乱。",
-"特朗普警告伊朗：不签协议或再动武，称可能发动一次史诗怒火行动。伊朗则扬言，若美以重启攻击，将把报复扩大至波斯湾的海底通讯电缆。霍尔木兹海峡两艘超级油轮同日触雷爆炸。",
-"泽连斯基确认乌美俄三方会谈11月上半月举行，星链服务恢复运行。俄军宣布27日在赫尔松方向实施停火。",
-"约旦教堂葬礼遇枪击，7死40伤，政府定性恐袭并全国哀悼三天。",
-"内塔尼亚胡下令约旦河西岸大规模行动，两名以军士兵遇袭身亡。",
-"布伦特原油冲上116美元，创5个月新高，美伊紧张推升供应忧虑。",
-"白宫豁免加拿大部分产品50%关税，距美国中期选举仅剩10天。",
-"瓦努阿图附近海域发生7.2级地震，已触发海啸预警。",
-"台风蔷琵袭台致1死500余伤，直扑日本；菲律宾两架军机相撞，4人死亡。"
+"全球新闻速览，2026年10月26日星期一，过去24小时全球重要事件10条。",
+"",
+"头条：巴西总统选举第二轮投票举行，卢拉对阵博索纳罗之子。巴西总统选举第二轮投票10月25日举行，现任总统卢拉与前总统之子弗拉维奥·博索纳罗对决，海外选民同步参与投票。投票一度因最高法院应卢拉阵营请求延长两小时而引发混乱，两名候选人民调胶着。",
+"",
+"国际政治。第一条：普京提议与特朗普、习近平举行三方峰会讨论乌克兰战争。普京提议下月举行三方峰会，讨论结束乌克兰战争，乌克兰未在提议之列。",
+"第二条：美国中期选举临近，特朗普支持率跌至33%创新低。距11月3日中期选举约两周，共和党两院选情告急。",
+"第三条：塞尔维亚武契奇承认败选，学生抗议运动赢得选举。执政12年的武契奇承认其领导的政党已输掉选举。",
+"",
+"地区冲突。第一条：胡塞武装称对沙特境内多处目标发动7次袭击，沙特首都机场部分恢复运营。教宗利奥十四世呼吁停止也门战事。",
+"第二条：俄乌将为阿列什基人道主义行动同步停火。泽连斯基表示，不会为结束冲突放弃更多领土。",
+"",
+"全球经济。第一条：马斯克推动SpaceX与特斯拉合并讨论。两家公司已成立特别委员会，据外媒报道，巴克莱预计或于12月前公布合并方案。",
+"第二条：海湾经济体加速多元化，伊朗战争阴影下地区经济承压。海湾国家计划在基础设施上投入数百亿美元，对冲衰退风险。",
+"",
+"突发灾难。第一条：日本小笠原群岛附近海域发生7.0级地震，震源深度480千米。同日瓦努阿图附近海域发生7.2级地震，已触发海啸预警。",
+"第二条：约旦教堂枪击事件致7人死亡，全国哀悼三天。不明身份武装分子在约旦南部一间教堂内开枪，约旦政府称系恐袭。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
@@ -264,7 +268,6 @@ btnStop.addEventListener('click', function(){
 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
 resetListenUI();
 });
-/* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
 setInterval(function(){
 if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
 window.speechSynthesis.resume();
