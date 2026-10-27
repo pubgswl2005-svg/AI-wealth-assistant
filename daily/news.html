@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 10月26日</title>
+<title>全球新闻速览 · 10月27日</title>
 <style>
 :root{
   --bg:#080B12; --bg2:#0D121C; --card:#121824;
@@ -12,7 +12,7 @@
   --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
   --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
   background:var(--bg); color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -24,34 +24,34 @@ body{
   background-attachment:fixed;
   padding-bottom:calc(28px + env(safe-area-inset-bottom));
 }
-/* ===== 顶部功能栏：复制 + 收听（固定顶栏） ===== */
+/* ===== 顶部功能栏：复制 + 收听 ===== */
 .topbar{
   position:sticky; top:0; z-index:50;
   margin:0 -16px; padding:10px 16px;
-  background:rgba(8,11,18,.96); border-bottom:2px solid var(--cyan);
+  background:rgba(13,18,28,.97); border-bottom:2px solid var(--cyan);
   display:flex; gap:10px; align-items:stretch;
   box-shadow:0 2px 12px rgba(0,0,0,.5);
-  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
 }
 .topbar button{
   flex:1; min-height:52px; border:none; border-radius:12px;
   font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
   display:flex; align-items:center; justify-content:center; gap:6px;
 }
-#btnCopy{background:#0e7fd6;}
-#btnCopy:active{background:#0a5ea3;}
+#btnCopy{background:#1447c8;}
+#btnCopy:active{background:#0d3396;}
 #btnListen{background:#065f46;}
 #btnListen:active{background:#04402f;}
 #btnStop{flex:0 0 64px; background:#b91c1c; display:none;}
+.hint{margin:12px 2px 0; font-size:13px; font-weight:700; color:var(--dim);}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
-header.top{padding:34px 0 6px}
+header.top{padding:30px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
   margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
-  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
   border:1px solid var(--stroke);
+  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   padding:22px 20px;
 }
@@ -94,78 +94,79 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 <button id="btnListen" type="button">🔊 收听</button>
 <button id="btnStop" type="button">⏹</button>
 </div>
+<p class="hint">👆 顶部两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
 <header class="top">
-  <div class="date">2026 · 10 · 26 &nbsp;星期一</div>
+  <div class="date">2026 · 10 · 27 &nbsp;星期二</div>
   <h1>全球新闻速览</h1>
   <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
   <span class="tag hot">头 条</span>
-  <h2>巴西总统选举第二轮投票举行，卢拉对阵博索纳罗之子</h2>
-  <p>巴西总统选举第二轮投票10月25日举行，现任总统卢拉与前总统之子弗拉维奥·博索纳罗对决，海外选民同步参与投票。投票一度因最高法院应卢拉阵营请求延长两小时而引发混乱，两名候选人民调胶着，结果备受全球关注。</p>
-  <div class="meta">中国新闻网 · BBC · 南华早报 · 10月25日</div>
+  <h2>卢拉险胜连任巴西总统，赢得第四个任期</h2>
+  <p>巴西最高选举法院完成全部计票后确认，左派劳工党总统卢拉在第二轮决选中以 51.8% 对 48.2% 击败右翼候选人小博索纳罗，赢得第四个非连续总统任期。这是巴西历史上首次出现首轮落败者在大选中逆转取胜。对手拒绝认输并扬言寻求选举无效，巴西股指单日暴跌 17.3%，创下历史最大单日跌幅。</p>
+  <div class="meta">BBC · 南华早报 · 中时新闻网 · 10月26日</div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-25</span>普京提议与特朗普、习近平举行三方峰会讨论乌克兰战争</h4>
-    <p>普京提议下月与特朗普、习近平举行三方峰会，讨论结束乌克兰战争，乌克兰未在提议之列。泽连斯基同日在奥斯陆会晤美国特使威特科夫。</p>
-    <div class="src">见闻 · 10月25日</div>
+    <h4><span class="t">10-26</span>塞尔维亚学生名单大胜，武契奇承认败选</h4>
+    <p>塞尔维亚 25 日国会大选出现历史性转折，由学生抗议运动发展而来的「学生名单」取得压倒性胜利，长期主导政坛的武契奇承认败选。这场被视为对国家未来全民公投的选举，终结了其长达 14 年的统治。</p>
+    <div class="src">BBC · 半岛电视台 · 中时新闻网</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-25</span>美国中期选举临近，特朗普支持率跌至33%创新低</h4>
-    <p>距11月3日中期选举约两周，特朗普支持率跌至33%，共和党两院选情告急，多名本党候选人与其保持距离。特朗普政府还提起诉讼，试图阻止阿拉斯加参议员选举结果认证。</p>
-    <div class="src">见闻 · 南华早报 · 10月25日</div>
+    <h4><span class="t">10-26</span>中共二十届五中全会开幕，聚焦全面从严治党</h4>
+    <p>中共二十届五中全会 26 日起在北京一连召开四天，聚焦研究持续推进「全面从严治党」的重大议题，并与落实「十五五」规划目标相衔接。</p>
+    <div class="src">中时新闻网 · 新华社</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-25</span>塞尔维亚武契奇承认败选，学生抗议运动赢得选举</h4>
-    <p>执政12年的塞尔维亚总统武契奇承认，其领导的政党已输掉选举，败给学生抗议运动主导的反对阵营。</p>
-    <div class="src">BBC · 10月25日</div>
+    <h4><span class="t">10-26</span>美国中期选举进入倒计时，奥巴马助选、特朗普经济施政不满度创新高</h4>
+    <p>距 11 月 3 日中期选举仅剩一周，前总统奥巴马加入助选行列为民主党站台，抨击特朗普贪腐无能。CNBC 最新民调显示，全美 65% 的选民不满特朗普的经济施政，创其两届任期以来最高纪录。</p>
+    <div class="src">中时新闻网 · CNBC</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-25</span>胡塞武装称对沙特境内多处目标发动7次袭击，沙特首都机场部分恢复运营</h4>
-    <p>也门胡塞武装称对沙特境内多处目标发动7次袭击，回应沙特一天内发动百次空袭。沙特首都利雅得国际机场25日部分恢复运营；教宗利奥十四世呼吁停止也门战事。</p>
-    <div class="src">中国新闻网 · 新华网 · 印度快报 · 10月25日</div>
+    <h4><span class="t">10-26</span>胡塞袭击沙特升级，导弹无人机袭利雅得，沙特联军反击摧毁发射器</h4>
+    <p>胡塞武装宣称以弹道导弹精确打击利雅得哈立德国王国际机场，并袭击多处原油泵站。沙特称拦截了射向利雅得的导弹与多架无人机，沙特主导的联军随即空袭萨那，摧毁两处胡塞导弹发射器。埃及议会已批准向沙特提供军事支持。</p>
+    <div class="src">南华早报 · 印度快报 · 以色列时报</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-25</span>俄乌将为阿列什基人道主义行动同步停火</h4>
-    <p>俄乌双方将为阿列什基人道主义行动同步停火。泽连斯基同日表示，不会为结束冲突放弃更多领土。</p>
-    <div class="src">中国新闻网 · 新华网 · 10月25日</div>
+    <h4><span class="t">10-26</span>特朗普警告或再对伊朗动武，内塔尼亚胡称伊朗或干扰以色列大选</h4>
+    <p>特朗普警告，若伊朗不愿通过谈判解决冲突，美国不排除再度发动小规模「史诗怒火行动」。受中东战火恐再起影响，布伦特原油飙升至 117 美元。以色列 27 日举行大选，内塔尼亚胡警告伊朗可能试图干扰选举，并称「别试探我们」。</p>
+    <div class="src">中时新闻网 · 印度快报 · 南华早报</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-26</span>美日「利剑 27」军演，近六万兵力参演</h4>
+    <p>美日联合军演「利剑 27」正在进行，近六万兵力参演并部署反舰导弹。据外媒报道，此次演习规模为近年最大，意在强化区域威慑。</p>
+    <div class="src">据外媒报道 · 新唐人全球新闻</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-25</span>马斯克推动SpaceX与特斯拉合并讨论</h4>
-    <p>马斯克说，SpaceX和特斯拉已成立特别委员会，讨论两家公司合并的可能。据外媒报道，巴克莱预计两家公司或于12月前公布合并方案。</p>
-    <div class="src">见闻 · 10月25日</div>
+    <h4><span class="t">10-26</span>大摩警告：离岸中资股恐再跌 10% 至 15%</h4>
+    <p>摩根士丹利警告，受经济增长与消费动能持续转弱、叠加全球 AI 类股回档影响，离岸中资股估值可能再下跌 10% 至 15% 才会触及历史低档水平。不过分析师仍相对看好中国 A 股。</p>
+    <div class="src">中时新闻网 · 摩根士丹利</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-25</span>海湾经济体加速多元化，伊朗战争阴影下地区经济承压</h4>
-    <p>即使地区经济下行预期加剧，海湾国家仍计划在基础设施上投入数百亿美元，加速经济多元化，以对冲伊朗战争带来的衰退风险。</p>
-    <div class="src">南华早报 · 10月25日</div>
+    <h4><span class="t">10-26</span>Anthropic 提交 IPO 申请，AI 公司上市第一股</h4>
+    <p>AI 公司 Anthropic 已提交上市申请文件，披露业务爆发式增长的同时也面临巨大成本与风险。若成功上市，将成为首家真正意义上的 AI 公司上市，时值秋季上市窗口收窄之际。</p>
+    <div class="src">南华早报 · BBC</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-25</span>日本小笠原群岛附近海域发生7.0级地震</h4>
-    <p>日本小笠原群岛附近海域10月25日发生7.0级左右地震，震源深度480千米。同日，瓦努阿图附近海域发生7.2级地震，已触发海啸预警。</p>
-    <div class="src">中国新闻网 · 10月25日</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">10-24</span>约旦教堂枪击事件致7人死亡，全国哀悼三天</h4>
-    <p>不明身份武装分子23日在约旦南部卡拉克省一间教堂内开枪，造成7人死亡、约40人受伤。约旦政府称系恐袭，已宣布全国哀悼三天。</p>
-    <div class="src">中国新闻网 · 光华日报 · 10月24日</div>
+    <h4><span class="t">10-26</span>西藏巴青 7.0 级地震余震超 2000 次，已致 16 人死亡</h4>
+    <p>西藏那曲巴青县 22 日晚 7.0 级地震后，截至 26 日上午已录得余震 2054 次，最大余震 5.7 级。地震已造成 16 人死亡、70 多人受伤，调查人员在震中附近发现一条新的地表破裂带，最深约 3.5 米。灾区安置板房已陆续通电入住，救援与安置工作有序推进。</p>
+    <div class="src">联合早报 · 光明日报 · 央视新闻</div>
   </div>
 </div>
 
@@ -175,22 +176,17 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 
 <script>
 var PLAIN = [
-"全球新闻速览，2026年10月26日星期一，过去24小时全球重要事件10条。",
-"",
-"头条：巴西总统选举第二轮投票举行，卢拉对阵博索纳罗之子。巴西总统选举第二轮投票10月25日举行，现任总统卢拉与前总统之子弗拉维奥·博索纳罗对决，海外选民同步参与投票。投票一度因最高法院应卢拉阵营请求延长两小时而引发混乱，两名候选人民调胶着。",
-"",
-"国际政治。第一条：普京提议与特朗普、习近平举行三方峰会讨论乌克兰战争。普京提议下月举行三方峰会，讨论结束乌克兰战争，乌克兰未在提议之列。",
-"第二条：美国中期选举临近，特朗普支持率跌至33%创新低。距11月3日中期选举约两周，共和党两院选情告急。",
-"第三条：塞尔维亚武契奇承认败选，学生抗议运动赢得选举。执政12年的武契奇承认其领导的政党已输掉选举。",
-"",
-"地区冲突。第一条：胡塞武装称对沙特境内多处目标发动7次袭击，沙特首都机场部分恢复运营。教宗利奥十四世呼吁停止也门战事。",
-"第二条：俄乌将为阿列什基人道主义行动同步停火。泽连斯基表示，不会为结束冲突放弃更多领土。",
-"",
-"全球经济。第一条：马斯克推动SpaceX与特斯拉合并讨论。两家公司已成立特别委员会，据外媒报道，巴克莱预计或于12月前公布合并方案。",
-"第二条：海湾经济体加速多元化，伊朗战争阴影下地区经济承压。海湾国家计划在基础设施上投入数百亿美元，对冲衰退风险。",
-"",
-"突发灾难。第一条：日本小笠原群岛附近海域发生7.0级地震，震源深度480千米。同日瓦努阿图附近海域发生7.2级地震，已触发海啸预警。",
-"第二条：约旦教堂枪击事件致7人死亡，全国哀悼三天。不明身份武装分子在约旦南部一间教堂内开枪，约旦政府称系恐袭。"
+"全球新闻速览，2026年10月27日星期二。过去24小时，全球重要事件10条。",
+"头条：卢拉险胜连任巴西总统，赢得第四个任期。巴西最高选举法院完成全部计票后确认，左派劳工党总统卢拉在第二轮决选中以百分之51点8对百分之48点2，击败右翼候选人小博索纳罗，赢得第四个非连续总统任期。这是巴西历史上首次出现首轮落败者在大选中逆转取胜。对手拒绝认输并扬言寻求选举无效，巴西股指单日暴跌百分之17点3，创下历史最大单日跌幅。",
+"国际政治第一条：塞尔维亚学生名单大胜，武契奇承认败选。塞尔维亚25日国会大选出现历史性转折，由学生抗议运动发展而来的学生名单取得压倒性胜利，长期主导政坛的武契奇承认败选。这场被视为对国家未来全民公投的选举，终结了其长达14年的统治。",
+"国际政治第二条：中共二十届五中全会开幕，聚焦全面从严治党。中共二十届五中全会26日起在北京一连召开四天，聚焦研究持续推进全面从严治党的重大议题，并与落实十五五规划目标相衔接。",
+"国际政治第三条：美国中期选举进入倒计时，奥巴马助选，特朗普经济施政不满度创新高。距11月3日中期选举仅剩一周，前总统奥巴马加入助选行列为民主党站台，抨击特朗普贪腐无能。CNBC最新民调显示，全美百分之65的选民不满特朗普的经济施政，创其两届任期以来最高纪录。",
+"地区冲突第一条：胡塞袭击沙特升级，导弹无人机袭利雅得，沙特联军反击摧毁发射器。胡塞武装宣称以弹道导弹精确打击利雅得哈立德国王国际机场，并袭击多处原油泵站。沙特称拦截了射向利雅得的导弹与多架无人机，沙特主导的联军随即空袭萨那，摧毁两处胡塞导弹发射器。埃及议会已批准向沙特提供军事支持。",
+"地区冲突第二条：特朗普警告或再对伊朗动武，内塔尼亚胡称伊朗或干扰以色列大选。特朗普警告，若伊朗不愿通过谈判解决冲突，美国不排除再度发动小规模史诗怒火行动。受中东战火恐再起影响，布伦特原油飙升至117美元。以色列27日举行大选，内塔尼亚胡警告伊朗可能试图干扰选举，并称别试探我们。",
+"地区冲突第三条：美日利剑27军演，近六万兵力参演。美日联合军演利剑27正在进行，近六万兵力参演并部署反舰导弹。据外媒报道，此次演习规模为近年最大，意在强化区域威慑。",
+"全球经济第一条：大摩警告，离岸中资股恐再跌百分之10至15。摩根士丹利警告，受经济增长与消费动能持续转弱，叠加全球AI类股回档影响，离岸中资股估值可能再下跌百分之10至15，才会触及历史低档水平。不过分析师仍相对看好中国A股。",
+"全球经济第二条：Anthropic提交IPO申请，AI公司上市第一股。AI公司Anthropic已提交上市申请文件，披露业务快速增长的同时也面临巨大成本与风险。若成功上市，将成为首家真正意义上的AI公司上市，时值秋季上市窗口收窄之际。",
+"突发灾难：西藏巴青7点0级地震余震超2000次，已致16人死亡。西藏那曲巴青县22日晚7点0级地震后，截至26日上午已录得余震2054次，最大余震5点7级。地震已造成16人死亡、70多人受伤，调查人员在震中附近发现一条新的地表破裂带，最深约3点5米。灾区安置板房已陆续通电入住，救援与安置工作有序推进。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */

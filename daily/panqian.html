@@ -2,201 +2,265 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>每日盘前预判 · 2026年10月23日</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日盘前预判 旗舰版 V2.1 · 2026-10-27</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-body {
-font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
-background: linear-gradient(180deg, #c3d0df 0%, #aebfd3 100%);
-color:#07182b; min-height:100vh; padding:0 12px 28px;
-}
-/* ===== 顶部功能栏：复制 + 收听（固定格式） ===== */
-.topbar {
-position: sticky; top:0; z-index:50;
-margin:0 -12px; padding:10px 12px;
-background:#ffffff; border-bottom:2px solid #1447c8;
-display:flex; gap:10px; align-items:stretch;
-box-shadow:0 2px 10px rgba(7,24,43,.18);
-}
-.topbar button {
-flex:1; min-height:52px; border:none; border-radius:12px;
-font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
-display:flex; align-items:center; justify-content:center; gap:6px;
-}
-#btnCopy { background:#1447c8;}
-#btnCopy:active { background:#0d3396;}
-#btnListen { background:#065f46;}
-#btnListen:active { background:#04402f;}
-#btnStop { flex:0 0 64px; background:#b91c1c; display:none;}
-.hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#243b55;}
-.card {
-background:#ffffff; border-radius:16px; margin-top:12px;
-padding:18px 16px; box-shadow:0 2px 8px rgba(7,24,43,.12);
-}
-h1 { font-size:21px; font-weight:900; line-height:1.35;}
-.date { margin-top:4px; font-size:14px; font-weight:700; color:#243b55;}
-h2 { font-size:17px; font-weight:900; margin:16px 0 8px; color:#1447c8;}
-p, li { font-size:16px; font-weight:600; line-height:1.65;}
-ul { padding-left:20px;}
-li { margin:4px 0;}
-.red { color:#d40000; font-weight:900;}
-.grn { color:#047857; font-weight:900;}
-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:14px; font-weight:700;}
-th, td { border:1px solid #9db4cc; padding:8px 6px; text-align:left;}
-th { background:#1447c8; color:#fff;}
-pre { background:#0b1f3a; color:#e8f1ff; border-radius:10px; padding:12px; font-size:13px; line-height:1.6; overflow-x:auto; white-space:pre-wrap; word-break:break-all; margin-top:8px;}
-.foot { margin-top:16px; font-size:12px; font-weight:700; color:#5a6b80; text-align:center;}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+         background:#0e1420; color:#e8edf4; padding:0 12px 40px; }
+  .wrap { max-width:560px; margin:0 auto; }
+  /* ===== 顶部功能栏：复制 + 收听（照抄已验证样板 每日信息卡-v20261022-1.html） ===== */
+  .topbar {
+    position: sticky; top:0; z-index:50;
+    margin:0 -12px; padding:10px 12px;
+    background:#ffffff; border-bottom:2px solid #1447c8;
+    display:flex; gap:10px; align-items:stretch;
+    box-shadow:0 2px 10px rgba(7,24,43,.18);
+  }
+  .topbar button {
+    flex:1; min-height:52px; border:none; border-radius:12px;
+    font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  #btnCopy { background:#1447c8;}
+  #btnCopy:active { background:#0d3396;}
+  #btnListen { background:#065f46;}
+  #btnListen:active { background:#04402f;}
+  #btnStop { flex:0 0 64px; background:#b91c1c; display:none;}
+  .hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#8fa3c2;}
+  .hero { background:linear-gradient(135deg,#16233a 0%,#0e1a30 60%,#1a2f1e 100%);
+          border:1px solid #24344d; border-radius:16px; padding:20px 18px 16px; margin:12px 0; }
+  .hero .ver { font-size:12px; color:#8fa3c2; letter-spacing:2px; }
+  .hero h1 { font-size:24px; margin:6px 0 4px; letter-spacing:1px; }
+  .hero .date { font-size:14px; color:#f0b429; font-weight:700; }
+  .hero .date small { color:#8fa3c2; font-weight:400; }
+  .conclusion { background:linear-gradient(135deg,#12301f,#14241a); border:1px solid #2e6b45;
+                border-radius:12px; padding:14px 14px; margin-bottom:12px; font-size:14px; line-height:1.75; }
+  .conclusion b { color:#7ce3a1; }
+  .card { background:#141d2e; border:1px solid #22304a; border-radius:12px;
+          padding:14px 14px; margin-bottom:12px; }
+  .card h2 { font-size:15px; margin-bottom:10px; color:#9fc1ff; letter-spacing:1px;
+             border-left:3px solid #4d7cff; padding-left:8px; }
+  .card h2 .tag { font-size:11px; color:#8fa3c2; font-weight:400; }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  th { text-align:left; color:#8fa3c2; font-weight:600; font-size:11.5px; padding:6px 4px;
+       border-bottom:1px solid #22304a; }
+  td { padding:7px 4px; border-bottom:1px solid #1a2436; line-height:1.5; vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  .sig { font-weight:700; white-space:nowrap; }
+  .up { color:#ff6b6b; } .dn { color:#51cf66; }
+  .grouplab { font-size:12px; font-weight:700; color:#c9d6ea; background:#1b2740;
+              padding:5px 8px; border-radius:6px; margin:10px 0 2px; display:inline-block; }
+  .prob { white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .days { display:flex; gap:8px; }
+  .day { flex:1; background:#182234; border:1px solid #22304a; border-radius:10px; padding:10px 8px; text-align:center; }
+  .day .d { font-size:12px; color:#8fa3c2; } .day .s { font-size:20px; margin:6px 0; }
+  .day .p { font-size:11.5px; line-height:1.6; color:#c9d6ea; }
+  .kvs { font-size:13px; line-height:1.9; }
+  .kvs .k { color:#8fa3c2; }
+  .bar { height:8px; background:#22304a; border-radius:4px; overflow:hidden; margin-top:6px; }
+  .bar i { display:block; height:100%; background:linear-gradient(90deg,#f0b429,#7ce3a1); border-radius:4px; }
+  .risk li, .hot li, .strong li { font-size:13px; line-height:1.7; margin-bottom:6px; list-style:none; }
+  .risk li::before { content:"⚠ "; } .hot li::before { content:"• "; color:#f0b429; }
+  .strong li::before { content:"▲ "; color:#7ce3a1; }
+  .track { background:#182234; border:1px solid #22304a; border-radius:10px; padding:10px 12px; margin-bottom:8px; }
+  .track h3 { font-size:13.5px; margin-bottom:6px; }
+  .track p { font-size:12.5px; line-height:1.75; color:#c9d6ea; }
+  .track .op { color:#7ce3a1; font-weight:700; }
+  .prompt { font-size:12.5px; line-height:1.8; color:#c9d6ea; background:#182234;
+            border:1px dashed #4d7cff; border-radius:10px; padding:12px; }
+  .foot { font-size:11px; color:#6b7d99; line-height:1.7; margin-top:14px; }
+  .foot a { color:#6b7d99; }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="topbar">
-<button id="btnCopy" type="button">📋 复制全文</button>
-<button id="btnListen" type="button">🔊 收听</button>
-<button id="btnStop" type="button">⏹</button>
-</div>
-<p class="hint">👆 顶部两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
+  <div class="topbar">
+    <button id="btnCopy" type="button">📋 复制全文</button>
+    <button id="btnListen" type="button">🔊 收听</button>
+    <button id="btnStop" type="button">⏹</button>
+  </div>
+  <p class="hint">👆 顶部两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
-<div class="card">
-<h1>📊 每日盘前预判 旗舰版 V2.1</h1>
-<p class="date">2026年10月23日 星期五 · 今日为 A 股交易日</p>
+  <div class="hero">
+    <div class="ver">每日盘前预判 · 旗舰版 V2.1</div>
+    <h1>📊 A股盘前预判</h1>
+    <div class="date">2026-10-27（周二）<small> · 北京时间 08:00 推送</small></div>
+  </div>
 
-<h2>📌 先给结论</h2>
-<p><span class="red">隔夜费城半导体相关 ETF 暴跌约 6.8%</span>，A 股科技线今日开盘承压；沪指昨日收 <b>3713.03 点（-0.60%）</b>，贴着昨日预判区间下沿，今日看<b>低开后震荡修复</b>。防御（银行、医药）与资源（稀土有色）相对占优，<b>4 成仓位持有为主，不追高</b>。</p>
+  <div class="conclusion">
+    <b>结论先行：</b>今日大概率<b>⚪高开震荡偏强</b>。支撑面：隔夜美股全线反弹（道指 +0.24%、标普 +0.73%、纳指 +0.94%）、费城半导体大涨 +3.27%（11,131.99 点）、富时中国 A50 期指夜盘 +0.14% 报 13,307、人民币中间价 6.7162 平稳；存储链有利好（长鑫科技 DDR5 良率重要突破、美光 +3.42%、SK 海力士 +3.5%）。压制面：昨日 A 股分化、超 3100 只个股下跌，成交缩量 3475 亿至 1.61 万亿；融资余额减少 242.78 亿；算力硬件高位回调，马斯克警告新云厂商将迎整合与倒闭潮；油价突破 102 美元，通胀黏性仍在。<b>操作：持有为主，仓位 5 成；存储芯片 / 半导体设备持仓不动；不追高；严防三季报业绩雷。</b>
+  </div>
 
-<h2>一、全板块今日预测（含资金流向）</h2>
-<p>资金流向：避险资金流向银行、医药等高股息防御板块与稀土有色；科技线资金观望、等开盘承接力度再定；北向偏谨慎。</p>
-<ul>
-<li><span class="red">🔴 看涨 · 稀土永磁 / 有色金属</span>：上涨 <b>57%</b> / 下跌 <b>43%</b> —— 中国收紧稀土供应，日本关键稀土"仅能维持数月"，涨价逻辑硬。</li>
-<li><span class="red">🔴 看涨 · 银行</span>：上涨 <b>55%</b> / 下跌 <b>45%</b> —— 高股息避险+发改委重磅发声预期，防御资金首选。</li>
-<li><span class="red">🔴 看涨 · 医药生物</span>：上涨 <b>54%</b> / 下跌 <b>46%</b> —— 防御轮动，跌多了有补涨需求。</li>
-<li><span class="red">🔴 看涨 · 白酒 / 大消费</span>：上涨 <b>53%</b> / 下跌 <b>47%</b> —— 估值低位，防御资金溢出受益。</li>
-<li>⚪ 震荡 · 国防军工：上涨 <b>47%</b> / 下跌 <b>53%</b> —— 事件驱动间歇，维持箱体。</li>
-<li>⚪ 震荡 · 房地产 / 基建：上涨 <b>46%</b> / 下跌 <b>54%</b> —— 政策预期托底，上行动能不足。</li>
-<li>⚪ 震荡 · 半导体设备：上涨 <b>45%</b> / 下跌 <b>55%</b> —— 昨日逆势收红+国产替代逻辑；但隔夜费半 ETF 暴跌约 6.8%，且下周西安奕材 617 亿解禁临近，偏谨慎。</li>
-<li>⚪ 震荡 · 新能源（宁德链）：上涨 <b>45%</b> / 下跌 <b>55%</b> —— 宁德时代三季报后暴跌 12.03%，今日看超跌修复力度。</li>
-<li>⚪ 震荡偏弱 · <b>存储芯片</b>：上涨 <b>43%</b> / 下跌 <b>57%</b> —— 大摩、摩根大通看好存储巨头（三星、海力士、铠侠）中线；但 SK 海力士隔夜跌 6.58%，江波龙三季报利润环比降约 40%，短线承压。</li>
-<li><span class="grn">🟢 看跌 · AI 算力</span>：上涨 <b>35%</b> / 下跌 <b>65%</b> —— CoreWeave 隔夜跌 11.91%、甲骨文跌 4.64%，AI 融资担忧发酵。</li>
-<li><span class="grn">🟢 看跌 · 消费电子</span>：上涨 <b>40%</b> / 下跌 <b>60%</b> —— 苹果隔夜逆涨 0.43%，但产业链跟跌，情绪拖累。</li>
-<li><span class="grn">🟢 看跌 · 光模块 / 通信</span>：上涨 <b>40%</b> / 下跌 <b>60%</b> —— 跟随 AI 算力链调整。</li>
-</ul>
+  <div class="card">
+    <h2>一、全板块今日预测 <span class="tag">涨/跌概率为基于事实的情景推导，非精确统计</span></h2>
+    <div class="kvs" style="margin-bottom:6px">
+      <span class="k">资金流向：</span>宽基 ETF 托底资金继续流入；活跃资金轮动半导体链＋机器人＋油气；外资偏谨慎（美联储本周议息，维持利率不变概率 89.5%）。<br>
+      <span class="k">重点板块：</span>半导体设备、存储芯片（用户重点跟踪）、机器人 / 具身智能、油气。
+    </div>
+    <span class="grouplab">🔴 看涨板块</span>
+    <table>
+      <tr><th>板块</th><th>判断</th><th>上涨概率</th><th>下跌概率</th></tr>
+      <tr><td>半导体设备</td><td class="sig">🔴看涨</td><td class="prob up">57%</td><td class="prob dn">43%</td></tr>
+      <tr><td>存储芯片</td><td class="sig">🔴看涨</td><td class="prob up">56%</td><td class="prob dn">44%</td></tr>
+      <tr><td>机器人 / 具身智能</td><td class="sig">🔴看涨</td><td class="prob up">55%</td><td class="prob dn">45%</td></tr>
+      <tr><td>油气</td><td class="sig">🔴看涨</td><td class="prob up">54%</td><td class="prob dn">46%</td></tr>
+    </table>
+    <span class="grouplab">⚪ 震荡板块</span>
+    <table>
+      <tr><th>板块</th><th>判断</th><th>上涨概率</th><th>下跌概率</th></tr>
+      <tr><td>白酒</td><td class="sig">⚪震荡</td><td class="prob up">51%</td><td class="prob dn">49%</td></tr>
+      <tr><td>医药</td><td class="sig">⚪震荡</td><td class="prob up">50%</td><td class="prob dn">50%</td></tr>
+      <tr><td>银行 / 红利</td><td class="sig">⚪震荡</td><td class="prob up">50%</td><td class="prob dn">50%</td></tr>
+      <tr><td>贵金属</td><td class="sig">⚪震荡</td><td class="prob up">49%</td><td class="prob dn">51%</td></tr>
+      <tr><td>房地产</td><td class="sig">⚪震荡</td><td class="prob up">48%</td><td class="prob dn">52%</td></tr>
+    </table>
+    <span class="grouplab">🟢 看跌板块</span>
+    <table>
+      <tr><th>板块</th><th>判断</th><th>上涨概率</th><th>下跌概率</th></tr>
+      <tr><td>算力硬件（CPO / PCB）</td><td class="sig">🟢看跌</td><td class="prob up">46%</td><td class="prob dn">54%</td></tr>
+      <tr><td>消费电子</td><td class="sig">🟢看跌</td><td class="prob up">45%</td><td class="prob dn">55%</td></tr>
+      <tr><td>煤炭</td><td class="sig">🟢看跌</td><td class="prob up">44%</td><td class="prob dn">56%</td></tr>
+    </table>
+  </div>
 
-<h2>二、大盘判断 · 三日展望</h2>
-<ul>
-<li><b>今日（10-23 周五）</b>：⚪ 低开后震荡修复，上证指数运行区间 <b>3650–3720 点</b>；上涨概率 <b>45%</b> / 下跌概率 <b>55%</b>。</li>
-<li><b>明天（10-24 周六）</b>：休市，无交易。</li>
-<li><b>后天（10-25 周日）</b>：休市，无交易；预判顺延至下周一（10-26），关注周末政策面与外盘。</li>
-</ul>
-<p>依据：昨日沪指收 3713.03（-0.60%）；富时 A50 期指 10-22 日间跌 1%、夜盘收涨 0.29% 报 13202 点，多空分歧大。</p>
+  <div class="card">
+    <h2>二、大盘判断</h2>
+    <div class="kvs">
+      <span class="k">方向：</span>⚪ 高开震荡偏强（隔夜美股大涨＋费半 +3.27% → 开盘高开；昨日 A 股跌面广＋量能萎缩 → 盘中分化，科技反弹持续性待观察）<br>
+      <span class="k">运行区间：</span>上证 <b>3670 – 3730</b>（昨日收涨 0.19%，约收 3698，按午间点位与收盘涨幅推算）<br>
+      <span class="k">今日涨跌概率：</span><span class="prob up">上涨 55%</span> / <span class="prob dn">下跌 45%</span>
+      <div class="bar"><i style="width:55%"></i></div>
+    </div>
+  </div>
 
-<h2>三、最强主线</h2>
-<p><span class="red">稀土资源（供应收紧涨价）+ 高股息防御（银行）</span>。发改委重磅发声在即，政策预期给防御线托底。</p>
+  <div class="card">
+    <h2>三、最强主线 / 四、最大风险</h2>
+    <div class="kvs">
+      <span class="k">最强主线：</span><b>半导体链反弹（设备＋存储）</b>＋机器人 / 具身智能＋油气。依据：隔夜费半 +3.27%、美光 +3.42%、SK 海力士 +3.5%、长鑫 DDR5 良率突破；宇树科技 +7%、王兴兴称具身智能 1–3 年迎关键节点；中国石油创 18 年新高。<br>
+      <span class="k">最大风险：</span>
+    </div>
+    <ul class="risk">
+      <li>三季报业绩雷：财报季分化加剧，宁德时代 10-21 财报后曾暴跌 12.03%，江波龙 Q3 环比下滑约 40%——未披露的高估值个股先规避</li>
+      <li>算力硬件高位回调：昨日 CPO / PCB 跌停潮（华正新材、澳弘电子、华盛昌跌停）；马斯克警告新云厂商将迎大规模整合与倒闭潮，AI 算力举债扩张模式可持续性存疑</li>
+      <li>量能萎缩、资金偏谨慎：昨日成交 1.61 万亿、缩量 3475 亿，超 3100 只个股下跌；两市融资余额减少 242.78 亿</li>
+      <li>油价突破 102 美元 / 桶，通胀黏性比预期更强，美联储本周议息看外围</li>
+    </ul>
+  </div>
 
-<h2>四、最大风险</h2>
-<ul>
-<li><span class="red">🔴 外盘传导</span>：费城半导体相关 ETF 隔夜暴跌约 6.8%，纳指走弱，A 股半导体、AI 算力开盘承压。</li>
-<li><span class="red">🔴 三季报业绩雷</span>：宁德时代昨日暴跌 12.03% 是前车之鉴，本周密集披露期，业绩不确定标的先避开。</li>
-<li>解禁压力：10 月最后两周合计 1976.2 亿解禁，信息技术行业占 80.4%；10 月 28 日西安奕材 617.02 亿解禁，半导体情绪受压。</li>
-</ul>
+  <div class="card">
+    <h2>五、操作策略 <span class="tag">建议非指令，请结合自身风险承受力</span></h2>
+    <div class="kvs">
+      ● <b>持有为主，仓位 5 成</b>：不加仓追高，也不恐慌割肉<br>
+      ● 存储芯片 / 半导体设备：<b>持仓不动</b>，等反弹确认再看，不追高<br>
+      ● 三季报未披露的高估值个股先规避，等业绩落地<br>
+      ● 银行红利可作防御底仓；机器人 / 油气看戏不追
+    </div>
+  </div>
 
-<h2>五、操作策略</h2>
-<p><b>4 成仓位持有为主</b>：不追高、不抄底科技线，等企稳信号；防御与资源线可拿着；三季报披露期不碰业绩不明个股；定投按计划照常（与盘前判断无关）。</p>
+  <div class="card">
+    <h2>六、资金方向 / 七、强势板块</h2>
+    <div class="kvs">
+      <span class="k">资金方向：</span>宽基 ETF 托底资金流入；活跃资金轮动半导体链＋机器人＋油气；外资谨慎观望。
+    </div>
+    <ul class="strong">
+      <li>半导体设备（费半 +3.27% 映射＋设备 ETF 获 3.93 亿份净申购）</li>
+      <li>存储芯片（美光、SK 海力士大涨＋长鑫 DDR5 突破）</li>
+      <li>机器人 / 具身智能（宇树 +7%＋GPT-6 / Astra 催化）</li>
+      <li>油气（中国石油创 18 年新高＋WTI 破 102 美元）</li>
+      <li>数据要素（海量数据、延华智能涨停延续）</li>
+    </ul>
+  </div>
 
-<h2>六、资金方向 / 七、强势板块</h2>
-<ul>
-<li>资金方向：避险→银行、医药；主题→稀土有色；观望→半导体设备、存储（等开盘承接）。</li>
-<li>强势板块：稀土永磁、有色金属、银行、高股息。</li>
-</ul>
+  <div class="card">
+    <h2>八、重点持仓跟踪</h2>
+    <div class="track">
+      <h3>💾 存储芯片 <span class="sig">🔴看涨</span> <span class="prob up">涨 56%</span> / <span class="prob dn">跌 44%</span></h3>
+      <p>隔夜美光 +3.42%、SK 海力士 +3.5%、费半 +3.27%；长鑫科技 DDR5 良率实现重要突破。用户持仓：方正富邦核心优势混合 C（018816）持有 10,848.92 元、浮亏 -27.67%（10-26 日报）。<span class="op">操作：持仓不动，不追高。</span></p>
+    </div>
+    <div class="track">
+      <h3>🔧 半导体设备 <span class="sig">🔴看涨</span> <span class="prob up">涨 57%</span> / <span class="prob dn">跌 43%</span></h3>
+      <p>费半 +3.27%、设备 ETF 易方达（159558）获 3.93 亿份净申购；昨日中证半导体材料设备主题指数 -2.8%，超跌反弹逻辑。东方人工智能主题混合 C（017811）已于 10-25 全部赎回（3,874.58 份），不再持有。<span class="op">操作：只剩 018816 一只持仓，耐心持有。</span></p>
+    </div>
+  </div>
 
-<h2>八、重点持仓跟踪</h2>
-<ul>
-<li><b>存储芯片</b>：⚪ 震荡偏弱，上涨 <b>43%</b> / 下跌 <b>57%</b>。中线逻辑未坏（大摩：存储巨头估值近周期低谷；摩根大通看好未来 6 个月三星、海力士、铠侠），短线跟随外盘调整，不割肉、不加仓，等企稳。</li>
-<li><b>半导体设备</b>：⚪ 震荡，上涨 <b>45%</b> / 下跌 <b>55%</b>。昨日逆势收红 0.29% 显示有承接，但今日外盘压力大，持有观望。</li>
-</ul>
+  <div class="card">
+    <h2>九、本周 / 下周 / 本月 / 下月展望</h2>
+    <div class="kvs">
+      <span class="k">本周：</span>震荡修复，隔夜美股反弹＋三季报密集披露决定个股分化<br>
+      <span class="k">下周：</span>11 月初，三季报落地后看业绩线＋政策预期<br>
+      <span class="k">本月：</span>10 月调整后修复，结构分化不改<br>
+      <span class="k">下月：</span>11 月，看业绩线＋年末政策窗口
+    </div>
+  </div>
 
-<h2>九、本周 / 下周 / 本月 / 下月展望</h2>
-<ul>
-<li><b>本周</b>（收官）：谨慎收官，控制仓位过周末。</li>
-<li><b>下周</b>：关键变量——10 月 28 日西安奕材 617 亿解禁 + 三季报密集披露，波动放大，防御优先。</li>
-<li><b>本月</b>：震荡筑底，3650 一带有支撑，3700 上方需放量。</li>
-<li><b>下月</b>：财报季落地后看估值修复，存储上行周期+AI 资本开支兑现是核心观察点。</li>
-</ul>
+  <div class="card">
+    <h2>十、一句话总结</h2>
+    <div class="kvs">隔夜美股大涨、费半涨 3.27%，今日高开震荡偏强、半导体链相对占优，<b>5 成仓位持有不动</b>。</div>
+  </div>
 
-<h2>十、一句话总结</h2>
-<p><span class="red">外盘半导体暴跌施压开盘，今日防御和资源占优，4 成仓持有、等科技线企稳再动。</span></p>
+  <div class="card">
+    <h2>📰 财经热点（5 项）</h2>
+    <ul class="hot">
+      <li>隔夜美股全线反弹：道指 +0.24%、标普 +0.73%、纳指 +0.94%，费半大涨 3.27%，Anthropic 提交 IPO 申请提振 AI 股</li>
+      <li>A 股昨日分化：沪指 +0.19%，深成指 -1.19%、创业板 -1.71%，成交 1.61 万亿缩量 3475 亿，超 3100 只个股下跌</li>
+      <li>存储链利好：长鑫科技 DDR5 良率重要突破；半导体设备 ETF 易方达（159558）获 3.93 亿份净申购；美光 +3.42%、SK 海力士 +3.5%</li>
+      <li>油价与机器人：WTI 原油突破 102 美元 / 桶，中国石油创 18 年新高；宇树科技 +7%，王兴兴称具身智能 1–3 年迎关键节点</li>
+      <li>三季报密集披露：1028 家已披露，548 家净利增长、176 家翻倍，半导体等行业业绩回暖明显；马斯克警告新云厂商将迎整合与倒闭潮</li>
+    </ul>
+  </div>
 
-<h2>十一、财经热点（5项）</h2>
-<ul>
-<li>1. 隔夜美股：费城半导体相关 ETF 暴跌约 6.8%，CoreWeave 跌 11.91%，美联储主席沃什称对美国经济乐观。</li>
-<li>2. 发改委重磅发声在即，市场预期政策利好（新浪热榜第一）。</li>
-<li>3. 中国收紧稀土供应，日本关键稀土"仅能维持数月"，稀土涨价逻辑强化。</li>
-<li>4. 美国 2026 财年财政赤字 1.99 万亿美元，创五年新高。</li>
-<li>5. *ST 萃华今日起进入 15 个交易日退市整理期；10 月最后两周 A 股迎 1976.2 亿解禁潮。</li>
-</ul>
+  <div class="card">
+    <h2>📅 未来三天预测</h2>
+    <div class="days">
+      <div class="day"><div class="d">今天 10-27（周二）</div><div class="s">⚪</div><div class="p">高开震荡偏强<br>上证 3670–3730<br>涨 55% / 跌 45%</div></div>
+      <div class="day"><div class="d">明天 10-28（周三）</div><div class="s">⚪</div><div class="p">震荡<br>三季报密集<br>涨 50% / 跌 50%</div></div>
+      <div class="day"><div class="d">后天 10-29（周四）</div><div class="s">⚪</div><div class="p">震荡<br>三季报密集<br>涨 48% / 跌 52%</div></div>
+    </div>
+  </div>
 
-<h2>十二、简洁表格</h2>
-<table>
-<tr><th>板块</th><th>信号</th><th>上涨/下跌</th><th>一句话理由</th></tr>
-<tr><td>稀土有色</td><td><span class="red">🔴看涨</span></td><td>57/43</td><td>供应收紧，日本稀土告急</td></tr>
-<tr><td>银行</td><td><span class="red">🔴看涨</span></td><td>55/45</td><td>高股息避险+政策预期</td></tr>
-<tr><td>医药生物</td><td><span class="red">🔴看涨</span></td><td>54/46</td><td>防御轮动补涨</td></tr>
-<tr><td>白酒消费</td><td><span class="red">🔴看涨</span></td><td>53/47</td><td>估值低位防御溢出</td></tr>
-<tr><td>军工</td><td>⚪震荡</td><td>47/53</td><td>事件间歇看箱体</td></tr>
-<tr><td>地产基建</td><td>⚪震荡</td><td>46/54</td><td>政策托底上行乏力</td></tr>
-<tr><td>半导体设备</td><td>⚪震荡</td><td>45/55</td><td>昨日收红但外盘施压</td></tr>
-<tr><td>新能源</td><td>⚪震荡</td><td>45/55</td><td>宁德暴跌后看修复</td></tr>
-<tr><td>存储芯片</td><td>⚪震荡偏弱</td><td>43/57</td><td>中线未坏短线承压</td></tr>
-<tr><td>AI算力</td><td><span class="grn">🟢看跌</span></td><td>35/65</td><td>CoreWeave崩融资担忧</td></tr>
-<tr><td>消费电子</td><td><span class="grn">🟢看跌</span></td><td>40/60</td><td>苹果逆涨难带产业链</td></tr>
-<tr><td>光模块通信</td><td><span class="grn">🟢看跌</span></td><td>40/60</td><td>跟随AI链调整</td></tr>
-</table>
+  <div class="card">
+    <h2>📝 投资分析提示词模板</h2>
+    <div class="prompt">请按以下框架分析今日 A 股：1）隔夜美股三大指数与费城半导体收盘涨跌；2）富时中国 A50 期指与离岸人民币表现；3）今日大盘方向与运行区间，给出上涨/下跌概率；4）分板块列出看涨/震荡/看跌及概率；5）最强主线与最大风险；6）操作策略与仓位建议；7）重点跟踪存储芯片与半导体设备。要求：事实与推断分开写，概率注明为情景推导，不构成投资建议。</div>
+  </div>
 
-<h2>十三、可直接套用的投资分析提示词模板</h2>
-<pre>
-请按以下框架分析今日 A 股盘前局势（日期：____）：
-1. 隔夜外盘：美股三大指数、费城半导体指数、富时 A50 期指、离岸人民币涨跌幅（只用已核实数据，不编造）；
-2. 昨日 A 股：沪指/创业板收盘点位与涨跌幅，成交量变化；
-3. 全板块预测：用 🔴看涨 / ⚪震荡 / 🟢看跌 排序，每个板块给出上涨概率和下跌概率并说明理由；
-4. 大盘判断：方向 + 运行区间 + 今日涨跌概率；
-5. 最强主线 / 最大风险 / 操作策略（含仓位建议）/ 资金方向 / 强势板块；
-6. 重点持仓跟踪：存储芯片、半导体设备今日信号与操作；
-7. 本周/下周/本月/下月展望；8. 一句话总结；9. 财经热点 5 项。
-要求：事实、推断、预测、建议分开写；概率必须基于事实推导，严禁编造。</pre>
+  <div class="foot">
+    说明：全部上涨/下跌概率为基于已核实事实的情景推导（主观判断），非精确统计模型输出，未编造数据。未核实项：离岸人民币最新实时价（仅 10-26 中间价 6.7162 已核实）、A50 期指今晨开盘表现（仅夜盘 +0.14% 报 13,307 已核实）——正文结论为定性判断，未作精确引用。昨日沪指约 3698 为按午间点位与收盘涨幅推算值。<br>
+    事实来源：路透社 10-26 美股收盘（道指 52,340.50、纳指 26,198.83、标普 7,679.40、费半 11,131.99）、财联社 / 每日经济新闻 10-26 A 股收盘、新华社人民币市场汇价（10-26）、FastBull A50 期指夜盘。内容仅为市场分析，不构成投资建议。
+  </div>
 
-<p class="foot">每日盘前预判 旗舰版 V2.1 · 2026-10-23 · 数据截至今晨 8:00 前已核实，概率为基于事实的推导判断、非承诺</p>
 </div>
 
 <script>
 var PLAIN = [
 "每日盘前预判 旗舰版 V2.1",
-"2026年10月23日 星期五 · 今日为 A 股交易日",
+"2026年10月27日 星期二 · 北京时间 08:00 推送",
 "",
-"先给结论：隔夜费城半导体相关 ETF 暴跌约 6.8%，A 股科技线今日开盘承压；沪指昨日收 3713.03 点（跌 0.60%），今日看低开后震荡修复。防御（银行、医药）与资源（稀土有色）相对占优，4 成仓位持有为主，不追高。",
+"结论先行：今日大概率高开震荡偏强。上证指数运行区间 3670 到 3730 点，上涨概率 55%，下跌概率 45%。",
+"支撑面：隔夜美股全线反弹，道指涨 0.24%，标普涨 0.73%，纳指涨 0.94%；费城半导体大涨 3.27%，报 11131.99 点；富时中国 A50 期指夜盘涨 0.14%，报 13307 点；人民币中间价 6.7162，平稳。存储链有利好，长鑫科技 DDR5 良率重要突破，美光涨 3.42%，SK 海力士涨 3.5%。",
+"压制面：昨日 A 股分化，超 3100 只个股下跌，成交缩量 3475 亿到 1.61 万亿；融资余额减少 242.78 亿；算力硬件高位回调，马斯克警告新云厂商将迎整合与倒闭潮；油价突破 102 美元，通胀黏性仍在。",
+"操作：持有为主，仓位 5 成；存储芯片、半导体设备持仓不动；不追高；严防三季报业绩雷。",
 "",
-"一、全板块今日预测：",
-"看涨：稀土永磁/有色 上涨57%下跌43%；银行 上涨55%下跌45%；医药生物 上涨54%下跌46%；白酒/大消费 上涨53%下跌47%。",
-"震荡：国防军工 47/53；房地产/基建 46/54；半导体设备 45/55；新能源 45/55；存储芯片 43/57（震荡偏弱）。",
-"看跌：AI算力 35/65；消费电子 40/60；光模块/通信 40/60。",
-"资金流向：避险资金流向银行、医药等高股息防御板块与稀土有色；科技线资金观望等承接。",
+"全板块今日预测：",
+"看涨：半导体设备，上涨 57%，下跌 43%；存储芯片，上涨 56%，下跌 44%；机器人、具身智能，上涨 55%，下跌 45%；油气，上涨 54%，下跌 46%。",
+"震荡：白酒，上涨 51%，下跌 49%；医药，上涨 50%，下跌 50%；银行、红利，上涨 50%，下跌 50%；贵金属，上涨 49%，下跌 51%；房地产，上涨 48%，下跌 52%。",
+"看跌：算力硬件，上涨 46%，下跌 54%；消费电子，上涨 45%，下跌 55%；煤炭，上涨 44%，下跌 56%。",
 "",
-"二、大盘判断：今日低开后震荡修复，上证指数运行区间 3650 到 3720 点，上涨概率 45%，下跌概率 55%。明天后天周末休市，预判顺延至下周一。",
+"最强主线：半导体链反弹，设备加存储，加机器人、具身智能，加油气。",
+"最大风险：三季报业绩雷；算力硬件高位回调，马斯克警告新云厂商整合倒闭潮；量能萎缩、融资余额减少；油价突破 102 美元，通胀黏性。",
 "",
-"三、最强主线：稀土资源（供应收紧涨价）加高股息防御（银行）。",
+"重点持仓跟踪：存储芯片，看涨，上涨 56%，下跌 44%，方正富邦核心优势混合 C，代码 018816，持有 10848.92 元，浮亏负 27.67%，持仓不动，不追高。半导体设备，看涨，上涨 57%，下跌 43%，东方人工智能主题混合 C，代码 017811，已于 10 月 25 日全部赎回，不再持有。只剩 018816 一只持仓，耐心持有。",
 "",
-"四、最大风险：1. 费半 ETF 暴跌 6.8% 传导，半导体、AI 算力开盘承压；2. 三季报业绩雷，宁德时代昨日暴跌 12.03% 是前车之鉴；3. 10 月最后两周 1976.2 亿解禁潮，10 月 28 日西安奕材 617 亿解禁。",
+"本周展望：震荡修复，隔夜美股反弹加三季报密集披露决定个股分化。下周：11 月初，三季报落地后看业绩线加政策预期。本月：10 月调整后修复，结构分化不改。下月：11 月，看业绩线加年末政策窗口。",
 "",
-"五、操作策略：4 成仓位持有为主，不追高、不抄底科技线，等企稳信号；三季报披露期不碰业绩不明个股；定投按计划照常。",
+"一句话总结：隔夜美股大涨、费半涨 3.27%，今日高开震荡偏强、半导体链相对占优，5 成仓位持有不动。",
 "",
-"六、资金方向/七、强势板块：避险去银行医药，主题去稀土有色，科技线观望；强势板块为稀土永磁、有色金属、银行、高股息。",
+"财经热点 5 项：1、隔夜美股全线反弹，道指涨 0.24%，标普涨 0.73%，纳指涨 0.94%，费半大涨 3.27%。2、A 股昨日分化，沪指涨 0.19%，深成指跌 1.19%，创业板跌 1.71%，成交 1.61 万亿缩量 3475 亿。3、存储链利好，长鑫科技 DDR5 良率重要突破，半导体设备 ETF 获 3.93 亿份净申购。4、油价突破 102 美元，中国石油创 18 年新高；宇树科技涨 7%。5、三季报密集披露，1028 家已披露，548 家净利增长、176 家翻倍。",
 "",
-"八、重点持仓跟踪：存储芯片震荡偏弱（43/57），中线逻辑未坏，短线跟随外盘调整，不割肉不加仓等企稳；半导体设备震荡（45/55），昨日逆势收红，持有观望。",
+"未来三天预测：今天 10 月 27 日星期二，高开震荡偏强，上证 3670 到 3730，涨 55%，跌 45%。明天 10 月 28 日星期三，震荡，涨 50%，跌 50%。后天 10 月 29 日星期四，震荡，涨 48%，跌 52%。",
 "",
-"九、展望：本周谨慎收官；下周看西安奕材解禁加三季报密集披露，波动放大防御优先；本月震荡筑底；下月看财报季后估值修复。",
-"",
-"十、一句话总结：外盘半导体暴跌施压开盘，今日防御和资源占优，4 成仓持有、等科技线企稳再动。",
-"",
-"十一、财经热点 5 项：1. 隔夜费半相关 ETF 暴跌约 6.8%；2. 发改委重磅发声在即；3. 中国收紧稀土供应；4. 美国 2026 财年赤字 1.99 万亿美元创五年新高；5. *ST 萃华今日进入退市整理期，10 月最后两周 1976.2 亿解禁潮。"
+"投资分析提示词模板：请按以下框架分析今日 A 股：1、隔夜美股三大指数与费城半导体收盘涨跌；2、富时中国 A50 期指与离岸人民币表现；3、今日大盘方向与运行区间，给出上涨、下跌概率；4、分板块列出看涨、震荡、看跌及概率；5、最强主线与最大风险；6、操作策略与仓位建议；7、重点跟踪存储芯片与半导体设备。要求：事实与推断分开写，概率注明为情景推导，不构成投资建议。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
