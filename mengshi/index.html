@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>萌尸大作战 v20261028-2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#1a2b1e;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+#game{position:relative;width:100%;max-width:480px;height:100dvh;margin:0 auto;background:#7ec850;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hud{position:absolute;top:0;left:0;right:0;display:flex;gap:6px;padding:10px 10px 6px;z-index:5;pointer-events:none}
+#hud .pill{flex:1;background:rgba(255,255,255,.94);border-radius:12px;padding:7px 4px;text-align:center;font-size:13px;font-weight:900;color:#07182b;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#hud .pill small{display:block;font-size:10px;color:#666;font-weight:700}
+#soundBtn{position:absolute;top:52px;right:10px;z-index:6;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.94);font-size:18px}
+#towerBar{position:absolute;left:8px;right:8px;bottom:112px;display:flex;flex-wrap:wrap;gap:6px;z-index:5}
+.tower{flex:1 1 30%!important}
+.tower{flex:1;border:2px solid #fff;border-radius:14px;padding:8px 4px;text-align:center;background:rgba(255,255,255,.94);font-size:13px;font-weight:900;color:#07182b}
+.tower.sel{border-color:#ff2e7a;background:#ffe0ec;transform:scale(1.05)}
+.tower small{display:block;font-size:11px;color:#c2185b}
+.tower .cost{font-size:12px;color:#0a7a3d}
+#joy{position:absolute;left:16px;bottom:16px;width:104px;height:104px;border-radius:50%;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.7);z-index:5}
+#knob{position:absolute;left:32px;top:32px;width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+#actBtn{position:absolute;right:16px;bottom:24px;z-index:5;width:84px;height:84px;border-radius:50%;border:3px solid #fff;background:#ff5c8a;color:#fff;font-size:15px;font-weight:900}
+#actBtn small{display:block;font-size:11px}
+#msg{position:absolute;top:96px;left:0;right:0;text-align:center;z-index:4;font-size:22px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);pointer-events:none}
+.screen{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(20,40,22,.82);color:#fff;text-align:center;padding:24px}
+.screen h1{font-size:42px;line-height:1.1}.screen h1 span{color:#8dff6e}
+.screen p{margin:12px 0;font-size:15px;color:#d6ffd6;font-weight:700}
+.bigbtn{border:0;border-radius:16px;padding:16px 36px;font-size:20px;font-weight:900;background:#ff5c8a;color:#fff;box-shadow:0 6px 0 #c2185b}
+.bigbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #c2185b}
+#buffs{display:flex;gap:10px;width:100%;max-width:420px}
+.buff{flex:1;background:#fff;color:#07182b;border-radius:16px;padding:14px 8px;border:3px solid #ffd54d}
+.buff b{font-size:16px;display:block}.buff span{font-size:13px;color:#243b55;display:block;margin-top:6px;line-height:1.4}
+.buff .em{font-size:32px}
+.hidden{display:none!important}
+#ver{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.7);z-index:3;pointer-events:none}
+</style></head><body>
+<div id="game">
+<canvas id="cv"></canvas>
+<div id="hud"><div class="pill">🌊 第 <span id="hWave">1</span>/10 波<small>剩余 <span id="hLeft">0</span> 只尸</small></div><div class="pill">🪙 <span id="hCoin">120</span><small>金币</small></div><div class="pill">🏠 基地 <span id="hBase">10</span><small>被冲破就输</small></div><div class="pill">⭐ <span id="hScore">0</span><small>分数</small></div></div>
+<button id="soundBtn">🔊</button>
+<div id="msg"></div>
+<div id="towerBar">
+<div class="tower" data-t="pea">🌱 豌豆塔<small>快射 · 单体</small><span class="cost">50🪙</span></div>
+<div class="tower" data-t="ice">❄️ 冰冻塔<small>减速50%</small><span class="cost">75🪙</span></div>
+<div class="tower" data-t="bomb">💣 炸弹塔<small>范围爆炸</small><span class="cost">100🪙</span></div>
+<div class="tower" data-t="bolt">⚡ 闪电塔<small>连锁3只</small><span class="cost">120🪙</span></div>
+<div class="tower" data-t="fire">🔥 火焰塔<small>持续烧伤</small><span class="cost">110🪙</span></div>
+<div class="tower" data-t="snipe">🎯 狙击塔<small>超远高伤</small><span class="cost">130🪙</span></div>
+</div>
+<div id="joy"><div id="knob"></div></div>
+<button id="actBtn">💥 大招<small>点我清屏</small></button>
+<div id="ver">萌尸大作战 · v20261028-2 · 存档 hema-mengshi-v1</div>
+
+<div class="screen" id="startScreen"><h1>🧟‍♂️ 萌尸<br><span>大作战</span></h1><p>Q萌肉鸽塔防射击 · 每一局都是新体验</p><p id="bestLine">最高纪录：第 1 波</p><button class="bigbtn" id="startBtn">▶ 开始游戏</button><p style="font-size:12px;color:#9fd6a0">竖屏单手 · 自动射击 · 点塔再点空地布防</p></div>
+
+<div class="screen hidden" id="buffScreen"><h1 style="font-size:28px">🎰 肉鸽强化</h1><p>三选一，只能拿一张！</p><div id="buffs"></div></div>
+
+<div class="screen hidden" id="endScreen"><h1 id="endTitle" style="font-size:36px">🏆 胜利！</h1><p id="endText"></p><button class="bigbtn" id="againBtn">🔄 再来一局</button><p style="margin-top:10px"><button class="bigbtn" id="endlessBtn" style="background:#7b1fa2;box-shadow:0 6px 0 #4a0072;font-size:16px;padding:12px 24px">♾️ 无尽模式继续打</button></p><p style="margin-top:10px"><button class="bigbtn" id="menuBtn" style="background:#555;box-shadow:0 6px 0 #222;font-size:16px;padding:12px 24px">回主菜单</button></p></div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);buildPath();}
+window.addEventListener('resize',resize);
+// path in fractions
+let PATH=[],SLOTS=[];
+function buildPath(){PATH=[{x:.08,y:.13},{x:.88,y:.13},{x:.88,y:.28},{x:.12,y:.28},{x:.12,y:.42},{x:.88,y:.42},{x:.88,y:.56},{x:.12,y:.56},{x:.5,y:.68}].map(p=>({x:p.x*W,y:p.y*H}));
+SLOTS=[{x:.5,y:.20},{x:.3,y:.20},{x:.7,y:.35},{x:.3,y:.35},{x:.5,y:.49},{x:.3,y:.49},{x:.7,y:.62},{x:.3,y:.62},{x:.5,y:.35},{x:.7,y:.49}].map(p=>({x:p.x*W,y:p.y*H,tower:null}));}
+const TOWERS={pea:{name:'豌豆塔',cost:50,range:105,dmg:20,rate:.5,color:'#2e9e4f',emoji:'🌱'},ice:{name:'冰冻塔',cost:75,range:95,dmg:9,rate:.85,color:'#2fa8ff',emoji:'❄️'},bomb:{name:'炸弹塔',cost:100,range:115,dmg:44,rate:1.5,color:'#ff7a1a',emoji:'💣'},bolt:{name:'闪电塔',cost:120,range:120,dmg:26,rate:1.0,color:'#ffd600',emoji:'⚡'},fire:{name:'火焰塔',cost:110,range:90,dmg:10,rate:.7,color:'#ff3d00',emoji:'🔥'},snipe:{name:'狙击塔',cost:130,range:200,dmg:80,rate:1.8,color:'#37474f',emoji:'🎯'}};
+const ZTYPES={normal:{hp:34,speed:42,r:15,color:'#7ed957',coin:6,score:10,emoji:'🧟'},runner:{hp:24,speed:82,r:13,color:'#b6ff5e',coin:8,score:15,emoji:'🏃'},fat:{hp:110,speed:26,r:21,color:'#5cb85c',coin:12,score:20,emoji:'🟢'},spitter:{hp:50,speed:36,r:15,color:'#9b59b6',coin:12,score:25,emoji:'🤮'},iron:{hp:160,speed:28,r:17,color:'#8a9bb0',coin:16,score:30,emoji:'🛡️'},boss:{hp:900,speed:22,r:32,color:'#ff2e7a',coin:120,score:200,emoji:'👑'},jumper:{hp:40,speed:66,r:14,color:'#ffca28',coin:10,score:22,emoji:'🐸'},poison:{hp:70,speed:30,r:16,color:'#00e676',coin:14,score:28,emoji:'☠️'}};
+const BUFFS=[
+{id:'triple',em:'🔱',n:'三发子弹',d:'一次射出3发',f:m=>m.shots=3},
+{id:'rate',em:'⚡',n:'射速+35%',d:'主角射得更快',f:m=>m.rate*=.65},
+{id:'dmg',em:'💪',n:'伤害+35%',d:'主角+所有塔伤害提升',f:m=>{m.dmgMul*=1.35}},
+{id:'crit',em:'💥',n:'暴击+25%',d:'25%概率造成双倍伤害',f:m=>m.crit+=.25},
+{id:'speed',em:'👟',n:'移速+25%',d:'跑得更快，躲毒更轻松',f:m=>m.pSpeed*=1.25},
+{id:'coin',em:'🪙',n:'金币+50%',d:'以后击杀金币更多',f:m=>m.coinMul*=1.5},
+{id:'cheap',em:'🏷️',n:'建塔-30%',d:'所有塔便宜三成',f:m=>m.costMul*=.7},
+{id:'pierce',em:'➡️',n:'子弹穿透',d:'子弹穿过一只再打下一只',f:m=>m.pierce=true},
+{id:'heal',em:'❤️',n:'基地+3',d:'基地生命立刻+3',f:m=>{G.baseHp=Math.min(15,G.baseHp+3)}},
+{id:'range',em:'🎯',n:'射程+30%',d:'主角和塔射程都变大',f:m=>m.rangeMul*=1.3},
+{id:'bomb2',em:'🧨',n:'炸弹连锁',d:'炸弹塔爆炸会连锁',f:m=>m.chain=true},
+{id:'life',em:'🛡️',n:'击杀回血',d:'每杀5只基地+1',f:m=>m.killHeal=true},
+{id:'ult2',em:'💥',n:'大招+1',d:'立刻多一个大招',f:m=>{G.ult++;}},
+{id:'towerdmg',em:'🗼',n:'塔伤+40%',d:'所有塔伤害提升',f:m=>m.towerMul=(m.towerMul||1)*1.4},
+{id:'slowall',em:'🧊',n:'全场减速',d:'所有丧尸移速-15%',f:m=>m.zSlow=(m.zSlow||1)*.85},
+{id:'magnet',em:'🧲',n:'金币翻倍',d:'击杀金币再+50%',f:m=>m.coinMul*=1.5},
+{id:'shield',em:'🛡️',n:'基地护盾',d:'基地生命+2，上限提到18',f:m=>{G.baseHp=Math.min(18,G.baseHp+2)}},
+{id:'rapid2',em:'🔫',n:'双倍射速',d:'主角射速再+25%',f:m=>m.rate*=.75},
+{id:'boom',em:'💣',n:'击杀爆炸',d:'丧尸死时炸伤周围20点',f:m=>m.deathBoom=true},
+{id:'regen',em:'💚',n:'主角护体',d:'丧尸碰到你会被弹开',f:m=>m.knock=true}];
+const WAVES=[
+[{t:'normal',n:8}],[{t:'normal',n:10},{t:'runner',n:3}],[{t:'normal',n:8},{t:'runner',n:4},{t:'fat',n:3}],[{t:'normal',n:6},{t:'runner',n:4},{t:'fat',n:4},{t:'spitter',n:2},{t:'iron',n:2}],[{t:'boss',n:1},{t:'normal',n:6},{t:'runner',n:4}],
+[{t:'normal',n:10},{t:'jumper',n:4},{t:'fat',n:3},{t:'poison',n:2}],
+[{t:'runner',n:8},{t:'jumper',n:5},{t:'spitter',n:3},{t:'iron',n:3}],
+[{t:'fat',n:6},{t:'iron',n:4},{t:'poison',n:4},{t:'jumper',n:4}],
+[{t:'normal',n:12},{t:'runner',n:6},{t:'fat',n:4},{t:'spitter',n:4},{t:'iron',n:3}],
+[{t:'boss',n:2},{t:'jumper',n:6},{t:'poison',n:4},{t:'runner',n:6}]];
+let G,mods,player,bullets,zombies,parts,floats,spawnQ,spawnT,fireT,towerT,ultCd,shake=0,joy={x:0,y:0,id:null},selTower='pea',soundOn=true;
+let save=JSON.parse(localStorage.getItem('hema-mengshi-v1')||'{"best":0,"wins":0,"games":0}');
+document.getElementById('bestLine').textContent='最高纪录：第 '+Math.max(1,save.best)+' 波 · 胜场 '+save.wins+' · 已玩 '+save.games+' 局';
+function newGame(){G={state:'play',wave:0,coins:120,baseHp:10,score:0,kills:0,ult:1,time:0,endless:false};mods={shots:1,rate:.38,dmgMul:1,crit:.05,pSpeed:165,coinMul:1,costMul:1,pierce:false,chain:false,killHeal:false,rangeMul:1,towerMul:1,zSlow:1,deathBoom:false,knock:false};player={x:W/2,y:H*.88,r:20,hp:100};bullets=[];zombies=[];parts=[];floats=[];spawnQ=[];spawnT=0;fireT=0;towerT=0;ultCd=0;SLOTS.forEach(s=>s.tower=null);updateHUD();showMsg('第 1 波来了！');startWave(1);}
+function startWave(n){G.wave=n;let q=[];let groups=n<=10?WAVES[n-1]:[{t:'normal',n:8},{t:'runner',n:5},{t:'jumper',n:4},{t:'fat',n:3},{t:'iron',n:2},{t:'poison',n:3}];if(n>10&&n%5===0)groups.push({t:'boss',n:1});groups.forEach(g=>{for(let i=0;i<g.n;i++)q.push(g.t)});for(let i=q.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]];}spawnQ=q;spawnT=0;updateHUD();}
+function spawnOne(t){let b=ZTYPES[t];let hp=b.hp*(1+(G.wave-1)*.25)*(G.wave>10?1+(G.wave-10)*.15:1);zombies.push({t, x:PATH[0].x,y:PATH[0].y,pi:0,hp,max:hp,speed:b.speed*(0.9+Math.random()*.2)*(mods.zSlow||1),r:b.r,slow:0,slowT:0,hit:0,burn:0,burnT:0});}
+function showMsg(s){let m=document.getElementById('msg');m.textContent=s;setTimeout(()=>{if(m.textContent===s)m.textContent=''},1800);}
+function updateHUD(){document.getElementById('hWave').textContent=G?G.wave:1;document.getElementById('hLeft').textContent=zombies.length+spawnQ.length;document.getElementById('hCoin').textContent=G?G.coins:120;document.getElementById('hBase').textContent=G?G.baseHp:10;document.getElementById('hScore').textContent=G?G.score:0;}
+// audio tiny
+let AC=null;function beep(f,d=.08,type='square',v=.05){if(!soundOn)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d);}catch(e){}}
+document.getElementById('soundBtn').onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?'🔊':'🔇';};
+// tower select
+document.querySelectorAll('.tower').forEach(el=>{el.onclick=()=>{selTower=el.dataset.t;document.querySelectorAll('.tower').forEach(x=>x.classList.toggle('sel',x===el));beep(600,.05);};});
+document.querySelector('.tower').classList.add('sel');
+// joystick
+const joyEl=document.getElementById('joy'),knob=document.getElementById('knob');
+function joyMove(e){let r=joyEl.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=(e.clientX-cx)/36,dy=(e.clientY-cy)/36;let l=Math.hypot(dx,dy);if(l>1){dx/=l;dy/=l;}joy.x=dx;joy.y=dy;knob.style.left=(32+dx*28)+'px';knob.style.top=(32+dy*28)+'px';}
+joyEl.addEventListener('pointerdown',e=>{joy.id=e.pointerId;joyEl.setPointerCapture(e.pointerId);joyMove(e);});
+joyEl.addEventListener('pointermove',e=>{if(e.pointerId===joy.id)joyMove(e);});
+function joyEnd(){joy.x=0;joy.y=0;knob.style.left='32px';knob.style.top='32px';}
+joyEl.addEventListener('pointerup',joyEnd);joyEl.addEventListener('pointercancel',joyEnd);
+// keys
+let keys={};window.addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+// canvas tap = place / upgrade
+cv.addEventListener('pointerdown',e=>{if(!G||G.state!=='play')return;let r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+let slot=SLOTS.find(s=>Math.hypot(s.x-x,s.y-y)<34);
+if(slot){if(!slot.tower){let def=TOWERS[selTower],cost=Math.round(def.cost*mods.costMul);if(G.coins<cost){showMsg('金币不够！');beep(150,.12);return;}G.coins-=cost;slot.tower={type:selTower,cd:0,lvl:1};beep(700,.08);burst(slot.x,slot.y,'#fff',8);}else{let cost=40*slot.tower.lvl;if(G.coins>=cost){G.coins-=cost;slot.tower.lvl++;showMsg(TOWERS[slot.tower.type].name+' 升到 '+slot.tower.lvl+' 级！');beep(900,.08);}else showMsg('升级要 '+cost+' 金币');}updateHUD();}});
+document.getElementById('actBtn').onclick=()=>{if(!G||G.state!=='play'||G.ult<=0)return;G.ult--;zombies.forEach(z=>{z.hp-=120;burst(z.x,z.y,'#ffdd00',10);});shake=12;beep(200,.3,'sawtooth',.08);showMsg('💥 大招清屏！');};
+function burst(x,y,c,n){for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*180,vy:(Math.random()-.5)*180,life:.5,c});}
+function addFloat(x,y,s,c){floats.push({x,y,s,c,life:.9});}
+function nearest(x,y,range){let best=null,bd=range;zombies.forEach(z=>{let d=Math.hypot(z.x-x,z.y-y);if(d<bd){bd=d;best=z;}});return best;}
+function damage(z,dmg,crit){z.hp-=dmg;addFloat(z.x,z.y-18,(crit?'💥':'')+Math.round(dmg),crit?'#ff2e7a':'#fff');if(z.hp<=0)kill(z);}
+function kill(z){let i=zombies.indexOf(z);if(i<0)return;zombies.splice(i,1);let b=ZTYPES[z.t];let coin=Math.round(b.coin*mods.coinMul);G.coins+=coin;G.score+=b.score;G.kills++;burst(z.x,z.y,b.color,12);beep(500,.06,'triangle',.04);if(mods.killHeal&&G.kills%5===0){G.baseHp=Math.min(18,G.baseHp+1);}if(mods.deathBoom){burst(z.x,z.y,'#ff7a1a',8);zombies.slice().forEach(o=>{if(o!==z&&Math.hypot(o.x-z.x,o.y-z.y)<60)o.hp-=20;});}if(z.t==='boss'){shake=14;showMsg('👑 尸王被打爆了！');}updateHUD();}
+function loop(ts){requestAnimationFrame(loop);if(!G)return;let dt=Math.min(.033, (ts-(loop._p||ts))/1000||.016);loop._p=ts;if(G.state!=='play'){draw();return;}
+G.time+=dt;
+if(keys['a']||keys['arrowleft'])joy.x=-1;if(keys['d']||keys['arrowright'])joy.x=1;if(keys['w']||keys['arrowup'])joy.y=-1;if(keys['s']||keys['arrowdown'])joy.y=1;
+if(joy.x||joy.y){player.x=Math.max(20,Math.min(W-20,player.x+joy.x*mods.pSpeed*dt));player.y=Math.max(H*.62,Math.min(H*.96,player.y+joy.y*mods.pSpeed*dt));}
+if(!keys['a']&&!keys['d']&&!keys['arrowleft']&&!keys['arrowright']&&joy.id===null)joy.x=0;if(!keys['w']&&!keys['s']&&!keys['arrowup']&&!keys['arrowdown']&&joy.id===null)joy.y=0;
+// spawn
+if(spawnQ.length){spawnT-=dt;if(spawnT<=0){spawnOne(spawnQ.shift());spawnT=.5;}}
+// player auto fire
+fireT-=dt;if(fireT<=0){let tgt=nearest(player.x,player.y,220*mods.rangeMul);if(tgt){for(let k=0;k<mods.shots;k++){let a=Math.atan2(tgt.y-player.y,tgt.x-player.x)+(k-(mods.shots-1)/2)*.18;bullets.push({x:player.x,y:player.y-14,vx:Math.cos(a)*560,vy:Math.sin(a)*560,dmg:22*mods.dmgMul,pierce:mods.pierce,from:'p'});}fireT=mods.rate;beep(880,.04,'square',.03);}}
+// towers
+SLOTS.forEach(s=>{if(!s.tower)return;let def=TOWERS[s.tower.type];s.tower.cd-=dt;if(s.tower.cd<=0){let tgt=nearest(s.x,s.y,def.range*mods.rangeMul);if(tgt){let dmg=def.dmg*s.tower.lvl*mods.dmgMul*(mods.towerMul||1);if(s.tower.type==='bolt'){damage(tgt,dmg,false);let z2=nearest(tgt.x,tgt.y,80);if(z2&&z2!==tgt)damage(z2,dmg*.7,false);let z3=nearest(tgt.x,tgt.y,110);if(z3&&z3!==tgt&&z3!==z2)damage(z3,dmg*.5,false);burst(tgt.x,tgt.y,'#ffd600',8);}else if(s.tower.type==='fire'){damage(tgt,dmg,false);tgt.burn=dmg*.6;tgt.burnT=3;burst(tgt.x,tgt.y,'#ff3d00',6);}else if(s.tower.type==='snipe'){let crit=Math.random()<mods.crit+.1;damage(tgt,dmg*(crit?2:1),crit);shake=Math.max(shake,2);}else if(s.tower.type==='bomb'){burst(tgt.x,tgt.y,'#ff7a1a',10);zombies.slice().forEach(z=>{if(Math.hypot(z.x-tgt.x,z.y-tgt.y)<55)damage(z,dmg, false);});if(mods.chain){let z2=nearest(tgt.x,tgt.y,70);if(z2&&z2!==tgt)damage(z2,dmg*.6,false);}shake=Math.max(shake,4);}else if(s.tower.type==='ice'){damage(tgt,dmg,false);tgt.slow=.5;tgt.slowT=2;}else{let crit=Math.random()<mods.crit;damage(tgt,dmg*(crit?2:1),crit);}bullets.push({x:s.x,y:s.y-10,vx:0,vy:0,dmg:0,life:.12,from:'t',tx:tgt.x,ty:tgt.y});s.tower.cd=def.rate;}}});
+// bullets
+bullets=bullets.filter(b=>{if(b.from==='t'){b.life=(b.life||0)-dt;return b.life>0;}b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.x<0||b.x>W||b.y<0||b.y>H)return false;let hit=null;for(let z of zombies){if(Math.hypot(z.x-b.x,z.y-b.y)<z.r+6){hit=z;break;}}if(hit){let crit=Math.random()<mods.crit;damage(hit,b.dmg*(crit?2:1),crit);if(!b.pierce)return false;}return true;});
+// zombies move along path
+zombies.forEach(z=>{if(z.burnT>0){z.burnT-=dt;z.hp-=z.burn*dt;if(z.hp<=0){kill(z);return;}}if(z.slowT>0){z.slowT-=dt;if(z.slowT<=0)z.slow=0;}let sp=z.speed*(z.slow?0.5:1)*(z.t==='jumper'?(0.7+Math.abs(Math.sin(G.time*6+z.pi))*0.9):1);let tgt=PATH[Math.min(z.pi+1,PATH.length-1)];let dx=tgt.x-z.x,dy=tgt.y-z.y,d=Math.hypot(dx,dy);if(d<8){z.pi++;if(z.pi>=PATH.length-1){G.baseHp-=(z.t==='poison'?2:1);burst(z.x,z.y,'#ff0000',10);z.hp=0;showMsg(z.t==='poison'?'毒尸冲进基地，掉了2血！':'基地被咬了一口！');beep(180,.2,'sawtooth',.07);}}else{z.x+=dx/d*sp*dt;z.y+=dy/d*sp*dt;}
+// touch player = damage player pos knockback (just push zombie back a bit)
+if(Math.hypot(z.x-player.x,z.y-player.y)<z.r+player.r){if(mods.knock){z.x+=(z.x-player.x)*.6;z.y+=(z.y-player.y)*.6;}else z.x+=(z.x-player.x)*.1;}});
+// remove dead-by-base
+zombies=zombies.filter(z=>z.hp>0);
+// particles / floats
+parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;});parts=parts.filter(p=>p.life>0);
+floats.forEach(f=>{f.y-=30*dt;f.life-=dt;});floats=floats.filter(f=>f.life>0);
+if(shake>0)shake*=.88;
+// wave clear?
+if(!spawnQ.length&&!zombies.length&&G.state==='play'){if(G.wave>=10&&!G.endless){endGame(true);}else{showBuff();}}
+if(G.baseHp<=0)endGame(false);
+updateHUD();draw();}
+function showBuff(){G.state='buff';let pool=[...BUFFS].sort(()=>Math.random()-.5).slice(0,3);let box=document.getElementById('buffs');box.innerHTML='';pool.forEach(b=>{let d=document.createElement('div');d.className='buff';d.innerHTML='<div class="em">'+b.em+'</div><b>'+b.n+'</b><span>'+b.d+'</span>';d.onclick=()=>{b.f(mods);beep(1000,.1);document.getElementById('buffScreen').classList.add('hidden');G.state='play';showMsg('拿到：'+b.n+'，第 '+(G.wave+1)+' 波来了！');startWave(G.wave+1);};box.appendChild(d);});document.getElementById('buffScreen').classList.remove('hidden');}
+function endGame(win){if(G.state!=='play')return;G.state='over';save.games++;save.best=Math.max(save.best,G.wave);if(win)save.wins++;localStorage.setItem('hema-mengshi-v1',JSON.stringify(save));document.getElementById('endTitle').textContent=win?'🏆 胜利！尸王被打爆了！':'💀 基地被攻破了';document.getElementById('endText').textContent='打到第 '+G.wave+' 波 · 分数 '+G.score+' · 击杀 '+G.kills+' 只尸 · 胜场 '+save.wins;document.getElementById('endlessBtn').style.display=win?'':'none';document.getElementById('endScreen').classList.remove('hidden');beep(win?1200:200,.4);}
+document.getElementById('startBtn').onclick=()=>{document.getElementById('startScreen').classList.add('hidden');document.getElementById('endScreen').classList.add('hidden');newGame();};
+document.getElementById('againBtn').onclick=()=>{document.getElementById('endScreen').classList.add('hidden');newGame();};
+document.getElementById('endlessBtn').onclick=()=>{document.getElementById('endScreen').classList.add('hidden');G.state='play';G.endless=true;G.baseHp=Math.min(18,G.baseHp+3);G.coins+=150;showMsg('♾️ 无尽模式！第 11 波，尸潮越来越强！');startWave(11);};
+document.getElementById('menuBtn').onclick=()=>{document.getElementById('endScreen').classList.add('hidden');document.getElementById('startScreen').classList.remove('hidden');G=null;document.getElementById('bestLine').textContent='最高纪录：第 '+Math.max(1,save.best)+' 波 · 胜场 '+save.wins+' · 已玩 '+save.games+' 局';};
+function drawQ(x,y,r,c,emoji,ang){ctx.save();ctx.translate(x,y);ctx.fillStyle=c;ctx.beginPath();ctx.arc(0,0,r,0,7);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-r*.35,-r*.25,r*.22,0,7);ctx.arc(r*.35,-r*.25,r*.22,0,7);ctx.fill();ctx.fillStyle='#07182b';ctx.beginPath();ctx.arc(-r*.35,-r*.25,r*.11,0,7);ctx.arc(r*.35,-r*.25,r*.11,0,7);ctx.fill();ctx.font=(r*.9)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(emoji,0,r*.15);ctx.restore();}
+function draw(){ctx.clearRect(0,0,W,H);if(!W)return;let sx=(Math.random()-.5)*shake,sy=(Math.random()-.5)*shake;ctx.save();ctx.translate(sx,sy);
+// grass
+ctx.fillStyle='#7ec850';ctx.fillRect(-10,-10,W+20,H+20);ctx.fillStyle='#8fd95e';for(let i=0;i<40;i++){let x=(i*97)%W,y=(i*173)%H;ctx.fillRect(x,y,14,14);}
+// path
+ctx.strokeStyle='#e8c98a';ctx.lineWidth=34;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();PATH.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.setLineDash([10,10]);ctx.beginPath();PATH.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);
+// base
+ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(W/2,H*.68,30,0,7);ctx.fill();ctx.font='28px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🏠',W/2,H*.68);
+// slots
+SLOTS.forEach(s=>{ctx.fillStyle=s.tower?'#fff':'rgba(255,255,255,.45)';ctx.beginPath();ctx.arc(s.x,s.y,22,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();if(s.tower){let def=TOWERS[s.tower.type];ctx.fillStyle=def.color;ctx.beginPath();ctx.arc(s.x,s.y,16,0,7);ctx.fill();ctx.font='18px serif';ctx.fillText(def.emoji,s.x,s.y);ctx.fillStyle='#07182b';ctx.font='bold 11px sans-serif';ctx.fillText('Lv'+s.tower.lvl,s.x,s.y+28);}else{ctx.fillStyle='#666';ctx.font='16px serif';ctx.fillText('+',s.x,s.y);}});
+// zombies
+zombies.forEach(z=>{let b=ZTYPES[z.t];drawQ(z.x,z.y,z.r,b.color,b.emoji,0);ctx.fillStyle='#ff0000';ctx.fillRect(z.x-18,z.y-z.r-12,36,5);ctx.fillStyle='#00ff00';ctx.fillRect(z.x-18,z.y-z.r-12,36*Math.max(0,z.hp/z.max),5);if(z.slowT>0){ctx.font='14px serif';ctx.fillText('❄️',z.x,z.y-z.r-18);}});
+// player
+if(G){drawQ(player.x,player.y,player.r,'#ff9ec7','🦛',0);ctx.fillStyle='#333';ctx.fillRect(player.x-8,player.y-32,16,6);ctx.fillStyle='#ff5c8a';ctx.fillRect(player.x-8,player.y-32,16,6);}
+// bullets
+bullets.forEach(b=>{if(b.from==='t')return;ctx.fillStyle='#ffe600';ctx.beginPath();ctx.arc(b.x,b.y,5,0,7);ctx.fill();});
+parts.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,4,0,7);ctx.fill();ctx.globalAlpha=1;});
+floats.forEach(f=>{ctx.globalAlpha=Math.max(0,f.life);ctx.fillStyle=f.c;ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText(f.s,f.x,f.y);ctx.globalAlpha=1;});
+ctx.restore();}
+resize();requestAnimationFrame(loop);
+</script></body></html>
