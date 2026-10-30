@@ -243,7 +243,13 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
 
   <div class="sec-title"><h3>◉ 最近项目动态</h3><a onclick="go('projects')">更多 →</a></div>
   <div class="proj" id="homeProj"></div>
-  <div class="ver">AI工作室 · v20261030-2 · 数据保存在本机</div>
+
+  <div class="sec-title"><h3>◉ 目标进度</h3><a onclick="go('my')">管理 →</a></div>
+  <div class="card" id="homeGoals"></div>
+
+  <div class="sec-title"><h3>◉ 最新动态</h3></div>
+  <div class="card" id="homeLog"></div>
+  <div class="ver">AI工作室 · v20261030-3 · 数据保存在本机</div>
 </section>
 
 <!-- 创业中心 -->
@@ -312,6 +318,12 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
     <textarea id="output" placeholder="生成的指令会显示在这里" style="margin-top:8px"></textarea>
     <button class="act" onclick="copyText('output')" style="margin-top:6px">复制结果</button>
   </div>
+  <div class="fcard"><h3>🚀 提交给 AI 执行</h3>
+    <select id="aiMod"><option value="创业中心">创业中心</option><option value="游戏工作室">游戏工作室</option><option value="内容工作室">内容工作室</option><option value="投资研究">投资研究</option><option value="任务中心">任务中心</option><option value="经营账本">经营账本</option><option value="项目管理">项目管理</option><option value="数据分析">数据分析</option></select>
+    <textarea id="aiReq" placeholder="描述要 AI 做的事，越具体越好。比如：给我写一份反推提示词包的上架文案"></textarea>
+    <button class="act" onclick="subAI()">生成执行指令并复制</button>
+    <p style="font-size:11px;color:var(--sub);line-height:1.8;margin-top:8px">页面不内置模型。复制后发到聊天里，我来分析、规划、执行、生成文件并自检，你最后验收。</p>
+  </div>
   <div class="sec-title"><h3>AI 团队目录</h3></div>
   <div class="feat" id="feat-ai"></div>
   <p style="font-size:11px;color:var(--dim);margin:10px 2px;line-height:1.8">此页面不内置 AI 模型。复制生成的任务指令，发给你的 AI 执行。</p>
@@ -323,6 +335,7 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
   <div class="fcard"><h3>添加任务</h3>
     <input id="taskName" placeholder="输入要完成的任务">
     <select id="taskPrio"><option value="hi">高优先级</option><option value="mid" selected>中优先级</option><option value="lo">低优先级</option></select>
+    <input id="taskDue" type="date">
     <button class="act" onclick="addTask()">添加任务</button>
   </div>
   <div class="sec-title"><h3>待处理 <span id="tcUndo"></span></h3></div>
@@ -352,7 +365,8 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
     <div class="stat"><div class="t">笔数</div><div class="n" id="mCnt">0</div></div>
   </div>
   <div class="fcard" style="margin-top:12px"><h3>记一笔</h3>
-    <select id="moneyType"><option value="income">收入</option><option value="expense">支出</option></select>
+    <select id="moneyType" onchange="chgCat()"><option value="income">收入</option><option value="expense">支出</option></select>
+    <select id="moneyCat"></select>
     <input id="moneyAmount" type="number" placeholder="金额">
     <input id="moneyNote" placeholder="说明">
     <button class="act" onclick="addMoney()">记录</button>
@@ -414,8 +428,15 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
   <div class="fcard"><h3>创始人</h3>
     <div class="kv"><span>工作室</span><b>个人AI公司</b></div>
     <div class="kv"><span>角色</span><b>创始人</b></div>
-    <div class="kv"><span>版本</span><b>v20261030-2</b></div>
+    <div class="kv"><span>版本</span><b>v20261030-3</b></div>
     <div class="kv"><span>数据位置</span><b>本机 localStorage</b></div>
+  </div>
+  <div class="fcard"><h3>🎯 目标管理</h3>
+    <input id="goalName" placeholder="目标名称，如：月收入 5000">
+    <input id="goalTarget" type="number" placeholder="目标值">
+    <input id="goalCur" type="number" placeholder="当前值">
+    <button class="act" onclick="addGoal()">添加目标</button>
+    <div id="goalsList"></div>
   </div>
   <div class="fcard"><h3>数据备份</h3>
     <button class="act" onclick="exportData()">导出数据（JSON）</button>
@@ -447,8 +468,11 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
 const DBKEY="aistudio_v2";
 let db;
 try{db=JSON.parse(localStorage.getItem(DBKEY))||null}catch(e){db=null}
-if(!db)db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[]};
+if(!db)db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[],log:[],goals:[]};
+["biz","game","media","invest","ideas","tasks","money","log","goals"].forEach(k=>{if(!db[k])db[k]=[]});
+db.tasks.forEach(x=>{if(x.st===undefined)x.st=x.done?2:0});
 function save(){localStorage.setItem(DBKEY,JSON.stringify(db))}
+function logA(t){db.log.unshift({t,at:Date.now()});db.log=db.log.slice(0,60)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function uid(){return Date.now()*1000+Math.floor(Math.random()*999)}
 function today0(){const d=new Date();d.setHours(0,0,0,0);return d.getTime()}
@@ -476,12 +500,12 @@ function go(id){
 
 /* ============ 功能目录 ============ */
 const FEATS={
-biz:[["创业项目管理","立项、跟进、复盘全流程"],["商业计划书","一页纸讲清模式与融资点"],["市场调研","需求、规模、用户画像"],["竞争对手分析","对标拆解找差异点"],["商业模式设计","谁出钱、谁赚钱、怎么分"],["数字商品开发","提示词包、模板、课程"],["AI商城","在线商城搭建与上架"],["会员商城","订阅制与会员体系"],["卡密商城","卡密自动发货"],["商品定价","成本、锚点、价格带"],["订单管理","下单、核销、售后"],["营销推广","流量、转化、复购"]],
-game:[["游戏项目管理","版本、里程碑、排期"],["游戏创意库","玩法灵感沉淀"],["世界观剧情","背景、主线、支线"],["角色设计","人设、数值、技能"],["人物建模","Q版/写实建模"],["场景建模","地图、关卡场景"],["战斗系统","手感、平衡、反馈"],["副本任务系统","日常、周常、主线"],["UI界面设计","菜单、HUD、引导"],["游戏音效配乐","BGM、音效库"],["Godot项目管理","工程、导出、优化"],["安卓游戏打包","签名、渠道包"],["游戏测试","功能、性能、兼容"],["游戏发布","上架、运营、迭代"]],
-media:[["AI漫剧","百集漫剧全流程"],["AI短视频","口播、混剪、带货"],["AI电影","短片与长片"],["AI动画","角色动画"],["AI小说","长篇连载"],["AI漫画","分镜转漫画"],["AI配音","多角色分声"],["AI数字人","形象+声音驱动"],["AI视频生成","文生视频、图生视频"],["AI音乐创作","BGM、主题曲"],["剧本创作","大纲、分集大纲"],["分镜设计","镜头、运镜"],["视频剪辑","节奏、转场"],["字幕生成","双语字幕"],["自媒体运营","抖音、快手、B站、小红书"],["播放量分析","完播、转化"]],
-inv:[["A股市场","大盘、板块轮动"],["港股市场","恒生科技"],["美股市场","标普、纳指"],["基金研究","主动基金跟踪"],["ETF研究","宽基、行业ETF"],["标普500","定投跟踪"],["纳斯达克100","定投跟踪"],["行业板块分析","强弱、资金"],["估值分析","PE、PB分位"],["资金流向","北向、主力"],["市场热点","题材、事件"],["政策分析","货币、产业政策"],["宏观经济","PMI、CPI、利率"],["半导体","存储、设备"],["AI产业","算力、应用"],["投资组合","仓位、再平衡"],["持仓管理","盈亏、成本"],["定投计划","纪律执行"],["风险评估","回撤、波动"]],
-ai:[["AI总指挥","目标拆解、全局调度"],["AI项目经理","排期、跟进、验收"],["AI程序员","代码、调试、审查"],["AI游戏设计师","玩法、数值"],["AI美术设计师","原画、UI"],["AI视频导演","分镜、剪辑"],["AI编剧","剧本、对话"],["AI文案师","标题、种草文"],["AI商业顾问","模式、定价"],["AI投资研究员","研报、数据"],["AI数据分析师","报表、洞察"],["AI翻译","多语言"],["AI搜索助手","资料检索"],["AI文件助手","整理、归档"],["多AI协作","分工并行"],["任务自动分配","规则派单"],["代码审查","规范、安全"],["报告生成","日报、周报"]],
-news:[["全球新闻","每日大事速览"],["今日热点","热榜追踪"],["科技新闻","前沿动态"],["AI行业新闻","模型、应用、投融资"],["商业新闻","公司、财报"],["金融新闻","市场、利率"],["政策新闻","国内外政策"],["国际局势","地缘、贸易"],["开源项目","值得学的项目"],["GitHub热门","Trending"],["创业机会","新赛道"],["每日资讯摘要","一句话早报"]],
+biz:[["创业项目管理","创建/跟进/复盘全流程"],["商业计划书","概述/市场/盈利/融资/风控"],["市场调研","规模/需求/用户画像/竞争程度"],["竞争对手分析","产品/价格/份额/营销拆解"],["商业模式设计","谁出钱/谁赚钱/怎么分"],["产品策划","定位/功能/价格/迭代计划"],["品牌创建","名称/Logo/视觉/口号/故事"],["数字商品开发","提示词/电子书/课程/模板/源码"],["AI商城","分类/上架/订单/售后"],["会员商城","等级/权益/续费/到期提醒"],["卡密商城","批量导入/库存/自动发货"],["虚拟商品交易","展示/购买/自动交付"],["商品上架","封面/介绍/规格/标签"],["商品定价","成本/竞品/利润率测算"],["订单管理","待付款/待交付/退款"],["客户管理","资料/等级/消费/回访"],["营销推广","优惠券/满减/分销/效果分析"],["盈利分析","销售额/成本/毛利/盈亏平衡"]],
+game:[["游戏项目管理","名称/引擎/预算/进度/版本"],["游戏创意库","题材/玩法/特色/评分/转项目"],["游戏世界观","起源/地图/势力/种族/规则"],["游戏剧情","主线/支线/章节/分支/结局"],["角色设计","主角/NPC/BOSS/职业/属性"],["人物建模","原画/3D/骨骼/动作/优化"],["场景建模","野外/城镇/地下城/昼夜/光照"],["武器设计","剑/弓/法杖/品质/技能"],["装备设计","防具/饰品/强化/升星/合成"],["技能设计","主动/被动/连招/特效/伤害"],["属性系统","生命/攻击/暴击/闪避/战力"],["战斗系统","实时/自动/连击/BOSS/结算"],["怪物系统","普通/精英/世界BOSS/掉落/AI"],["NPC系统","对话/商店/任务/好感度"],["任务系统","主线/日常/限时/奖励/追踪"],["副本系统","普通/团队/爬塔/排行榜"],["地图编辑","地形/传送/怪物分布"],["UI界面设计","登录/背包/商城/战斗HUD"],["游戏测试","功能/性能/兼容/Bug/报告"],["游戏发布","APK/AAB/图标/签名/商店上架"]],
+media:[["AI漫剧","题材/剧本/分镜/配音/合成/审核"],["AI短视频","选题/脚本/数字人/剪辑/发布"],["AI电影","大纲/剧本/镜头/一致性/后期"],["AI动画","2D/3D/Q版/动作/合成"],["AI小说","世界观/大纲/正文/伏笔管理"],["AI漫画","人设/分镜/排版/上色/连载"],["AI配音","多角色/情绪/语速/剪辑"],["AI图片生成","写实/二次元/海报/封面"],["AI视频生成","文生视频/图生视频/运镜"],["自媒体运营","账号/选题/发布日历/数据"]],
+inv:[["市场总览","A股/港股/美股/情绪/资金流向"],["行业板块分析","存储/半导体设备/AI算力等"],["个股研究","基本面/财报/估值/风险"],["基金研究","规模/经理/持仓/回撤"],["ETF研究","跟踪指数/费率/成分股"],["宏观经济","GDP/CPI/PMI/利率/政策"],["投资组合","持仓/比例/盈亏/回撤"],["投资计划","定投/止盈止损/复盘"],["行情预测","今日/本周/月度/多情景"],["投资风险管理","仓位/回撤监控/预警"]],
+ai:[["AI总指挥","拆解任务/分配/汇总/质检"],["AI项目经理","规划/排期/验收"],["AI程序员","开发/调试/测试/打包"],["AI游戏设计师","策划/数值/关卡"],["AI美术设计师","原画/UI/海报"],["AI视频导演","分镜/风格/审核"],["AI编剧","故事/台词/大纲"],["AI商业顾问","机会/定价/风险"],["AI投资研究员","市场/财报/估值"],["AI数据分析师","统计/可视化/报告"],["多AI协作","并行/交叉验证/融合"],["AI执行流水线","需求→方案→执行→验收"],["AI能力中心","文本/图片/视频/代码/搜索"],["AI公司组织架构","CEO/CTO/CFO/CMO/团队"]],
+news:[["全球新闻","国际/中国/美欧/亚洲"],["今日热点","热搜/社交媒体热点"],["科技新闻","AI/芯片/新能源/航天"],["AI行业新闻","大模型动态/产品发布"],["GitHub热门","今日/本周/AI开源"],["创业机会","新赛道/数字商品/出海"],["每日资讯摘要","十大新闻/趋势/提醒"]],
 files:[["图片管理","设计稿、截图"],["视频管理","成片、素材"],["音频管理","配音、BGM"],["代码管理","脚本、工程"],["文档管理","方案、合同"],["项目素材","按项目归档"],["文件分类","标签体系"],["文件搜索","全文检索"],["云端备份","多地备份"]]};
 function buildFeats(){
  for(const k in FEATS){
@@ -507,6 +531,7 @@ function addItem(type,nid,did){
  const n=document.getElementById(nid).value.trim();
  if(!n)return alert("请填写名称");
  db[type].push({id:uid(),name:n,desc:document.getElementById(did).value.trim(),prog:0,at:Date.now()});
+ logA("新增"+NAMES[type]+"："+n);
  document.getElementById(nid).value="";document.getElementById(did).value="";
  save();render();
 }
@@ -527,15 +552,19 @@ const PRIO={hi:["高优先级","p-hi"],mid:["中优先级","p-mid"],lo:["低优�
 function addTask(){
  const n=document.getElementById("taskName").value.trim();
  if(!n)return alert("填写任务");
- db.tasks.push({id:uid(),name:n,prio:document.getElementById("taskPrio").value,done:false,at:Date.now()});
+ db.tasks.push({id:uid(),name:n,prio:document.getElementById("taskPrio").value,st:0,due:document.getElementById("taskDue").value,at:Date.now()});
+ document.getElementById("taskDue").value="";
+ logA("新增任务："+n);
  document.getElementById("taskName").value="";save();render();
 }
-function toggleTask(id){const x=db.tasks.find(x=>x.id===id);if(x){x.done=!x.done;save();render()}}
+function cycTask(id){const x=db.tasks.find(x=>x.id===id);if(!x)return;x.st=((x.st||0)+1)%3;if(x.st===2)logA("完成任务："+x.name);save();render()}
 function delTask(id){if(!confirm("确定删除？"))return;db.tasks=db.tasks.filter(x=>x.id!==id);save();render()}
+const TST=[["待处理","p-lo"],["进行中","p-mid"],["已完成","p-hi"]];
 function taskRow(x){
- return `<div class="taskrow"><div class="no">${x.done?"✓":"•"}</div><div class="tt" style="${x.done?"text-decoration:line-through;color:var(--dim)":""}">${esc(x.name)}</div>
+ const st=x.st||0,due=x.due?`<br><span style="font-size:10px;color:var(--dim)">📅 截止 ${x.due}</span>`:"";
+ return `<div class="taskrow"><div class="no">${st===2?"✓":"•"}</div><div class="tt" style="${st===2?"text-decoration:line-through;color:var(--dim)":""}">${esc(x.name)}${due}</div>
  <span class="prio ${PRIO[x.prio][1]}">${PRIO[x.prio][0]}</span>
- <button class="ghost" onclick="toggleTask(${x.id})">${x.done?"恢复":"完成"}</button>
+ <button class="ghost" onclick="cycTask(${x.id})">${TST[st][0]}</button>
  <button class="ghost" onclick="delTask(${x.id})">删</button></div>`;
 }
 
@@ -543,12 +572,15 @@ function taskRow(x){
 function addMoney(){
  const a=Number(document.getElementById("moneyAmount").value);
  if(!(a>0))return alert("请输入有效金额");
- db.money.push({id:uid(),type:document.getElementById("moneyType").value,amount:a,note:document.getElementById("moneyNote").value.trim(),at:Date.now()});
+ db.money.push({id:uid(),type:document.getElementById("moneyType").value,cat:document.getElementById("moneyCat").value,amount:a,note:document.getElementById("moneyNote").value.trim(),at:Date.now()});
+ logA((document.getElementById("moneyType").value==="income"?"记收入 ¥":"记支出 ¥")+a);
  document.getElementById("moneyAmount").value="";document.getElementById("moneyNote").value="";
  save();render();
 }
 function delMoney(id){if(!confirm("确定删除？"))return;db.money=db.money.filter(x=>x.id!==id);save();render()}
 
+const CATS={income:["商品销售","会员收入","项目收入","服务收入","其他收入"],expense:["AI模型费用","软件订阅","广告推广","开发费用","商品采购","其他支出"]};
+function chgCat(){const t=document.getElementById("moneyType").value;document.getElementById("moneyCat").innerHTML=CATS[t].map(c=>`<option>${c}</option>`).join("")}
 /* ============ 复制/生成 ============ */
 function copyText(id){
  const el=document.getElementById(id);
@@ -560,6 +592,12 @@ function genPrompt(){
  document.getElementById("output").value="请你直接执行以下任务："+q+"。请交付真实成果、完整代码或文件，列明完成情况、测试情况和未解决问题。不要只给计划，不要虚构结果。";
 }
 
+function subAI(){
+ const m=document.getElementById("aiMod").value,q=document.getElementById("aiReq").value.trim();
+ if(!q)return alert("先描述要 AI 做的事");
+ const t="【AI执行任务】模块："+m+"；需求："+q+"。要求：先分析再规划，然后执行并生成真实文件，完成后自检，交付时列明已完成/未完成/受限三档，不要虚构结果，等我验收。";
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{logA("提交AI任务："+m);save();alert("已复制，发到聊天里我就开工")}).catch(()=>alert("复制失败，请长按手动复制"));
+}
 /* ============ 数据导出/导入/清空 ============ */
 function exportData(){
  const blob=new Blob([JSON.stringify(db)],{type:"application/json"});
@@ -572,7 +610,17 @@ function importData(inp){
  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.tasks)throw 0;db=d;save();render();alert("导入成功")}catch(e){alert("文件格式不对")}};
  r.readAsText(f);inp.value="";
 }
-function wipeData(){if(confirm("清空本机全部数据？此操作不可恢复！")){localStorage.removeItem(DBKEY);db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[]};render();alert("已清空")}}
+function wipeData(){if(confirm("清空本机全部数据？此操作不可恢复！")){localStorage.removeItem(DBKEY);db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[],log:[],goals:[]};render();alert("已清空")}}
+/* ============ 目标 ============ */
+function addGoal(){
+ const n=document.getElementById("goalName").value.trim(),t=Number(document.getElementById("goalTarget").value),c=Number(document.getElementById("goalCur").value)||0;
+ if(!n||!(t>0))return alert("填写目标名称和目标值");
+ db.goals.push({id:uid(),name:n,target:t,cur:c,at:Date.now()});
+ document.getElementById("goalName").value="";document.getElementById("goalTarget").value="";document.getElementById("goalCur").value="";
+ logA("新增目标："+n);save();render();
+}
+function goalStep(id,d){const g=db.goals.find(g=>g.id===id);if(!g)return;g.cur=Math.max(0,g.cur+d);save();render()}
+function delGoal(id){if(!confirm("确定删除？"))return;db.goals=db.goals.filter(g=>g.id!==id);save();render()}
 
 /* ============ 渲染 ============ */
 const MODN={biz:"创业",game:"游戏",media:"内容",invest:"投资"};
@@ -590,7 +638,7 @@ function render(){
  const newToday=projs.filter(x=>x.at>=t0).length;
  document.getElementById("stProj").textContent=projs.length;
  document.getElementById("stProjD").textContent="↑ "+newToday;
- const undo=db.tasks.filter(x=>!x.done),done=db.tasks.filter(x=>x.done);
+ const undo=db.tasks.filter(x=>(x.st||0)<2),done=db.tasks.filter(x=>x.st===2);
  document.getElementById("stTask").textContent=undo.length;
  document.getElementById("stTaskD").textContent="↓ "+done.length;
  document.getElementById("stTaskD").className="d "+(done.length?"down":"");
@@ -614,6 +662,15 @@ function render(){
   <div class="bd"><b>${esc(x.name)}</b><span>${MODN[m]} · ${esc((x.desc||"").slice(0,14))}</span>
   <div class="bar"><i style="width:${x.prog||0}%"></i></div><div class="pc">${x.prog||0}%</div></div></div>`}).join("")
   :'<div class="empty" style="grid-column:1/-1">暂无项目，去各中心添加</div>';
+ /* 目标+动态 */
+ const hg=document.getElementById("homeGoals");
+ hg.innerHTML=db.goals.length?db.goals.slice(0,4).map(g=>{const p=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
+  return `<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(g.name)}</b><span style="color:var(--sub)">${g.cur}/${g.target} · ${p}%</span></div><div class="bar2"><i style="width:${p}%"></i></div></div>`}).join("")
+  :'<div class="empty">暂无目标，去「我的」添加</div>';
+ const hl=document.getElementById("homeLog");
+ hl.innerHTML=db.log.length?db.log.slice(0,8).map(l=>{const d=new Date(l.at);
+  return `<div style="font-size:11px;color:var(--sub);padding:6px 0;border-bottom:1px solid rgba(120,181,255,.07)"><span style="color:var(--dim)">${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}</span> · ${esc(l.t)}</div>`}).join("")
+  :'<div class="empty">暂无动态</div>';
  /* 各列表 */
  const L=(id,arr,type,mod)=>{const el=document.getElementById(id);if(el)el.innerHTML=arr.length?arr.slice().reverse().map(x=>projCard(x,type,mod)).join(""):'<div class="empty">暂无记录</div>'};
  L("bizList",db.biz,"biz","创业");L("gameList",db.game,"game","游戏");L("mediaList",db.media,"media","内容");L("investList",db.invest,"invest","投资");
@@ -630,7 +687,7 @@ function render(){
  ne.textContent="¥"+net.toLocaleString();ne.style.color=net>=0?"var(--green)":"var(--red)";
  document.getElementById("mCnt").textContent=db.money.length;
  const ml=document.getElementById("moneyList");
- if(ml)ml.innerHTML=db.money.length?db.money.slice().reverse().map(x=>`<div class="item"><b>${esc(x.note||"收支记录")}</b>
+ if(ml)ml.innerHTML=db.money.length?db.money.slice().reverse().map(x=>`<div class="item"><b>${esc(x.note||x.cat||"收支记录")}</b> <span style="font-size:10px;color:var(--dim)">${esc(x.cat||"")}</span>
   <span style="float:right;font-weight:900;color:${x.type==="income"?"var(--green)":"var(--red)"}">${x.type==="income"?"+":"-"}¥${x.amount.toFixed(2)}</span>
   <div class="row"><button class="ghost" onclick="delMoney(${x.id})">删除</button></div></div>`).join(""):'<div class="empty">暂无记录</div>';
  /* 项目管理 */
@@ -638,9 +695,13 @@ function render(){
  document.getElementById("pAvg").textContent=(projs.length?Math.round(projs.reduce((a,x)=>a+(x.prog||0),0)/projs.length):0)+"%";
  const pl=document.getElementById("projectsList");
  if(pl)pl.innerHTML=projs.length?projs.slice().reverse().map(x=>projCard(x,modOf(x),MODN[modOf(x)]+" · "+MODI[modOf(x)])).join(""):'<div class="empty">暂无项目</div>';
- /* 消息 */
- const msgs=[
-  ["🤖","AI工作室云端同步运行中","版本 v20261030-2 · 自动更新已开启"],
+ /* 目标列表（我的页） */
+ const gl=document.getElementById("goalsList");
+ if(gl)gl.innerHTML=db.goals.length?db.goals.map(g=>{const p=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
+  return `<div class="item"><b>${esc(g.name)}</b><p>${g.cur}/${g.target} · ${p}%</p><div class="bar2"><i style="width:${p}%"></i></div>
+  <div class="row"><button class="ghost" onclick="goalStep(${g.id},1)">+1</button><button class="ghost" onclick="goalStep(${g.id},10)">+10</button><button class="ghost" onclick="goalStep(${g.id},-10)">−10</button><button class="ghost" onclick="delGoal(${g.id})">删除</button></div></div>`}).join(""):'<div class="empty">暂无目标</div>';
+ /* 消息 */ 
+ const msgs=[  ["🤖","AI工作室云端同步运行中","版本 v20261030-3 · 自动更新已开启"],
   ["✓","待完成任务 "+undo.length+" 个",undo.length?"去任务中心查看":"全部完成，干得漂亮"],
   ["⚙️","今日自动化推送就绪","全球新闻 07:50 · 盘前预判 08:00 · 更多定时任务运行中"]
  ];
@@ -662,7 +723,7 @@ function render(){
   dp.innerHTML=["创业","游戏","内容","投资"].map((n,i)=>`<div style="font-size:11px;color:var(--sub);margin:8px 0">${n} ${cs[i]}<div class="bar2"><i style="width:${cs[i]/mx*100}%"></i></div></div>`).join("");}
  buildFeats();renderAutos();
 }
-buildFeats();renderAutos();render();
+buildFeats();renderAutos();chgCat();render();
 </script>
 </body>
 </html>
