@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- hema-aistudio-v1 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +11,7 @@
 --tx:#eef4ff;--sub:#9fb2d8;--dim:#5f7194;--acc:#3f9dff;--acc2:#7c5cff;--ok:#22c58b;--warn:#ffb020;--bad:#ff5d6c}
 html,body{height:100%}
 body{background:radial-gradient(1200px 600px at 80% -10%,#12245c 0%,transparent 60%),radial-gradient(900px 500px at 10% 110%,#0e2a5e 0%,transparent 55%),linear-gradient(180deg,var(--bg1),var(--bg0));
-color:var(--tx);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;overflow-x:hidden;max-width:430px;margin:0 auto;position:relative;touch-action:pan-y}
+color:var(--tx);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;overflow-x:hidden;max-width:430px;margin:0 auto;position:relative}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 background:radial-gradient(420px 220px at 12% 8%,rgba(64,140,255,.14),transparent 70%),radial-gradient(500px 260px at 88% 30%,rgba(124,92,255,.12),transparent 70%),radial-gradient(600px 300px at 50% 100%,rgba(34,197,139,.07),transparent 70%)}
 #app{display:flex;min-height:100vh;position:relative;z-index:1}
@@ -25,7 +26,7 @@ padding:7px 2px;border-radius:12px;cursor:pointer;line-height:1.25}
 .rbtn .ic{font-size:19px}
 .rbtn.on{background:linear-gradient(135deg,rgba(47,123,255,.85),rgba(64,160,255,.65));color:#fff;box-shadow:0 4px 14px rgba(47,123,255,.35)}
 /* 主区 */
-.main{flex:1;min-width:0;padding:12px 12px 96px;overflow-x:hidden;touch-action:pan-y}
+.main{flex:1;min-width:0;padding:12px 12px 96px;overflow-x:hidden}
 .page{display:none}.page.on{display:block;animation:fd .25s}
 @keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
 .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -54,12 +55,15 @@ font-size:8px;color:var(--ok);animation:spin2 7s linear infinite;line-height:1.3
 .sec-title{display:flex;align-items:center;justify-content:space-between;margin:14px 2px 10px}
 .sec-title h3{font-size:15px;font-weight:800}
 .sec-title a{font-size:11px;color:var(--sub);cursor:pointer}
-.mods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;overflow:hidden;touch-action:pan-y}
-.mod{min-width:0;border-radius:16px;padding:10px 4px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:#fff;overflow:hidden}
-.mod .mi{width:34px;height:34px;margin:0 auto 6px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:18px}
-.mod b{display:block;font-size:10px;margin-bottom:3px;white-space:nowrap}
-.mod span{display:block;font-size:8px;opacity:.85;line-height:1.4;min-height:23px}
-.mod .go{display:inline-block;margin-top:6px;font-size:9px;background:rgba(0,0,0,.28);padding:3px 8px;border-radius:20px;white-space:nowrap}
+/* 横滑模块行：左右滑动查看全部卡片 */
+.mods{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+.mods::-webkit-scrollbar{display:none}
+.mod{flex:0 0 112px;scroll-snap-align:start;min-width:0;border-radius:16px;padding:12px 6px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:#fff;overflow:hidden}
+.mod .mi{width:40px;height:40px;margin:0 auto 8px;border-radius:12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:21px}
+.mod b{display:block;font-size:12px;margin-bottom:3px;white-space:nowrap}
+.mod span{display:block;font-size:9px;opacity:.85;line-height:1.4;min-height:25px}
+.mod .go{display:inline-block;margin-top:6px;font-size:10px;background:rgba(0,0,0,.28);padding:4px 10px;border-radius:20px;white-space:nowrap}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;backdrop-filter:blur(8px)}
 .card h4{font-size:13px;margin-bottom:8px}
 .proj{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -561,7 +565,7 @@ function renderHome(){
   +'<div class="card" id="homeGoals">'+goalsHTML(4)+'</div>'
   +'<div class="sec-title"><h3>◉ 最新动态</h3></div>'
   +'<div class="card">'+logHTML(8)+'</div>'
-  +'<div class="ver">AI工作室 · v20261030-6 · 统一数据库 aistudio_v3</div>';
+  +'<div class="ver">AI工作室 · v20261030-7 · 统一数据库 aistudio_v3</div>';
 }
 function stat(ic,t,v,d){return '<div class="stat"><div class="t"><i>'+ic+'</i>'+t+'</div><div class="v">'+v+'</div><div class="d">'+d+'</div></div>'}
 function taskRowMini(x){return '<div style="font-size:12px;padding:7px 0;border-bottom:1px solid rgba(120,181,255,.07)">• '+esc(x.name)+'</div>'}
@@ -1008,7 +1012,7 @@ function myHTML(){
   +'<div class="fcard"><h3>📤 数据导出 / 📥 导入</h3><div class="row"><button class="act ghost" onclick="dlJSON()">导出JSON</button><button class="act ghost" onclick="document.getElementById(\'impF\').click()">导入JSON</button></div><input type="file" id="impF" accept=".json" style="display:none" onchange="impJSON(this)"><button class="act ghost" style="margin-top:8px;color:var(--bad);border-color:rgba(255,93,108,.4)" onclick="wipeData()">清空全部数据</button></div>'
   +'<div class="fcard"><h3>⚙ 设置</h3><div class="kv"><span>默认AI模型</span><b>'+esc(db.settings.model||"Muse")+'</b></div><select id="setModel" onchange="db.settings.model=this.value;save()"><option'+(db.settings.model!=="Muse Deep"?" selected":"")+'>Muse</option><option'+(db.settings.model==="Muse Deep"?" selected":"")+'>Muse Deep</option><option'+(db.settings.model==="GPT"?" selected":"")+'>GPT</option><option'+(db.settings.model==="Gemini"?" selected":"")+'>Gemini</option></select>'
   +'<div class="note">🔐 安全说明：API密钥不要存在页面里。需要调模型接口时在聊天里发我，密钥走加密通道。单用户本机应用，无多账号权限体系；重要操作（删数据/花钱/发布）云端执行前会请你确认。</div></div>'
-  +'<div class="card"><div class="kv"><span>统一数据库</span><b>aistudio_v3</b></div><div class="kv"><span>版本</span><b>v20261030-6</b></div><div class="kv"><span>操作日志</span><b>'+db.log.length+'条</b></div></div>';
+  +'<div class="card"><div class="kv"><span>统一数据库</span><b>aistudio_v3</b></div><div class="kv"><span>版本</span><b>v20261030-7</b></div><div class="kv"><span>操作日志</span><b>'+db.log.length+'条</b></div></div>';
 }
 function addGoal(){
   const n=document.getElementById("goalName").value.trim(),t=+document.getElementById("goalTarget").value,c=+document.getElementById("goalCur").value||0;
