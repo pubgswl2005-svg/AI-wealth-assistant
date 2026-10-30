@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>个人AI工作室 Pro</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#edf2ff;font-family:Arial,sans-serif}
+header{padding:22px;background:#111b32;border-bottom:1px solid #263653}
+header h1{margin:0;font-size:25px}
+header p{color:#9baac5;margin-bottom:0}
+.layout{display:flex;min-height:100vh}
+nav{width:205px;background:#10192b;padding:15px}
+nav button{display:block;width:100%;margin:5px 0;padding:13px;text-align:left;background:transparent;color:#cbd8f1;border:0;border-radius:9px}
+nav button.active,nav button:hover{background:#253858}
+main{flex:1;padding:20px;min-width:0}
+.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.card{background:#15223a;border:1px solid #293c5b;border-radius:14px;padding:17px;margin-bottom:13px}
+.card h3{margin-top:0}
+.number{font-size:27px;font-weight:bold;color:#78b5ff}
+button.action{background:#377de2;color:white;border:0;padding:10px 14px;border-radius:8px}
+input,textarea,select{width:100%;padding:11px;margin:6px 0;background:#0e192c;border:1px solid #344764;color:white;border-radius:8px}
+textarea{min-height:75px}
+.item{padding:13px;border:1px solid #2a3b56;border-radius:10px;margin:9px 0;background:#111d31}
+.item button{margin:5px 5px 0 0}
+.small{color:#9eacc4;font-size:13px}
+@media(max-width:650px){.layout{display:block}nav{width:100%;display:flex;overflow-x:auto;padding:7px}nav button{white-space:nowrap;width:auto}main{padding:12px}}
+</style>
+</head>
+<body>
+<!-- hema-aistudio-v1 -->
+<header>
+<h1>✦ 个人 AI 工作室 Pro</h1>
+<p>一个人管理项目、创业、游戏、内容与投资</p>
+</header>
+<div class="layout">
+<nav id="nav">
+<button class="active" onclick="show('home',this)">◈ 工作室总览</button>
+<button onclick="show('business',this)">💼 创业中心</button>
+<button onclick="show('game',this)">🎮 游戏工作室</button>
+<button onclick="show('media',this)">🎬 内容工作室</button>
+<button onclick="show('invest',this)">📊 投资研究</button>
+<button onclick="show('tasks',this)">✓ 任务中心</button>
+<button onclick="show('ideas',this)">✧ 创意库</button>
+<button onclick="show('finance',this)">￥ 经营账本</button>
+<button onclick="show('ai',this)">🤖 AI 助手</button>
+</nav>
+<main>
+<section id="home" class="page active">
+<h2>工作室控制台</h2>
+<div class="grid">
+<div class="card">进行中项目<div class="number" id="projectCount">0</div></div>
+<div class="card">待完成任务<div class="number" id="taskCount">0</div></div>
+<div class="card">创意储备<div class="number" id="ideaCount">0</div></div>
+<div class="card">累计收入<div class="number" id="incomeCount">¥0</div></div>
+</div>
+<div class="card">
+<h3>工作室五大部门</h3>
+<p>💼 创业与数字商品</p>
+<p>🎮 3D 游戏开发</p>
+<p>🎬 AI 内容创作</p>
+<p>📊 投资与行业研究</p>
+<p>🤖 中央 AI 助手</p>
+</div>
+<div class="card">
+<h3>今日工作重点</h3>
+<p>1. 验证一个有真实需求的数字商品。</p>
+<p>2. 推进《神域：武魂纪元》开发。</p>
+<p>3. 建立内容生产流程。</p>
+<p>4. 记录项目成本和实际收入。</p>
+</div>
+</section>
+
+<section id="business" class="page">
+<h2>创业中心</h2>
+<div class="card">
+<h3>新增创业项目</h3>
+<input id="bname" placeholder="项目名称">
+<textarea id="bdesc" placeholder="商业模式、目标客户、产品"></textarea>
+<button class="action" onclick="add('business','bname','bdesc')">创建项目</button>
+</div>
+<div id="businessList"></div>
+</section>
+
+<section id="game" class="page">
+<h2>游戏工作室</h2>
+<div class="card">
+<h3>游戏项目</h3>
+<input id="gname" value="神域：武魂纪元">
+<textarea id="gdesc">3D 安卓 RPG，包含开放地图、武魂觉醒、魂环技能、妖兽战斗、装备成长、副本和任务系统。</textarea>
+<button class="action" onclick="add('game','gname','gdesc')">添加游戏项目</button>
+</div>
+<div id="gameList"></div>
+</section>
+
+<section id="media" class="page">
+<h2>内容工作室</h2>
+<div class="card">
+<h3>创作项目</h3>
+<input id="mname" placeholder="作品名称">
+<textarea id="mdesc" placeholder="剧情、分镜、视频主题"></textarea>
+<button class="action" onclick="add('media','mname','mdesc')">添加作品</button>
+</div>
+<div id="mediaList"></div>
+</section>
+
+<section id="invest" class="page">
+<h2>投资研究中心</h2>
+<div class="card">
+<h3>研究记录</h3>
+<input id="iname" placeholder="研究行业或基金">
+<textarea id="idesc" placeholder="投资逻辑、估值、风险、观察指标"></textarea>
+<button class="action" onclick="add('invest','iname','idesc')">保存研究</button>
+</div>
+<div id="investList"></div>
+</section>
+
+<section id="tasks" class="page">
+<h2>任务中心</h2>
+<div class="card">
+<input id="taskName" placeholder="输入要完成的任务">
+<select id="priority"><option>高优先级</option><option>中优先级</option><option>低优先级</option></select>
+<button class="action" onclick="addTask()">添加任务</button>
+</div>
+<div id="tasksList"></div>
+</section>
+
+<section id="ideas" class="page">
+<h2>创意库</h2>
+<div class="card">
+<input id="ideaName" placeholder="创意标题">
+<textarea id="ideaDesc" placeholder="创意具体内容"></textarea>
+<button class="action" onclick="add('ideas','ideaName','ideaDesc')">保存创意</button>
+</div>
+<div id="ideasList"></div>
+</section>
+
+<section id="finance" class="page">
+<h2>经营账本</h2>
+<div class="grid">
+<div class="card">收入<div class="number" id="income">¥0</div></div>
+<div class="card">支出<div class="number" id="expense">¥0</div></div>
+</div>
+<div class="card">
+<select id="moneyType"><option value="income">收入</option><option value="expense">支出</option></select>
+<input id="moneyAmount" type="number" placeholder="金额">
+<input id="moneyNote" placeholder="说明">
+<button class="action" onclick="addMoney()">记录</button>
+</div>
+<div id="moneyList"></div>
+</section>
+
+<section id="ai" class="page">
+<h2>中央 AI 助手</h2>
+<div class="card">
+<h3>项目负责人指令</h3>
+<textarea id="prompt" readonly>你是我的个人 AI 公司执行负责人。你需要帮助我管理创业、游戏开发、内容创作、投资研究和个人工作台。优先直接交付实际成果，包括完整代码、文件、表格和可执行方案。不要只给计划。不要虚构测试、部署和收入。遇到工具限制时，明确说明原因和替代方案。每个项目都要有明确的交付物和验收标准。</textarea>
+<button class="action" onclick="copyPrompt()">复制指令</button>
+</div>
+<div class="card">
+<h3>AI 任务生成器</h3>
+<textarea id="request" placeholder="例如：帮我设计一个可以销售的AI数字商品"></textarea>
+<button class="action" onclick="generatePrompt()">生成执行指令</button>
+<textarea id="output" placeholder="生成的指令会显示在这里"></textarea>
+<button class="action" onclick="copyOutput()">复制结果</button>
+</div>
+<p class="small">此页面不内置 AI 模型。复制生成的任务指令，再发送给 ChatGPT 执行。</p>
+</section>
+</main>
+</div>
+<script>
+const DBKEY="ai_company_pro_v1";
+let db=JSON.parse(localStorage.getItem(DBKEY)||'{"business":[],"game":[],"media":[],"invest":[],"ideas":[],"tasks":[],"money":[]}');
+function save(){localStorage.setItem(DBKEY,JSON.stringify(db));render()}
+function show(id,btn){
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+btn.classList.add('active');
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function add(type,n,d){
+let name=document.getElementById(n).value.trim();
+if(!name)return alert('请填写名称');
+db[type].push({id:Date.now(),name,desc:document.getElementById(d).value,done:false});
+document.getElementById(n).value='';
+document.getElementById(d).value='';
+save();
+}
+function addTask(){
+let name=taskName.value.trim();if(!name)return alert('填写任务');
+db.tasks.push({id:Date.now(),name,priority:priority.value,done:false});taskName.value='';save();
+}
+function addMoney(){
+let amount=Number(moneyAmount.value);if(amount<=0)return alert('请输入有效金额');
+db.money.push({id:Date.now(),type:moneyType.value,amount,note:moneyNote.value});
+moneyAmount.value='';moneyNote.value='';save();
+}
+function remove(type,id){if(confirm('确定删除？')){db[type]=db[type].filter(x=>x.id!==id);save()}}
+function toggle(id){let x=db.tasks.find(x=>x.id===id);x.done=!x.done;save()}
+function list(type){
+let el=document.getElementById(type+'List');
+el.innerHTML=db[type].map(x=>`<div class="item"><b>${esc(x.name)}</b><p class="small">${esc(x.desc||x.priority||'')}</p>${type==='tasks'?`<button class="action" onclick="toggle(${x.id})">${x.done?'恢复':'完成'}</button>`:''}<button onclick="remove('${type}',${x.id})">删除</button></div>`).join('')||'<p class="small">暂无记录</p>';
+}
+function render(){
+['business','game','media','invest','ideas','tasks'].forEach(list);
+let inc=db.money.filter(x=>x.type==='income').reduce((a,x)=>a+x.amount,0);
+let out=db.money.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amount,0);
+income.textContent='¥'+inc.toFixed(2);expense.textContent='¥'+out.toFixed(2);
+incomeCount.textContent='¥'+inc.toFixed(2);
+projectCount.textContent=['business','game','media','invest'].reduce((a,k)=>a+db[k].length,0);
+taskCount.textContent=db.tasks.filter(x=>!x.done).length;
+ideaCount.textContent=db.ideas.length;
+moneyList.innerHTML=db.money.map(x=>`<div class="item">${esc(x.note||'收支记录')}：${x.type==='income'?'+':'-'}¥${x.amount.toFixed(2)} <button onclick="remove('money',${x.id})">删除</button></div>`).join('');
+}
+function copyPrompt(){navigator.clipboard.writeText(prompt.value).then(()=>alert('已复制'))}
+function generatePrompt(){
+let q=request.value.trim();if(!q)return alert('先写任务');
+output.value='请你直接执行以下任务：'+q+'。请交付真实成果、完整代码或文件，列明完成情况、测试情况和未解决问题。不要只给计划，不要虚构结果。';
+}
+function copyOutput(){navigator.clipboard.writeText(output.value).then(()=>alert('已复制'))}
+render();
+</script>
+</body>
+</html>
