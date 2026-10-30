@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang S
 .rbtn.active{background:linear-gradient(135deg,rgba(59,130,246,.85),rgba(56,225,255,.55));color:#fff;font-weight:700;
   box-shadow:0 4px 14px rgba(59,130,246,.4)}
 /* 主区 */
-.main{flex:1;min-width:0;padding:12px 12px 92px}
+.main{flex:1;min-width:0;padding:12px 12px 92px;overflow-x:hidden}
 header.top{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px}
 header.top h1{font-size:23px;font-weight:900;background:linear-gradient(90deg,#60a5fa,#38e1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 header.top p{font-size:11px;color:var(--sub);margin-top:2px}
@@ -71,13 +71,13 @@ header.top p{font-size:11px;color:var(--sub);margin-top:2px}
 .stat .d{font-size:11px;margin-top:2px;font-weight:700}
 .up{color:var(--green)}.down{color:var(--red)}
 /* 模块卡 */
-.mods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.mod{border-radius:16px;padding:12px 6px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:#fff}
-.mod .mi{width:40px;height:40px;margin:0 auto 8px;border-radius:12px;background:rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;font-size:21px}
-.mod b{display:block;font-size:11px;margin-bottom:3px;white-space:nowrap}
-.mod span{display:block;font-size:9px;opacity:.85;line-height:1.4;min-height:25px}
-.mod .go{display:inline-block;margin-top:6px;font-size:10px;background:rgba(0,0,0,.28);padding:4px 10px;border-radius:20px;white-space:nowrap}
+.mods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;overflow:hidden}
+.mod{min-width:0;border-radius:16px;padding:10px 4px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:#fff;overflow:hidden}
+.mod .mi{width:34px;height:34px;margin:0 auto 6px;border-radius:11px;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:18px}
+.mod b{display:block;font-size:10px;margin-bottom:3px;white-space:nowrap}
+.mod span{display:block;font-size:8px;opacity:.85;line-height:1.4;min-height:23px}
+.mod .go{display:inline-block;margin-top:6px;font-size:9px;background:rgba(0,0,0,.28);padding:3px 8px;border-radius:20px;white-space:nowrap}
 .m-biz{background:linear-gradient(150deg,#b45309,#f59e0b)}
 .m-game{background:linear-gradient(150deg,#6d28d9,#a78bfa)}
 .m-media{background:linear-gradient(150deg,#be185d,#f472b6)}
@@ -105,7 +105,7 @@ header.top p{font-size:11px;color:var(--sub);margin-top:2px}
 .aicard button{margin-top:4px;border:0;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:800;color:#fff;
   background:linear-gradient(90deg,#3b82f6,#38e1ff);cursor:pointer}
 /* 项目动态 */
-.proj{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.proj{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .pcard{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;overflow:hidden}
 .pcard .th{height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative}
 .pcard .st{position:absolute;top:6px;left:6px;font-size:9px;font-weight:800;padding:2px 8px;border-radius:12px;background:rgba(0,0,0,.5);color:#fff}
@@ -125,7 +125,7 @@ button.ghost{background:transparent;border:1px solid rgba(120,181,255,.3);color:
 .item{padding:11px;border:1px solid rgba(120,181,255,.12);border-radius:12px;margin:8px 0;background:rgba(7,13,32,.45)}
 .item b{font-size:13px}.item p{font-size:11px;color:var(--sub);margin-top:4px;line-height:1.6}
 .item .row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.feat{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .feat .f{background:rgba(7,13,32,.45);border:1px solid rgba(120,181,255,.12);border-radius:12px;padding:11px;cursor:pointer}
 .feat .f b{font-size:12px;display:block;margin-bottom:3px}
 .feat .f span{font-size:10px;color:var(--sub);line-height:1.5;display:none}
@@ -249,7 +249,7 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
 
   <div class="sec-title"><h3>◉ 最新动态</h3></div>
   <div class="card" id="homeLog"></div>
-  <div class="ver">AI工作室 · v20261030-3 · 数据保存在本机</div>
+  <div class="ver">AI工作室 · v20261030-4 · 数据保存在本机</div>
 </section>
 
 <!-- 创业中心 -->
@@ -428,7 +428,7 @@ h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
   <div class="fcard"><h3>创始人</h3>
     <div class="kv"><span>工作室</span><b>个人AI公司</b></div>
     <div class="kv"><span>角色</span><b>创始人</b></div>
-    <div class="kv"><span>版本</span><b>v20261030-3</b></div>
+    <div class="kv"><span>版本</span><b>v20261030-4</b></div>
     <div class="kv"><span>数据位置</span><b>本机 localStorage</b></div>
   </div>
   <div class="fcard"><h3>🎯 目标管理</h3>
@@ -701,7 +701,7 @@ function render(){
   return `<div class="item"><b>${esc(g.name)}</b><p>${g.cur}/${g.target} · ${p}%</p><div class="bar2"><i style="width:${p}%"></i></div>
   <div class="row"><button class="ghost" onclick="goalStep(${g.id},1)">+1</button><button class="ghost" onclick="goalStep(${g.id},10)">+10</button><button class="ghost" onclick="goalStep(${g.id},-10)">−10</button><button class="ghost" onclick="delGoal(${g.id})">删除</button></div></div>`}).join(""):'<div class="empty">暂无目标</div>';
  /* 消息 */ 
- const msgs=[  ["🤖","AI工作室云端同步运行中","版本 v20261030-3 · 自动更新已开启"],
+ const msgs=[  ["🤖","AI工作室云端同步运行中","版本 v20261030-4 · 自动更新已开启"],
   ["✓","待完成任务 "+undo.length+" 个",undo.length?"去任务中心查看":"全部完成，干得漂亮"],
   ["⚙️","今日自动化推送就绪","全球新闻 07:50 · 盘前预判 08:00 · 更多定时任务运行中"]
  ];
