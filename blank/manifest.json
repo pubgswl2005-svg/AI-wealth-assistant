@@ -1,0 +1,18 @@
+{
+ "version": "20261030-25",
+ "chunks": [
+  "data/chunk-1.js",
+  "data/chunk-2.js",
+  "data/chunk-3.js",
+  "data/chunk-4.js",
+  "data/chunk-5.js",
+  "data/chunk-6.js",
+  "data/chunk-7.js",
+  "data/chunk-8.js",
+  "data/chunk-9.js",
+  "data/chunk-10.js",
+  "data/chunk-11.js",
+  "data/chunk-12.js"
+ ],
+ "marker": "hema-blank-v1"
+}
