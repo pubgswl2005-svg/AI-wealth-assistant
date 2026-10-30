@@ -3,35 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>每日学习成果 · 2026-10-29 · 小坏蛋</title>
+<title>每日学习成果 · 小坏蛋</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
     background: linear-gradient(180deg, #c3d0df 0%, #aebfd3 100%);
     background-attachment: scroll;
     color: #07182b;
-    padding: 0 12px 30px;
+    padding: 14px 12px 30px;
   }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  /* ===== 顶部功能栏：复制 + 收听 ===== */
   .topbar {
-    position: sticky; top: 0; z-index: 50;
-    margin: 0 -12px; padding: 10px 12px;
-    background: #ffffff; border-bottom: 2px solid #0d47a1;
-    display: flex; gap: 10px; align-items: stretch;
-    box-shadow: 0 2px 10px rgba(7,24,43,.18);
+    position: sticky; top:0; z-index:50;
+    margin:0 -12px; padding:10px 12px;
+    background:#ffffff; border-bottom:2px solid #1447c8;
+    display:flex; gap:10px; align-items:stretch;
+    box-shadow:0 2px 10px rgba(7,24,43,.18);
   }
   .topbar button {
-    flex: 1; min-height: 52px; border: none; border-radius: 12px;
-    font-size: 18px; font-weight: 800; color: #ffffff; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    flex:1; min-height:52px; border:none; border-radius:12px;
+    font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
   }
-  #btnCopy { background: #0d47a1; }
-  #btnCopy:active { background: #0a357c; }
-  #btnListen { background: #065f46; }
-  #btnListen:active { background: #04402f; }
-  #btnStop { flex: 0 0 64px; background: #b91c1c; display: none; }
-  .hint { margin: 10px 2px 0; font-size: 14px; font-weight: 700; color: #243b55; }
-  .wrap { max-width: 640px; margin: 0 auto; }
+  #btnCopy { background:#1447c8; }
+  #btnCopy:active { background:#0d3396; }
+  #btnListen { background:#065f46; }
+  #btnListen:active { background:#04402f; }
+  #btnStop { flex:0 0 64px; background:#b91c1c; display:none; }
+  .hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#243b55; }
   .card {
     background: #ffffff;
     border-radius: 16px;
@@ -59,13 +60,18 @@
   .round-row .st { font-size: 13px; font-weight: 800; color: #1b5e20; white-space: nowrap; }
   .round-row .st.wait { color: #5a718c; }
   .item { border-left: 5px solid #0d47a1; }
+  .item.vid { border-left-color: #5e35b1; }
+  .item.web { border-left-color: #00695c; }
   .item.fin { border-left-color: #bf360c; }
   .item h3 { font-size: 17px; font-weight: 800; line-height: 1.4; }
   .item h3 .no { color: #0d47a1; margin-right: 4px; }
   .item .intro { margin-top: 6px; font-size: 14.5px; font-weight: 600; line-height: 1.65; color: #10283f; }
+  .item .func { margin-top: 8px; font-size: 14px; font-weight: 700; line-height: 1.7; color: #243b55; }
+  .item .func li { margin-left: 18px; margin-bottom: 3px; }
   .item .use { margin-top: 8px; font-size: 14px; font-weight: 700; line-height: 1.6; color: #243b55; background: #eef4fa; border-radius: 10px; padding: 8px 10px; }
   .item .use b { color: #0d47a1; }
-  .item .meta { margin-top: 8px; font-size: 13px; font-weight: 700; color: #41597a; line-height: 1.7; word-break: break-all; }
+  .item .meta { margin-top: 8px; font-size: 13px; font-weight: 700; color: #41597a; line-height: 1.6; }
+  .item .meta a { color: #0d47a1; font-weight: 800; text-decoration: none; word-break: break-all; }
   .sum li { font-size: 14.5px; font-weight: 700; line-height: 1.7; margin-left: 18px; margin-bottom: 4px; }
   .sum li b { color: #c62828; }
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -78,139 +84,183 @@
 </style>
 </head>
 <body>
-
-<div class="topbar">
-  <button id="btnCopy" type="button">📋 复制全文</button>
-  <button id="btnListen" type="button">🔊 收听</button>
-  <button id="btnStop" type="button">⏹</button>
-</div>
-<p class="hint">👆 顶部两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
-
 <div class="wrap">
+
+  <div class="topbar">
+    <button id="btnCopy" type="button">📋 复制全文</button>
+    <button id="btnListen" type="button">🔊 收听</button>
+    <button id="btnStop" type="button">⏹</button>
+  </div>
+  <p class="hint">👆 以后我发的信息，顶部都有这两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
   <div class="card hero">
     <h1>📚 每日学习成果</h1>
     <p class="sub">小坏蛋每天早上 06:50 自动学习，三个方向轮着学；学完不是存着好看，做事时直接从知识库取材套用。这一页就是学习成果的展示窗。</p>
     <div class="datebar">
-      <span class="d">2026年10月29日 · 周四</span>
-      <span class="r">今日主题：投资财经</span>
+      <span class="d">2026年10月30日 · 周五</span>
+      <span class="r">今日主题：AI 工具</span>
     </div>
   </div>
 
   <div class="card">
     <div class="round-row">
-      <div class="n next">1</div>
+      <div class="n">1</div>
       <div class="t"><b>AI 工具</b><span>新发布的工具、模型重大更新</span></div>
-      <div class="st wait">10月27日已学</div>
+      <div class="st">✅ 今日已学 10 条</div>
     </div>
     <div class="round-row">
       <div class="n next">2</div>
       <div class="t"><b>GitHub 新星项目</b><span>Trending 与高收藏的新项目</span></div>
-      <div class="st wait">10月28日已学</div>
+      <div class="st wait">明天 10月31日</div>
     </div>
     <div class="round-row">
-      <div class="n">3</div>
+      <div class="n next">3</div>
       <div class="t"><b>投资财经</b><span>重点跟踪：存储芯片 · 半导体设备</span></div>
-      <div class="st">✅ 今日已学 10 条</div>
+      <div class="st wait">11月1日</div>
     </div>
   </div>
 
-  <h2 class="sec">今日成果 · 存储芯片<span class="tag">重点跟踪</span></h2>
+  <h2 class="sec">今日成果 · 图像生成<span class="tag">漫剧/海报用</span></h2>
+
+  <div class="card item vid">
+    <h3><span class="no">1.</span>Canva Craft（Canva 首个自研图像模型）</h3>
+    <p class="intro">10 月 22 日上线：Canva 自己的图像生成模型，不拿照片训练、拿数百万张人类设计模板训练，天生懂版式、层级和排字；DesignArena 首秀空降全球第 4，人像、风景类目第 1。</p>
+    <ul class="func">
+      <li>两阶段生成：先按提示词"规划版式"（元素位置、大小、视觉层级、文字），再渲染成图，文字渲染更准、局部可改不改全局；</li>
+      <li>最高 2K 分辨率、30 多种画幅比例，直接出社交媒体/海报/菜单/演示文稿规格；</li>
+      <li>全平台用户即日起在 Dream Lab 可用，API 和 MCP 接入在路上。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧海报、小说章节封面、反推提示词包宣传图、店铺活动海报——文字准确＋版式天生，直接出成品不用再手动拼字；以后还能让助手通过 Canva MCP 直接生成可编辑设计稿。</p>
+    <p class="meta">收费：随 Canva 会员体系，未公布独立定价；低成本版 Craft-fast / Craft-ultrafast 开发中<br>来源：<a href="https://petapixel.com/2026/10/23/canva-releases-ai-image-generator-that-wasnt-trained-on-photographs/">petapixel.com</a>（2026-10-23）</p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">2.</span>Nano Banana 2.1（Google，10 月 6 日正式版）</h3>
+    <p class="intro">Google 新一代图像生成/编辑模型，基于 Gemini 3.6 Flash；价格砍到上一代约一半，老版 Nano Banana 2 已于 10 月 29 日关停。</p>
+    <ul class="func">
+      <li>文生图＋图生图编辑同一模型搞定，延续 Nano Banana 系的强编辑能力；</li>
+      <li>1K 图片约 0.0336 美元、2K 约 0.0504 美元（标准档），走 batch 再半价；</li>
+      <li>注意：512px 便宜缩略图档取消，以前拿它出草图的路子没了。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>魂灵纪元建模参考图、漫剧分镜草图的"出图引擎"可以从 2.0 切到 2.1，成本直接减半；AI Studio 里免费用它批量出参考图。</p>
+    <p class="meta">收费：按张计费，1K 约 0.0336 美元；免费额度走 Gemini App / AI Studio<br>来源：<a href="https://tech-insider.org/ai-image-generator-arena-blind-elo-cost-per-usable-image-2026/">tech-insider.org</a>（2026-10-29 实测文）</p>
+  </div>
+
+  <h2 class="sec">今日成果 · 大模型<span class="tag">写代码/做分析/跑Agent</span></h2>
+
+  <div class="card item web">
+    <h3><span class="no">3.</span>GPT-6.1 Terra（OpenAI，10 月 26 日）</h3>
+    <p class="intro">OpenAI 新"中坚工作马"：办公、电脑操作、视觉推理、写作任务上对标旗舰 GPT-6 Astra，token 价格只有十分之一；已进 GitHub Copilot 做 agentic coding。</p>
+    <ul class="func">
+      <li>为多步骤 Agent 工作流优化：代码、填表、终端自动化，错误诱发提示的出错率从 53.6% 降到 16.7%；</li>
+      <li>105 万 token 上下文、12.8 万输出上限；</li>
+      <li>可用在 API、ChatGPT Work、Codex 和 GitHub Copilot。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>以后跑自动化任务（定时抓数、批量改网页）的模型成本能砍一大半；云电脑上跑 Agent 活儿优先选这类"便宜快"的中坚模型，不用事事上旗舰。</p>
+    <p class="meta">收费：$1 / $5 每百万输入/输出 token（前代一半）；缓存输入 $0.05<br>来源：<a href="https://asumetech.com/2026/10/27/gpt-6-1-terra-debuts-with-3x-faster-speeds-and-critical-cybersecurity-rating/">asumetech.com</a>、<a href="https://local-ai-zone.github.io/blog/October_2026_AI_Model_Updates.html">local-ai-zone.github.io</a></p>
+  </div>
+
+  <div class="card item web">
+    <h3><span class="no">4.</span>Nvidia Nemotron 3.5 Super VL（英伟达，10 月 15 日，开源）</h3>
+    <p class="intro">120B 参数（每 token 只激活 12B）的开源多模态 MoE，号称同类开源模型里 Agent 任务完成速度快 5 倍；权重 Day 0 就上了 Hugging Face。</p>
+    <ul class="func">
+      <li>文/图/文档/视频一个模型全吃，100 万 token 上下文，不用来回切模型传上下文；</li>
+      <li>Agent 任务输出超 600 token/秒，Agent 评测里反超自家旗舰 Nemotron 3 Ultra；</li>
+      <li>开源 OpenMDW 协议，可用 NeMo 在自己数据上继续训练（官方演示：医疗理赔任务微调后反超 Claude Opus 5）。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>云电脑 dsh 免费池的"不敏感活儿"多了一个强力备选——开源意味着 prompt 不经过商业 API，隐私顾虑更小；以后自建的 Agent 工具链可以考虑它当执行引擎。</p>
+    <p class="meta">收费：权重免费下载，自己部署只花算力；配套有 Bolt 74B（24GB 显存本地跑）和 Bolt E4B（4GB，手机级对话 Agent）<br>来源：<a href="https://www.aitrove.ai/blog/nvidia-nemotron-3-5-super-vl-open-agentic-models-2026">aitrove.ai</a></p>
+  </div>
+
+  <div class="card item web">
+    <h3><span class="no">5.</span>Mistral Large 4「Le Chonk」（10 月 29 日刚开源权重）</h3>
+    <p class="intro">法国 Mistral 的万亿参数（每 token 激活 52B）多模态 MoE，10 月 6 日预览、10 月 29 日放出开源权重，改良 MIT 协议。</p>
+    <ul class="func">
+      <li>文本＋图像输入、100 万 token 上下文；</li>
+      <li>权重开源可本地部署、自己微调；</li>
+      <li>欧洲开源旗舰，独立评测 Intelligence Index 38 分（中等偏上，非顶级）。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>dsh 免费池/OpenCode 车道的又一个"不花钱或少花钱"的大模型选项；本地化部署后，知识库问答、提示词库检索这类活儿可以不走云端 API。</p>
+    <p class="meta">收费：预览 API $1.36 / $4.18 每百万 token；权重免费下载（注意商用条款）<br>来源：<a href="https://pasqualepillitteri.it/en/news/21196/mistral-large-4-launches-open-weights-late-october">pasqualepillitteri.it</a>、<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a></p>
+  </div>
+
+  <div class="card item web">
+    <h3><span class="no">6.</span>Gemini 4 Carbon（Google，10 月 28 日预览）</h3>
+    <p class="intro">Google 当前最强模型，为网络安全和超长任务打造；独立评测 Intelligence Index 59 分登顶（52 个模型第 1，比 Claude Opus 5.5 高 1 分）。</p>
+    <ul class="func">
+      <li>网络安全专项能力＋超长任务续航；</li>
+      <li>分阶段开放：先给网络安全防御者，再给可信伙伴，暂无公开 App/API；</li>
+      <li>首发价 $2 / $10，12 月 1 日后涨到 $4 / $20。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>暂时用不上，但它是"下一代 Gemini 进 Gemini App/Workspace"的预告——等它下放到消费端，盘前预判、研报总结这类长文档活儿可以直接换更强底座；选型时留好升级路径。</p>
+    <p class="meta">收费：目前不公开售卖；首发 $2 / $10 每百万 token<br>来源：<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a>（AI 模型发布追踪）</p>
+  </div>
+
+  <h2 class="sec">今日成果 · Agent 与开发平台<span class="tag">自动化用</span></h2>
 
   <div class="card item fin">
-    <h3><span class="no">1.</span>Q4 存储合约价涨幅放缓，但缺货反而加剧</h3>
-    <p class="intro">10 月 28 日消息：TrendForce 数据显示，Q4 一般型 DRAM 合约价季增 10% 至 15%，计入 HBM 后整体约 15% 至 20%；而 Q2 涨幅约 80%、Q3 约 40%，Q4 已是本轮周期最低的季度增速。但原厂库存仅剩 2 至 4 周，供应收缩幅度最高达 50%，原厂仍在限制出货——涨价在减速，缺货在加速。</p>
-    <p class="use">🎯 <b>对你的用处：</b>记住这个转折句式：涨幅放缓不等于价格回落。以后看存储新闻，先分清说的是“涨速”还是“价格”，再看库存周数，两个数对不上时以库存为准。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://news.qq.com/rain/a/20261028A05XHM00</p>
+    <h3><span class="no">7.</span>Gemini Agent（Google Cloud，10 月 8 日发布、私测中）</h3>
+    <p class="intro">Google 的"通用智能体"：一个入口搞定聊天问答、多步骤自主任务、内容创作、写代码；原生接 Gmail/Docs/Drive/Sheets/Calendar，还能连 Slack 和 Microsoft 365。</p>
+    <ul class="func">
+      <li>给目标不给指令：规划→调用工具→协调子智能体并行干活，可连续跑几小时甚至几天，跨会话不断记忆；</li>
+      <li>每个 Agent 有独立身份、日历和存储，能当"团队成员"长期在线；</li>
+      <li>10 月 21 日更新：多模型自动路由、实时项目花费上限（到上限自动暂停）。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>这就是"云端小坏蛋"的官方版形态——定时抓盘前数据、整理 Gmail、更新知识库，未来可能直接在 Google 生态里配一个长期在线的 Agent 干；现在私测，公测后第一时间试用。</p>
+    <p class="meta">收费：Google 未公布；第三方称约 $30/用户/月（未证实）<br>来源：<a href="https://tech-insider.org/google-gemini-agent-launch-workplace-ai-2026/">tech-insider.org</a></p>
   </div>
 
   <div class="card item fin">
-    <h3><span class="no">2.</span>存储成本传导到手机：BOM 里存储首次贵过 SoC</h3>
-    <p class="intro">10 月 7 日报道：iPhone 18 Pro 的 DRAM 成本从约 39 美元提高至 145 美元，NAND 从 13 美元升至 51 美元，整机 BOM 成本上升约 38%；10 月 28 日进一步指出，存储在整机 BOM 中的占比已从过去的 10% 至 15% 升至 30% 至 40%，首次超过 SoC 成为最贵单一组件。</p>
-    <p class="use">🎯 <b>对你的用处：</b>同一轮涨价对上下游方向相反：原厂和模组厂吃收入弹性，终端品牌扛成本。看持仓里的存储主题时，先问这家公司在涨价链的哪一头。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://uanalyze.com.tw/articles/9350656630 、https://news.qq.com/rain/a/20261028A05XHM00</p>
+    <h3><span class="no">8.</span>前 GitHub CEO Thomas Dohmke 新平台（10 月 26 日上线）</h3>
+    <p class="intro">GitHub 前 CEO 另起炉灶做的"AI 原生"代码协作平台：AI Agent 不是插件，是和人类平级的协作者；限量开放＋候补名单，2027 年初正式版。</p>
+    <ul class="func">
+      <li>Agent-first 架构：Agent 有独立工作区、持久记忆，和人类用同一套版本控制原语；</li>
+      <li>兼容标准 Git 协议，另加 Agent 专用操作（批量重构、自动依赖更新）；</li>
+      <li>多模态代码评审＋针对 AI 高频提交优化的实时冲突解决；按 Agent 用量计费、不按人头。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>AI-wealth-assistant 仓库和商城项目以后可能迁到这类平台——Agent 直接当协作者提交代码、修 bug，不用再人肉搬运；现在先候补名单占位，2027 年初正式版再评估。</p>
+    <p class="meta">收费：未公布，按 Agent 用量计费；云端＋自托管两版<br>来源：<a href="https://emergent.sh/news/former-github-ceo-launches-ai-native-coding">emergent.sh</a></p>
   </div>
 
-  <div class="card item fin">
-    <h3><span class="no">3.</span>中端手机被迫“开倒车”：Pro 机型退回 6GB 内存</h3>
-    <p class="intro">10 月 8 日消息：受内存涨价影响，iPhone 18 Pro 系列起售价上涨 1000 元；有头部品牌的中低端 Pro 机型将回归 6GB 内存、全系标配；Counterpoint 指出存储涨价已让手机整机物料成本提升 10% 至 15%，大存储版本冲击最明显。</p>
-    <p class="use">🎯 <b>对你的用处：</b>降配是涨价周期自我修正的机制：同样出货量下存储用量减少。以后跟踪存储需求，别只看手机出货量，还要看单机内存容量有没有缩水。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://finance.sina.com.cn/tech/roll/2026-10-08/doc-iniupafi7699998.shtml</p>
+  <h2 class="sec">今日成果 · 语音与世界模型<span class="tag">配音/游戏用</span></h2>
+
+  <div class="card item">
+    <h3><span class="no">9.</span>Nemotron 3.5 Transcribe（英伟达，10 月 28 日，开源）</h3>
+    <p class="intro">开源语音转文字模型：40 种语言转写、31 种语言↔英语互译、最多区分 8 个说话人，商用免费，可本地部署。</p>
+    <ul class="func">
+      <li>录音转文字 40 语言（含中文），31 种语言与英语互译；</li>
+      <li>说话人分离（最多 8 人）——会议/多人配音转写直接分段到人；</li>
+      <li>OpenMDW-1.1 协议，商用免费。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>配音质检的转写环节（现在用 faster-whisper）多了一个开源备选；每日英语课、讲书语音的字幕生成也可以走它；本地部署后长音频转写不花钱、不用传云端。</p>
+    <p class="meta">收费：权重免费下载，商用免费；自己部署只花算力<br>来源：<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a>（AI 模型发布追踪）</p>
   </div>
 
-  <div class="card item fin">
-    <h3><span class="no">4.</span>存储涨价冲击下游硬件毛利：支付终端三家分化</h3>
-    <p class="intro">10 月 22 日报道：存储涨价进成本、To B 客户议价权强、厂商很难原样转嫁，新大陆披露存储涨价对其影响超过 2.5 亿元；新大陆、新国都同时经营硬件和支付服务，百富以终端为主业，三家在同一轮涨价下面临不同的毛利和现金流分化。</p>
-    <p class="use">🎯 <b>对你的用处：</b>议价权决定谁扛成本：有服务收入缓冲的公司能部分对冲，纯硬件公司承压更直接。这条规则可以套到任何“上游涨价、下游扛不住”的行业新闻上。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://news.qq.com/rain/a/20261022A0BP8J00</p>
-  </div>
-
-  <h2 class="sec">今日成果 · 半导体设备与三季报<span class="tag">业绩验证期</span></h2>
-
-  <div class="card item fin">
-    <h3><span class="no">5.</span>半导体设备与算力订单向配套环节扩散</h3>
-    <p class="intro">10 月 13 日报道：盛美上海在手订单 170.73 亿元（10 月 24 日补充：同比增加 88.20%，并预告全年营收 82 亿至 88 亿元）；芯原股份今年以来新签订单 151.42 亿元；精智达披露 15.76 亿元半导体测试设备订单；大普微签订约 34.91 亿元销售订单；杰普特累计收到海外光互联订单约 1.63 亿美元。</p>
-    <p class="use">🎯 <b>对你的用处：</b>在手订单是设备公司未来 1 至 2 年收入的先行指标，订单增速比当季营收更能反映景气扩散。跟踪设备主题时，优先看订单数字而不是单日涨跌。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://www.21jingji.com/article/20261013/herald/448b08597817701a83848ee743c0ea91.html</p>
-  </div>
-
-  <div class="card item fin">
-    <h3><span class="no">6.</span>君正股份三季报：存储涨价直接兑现为业绩</h3>
-    <p class="intro">10 月 28 日报道：君正股份前三季度营收 71.02 亿元，同比增长 106.66%；归母净利润 26.16 亿元，同比增长 922.95%；单看第三季度，营收 31.45 亿元，同比增长 164.85%，净利润 14.19 亿元，同比增长 2595.49%。公司称 DRAM 供应紧张导致产品持续涨价，Flash 在 AI 服务器等新兴领域需求不断增长。</p>
-    <p class="use">🎯 <b>对你的用处：</b>存储主题的业绩验证窗口已经打开：涨价有没有变成真利润，看龙头公司的量价数据最直接。以后三季报季就按“营收增速 vs 利润增速”这对数来验。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://www.21jingji.com/article/20261028/herald/9790de1429e93790925a072ee8f60427.html</p>
-  </div>
-
-  <div class="card item fin">
-    <h3><span class="no">7.</span>富瀚微三季报：量价齐升，单季净利增 620.99%</h3>
-    <p class="intro">10 月 28 日报道：富瀚微第三季度营收 10.91 亿元，同比增长 141.1%；归母净利润 4.25 亿元，同比增长 620.99%；前三季度营收 25.54 亿元，同比增长 123.94%，净利润 7.75 亿元，同比增长 845.02%；增长主因是产品销售数量与销售价格均提升；当日富瀚微“20cm”涨停，君正、普冉、长川、澜起等跟涨。</p>
-    <p class="use">🎯 <b>对你的用处：</b>利润增速远高于营收增速，就是“量价齐升”的信号；三季报密集期，业绩超预期的个股会带动整个板块的日内表现，这是板块分化的起点。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://www.21jingji.com/article/20261028/herald/9790de1429e93790925a072ee8f60427.html</p>
-  </div>
-
-  <div class="card item fin">
-    <h3><span class="no">8.</span>半导体板块三季报整体：同比高增、环比收窄，切回业绩驱动</h3>
-    <p class="intro">10 月 28 日报道：截至当日下午，A 股 73 家半导体企业披露三季报，前三季度净利润同比增长的企业占比超 70%，47 家第三季度单季净利润同比增长（占比约 64%）；但单季度环比增速普遍收窄，叠加消费级内存现货价格回调，板块同步出现股价调整；单季净利同比翻倍及以上的 29 家主要集中在数字芯片设计、半导体材料、模拟芯片领域。</p>
-    <p class="use">🎯 <b>对你的用处：</b>普涨结束、进入精挑细选阶段：判断框架从“板块 beta”转向“个股业绩”，先看同比翻倍的那 29 家集中在哪些细分，再逐家核对设备与材料的订单与业绩。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://news.qq.com/rain/a/20261028A0CBVQ00</p>
-  </div>
-
-  <h2 class="sec">今日成果 · 美股与港股新能源<span class="tag">定投观察</span></h2>
-
-  <div class="card item fin">
-    <h3><span class="no">9.</span>美股 10 月 27 日收盘：标普涨 0.60%、纳指涨 1.18%，存储股集体走强</h3>
-    <p class="intro">10 月 28 日报道：美股三大指数集体收涨，道指报 52377.57 点（+0.03%），标普 500 报 7722.60 点（+0.60%），纳指报 26477.81 点（+1.18%）；半导体股全线收涨，AMD 涨 5.45%，博通涨 4%，台积电涨 2.95%；存储股集体上涨，西部数据涨 6.95%，闪迪涨 3.92%，美光涨 2.77%；同一周为“超级央行周”，美欧日央行先后公布利率决议，市场普遍预计按兵不动。</p>
-    <p class="use">🎯 <b>对你的用处：</b>定投的标普 500 与纳斯达克方向，和存储主题同在科技硬件、AI 算力这条线上轮动；海外存储龙头的表现是全球存储景气的同步验证，可以互相印证但不互相替代。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://www.21jingji.com/article/20261028/herald/0d2561ba2a0174007a75f840dd921813.html 、https://news.qq.com/rain/a/20261028A04M1U00</p>
-  </div>
-
-  <div class="card item fin">
-    <h3><span class="no">10.</span>恒生科技月内回调约一成，新能源动力系统成亮点</h3>
-    <p class="intro">10 月 23 日快讯：恒生科技指数当日上涨 2% 至 3870.18 点；但截至 10 月 28 日收盘，恒生科技 ETF（513890）近一个月价格回报约 -11.47%，港股恒生科技 ETF（3032.HK）近一月约 -10.41%，即单日反弹发生在月内回调的背景里。新能源方向：10 月 26 日英恒科技公布前三季度业务更新，总收入约 55.7 亿元、同比增长约 21.4%，新能源动力系统业务第三季度收入约 5.74 亿元、同比增长约 183.5%。</p>
-    <p class="use">🎯 <b>对你的用处：</b>恒生科技与新能源是持仓之外的观察方向：指数回调、个股放量分化同时出现时，跟踪价值在于判断科技股整体风险偏好是否回暖，以及放量产品的持续性。</p>
-    <p class="meta">收费：资讯类，无收费<br>来源：https://news.ifeng.com/c/8xSKaLzO0ZU 、https://finance.sina.com.cn/stock/hkstock/ggscyd/2026-10-26/doc-iniwpmtx5615849.shtml</p>
+  <div class="card item">
+    <h3><span class="no">10.</span>Genie 4（Google DeepMind，10 月 27 日预览）</h3>
+    <p class="intro">DeepMind 新一代"世界模型"：一句话实时画出可交互场景，带声音、带会说话的角色；受信测试者研究预览中。</p>
+    <ul class="func">
+      <li>文本提示实时生成可交互 3D 场景，角色能对话、有环境音；</li>
+      <li>场景可"驾驶"：边生成边改，适合快速验证玩法和镜头；</li>
+      <li>Google AI Ultra 订阅者和 Gemini API 伙伴随后开放。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>游戏（魂灵纪元/英雄世界）的新玩法、新地图可以先让 Genie 4 生成可玩原型验证手感，再决定投不投入建模；漫剧分镜也可以先"走"一遍场景看机位；开放后第一时间申请测试。</p>
+    <p class="meta">收费：未公布<br>来源：<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a>（AI 模型发布追踪）</p>
   </div>
 
   <div class="card sum">
     <h2 style="font-size:17px;font-weight:800;margin-bottom:8px;">本轮小结：学完马上能用的</h2>
     <ul>
-      <li><b>存储：</b>涨速见顶、供给仍紧——Q4 合约价涨幅已是本轮最低，但原厂库存只剩 2 至 4 周，行情驱动力从涨价预期转向“谁能拿到货”。</li>
-      <li><b>设备与业绩：</b>盛美 170.73 亿元在手订单、君正与富瀚微三季报量价齐升，景气证据从股价变成了订单和利润数字。</li>
-      <li><b>板块阶段：</b>73 家半导体公司三季报同比高增、环比收窄，普涨结束、切回业绩驱动，跟踪要逐家核对订单与业绩。</li>
-    </ul>
-  </div>
-
-  <div class="card sum">
-    <h2 style="font-size:17px;font-weight:800;margin-bottom:8px;">本轮学习成果：持仓跟踪小工具</h2>
-    <ul>
-      <li>用今天学的“订单与业绩才是硬证据”思路，做了一页<b>持仓跟踪小工具</b>：输入两只基金的持有金额和成本，自动算浮亏额、浮亏率、仓位占比和合计；再输入当日涨幅，自动算当日盈亏；另附存储涨价传导测算（合约价涨幅 × 存储占 BOM 比例 = 整机成本上升幅度）。</li>
-      <li>默认填的是 10 月 28 日日报口径（018816 持有 11015.64 元、成本 15000 元；017811 持有 9202.22 元、成本 13000 元），数字可改，算完只作复盘参考、不构成建议。文件：持仓跟踪小工具-v20261029-1.html，随本页一起发你。</li>
+      <li><b>出图组合更新：</b>草图走 Nano Banana 2.1（降价一半），海报成品走 Canva Craft（文字准、版式天生）——漫剧分镜和建模参考图的成本直接砍半。</li>
+      <li><b>免费模型池加三员：</b>GPT-6.1 Terra、Nemotron 3.5 Super VL、Mistral Large 4——云电脑 dsh 和 OpenCode 车道的"不敏感活儿"备选一次多了三个，番外还有 DeepSeek V4.1-Flash-1017（10 月 17 日，benchmark 全涨、输出更短、价格不变，552B MIT 权重已上 Hugging Face）。</li>
+      <li><b>手机端 Agent 种子：</b>Liquid AI LFM3（10 月 27 日，六个 2B 级开源小模型，4-bit 约 1GB 显存、256K 上下文）——手机上跑本地 Agent 头一回有了像样的底座。</li>
+      <li><b>长期在线的官方答案：</b>Gemini Agent 私测中、Dohmke 新平台 2027 年初正式版——"有个 Agent 替我长期干活"这件事，2027 年初是评估窗口。</li>
     </ul>
   </div>
 
   <h2 class="sec">知识库家底（此前已学完的）</h2>
   <div class="stats">
-    <div class="stat"><div class="num">90</div><div class="lab">条每日自动学习笔记</div><div class="det">AI 工具 30 条 ＋ GitHub 新星项目 30 条 ＋ 投资财经 30 条</div></div>
+    <div class="stat"><div class="num">100</div><div class="lab">条每日自动学习笔记</div><div class="det">AI 工具 40 条 ＋ GitHub 新星项目 30 条 ＋ 投资财经 30 条</div></div>
     <div class="stat"><div class="num">60</div><div class="lab">个 GitHub 项目学透</div><div class="det">创作/网页/App 三线 36 个 ＋ Trending 与高收藏 24 个</div></div>
     <div class="stat"><div class="num">100</div><div class="lab">本书第一遍学完</div><div class="det">第二遍深学进行中：每晚 10 本，只写补漏与新联系</div></div>
     <div class="stat"><div class="num">111</div><div class="lab">个收藏夹网站学完</div><div class="det">每个站一篇笔记，做东西时先查库取材</div></div>
@@ -218,132 +268,114 @@
     <div class="stat"><div class="num">36</div><div class="lab">条漫剧老李应用清单</div><div class="det">台词工程＋机检质检，做漫剧前逐条对照</div></div>
   </div>
 
-  <p class="foot">每日学习成果 · v20261029-1<br>每天 06:50 学完新的一轮，这一页会出新版发你；<span class="red">旧文件可删，看页脚版本号认新版</span>。</p>
+  <p class="foot">每日学习成果 · v20261030-1<br>每天 06:50 学完新的一轮，这一页会出新版发你；<span class="red">旧文件可删，看页脚版本号认新版</span>。</p>
 
 </div>
-
 <script>
 var PLAIN = [
 "每日学习成果",
-"2026年10月29日，周四。今日主题：投资财经，学了10条。",
+"2026年10月30日 星期五 · 今日主题：AI 工具",
 "",
-"轮换进度：",
-"1. AI工具：10月27日已学。",
-"2. GitHub新星项目：10月28日已学。",
-"3. 投资财经：今日已学10条。",
+"轮换进度：AI 工具今日已学 10 条；GitHub 新星项目明天 10月31日；投资财经 11月1日。",
 "",
-"今日成果第一条：Q4存储合约价涨幅放缓，但缺货反而加剧。Q4一般型DRAM合约价季增10%至15%，而第二季度约80%、第三季度约40%，Q4已是本轮最低增速；但原厂库存仅剩2至4周，供应收缩最高达50%。收费：资讯类，无收费。对你的用处：涨幅放缓不等于价格回落，看存储新闻先分清涨速还是价格，再看库存周数。",
+"1. Canva Craft（Canva 首个自研图像模型，10月22日）：不拿照片训练、拿数百万张人类设计模板训练，天生懂版式排字；2K、30多种画幅；DesignArena 首秀全球第4。漫剧海报、小说封面、宣传图直接出成品。收费随 Canva 会员，未公布独立定价。",
+"2. Nano Banana 2.1（Google，10月6日）：图像生成/编辑，基于 Gemini 3.6 Flash；价格砍到上一代约一半，1K 约 0.0336 美元；老版 10月29日关停。分镜草图、建模参考图出图成本减半。",
+"3. GPT-6.1 Terra（OpenAI，10月26日）：办公/电脑操作对标旗舰 Astra，token 价十分之一；多步骤 Agent 出错率大降；105万上下文。自动化任务成本砍大半。收费 1 美元/5 美元每百万 token。",
+"4. Nvidia Nemotron 3.5 Super VL（10月15日，开源）：120B 参数多模态 MoE，Agent 任务快 5 倍，100万上下文，可本地微调。云电脑免费池强力备选，prompt 不经过商业 API。权重免费。",
+"5. Mistral Large 4 Le Chonk（10月29日开源权重）：万亿参数多模态 MoE，100万上下文，改良 MIT 协议。免费池/OpenCode 车道又一备选。权重免费下载。",
+"6. Gemini 4 Carbon（Google，10月28日预览）：当前最强模型，独立评测 59 分登顶；先给网络安全防御者。暂时用不上，等下放到消费端再换底座。目前不公开售卖。",
+"7. Gemini Agent（Google Cloud，10月8日发布、私测）：通用智能体，给目标不给指令，原生接 Gmail/Docs/Drive/日历，可连续跑几天；有花费上限自动暂停。云端小坏蛋的官方版形态，公测后试用。",
+"8. 前 GitHub CEO Thomas Dohmke 新平台（10月26日）：AI 原生代码协作平台，Agent 是平级协作者；兼容 Git；2027年初正式版。仓库项目以后可评估迁移，先候补占位。",
+"9. Nemotron 3.5 Transcribe（英伟达，10月28日，开源）：40 语言转写、31 语言互译、8 人说话人分离，商用免费。配音转写质检、字幕生成多了一个不花钱的本地选项。",
+"10. Genie 4（Google DeepMind，10月27日预览）：世界模型，一句话实时生成可交互场景，带声音和会说话的角色。游戏新玩法先做可玩原型验证手感，开放后申请测试。",
 "",
-"今日成果第二条：存储成本传导到手机，BOM里存储首次贵过SoC。iPhone 18 Pro的DRAM成本从约39美元提高至145美元，整机BOM成本上升约38%；存储占BOM比例从10%至15%升至30%至40%。收费：资讯类，无收费。对你的用处：同一轮涨价对上下游方向相反，先问公司在涨价链的哪一头。",
+"本轮小结：出图组合更新（草图 Nano Banana 2.1、海报 Canva Craft）；免费模型池加三员（Terra、Super VL、Large 4，番外 DeepSeek V4.1-Flash-1017）；手机端 Agent 种子 Liquid AI LFM3（约1GB 显存可跑）；Gemini Agent 和 Dohmke 平台 2027年初评估。",
 "",
-"今日成果第三条：中端手机被迫开倒车，Pro机型退回6GB内存。iPhone 18 Pro起售价上涨1000元，有头部品牌中低端Pro机型将回归6GB内存；存储涨价让手机整机物料成本提升10%至15%。收费：资讯类，无收费。对你的用处：降配是涨价周期自我修正的机制，跟踪存储需求还要看单机内存容量有没有缩水。",
+"知识库家底：每日自动学习笔记 100 条；GitHub 项目 60 个；书 100 本第一遍学完；收藏夹网站 111 个；提示词 121 条；漫剧老李清单 36 条。",
 "",
-"今日成果第四条：存储涨价冲击下游硬件毛利，支付终端三家分化。新大陆披露存储涨价对其影响超过2.5亿元；有服务收入缓冲的公司能部分对冲，纯硬件公司承压更直接。收费：资讯类，无收费。对你的用处：议价权决定谁扛成本，这条规则可以套到任何上游涨价的行业新闻上。",
-"",
-"今日成果第五条：半导体设备与算力订单向配套环节扩散。盛美上海在手订单170.73亿元、同比增加88.20%；芯原新签151.42亿元；精智达15.76亿元；大普微约34.91亿元。收费：资讯类，无收费。对你的用处：在手订单是设备公司未来1至2年收入的先行指标，优先看订单数字而不是单日涨跌。",
-"",
-"今日成果第六条：君正股份三季报，存储涨价直接兑现为业绩。前三季度营收71.02亿元、同比增长106.66%，净利润26.16亿元、同比增长922.95%；单季净利润同比增长2595.49%。收费：资讯类，无收费。对你的用处：涨价有没有变成真利润，看龙头公司的量价数据最直接。",
-"",
-"今日成果第七条：富瀚微三季报，量价齐升，单季净利增620.99%。第三季度营收10.91亿元、同比增长141.1%，净利润4.25亿元、同比增长620.99%；当日20cm涨停，君正、普冉、长川、澜起等跟涨。收费：资讯类，无收费。对你的用处：利润增速远高于营收增速就是量价齐升的信号，是板块分化的起点。",
-"",
-"今日成果第八条：半导体板块三季报整体，同比高增、环比收窄，切回业绩驱动。73家公司前三季度净利润同比增长占比超70%，但单季度环比增速普遍收窄；单季净利同比翻倍的29家集中在数字芯片设计、半导体材料、模拟芯片。收费：资讯类，无收费。对你的用处：普涨结束、进入精挑细选阶段，跟踪要逐家核对订单与业绩。",
-"",
-"今日成果第九条：美股10月27日收盘，标普涨0.60%、纳指涨1.18%，存储股集体走强。西部数据涨6.95%，闪迪涨3.92%，美光涨2.77%；同一周为超级央行周，市场普遍预计美欧日央行按兵不动。收费：资讯类，无收费。对你的用处：定投的标普与纳指方向和存储主题同在AI算力线上轮动，海外存储龙头的表现是全球景气的同步验证。",
-"",
-"今日成果第十条：恒生科技月内回调约一成，新能源动力系统成亮点。恒生科技指数10月23日单日涨2%至3870.18点，但恒生科技ETF近一月约跌11%；英恒科技新能源动力系统业务第三季度收入约5.74亿元、同比增长约183.5%。收费：资讯类，无收费。对你的用处：指数回调、个股放量分化同时出现时，跟踪价值在于判断科技股风险偏好是否回暖。",
-"",
-"本轮小结：",
-"存储：涨速见顶、供给仍紧，行情驱动力从涨价预期转向谁能拿到货。",
-"设备与业绩：盛美170.73亿元在手订单、君正与富瀚微三季报量价齐升，景气证据从股价变成了订单和利润数字。",
-"板块阶段：73家半导体公司三季报同比高增、环比收窄，普涨结束、切回业绩驱动。",
-"",
-"本轮学习成果：",
-"持仓跟踪小工具：输入两只基金的持有金额和成本，自动算浮亏额、浮亏率、仓位占比和合计；输入当日涨幅自动算当日盈亏；另附存储涨价传导测算。默认填10月28日日报口径，数字可改，只作复盘参考。文件：持仓跟踪小工具-v20261029-1.html。",
-"",
-"知识库家底：",
-"每日自动学习笔记90条：AI工具30条，GitHub新星项目30条，投资财经30条。",
-"GitHub项目学透60个，书第一遍学完100本，收藏夹网站学完111个，提示词入库121条，漫剧老李应用清单36条。",
-"",
-"每日学习成果 v20261029-1。每天06:50学完新的一轮，这一页会出新版发你；旧文件可删，看页脚版本号认新版。"
+"每日学习成果 v20261030-1"
 ].join("\n");
 
+/* ---------- 复制全文 ---------- */
 var btnCopy = document.getElementById('btnCopy');
 function copyDone(){
-  var old = btnCopy.textContent;
-  btnCopy.textContent = '✅ 已复制';
-  setTimeout(function(){ btnCopy.textContent = old; }, 1600);
+var old = btnCopy.textContent;
+btnCopy.textContent = '✅ 已复制';
+setTimeout(function(){ btnCopy.textContent = old;}, 1600);
 }
 btnCopy.addEventListener('click', function(){
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy(); });
-  } else { fallbackCopy(); }
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy();});
+} else { fallbackCopy();}
 });
 function fallbackCopy(){
-  var ta = document.createElement('textarea');
-  ta.value = PLAIN;
-  ta.style.position = 'fixed'; ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); copyDone(); } catch(e) {}
-  document.body.removeChild(ta);
+var ta = document.createElement('textarea');
+ta.value = PLAIN;
+ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand('copy'); copyDone();} catch(e) {}
+document.body.removeChild(ta);
 }
 
+/* ---------- 收听朗读 ---------- */
 var btnListen = document.getElementById('btnListen');
 var btnStop = document.getElementById('btnStop');
 var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
 
 function pickVoice(){
-  try {
-    var vs = window.speechSynthesis.getVoices();
-    for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break; } }
-  } catch(e) {}
+try {
+var vs = window.speechSynthesis.getVoices();
+for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break;}}
+} catch(e) {}
 }
 if ('speechSynthesis' in window) {
-  pickVoice();
-  window.speechSynthesis.onvoiceschanged = pickVoice;
+pickVoice();
+window.speechSynthesis.onvoiceschanged = pickVoice;
 }
 function splitChunks(text){
-  var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
-  var out = [];
-  for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t); }
-  return out;
+var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+var out = [];
+for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t);}
+return out;
 }
 function resetListenUI(){
-  speaking = false; paused = false;
-  btnListen.textContent = '🔊 收听';
-  btnStop.style.display = 'none';
+speaking = false; paused = false;
+btnListen.textContent = '🔊 收听';
+btnStop.style.display = 'none';
 }
 function speakNext(){
-  if (ci >= chunks.length) { resetListenUI(); return; }
-  var u = new SpeechSynthesisUtterance(chunks[ci]);
-  u.lang = 'zh-CN';
-  if (zhVoice) u.voice = zhVoice;
-  u.rate = 1.02;
-  u.onend = function(){ ci++; speakNext(); };
-  u.onerror = function(){ ci++; speakNext(); };
-  window.speechSynthesis.speak(u);
+if (ci >= chunks.length) { resetListenUI(); return;}
+var u = new SpeechSynthesisUtterance(chunks[ci]);
+u.lang = 'zh-CN';
+if (zhVoice) u.voice = zhVoice;
+u.rate = 1.02;
+u.onend = function(){ ci++; speakNext();};
+u.onerror = function(){ ci++; speakNext();};
+window.speechSynthesis.speak(u);
 }
 btnListen.addEventListener('click', function(){
-  if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return; }
-  var ss = window.speechSynthesis;
-  if (speaking && !paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return; }
-  if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return; }
-  ss.cancel();
-  chunks = splitChunks(PLAIN);
-  ci = 0;
-  speaking = true; paused = false;
-  btnListen.textContent = '⏸ 暂停';
-  btnStop.style.display = 'flex';
-  speakNext();
+if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
+var ss = window.speechSynthesis;
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+ss.cancel();
+chunks = splitChunks(PLAIN);
+ci = 0;
+speaking = true; paused = false;
+btnListen.textContent = '⏸ 暂停';
+btnStop.style.display = 'flex';
+speakNext();
 });
 btnStop.addEventListener('click', function(){
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-  resetListenUI();
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+resetListenUI();
 });
+/* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
 setInterval(function(){
-  if (speaking && !paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
-    window.speechSynthesis.resume();
-  }
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+window.speechSynthesis.resume();
+}
 }, 10000);
 </script>
 <!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a>
