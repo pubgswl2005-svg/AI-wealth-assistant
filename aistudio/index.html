@@ -2,728 +2,845 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>AI工作室</title>
-<!-- hema-aistudio-v1 -->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>个人AI工作室</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#070d20; --bg2:#0a1230;
-  --card:rgba(21,34,58,.72); --card-brd:rgba(120,181,255,.14);
-  --txt:#edf2ff; --sub:#9baac5; --dim:#6b7d9c;
-  --blue:#3b82f6; --cyan:#38e1ff; --green:#34d399; --red:#f87171; --amber:#fbbf24; --purple:#a78bfa;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg0:#050914;--bg1:#0a1226;--card:rgba(255,255,255,.045);--line:rgba(120,181,255,.13);
+--tx:#eef4ff;--sub:#9fb2d8;--dim:#5f7194;--acc:#3f9dff;--acc2:#7c5cff;--ok:#22c58b;--warn:#ffb020;--bad:#ff5d6c}
 html,body{height:100%}
-body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Arial,sans-serif;overflow-x:hidden}
-.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-   radial-gradient(700px 380px at 85% -5%,rgba(56,225,255,.14),transparent 65%),
-   radial-gradient(600px 420px at -10% 40%,rgba(59,130,246,.16),transparent 65%),
-   radial-gradient(800px 500px at 50% 115%,rgba(59,130,246,.12),transparent 65%);}
-.app{position:relative;z-index:1;display:flex;max-width:430px;margin:0 auto;min-height:100vh;min-height:100dvh}
-/* 左侧图标轨 */
-.rail{width:66px;flex:none;background:rgba(10,18,48,.85);backdrop-filter:blur(14px);border-right:1px solid var(--card-brd);
-  display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto;scrollbar-width:none}
-.rail::-webkit-scrollbar{display:none}
-.rail .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#38e1ff);
-  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:19px;color:#fff;
-  box-shadow:0 4px 16px rgba(56,225,255,.35);margin-bottom:10px;font-style:italic}
-.rbtn{width:58px;border:0;background:transparent;color:var(--sub);border-radius:12px;padding:8px 2px;font-size:10px;
-  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;line-height:1.2}
+body{background:radial-gradient(1200px 600px at 80% -10%,#12245c 0%,transparent 60%),radial-gradient(900px 500px at 10% 110%,#0e2a5e 0%,transparent 55%),linear-gradient(180deg,var(--bg1),var(--bg0));
+color:var(--tx);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;overflow-x:hidden;max-width:430px;margin:0 auto;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+background:radial-gradient(420px 220px at 12% 8%,rgba(64,140,255,.14),transparent 70%),radial-gradient(500px 260px at 88% 30%,rgba(124,92,255,.12),transparent 70%),radial-gradient(600px 300px at 50% 100%,rgba(34,197,139,.07),transparent 70%)}
+#app{display:flex;min-height:100vh;position:relative;z-index:1}
+/* 左图标轨 */
+#rail{width:66px;flex:0 0 66px;background:rgba(6,10,24,.72);backdrop-filter:blur(14px);border-right:1px solid var(--line);
+display:flex;flex-direction:column;align-items:center;padding:10px 0 90px;gap:2px;overflow-y:auto;position:sticky;top:0;height:100vh;scrollbar-width:none}
+#rail::-webkit-scrollbar{display:none}
+.rlogo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#2f7bff,#7c5cff);display:flex;align-items:center;justify-content:center;
+font-weight:900;font-style:italic;font-size:19px;color:#fff;margin-bottom:8px;box-shadow:0 4px 16px rgba(63,157,255,.4)}
+.rbtn{width:58px;border:0;background:none;color:var(--sub);font-size:9px;display:flex;flex-direction:column;align-items:center;gap:3px;
+padding:7px 2px;border-radius:12px;cursor:pointer;line-height:1.25}
 .rbtn .ic{font-size:19px}
-.rbtn.active{background:linear-gradient(135deg,rgba(59,130,246,.85),rgba(56,225,255,.55));color:#fff;font-weight:700;
-  box-shadow:0 4px 14px rgba(59,130,246,.4)}
+.rbtn.on{background:linear-gradient(135deg,rgba(47,123,255,.85),rgba(64,160,255,.65));color:#fff;box-shadow:0 4px 14px rgba(47,123,255,.35)}
 /* 主区 */
-.main{flex:1;min-width:0;padding:12px 12px 92px;overflow-x:hidden}
-header.top{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px}
-header.top h1{font-size:23px;font-weight:900;background:linear-gradient(90deg,#60a5fa,#38e1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-header.top p{font-size:11px;color:var(--sub);margin-top:2px}
-.userbox{display:flex;align-items:center;gap:8px}
-.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1e2a4a,#3b82f6);
-  display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid rgba(56,225,255,.5)}
-.userbox .nm{font-size:12px;font-weight:700}
-.userbox .rl{font-size:10px;color:var(--sub)}
-.gear{background:transparent;border:0;font-size:20px;color:var(--sub);cursor:pointer}
-/* 页面 */
-.page{display:none}.page.active{display:block;animation:fade .25s}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.sec-title{display:flex;align-items:center;justify-content:space-between;margin:16px 2px 10px;gap:8px}
-.sec-title h3{font-size:15px;font-weight:800;white-space:nowrap}
-.sec-title a{font-size:12px;color:var(--sub);text-decoration:none;cursor:pointer;white-space:nowrap}
-/* hero */
-.hero{position:relative;border-radius:20px;overflow:hidden;min-height:150px;border:1px solid var(--card-brd);
-  background:linear-gradient(120deg,#0e1a3d 0%,#12245c 55%,#0b3a6e 100%)}
-.hero svg.bg{position:absolute;inset:0;width:100%;height:100%}
-.hero .in{position:relative;padding:18px 16px}
-.hero h2{font-size:21px;font-weight:900;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
-.hero p{font-size:12px;color:#cdd9f2}
-.hero .date{margin-top:14px;font-size:11px;color:#9fb4d8}
-.hero .badge{position:absolute;top:14px;right:14px;width:64px;height:64px;border-radius:50%;
-  border:2px solid rgba(56,225,255,.7);background:rgba(7,13,32,.55);backdrop-filter:blur(4px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#bfe9ff;
-  box-shadow:0 0 18px rgba(56,225,255,.35);text-align:center;line-height:1.4}
-/* 统计卡 */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.stat{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:13px;backdrop-filter:blur(12px)}
-.stat .t{font-size:11px;color:var(--sub);display:flex;align-items:center;gap:6px}
-.stat .t .i{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.stat .n{font-size:23px;font-weight:900;margin-top:6px}
-.stat .d{font-size:11px;margin-top:2px;font-weight:700}
-.up{color:var(--green)}.down{color:var(--red)}
-/* 模块卡 */
+.main{flex:1;min-width:0;padding:12px 12px 96px;overflow-x:hidden}
+.page{display:none}.page.on{display:block;animation:fd .25s}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hd h1{font-size:21px;font-weight:800;background:linear-gradient(90deg,#7db9ff,#c9a7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hd .who{text-align:right;font-size:10px;color:var(--sub);line-height:1.6}
+.hero{border-radius:20px;padding:16px;position:relative;overflow:hidden;margin-bottom:12px;min-height:128px;
+background:linear-gradient(120deg,#0d1c44 20%,#132a6e 60%,#1b3a8f);border:1px solid var(--line)}
+.hero::after{content:"";position:absolute;inset:0;background:
+radial-gradient(120px 60px at 78% 30%,rgba(255,214,120,.5),transparent 70%),
+radial-gradient(200px 90px at 60% 100%,rgba(64,140,255,.35),transparent 70%);pointer-events:none}
+.hero .greet{font-size:16px;font-weight:800;margin-bottom:4px;position:relative;z-index:1}
+.hero .date{font-size:11px;color:var(--sub);position:relative;z-index:1}
+.hero .castle{position:absolute;right:6px;bottom:0;width:150px;opacity:.95;z-index:0}
+.runbadge{position:absolute;right:12px;top:12px;z-index:2;width:64px;height:64px;border-radius:50%;
+background:conic-gradient(from 0deg,#22c58b,#3f9dff,#7c5cff,#22c58b);display:flex;align-items:center;justify-content:center;animation:spin 7s linear infinite}
+.runbadge b{width:50px;height:50px;border-radius:50%;background:#0a1330;display:flex;align-items:center;justify-content:center;
+font-size:8px;color:var(--ok);animation:spin2 7s linear infinite;line-height:1.3;text-align:center}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes spin2{to{transform:rotate(-360deg)}}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;backdrop-filter:blur(8px)}
+.stat .t{font-size:11px;color:var(--sub);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.stat .t i{width:26px;height:26px;border-radius:8px;background:rgba(63,157,255,.16);display:flex;align-items:center;justify-content:center;font-size:14px;font-style:normal}
+.stat .v{font-size:24px;font-weight:800}
+.stat .d{font-size:10px;color:var(--ok);margin-top:4px}
+.stat .d.down{color:var(--bad)}
+.sec-title{display:flex;align-items:center;justify-content:space-between;margin:14px 2px 10px}
+.sec-title h3{font-size:15px;font-weight:800}
+.sec-title a{font-size:11px;color:var(--sub);cursor:pointer}
 .mods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;overflow:hidden}
 .mod{min-width:0;border-radius:16px;padding:10px 4px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:#fff;overflow:hidden}
-.mod .mi{width:34px;height:34px;margin:0 auto 6px;border-radius:11px;background:rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;font-size:18px}
+.mod .mi{width:34px;height:34px;margin:0 auto 6px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:18px}
 .mod b{display:block;font-size:10px;margin-bottom:3px;white-space:nowrap}
 .mod span{display:block;font-size:8px;opacity:.85;line-height:1.4;min-height:23px}
 .mod .go{display:inline-block;margin-top:6px;font-size:9px;background:rgba(0,0,0,.28);padding:3px 8px;border-radius:20px;white-space:nowrap}
-.m-biz{background:linear-gradient(150deg,#b45309,#f59e0b)}
-.m-game{background:linear-gradient(150deg,#6d28d9,#a78bfa)}
-.m-media{background:linear-gradient(150deg,#be185d,#f472b6)}
-.m-inv{background:linear-gradient(150deg,#0f766e,#34d399)}
-.m-ai{background:linear-gradient(150deg,#1d4ed8,#38bdf8)}
-/* 任务行 */
-.home2{display:grid;grid-template-columns:1fr 118px;gap:10px;margin-top:4px}
-.card{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:14px;backdrop-filter:blur(12px)}
-.taskrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(120,181,255,.08)}
-.taskrow:last-child{border-bottom:0}
-.taskrow .no{width:22px;height:22px;flex:none;border-radius:50%;background:rgba(59,130,246,.25);color:#9cc3ff;
-  font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
-.taskrow .tt{flex:1;font-size:13px;font-weight:600;min-width:0}
-.prio{flex:none;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px}
-.p-hi{background:rgba(248,113,113,.18);color:#fca5a5;border:1px solid rgba(248,113,113,.4)}
-.p-mid{background:rgba(96,165,250,.18);color:#93c5fd;border:1px solid rgba(96,165,250,.4)}
-.p-lo{background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.35)}
-.empty{font-size:12px;color:var(--dim);text-align:center;padding:14px 0}
-/* AI助手卡 */
-.aicard{background:linear-gradient(160deg,rgba(29,78,216,.55),rgba(56,189,248,.28));border:1px solid rgba(56,225,255,.3);
-  border-radius:16px;padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
-.aicard .robot{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7dd3fc,#1d4ed8);
-  display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 20px rgba(56,225,255,.5)}
-.aicard b{font-size:14px}.aicard span{font-size:10px;color:#c4d6f5}
-.aicard button{margin-top:4px;border:0;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:800;color:#fff;
-  background:linear-gradient(90deg,#3b82f6,#38e1ff);cursor:pointer}
-/* 项目动态 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;backdrop-filter:blur(8px)}
+.card h4{font-size:13px;margin-bottom:8px}
 .proj{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.pcard{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;overflow:hidden}
-.pcard .th{height:64px;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative}
-.pcard .st{position:absolute;top:6px;left:6px;font-size:9px;font-weight:800;padding:2px 8px;border-radius:12px;background:rgba(0,0,0,.5);color:#fff}
-.pcard .bd{padding:9px 10px 11px}
-.pcard .bd b{font-size:12px;display:block;margin-bottom:2px}
-.pcard .bd span{font-size:10px;color:var(--sub);display:block;margin-bottom:8px}
-.bar{height:5px;border-radius:3px;background:rgba(120,181,255,.15);overflow:hidden}
-.bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#3b82f6,#38e1ff)}
-.pcard .pc{font-size:10px;color:var(--sub);text-align:right;margin-top:3px}
-/* 通用表单/列表 */
-.fcard{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:14px;margin-bottom:12px;backdrop-filter:blur(12px)}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.pcard b{font-size:12px;display:block;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard .tag{font-size:9px;color:var(--sub);margin-bottom:6px;display:block}
+.bar{height:6px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:4px}
+.bar2{height:8px;border-radius:5px;background:rgba(255,255,255,.09);overflow:hidden;margin:6px 0}
+.bar2 i{display:block;height:100%;background:linear-gradient(90deg,#22c58b,#3f9dff);border-radius:5px}
+.empty{color:var(--dim);font-size:11px;text-align:center;padding:14px}
+/* 表单与列表 */
+.fcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
 .fcard h3{font-size:14px;margin-bottom:10px}
-input,textarea,select{width:100%;padding:11px;margin:6px 0;background:rgba(7,13,32,.7);border:1px solid rgba(120,181,255,.2);color:#fff;border-radius:10px;font-size:13px;font-family:inherit}
-textarea{min-height:70px;resize:vertical}
-button.act{background:linear-gradient(90deg,#3b82f6,#38bdf8);color:#fff;border:0;padding:11px 16px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;width:100%}
-button.ghost{background:transparent;border:1px solid rgba(120,181,255,.3);color:#9cc3ff;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;margin:4px 4px 0 0}
-.item{padding:11px;border:1px solid rgba(120,181,255,.12);border-radius:12px;margin:8px 0;background:rgba(7,13,32,.45)}
-.item b{font-size:13px}.item p{font-size:11px;color:var(--sub);margin-top:4px;line-height:1.6}
-.item .row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.feat .f{background:rgba(7,13,32,.45);border:1px solid rgba(120,181,255,.12);border-radius:12px;padding:11px;cursor:pointer}
-.feat .f b{font-size:12px;display:block;margin-bottom:3px}
-.feat .f span{font-size:10px;color:var(--sub);line-height:1.5;display:none}
-.feat .f.open span{display:block;margin-top:4px}
-.feat .f .tag{font-size:9px;color:var(--cyan);font-weight:700}
-/* 底部Tab */
-.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:20;
-  background:rgba(10,18,48,.92);backdrop-filter:blur(16px);border-top:1px solid var(--card-brd);
-  display:flex;align-items:flex-end;justify-content:space-around;padding:8px 6px calc(10px + env(safe-area-inset-bottom))}
-.tab{border:0;background:transparent;color:var(--sub);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:52px}
-.tab .ic{font-size:21px;position:relative}
-.tab.active{color:#5eb2ff;font-weight:800}
-.tab .bdg{position:absolute;top:-6px;right:-10px;background:#ef4444;color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
-.micbtn{width:56px;height:56px;border-radius:50%;border:3px solid rgba(56,225,255,.5);margin-top:-26px;cursor:pointer;
-  background:radial-gradient(circle at 35% 30%,#38bdf8,#1d4ed8);color:#fff;font-size:24px;
-  box-shadow:0 6px 22px rgba(56,189,248,.5);display:flex;align-items:center;justify-content:center}
-/* 开关 */
-.switchrow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(120,181,255,.08);font-size:13px}
-.switchrow:last-child{border:0}
-.sw{width:44px;height:24px;border-radius:12px;background:rgba(120,181,255,.2);position:relative;cursor:pointer;flex:none}
-.sw.on{background:linear-gradient(90deg,#3b82f6,#38e1ff)}
-.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
-.sw.on::after{left:23px}
-.kv{display:flex;justify-content:space-between;font-size:12px;padding:7px 0;border-bottom:1px solid rgba(120,181,255,.07);color:var(--sub)}
-.kv:last-child{border:0}.kv b{color:var(--txt)}
-.bar2{height:8px;border-radius:4px;background:rgba(120,181,255,.12);overflow:hidden;margin:6px 0}
-.bar2 i{display:block;height:100%;background:linear-gradient(90deg,#34d399,#38e1ff)}
-h2.pt{font-size:18px;font-weight:900;margin:4px 0 12px}
-.ver{font-size:10px;color:var(--dim);text-align:center;margin:18px 0 4px}
+input,select,textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:10px;color:var(--tx);
+padding:9px 10px;font-size:13px;margin-bottom:8px;font-family:inherit}
+textarea{min-height:64px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+button.act{background:linear-gradient(135deg,#2f7bff,#5aa2ff);border:0;color:#fff;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%}
+button.act.ghost{background:rgba(255,255,255,.07);border:1px solid var(--line);font-weight:400}
+button.ghost{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--sub);border-radius:8px;padding:5px 10px;font-size:11px;cursor:pointer}
+.item{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+.item b{font-size:13px}.item p{font-size:11px;color:var(--sub);margin:4px 0;line-height:1.6;word-break:break-all}
+.item .meta{font-size:10px;color:var(--dim);margin-top:4px}
+.taskrow{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:9px 10px;margin-bottom:8px}
+.taskrow .no{width:22px;height:22px;border-radius:50%;background:rgba(63,157,255,.18);color:var(--acc);font-size:11px;display:flex;align-items:center;justify-content:center;flex:0 0 22px}
+.taskrow .tt{flex:1;min-width:0;font-size:12px}
+.prio{font-size:9px;padding:2px 8px;border-radius:12px;flex:0 0 auto}
+.p-hi{background:rgba(255,93,108,.16);color:#ff8b96}.p-mid{background:rgba(255,176,32,.16);color:#ffcf7a}.p-lo{background:rgba(34,197,139,.14);color:#5fe3ae}
+/* 功能目录手风琴 */
+.feat{margin-bottom:8px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02)}
+.feat>button{width:100%;background:none;border:0;color:var(--tx);text-align:left;padding:11px 12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.feat .f{display:none;padding:4px 12px 12px}
+.feat.open .f{display:block}
+.feat .f div{font-size:11px;color:var(--sub);padding:5px 0 5px 14px;position:relative;line-height:1.6}
+.feat .f div::before{content:"·";position:absolute;left:4px;color:var(--acc)}
+.feat .f div b{color:var(--tx);font-weight:600}
+/* 部门 */
+.dept{margin-bottom:8px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.02)}
+.dept>button{width:100%;background:none;border:0;color:var(--tx);text-align:left;padding:13px;font-size:14px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.dept .mods2{display:none;padding:0 12px 12px;display:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dept.open .mods2{display:grid}
+.mods2 .mod b{font-size:11px}.mods2 .mod span{font-size:9px;min-height:0}
+/* 员工/执行 */
+.emp{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+.emp .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2f7bff,#7c5cff);display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 40px}
+.emp .in{flex:1;min-width:0}.emp .in b{font-size:13px}.emp .in p{font-size:10px;color:var(--sub);margin-top:2px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.st0{background:#5f7194}.st1{background:#3f9dff;box-shadow:0 0 6px #3f9dff}.st2{background:#22c58b}.st3{background:#ff5d6c}.st4{background:#ffb020}
+.step{display:flex;gap:8px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:9px;margin-bottom:6px}
+.step .n{flex:0 0 20px;width:20px;height:20px;border-radius:50%;background:rgba(63,157,255,.16);color:var(--acc);font-size:10px;display:flex;align-items:center;justify-content:center}
+.step .b{flex:1;min-width:0}.step .b p{font-size:12px}.step .b small{font-size:10px;color:var(--dim);display:block;margin-top:3px;line-height:1.5}
+.stag{font-size:9px;padding:2px 8px;border-radius:10px;flex:0 0 auto}
+.kv{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);padding:5px 0;border-bottom:1px solid rgba(120,181,255,.07)}
+.kv b{color:var(--tx)}
+.note{font-size:10px;color:var(--dim);line-height:1.7;background:rgba(255,176,32,.06);border:1px solid rgba(255,176,32,.2);border-radius:10px;padding:8px 10px;margin:8px 0}
+.stars{color:#ffb020;font-size:13px;letter-spacing:2px}
+/* 底部导航 */
+#tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:50;
+background:rgba(8,13,30,.88);backdrop-filter:blur(18px);border-top:1px solid var(--line);
+display:flex;padding:8px 4px calc(10px + env(safe-area-inset-bottom))}
+.tab{flex:1;border:0;background:none;color:var(--dim);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;position:relative;padding:4px 0}
+.tab .ic{font-size:20px}.tab.on{color:var(--acc)}
+.tab .bdg{position:absolute;top:0;right:calc(50% - 20px);background:#ff5d6c;color:#fff;font-size:9px;min-width:16px;height:16px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.micbtn{flex:1;display:flex;justify-content:center;align-items:flex-start}
+.micbtn button{width:56px;height:56px;border-radius:50%;border:3px solid rgba(63,157,255,.35);cursor:pointer;
+background:radial-gradient(circle at 35% 30%,#6db4ff,#2f7bff 70%);color:#fff;font-size:24px;margin-top:-24px;box-shadow:0 6px 20px rgba(47,123,255,.5)}
+.ver{text-align:center;font-size:9px;color:var(--dim);margin:16px 0 4px}
+h2.pt{font-size:17px;margin-bottom:10px}
+.searchbar{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,var(--bg1),transparent);padding:4px 0 8px}
 </style>
 </head>
 <body>
-<!-- hema-aistudio-v1 -->
-<div class="bg-glow"></div>
-<div class="app">
-<nav class="rail" id="rail"></nav>
-<div class="main">
-<header class="top">
-  <div><h1>AI工作室</h1><p>让AI成为你最强的团队</p></div>
-  <div class="userbox">
-    <div class="avatar">🤖</div>
-    <div><div class="nm">个人AI公司</div><div class="rl">创始人</div></div>
-    <button class="gear" onclick="go('my')">⚙️</button>
-  </div>
-</header>
-<!-- 首页 -->
-<section id="page-home" class="page active">
-  <div class="hero">
-    <svg class="bg" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#0b1e4d"/><stop offset=".6" stop-color="#123a7d"/><stop offset="1" stop-color="#0a5aa0"/>
-        </linearGradient>
-        <radialGradient id="moon" cx=".5" cy=".5" r=".5">
-          <stop offset="0" stop-color="#bfe9ff"/><stop offset="1" stop-color="#bfe9ff" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <rect width="400" height="160" fill="url(#sky)"/>
-      <circle cx="310" cy="42" r="30" fill="url(#moon)" opacity=".8"/>
-      <circle cx="310" cy="42" r="16" fill="#dff2ff" opacity=".9"/>
-      <g fill="#dfeaff" opacity=".8">
-        <circle cx="30" cy="30" r="1.6"/><circle cx="90" cy="55" r="1.2"/><circle cx="150" cy="22" r="1.8"/>
-        <circle cx="210" cy="48" r="1.2"/><circle cx="260" cy="18" r="1.5"/><circle cx="350" cy="80" r="1.4"/>
-        <circle cx="60" cy="90" r="1.1"/><circle cx="180" cy="80" r="1.3"/><circle cx="120" cy="110" r="1"/>
-      </g>
-      <path d="M0,160 L0,110 L60,70 L110,105 L170,60 L230,100 L290,55 L340,95 L400,75 L400,160 Z" fill="#0a1a3d" opacity=".85"/>
-      <g fill="#13295c">
-        <rect x="185" y="55" width="14" height="60"/><rect x="205" y="45" width="16" height="70"/>
-        <rect x="228" y="60" width="12" height="55"/><rect x="170" y="70" width="10" height="45"/>
-        <polygon points="185,55 192,30 199,55"/><polygon points="205,45 213,18 221,45"/>
-        <polygon points="228,60 234,40 240,60"/><polygon points="170,70 175,52 180,70"/>
-        <rect x="198" y="75" width="36" height="40"/>
-      </g>
-      <g fill="#ffe9a8" opacity=".9">
-        <rect x="208" y="50" width="3" height="5"/><rect x="215" y="50" width="3" height="5"/>
-        <rect x="188" y="62" width="3" height="4"/><rect x="231" y="66" width="3" height="4"/>
-        <rect x="204" y="82" width="4" height="6"/><rect x="212" y="82" width="4" height="6"/><rect x="220" y="82" width="4" height="6"/>
-      </g>
-      <ellipse cx="200" cy="150" rx="220" ry="26" fill="#38e1ff" opacity=".18"/>
-    </svg>
-    <div class="in">
-      <h2 id="greet">早上好，创始人！</h2>
-      <p>今天也要让梦想更近一步</p>
-      <div class="date" id="todayDate"></div>
-    </div>
-    <div class="badge">AI工作室<br>运行中</div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><div class="t"><span class="i" style="background:rgba(59,130,246,.2)">💼</span>进行中项目</div><div class="n" id="stProj">0</div><div class="d up" id="stProjD">↑ 0</div></div>
-    <div class="stat"><div class="t"><span class="i" style="background:rgba(52,211,153,.18)">✓</span>待完成任务</div><div class="n" id="stTask">0</div><div class="d down" id="stTaskD">↓ 0</div></div>
-    <div class="stat"><div class="t"><span class="i" style="background:rgba(251,191,36,.18)">💡</span>创意储备</div><div class="n" id="stIdea">0</div><div class="d up" id="stIdeaD">↑ 0</div></div>
-    <div class="stat"><div class="t"><span class="i" style="background:rgba(167,139,250,.2)">￥</span>累计收入</div><div class="n" id="stInc">¥0</div><div class="d up" id="stIncD">↑ 0%</div></div>
-  </div>
-
-  <div class="sec-title"><h3>◈ 五大工作模块</h3><a onclick="go('projects')">全部进入 →</a></div>
-  <div class="mods">
-    <div class="mod m-biz" onclick="go('biz')"><div class="mi">🚀</div><b>创业中心</b><span>数字商品·商业模式</span><span class="go">进入 →</span></div>
-    <div class="mod m-game" onclick="go('game')"><div class="mi">🎮</div><b>游戏工作室</b><span>3D开发·游戏发布</span><span class="go">进入 →</span></div>
-    <div class="mod m-media" onclick="go('media')"><div class="mi">🎬</div><b>内容工作室</b><span>AI漫剧·视频·小说</span><span class="go">进入 →</span></div>
-    <div class="mod m-inv" onclick="go('inv')"><div class="mi">📊</div><b>投资研究</b><span>行情·策略·市场</span><span class="go">进入 →</span></div>
-    <div class="mod m-ai" onclick="go('ai')"><div class="mi">🤖</div><b>AI助手</b><span>项目管理·知识库</span><span class="go">进入 →</span></div>
-  </div>
-
-  <div class="home2">
-    <div>
-      <div class="sec-title" style="margin-top:14px"><h3>◉ 今日重点任务</h3><a onclick="go('tasks')">查看全部 →</a></div>
-      <div class="card" id="homeTasks" style="margin-bottom:0"></div>
-    </div>
-    <div class="aicard">
-      <div class="robot">🤖</div><b>AI助手</b><span>你的专属智能团队</span>
-      <button onclick="go('ai')">开始对话 →</button>
-    </div>
-  </div>
-
-  <div class="sec-title"><h3>◉ 最近项目动态</h3><a onclick="go('projects')">更多 →</a></div>
-  <div class="proj" id="homeProj"></div>
-
-  <div class="sec-title"><h3>◉ 目标进度</h3><a onclick="go('my')">管理 →</a></div>
-  <div class="card" id="homeGoals"></div>
-
-  <div class="sec-title"><h3>◉ 最新动态</h3></div>
-  <div class="card" id="homeLog"></div>
-  <div class="ver">AI工作室 · v20261030-4 · 数据保存在本机</div>
-</section>
-
-<!-- 创业中心 -->
-<section id="page-biz" class="page">
-  <h2 class="pt">💼 创业中心</h2>
-  <div class="fcard"><h3>新增创业项目</h3>
-    <input id="bname" placeholder="项目名称">
-    <textarea id="bdesc" placeholder="商业模式、目标客户、产品"></textarea>
-    <button class="act" onclick="addItem('biz','bname','bdesc')">创建项目</button>
-  </div>
-  <div id="bizList"></div>
-  <div class="sec-title"><h3>功能目录</h3></div>
-  <div class="feat" id="feat-biz"></div>
-</section>
-
-<!-- 游戏工作室 -->
-<section id="page-game" class="page">
-  <h2 class="pt">🎮 游戏工作室</h2>
-  <div class="fcard"><h3>游戏项目</h3>
-    <input id="gname" placeholder="游戏名称">
-    <textarea id="gdesc" placeholder="玩法、美术、进度说明"></textarea>
-    <button class="act" onclick="addItem('game','gname','gdesc')">添加游戏项目</button>
-  </div>
-  <div id="gameList"></div>
-  <div class="sec-title"><h3>功能目录</h3></div>
-  <div class="feat" id="feat-game"></div>
-</section>
-
-<!-- 内容工作室 -->
-<section id="page-media" class="page">
-  <h2 class="pt">🎬 内容工作室</h2>
-  <div class="fcard"><h3>创作项目</h3>
-    <input id="mname" placeholder="作品名称">
-    <textarea id="mdesc" placeholder="剧情、分镜、视频主题"></textarea>
-    <button class="act" onclick="addItem('media','mname','mdesc')">添加作品</button>
-  </div>
-  <div id="mediaList"></div>
-  <div class="sec-title"><h3>功能目录</h3></div>
-  <div class="feat" id="feat-media"></div>
-</section>
-
-<!-- 投资研究 -->
-<section id="page-inv" class="page">
-  <h2 class="pt">📊 投资研究</h2>
-  <div class="fcard"><h3>研究记录</h3>
-    <input id="iname" placeholder="研究行业或基金">
-    <textarea id="idesc" placeholder="投资逻辑、估值、风险、观察指标"></textarea>
-    <button class="act" onclick="addItem('invest','iname','idesc')">保存研究</button>
-  </div>
-  <div id="investList"></div>
-  <div class="sec-title"><h3>功能目录</h3></div>
-  <div class="feat" id="feat-inv"></div>
-  <div class="fcard"><h3>📌 说明</h3><p style="font-size:11px;color:var(--sub);line-height:1.8">本页不提供实时行情、不构成投资建议。每日盘前预判与持仓跟踪见你的自动化推送。</p></div>
-</section>
-
-<!-- AI助手 -->
-<section id="page-ai" class="page">
-  <h2 class="pt">🤖 AI助手</h2>
-  <div class="fcard"><h3>项目负责人指令</h3>
-    <textarea id="prompt" readonly>你是我的个人 AI 公司执行负责人。你需要帮助我管理创业、游戏开发、内容创作、投资研究和个人工作台。优先直接交付实际成果，包括完整代码、文件、表格和可执行方案。不要只给计划。不要虚构测试、部署和收入。遇到工具限制时，明确说明原因和替代方案。每个项目都要有明确的交付物和验收标准。</textarea>
-    <button class="act" onclick="copyText('prompt')">复制指令</button>
-  </div>
-  <div class="fcard"><h3>AI 任务生成器</h3>
-    <textarea id="request" placeholder="例如：帮我设计一个可以销售的AI数字商品"></textarea>
-    <button class="act" onclick="genPrompt()">生成执行指令</button>
-    <textarea id="output" placeholder="生成的指令会显示在这里" style="margin-top:8px"></textarea>
-    <button class="act" onclick="copyText('output')" style="margin-top:6px">复制结果</button>
-  </div>
-  <div class="fcard"><h3>🚀 提交给 AI 执行</h3>
-    <select id="aiMod"><option value="创业中心">创业中心</option><option value="游戏工作室">游戏工作室</option><option value="内容工作室">内容工作室</option><option value="投资研究">投资研究</option><option value="任务中心">任务中心</option><option value="经营账本">经营账本</option><option value="项目管理">项目管理</option><option value="数据分析">数据分析</option></select>
-    <textarea id="aiReq" placeholder="描述要 AI 做的事，越具体越好。比如：给我写一份反推提示词包的上架文案"></textarea>
-    <button class="act" onclick="subAI()">生成执行指令并复制</button>
-    <p style="font-size:11px;color:var(--sub);line-height:1.8;margin-top:8px">页面不内置模型。复制后发到聊天里，我来分析、规划、执行、生成文件并自检，你最后验收。</p>
-  </div>
-  <div class="sec-title"><h3>AI 团队目录</h3></div>
-  <div class="feat" id="feat-ai"></div>
-  <p style="font-size:11px;color:var(--dim);margin:10px 2px;line-height:1.8">此页面不内置 AI 模型。复制生成的任务指令，发给你的 AI 执行。</p>
-</section>
-
-<!-- 任务中心 -->
-<section id="page-tasks" class="page">
-  <h2 class="pt">✓ 任务中心</h2>
-  <div class="fcard"><h3>添加任务</h3>
-    <input id="taskName" placeholder="输入要完成的任务">
-    <select id="taskPrio"><option value="hi">高优先级</option><option value="mid" selected>中优先级</option><option value="lo">低优先级</option></select>
-    <input id="taskDue" type="date">
-    <button class="act" onclick="addTask()">添加任务</button>
-  </div>
-  <div class="sec-title"><h3>待处理 <span id="tcUndo"></span></h3></div>
-  <div id="tasksUndo"></div>
-  <div class="sec-title"><h3>已完成</h3></div>
-  <div id="tasksDone"></div>
-</section>
-
-<!-- 创意库 -->
-<section id="page-ideas" class="page">
-  <h2 class="pt">💡 创意库</h2>
-  <div class="fcard"><h3>记录灵感</h3>
-    <input id="ideaName" placeholder="创意标题">
-    <textarea id="ideaDesc" placeholder="创意具体内容"></textarea>
-    <button class="act" onclick="addItem('ideas','ideaName','ideaDesc')">保存创意</button>
-  </div>
-  <div id="ideasList"></div>
-</section>
-
-<!-- 经营账本 -->
-<section id="page-money" class="page">
-  <h2 class="pt">￥ 经营账本</h2>
-  <div class="stats">
-    <div class="stat"><div class="t">总收入</div><div class="n" style="color:var(--green)" id="mInc">¥0</div></div>
-    <div class="stat"><div class="t">总支出</div><div class="n" style="color:var(--red)" id="mOut">¥0</div></div>
-    <div class="stat"><div class="t">净利润</div><div class="n" id="mNet">¥0</div></div>
-    <div class="stat"><div class="t">笔数</div><div class="n" id="mCnt">0</div></div>
-  </div>
-  <div class="fcard" style="margin-top:12px"><h3>记一笔</h3>
-    <select id="moneyType" onchange="chgCat()"><option value="income">收入</option><option value="expense">支出</option></select>
-    <select id="moneyCat"></select>
-    <input id="moneyAmount" type="number" placeholder="金额">
-    <input id="moneyNote" placeholder="说明">
-    <button class="act" onclick="addMoney()">记录</button>
-  </div>
-  <div id="moneyList"></div>
-</section>
-
-<!-- 项目管理 -->
-<section id="page-projects" class="page">
-  <h2 class="pt">📁 项目管理</h2>
-  <div class="stats">
-    <div class="stat"><div class="t">全部项目</div><div class="n" id="pAll">0</div></div>
-    <div class="stat"><div class="t">平均进度</div><div class="n" id="pAvg">0%</div></div>
-  </div>
-  <div class="sec-title"><h3>全部项目</h3></div>
-  <div id="projectsList"></div>
-</section>
-
-<!-- 全球资讯 -->
-<section id="page-news" class="page">
-  <h2 class="pt">🌐 全球资讯</h2>
-  <div class="fcard"><h3>📌 资讯说明</h3><p style="font-size:11px;color:var(--sub);line-height:1.8">每天 07:50《全球新闻速览》会自动推送到「每日自动化信息汇总」。下面是资讯分类目录。</p></div>
-  <div class="sec-title"><h3>资讯分类</h3></div>
-  <div class="feat" id="feat-news"></div>
-</section>
-
-<!-- 文件中心 -->
-<section id="page-files" class="page">
-  <h2 class="pt">📂 文件中心</h2>
-  <div class="fcard"><h3>📌 说明</h3><p style="font-size:11px;color:var(--sub);line-height:1.8">文件上传请直接在聊天里发我，我帮你归档整理。下面是文件分类目录。</p></div>
-  <div class="sec-title"><h3>分类目录</h3></div>
-  <div class="feat" id="feat-files"></div>
-</section>
-
-<!-- 自动化中心 -->
-<section id="page-auto" class="page">
-  <h2 class="pt">⚙️ 自动化中心</h2>
-  <div class="fcard"><h3>📌 说明</h3><p style="font-size:11px;color:var(--sub);line-height:1.8">以下为你正在运行的自动化任务（只读展示，改动请告诉我）。</p></div>
-  <div id="autoList"></div>
-</section>
-
-<!-- 数据分析中心 -->
-<section id="page-data" class="page">
-  <h2 class="pt">📈 数据分析中心</h2>
-  <div class="fcard"><h3>任务优先级分布</h3><div id="dataTasks"></div></div>
-  <div class="fcard"><h3>收支对比</h3><div id="dataMoney"></div></div>
-  <div class="fcard"><h3>各模块项目数</h3><div id="dataProj"></div></div>
-</section>
-
-<!-- 消息 -->
-<section id="page-msgs" class="page">
-  <h2 class="pt">🔔 消息通知</h2>
-  <div id="msgsList"></div>
-</section>
-
+<div id="app">
+<aside id="rail"></aside>
+<main class="main">
+<!-- 首页驾驶舱 -->
+<section class="page" id="page-home"></section>
+<!-- 公司 -->
+<section class="page" id="page-company"></section>
+<!-- AI指挥 -->
+<section class="page" id="page-cmd"></section>
+<!-- 项目 -->
+<section class="page" id="page-projects"></section>
+<!-- 通用模块页 -->
+<section class="page" id="page-mod"><div id="modBody"></div></section>
 <!-- 我的 -->
-<section id="page-my" class="page">
-  <h2 class="pt">👤 我的</h2>
-  <div class="fcard"><h3>创始人</h3>
-    <div class="kv"><span>工作室</span><b>个人AI公司</b></div>
-    <div class="kv"><span>角色</span><b>创始人</b></div>
-    <div class="kv"><span>版本</span><b>v20261030-4</b></div>
-    <div class="kv"><span>数据位置</span><b>本机 localStorage</b></div>
-  </div>
-  <div class="fcard"><h3>🎯 目标管理</h3>
-    <input id="goalName" placeholder="目标名称，如：月收入 5000">
-    <input id="goalTarget" type="number" placeholder="目标值">
-    <input id="goalCur" type="number" placeholder="当前值">
-    <button class="act" onclick="addGoal()">添加目标</button>
-    <div id="goalsList"></div>
-  </div>
-  <div class="fcard"><h3>数据备份</h3>
-    <button class="act" onclick="exportData()">导出数据（JSON）</button>
-    <div style="height:8px"></div>
-    <button class="act" onclick="document.getElementById('impFile').click()" style="background:linear-gradient(90deg,#0f766e,#34d399)">导入数据</button>
-    <input type="file" id="impFile" accept=".json" style="display:none" onchange="importData(this)">
-  </div>
-  <div class="fcard"><h3>通知设置</h3>
-    <div class="switchrow"><span>每日推送提醒</span><div class="sw on" onclick="this.classList.toggle('on')"></div></div>
-    <div class="switchrow"><span>任务截止提醒</span><div class="sw on" onclick="this.classList.toggle('on')"></div></div>
-    <div class="switchrow"><span>自动同步</span><div class="sw on" onclick="this.classList.toggle('on')"></div></div>
-  </div>
-  <div class="fcard"><h3>⚠️ 危险区</h3>
-    <button class="act" onclick="wipeData()" style="background:linear-gradient(90deg,#b91c1c,#f87171)">清空本机全部数据</button>
-  </div>
-</section>
-
-<nav class="tabbar">
-  <button class="tab active" id="tab-home" onclick="go('home')"><span class="ic">🏠</span>首页</button>
-  <button class="tab" id="tab-projects" onclick="go('projects')"><span class="ic">📁</span>项目</button>
-  <button class="micbtn" onclick="go('ai')">🎙</button>
-  <button class="tab" id="tab-msgs" onclick="go('msgs')"><span class="ic">🔔<span class="bdg" id="msgBdg">3</span></span>消息</button>
-  <button class="tab" id="tab-my" onclick="go('my')"><span class="ic">👤</span>我的</button>
-</nav>
-</div>
+<section class="page" id="page-my"></section>
+</main>
+<nav id="tabbar"></nav>
 </div>
 <script>
-/* ============ 数据 ============ */
-const DBKEY="aistudio_v2";
-let db;
-try{db=JSON.parse(localStorage.getItem(DBKEY))||null}catch(e){db=null}
-if(!db)db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[],log:[],goals:[]};
-["biz","game","media","invest","ideas","tasks","money","log","goals"].forEach(k=>{if(!db[k])db[k]=[]});
-db.tasks.forEach(x=>{if(x.st===undefined)x.st=x.done?2:0});
-function save(){localStorage.setItem(DBKEY,JSON.stringify(db))}
-function logA(t){db.log.unshift({t,at:Date.now()});db.log=db.log.slice(0,60)}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+/* ================= 数据层：统一数据库 ================= */
+const DBKEY="aistudio_v3";
+let db=null;
+try{db=JSON.parse(localStorage.getItem(DBKEY))}catch(e){db=null}
+if(!db){ // 从 v2 迁移
+  let old=null;try{old=JSON.parse(localStorage.getItem("aistudio_v2"))}catch(e){}
+  db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[],log:[],goals:[],
+      know:[],customers:[],employees:[],workflows:[],execs:[],assets:[],publish:[],
+      miles:[],files:[],news:[],toolsx:[],clouds:[],contracts:[],appfac:[],prodfac:[],opp:[],backups:[]};
+  if(old){["biz","game","media","invest","ideas","tasks","money","log","goals"].forEach(k=>{if(old[k])db[k]=old[k]});
+    db.tasks.forEach(x=>{if(x.st===undefined)x.st=x.done?2:0});
+    logA("从旧版数据迁移完成");}
+}
+const ALLCOLLS=["biz","game","media","invest","ideas","tasks","money","log","goals","know","customers","employees","workflows","execs","assets","publish","miles","files","news","toolsx","clouds","contracts","appfac","prodfac","opp","backups","qlist"];
+ALLCOLLS.forEach(k=>{if(!Array.isArray(db[k]))db[k]=[]});
+if(!db.budgets)db.budgets={};if(!db.settings)db.settings={};
+function save(){try{localStorage.setItem(DBKEY,JSON.stringify(db))}catch(e){alert("存储空间不足，备份后清理")}}
+function logA(t){db.log.unshift({t,at:Date.now()});db.log=db.log.slice(0,80)}
 function uid(){return Date.now()*1000+Math.floor(Math.random()*999)}
-function today0(){const d=new Date();d.setHours(0,0,0,0);return d.getTime()}
-
-/* ============ 导航 ============ */
-const NAVS=[
- ["home","🏠","首页"],["biz","💼","创业中心"],["game","🎮","游戏工作室"],
- ["media","🎬","内容工作室"],["inv","📊","投资研究"],["ai","🤖","AI助手"],
- ["tasks","✓","任务中心"],["ideas","💡","创意库"],["money","￥","经营账本"],
- ["projects","📁","项目管理"],["news","🌐","全球资讯"],["files","📂","文件中心"],
- ["auto","⚙️","自动化中心"],["data","📈","数据分析"],["my","👤","我的"]
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function fdate(ts){const d=new Date(ts);return (d.getMonth()+1)+"/"+d.getDate()+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function todayStr(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+/* ================= 版块定义 ================= */
+const SECTIONS=[
+ {id:"home",ic:"🏠",name:"首页",tab:"home"},
+ {id:"company",ic:"🏢",name:"公司",tab:"company"},
+ {id:"cmd",ic:"🎛",name:"AI指挥",tab:"cmd"},
+ {id:"projects",ic:"📁",name:"项目",tab:"projects"},
+ {id:"biz",ic:"💼",name:"创业中心",dept:"biz"},
+ {id:"opp",ic:"💡",name:"赚钱机会",dept:"biz"},
+ {id:"crm",ic:"🤝",name:"客户销售",dept:"biz"},
+ {id:"mkt",ic:"📣",name:"营销推广",dept:"biz"},
+ {id:"prodfac",ic:"📦",name:"产品工厂",dept:"biz"},
+ {id:"game",ic:"🎮",name:"游戏工作室",dept:"game"},
+ {id:"appfac",ic:"🛠",name:"应用工厂",dept:"game"},
+ {id:"media",ic:"🎬",name:"内容工作室",dept:"media"},
+ {id:"inv",ic:"📈",name:"投资研究",dept:"inv"},
+ {id:"tools",ic:"🧰",name:"软件工具",dept:"tech"},
+ {id:"cloud",ic:"☁",name:"云服务器",dept:"tech"},
+ {id:"news",ic:"🌐",name:"全球资讯",dept:"mkt2"},
+ {id:"money",ic:"¥",name:"经营账本",dept:"fin"},
+ {id:"perf",ic:"📊",name:"绩效质量",dept:"fin"},
+ {id:"data",ic:"📉",name:"数据分析",dept:"data"},
+ {id:"kb",ic:"🧠",name:"知识大脑",dept:"data"},
+ {id:"mgmt",ic:"👔",name:"公司管理",dept:"mgmt"},
+ {id:"engine",ic:"⚙",name:"执行引擎",dept:"mgmt"},
+ {id:"ai",ic:"🤖",name:"AI助手",dept:"mgmt"},
+ {id:"legal",ic:"📜",name:"合同合规",dept:"mgmt"},
+ {id:"files",ic:"🗂",name:"文件中心",dept:"mgmt"},
+ {id:"autos",ic:"🔧",name:"自动化",dept:"mgmt"},
+ {id:"tasks",ic:"✓",name:"任务中心",dept:"mgmt"},
+ {id:"ideas",ic:"💡",name:"创意库",dept:"mgmt"},
+ {id:"my",ic:"👤",name:"我的",tab:"my"},
 ];
-document.getElementById("rail").innerHTML='<div class="logo">Ai</div>'+NAVS.map(n=>
- `<button class="rbtn${n[0]==="home"?" active":""}" data-nav="${n[0]}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join("");
-const TABS={home:"tab-home",projects:"tab-projects",msgs:"tab-msgs",my:"tab-my"};
-function go(id){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- const p=document.getElementById("page-"+id);if(p)p.classList.add("active");
- document.querySelectorAll(".rbtn").forEach(x=>x.classList.toggle("active",x.dataset.nav===id));
- document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
- if(TABS[id])document.getElementById(TABS[id]).classList.add("active");
- render();
- window.scrollTo(0,0);
+const DEPTS=[
+ {id:"biz",ic:"🚀",name:"创业商业部",color:"linear-gradient(135deg,#ff9a3d,#ff5d6c)",mods:["biz","opp","crm","mkt","prodfac"],descs:["数字商品·商业模式","全球赚钱机会","客户与销售","营销推广","产品工厂"]},
+ {id:"game",ic:"🎮",name:"游戏研发部",color:"linear-gradient(135deg,#7c5cff,#3f9dff)",mods:["game","appfac"],descs:["游戏项目","应用开发工厂"]},
+ {id:"media",ic:"🎬",name:"内容制作部",color:"linear-gradient(135deg,#ff5d8f,#ff8a5c)",mods:["media"],descs:["漫剧·视频·小说"]},
+ {id:"inv",ic:"📈",name:"投资研究部",color:"linear-gradient(135deg,#22c58b,#3f9dff)",mods:["inv"],descs:["行情·策略·持仓"]},
+ {id:"tech",ic:"🛠",name:"技术开发部",color:"linear-gradient(135deg,#3f9dff,#22d3ee)",mods:["tools","cloud","appfac"],descs:["软件工具","云服务器","应用工厂"]},
+ {id:"mkt2",ic:"📣",name:"市场营销部",color:"linear-gradient(135deg,#ffb020,#ff8a5c)",mods:["mkt","news"],descs:["营销推广","全球资讯"]},
+ {id:"fin",ic:"💰",name:"财务管理部",color:"linear-gradient(135deg,#f5c542,#ff9a3d)",mods:["money","perf"],descs:["经营账本","绩效质量"]},
+ {id:"data",ic:"🧠",name:"数据研究部",color:"linear-gradient(135deg,#22d3ee,#7c5cff)",mods:["data","kb"],descs:["数据分析","知识大脑"]},
+ {id:"mgmt",ic:"🏢",name:"公司管理中心",color:"linear-gradient(135deg,#5f7194,#3f9dff)",mods:["mgmt","engine","ai","legal","files","autos","tasks","ideas"],descs:["AI团队","执行引擎","AI助手","合同合规","文件中心","自动化","任务","创意库"]},
+];
+function secById(id){return SECTIONS.find(s=>s.id===id)}
+const NAMES={biz:"创业项目",game:"游戏项目",media:"内容项目",invest:"投资标的",appfac:"应用项目",prodfac:"产品",opp:"赚钱机会"};
+const PROJCOLLS={biz:"biz",game:"game",media:"media",inv:"invest",appfac:"appfac",prodfac:"prodfac",opp:"opp"};
+/* 真实定时任务清单（自动化中心展示） */
+const REALCRONS=[["07:50","全球新闻速览","每天"],["08:00","盘前预判（交易日）","交易日"],["08:00","热榜双榜","每天"],["08:50","Gmail安全汇总","每天"],["09:50","每日资讯APP同步","每天"],["12:50","财富30讲","每天"],["20:30","持仓收益播报","交易日"],["20:50","每日英语","每天"],["21:50","每日一书","每天"],["22:50","书籍自学","每天"],["23:50","财富自学+备份","每天"],["每30分","小说三线并行写作","持续"]];
+/* 默认AI员工 */
+const DEFAI=[["AI CEO","全局决策","mgmt"],["AI COO","运营管理","mgmt"],["AI CTO","技术管理","tech"],["AI CFO","财务管理","fin"],["AI CMO","营销管理","biz"],["AI 游戏设计师","游戏策划","game"],["AI 程序员","代码开发","tech"],["AI 编剧","剧本创作","media"],["AI 投资研究员","市场研究","inv"],["AI 质量总监","最终验收","mgmt"]];
+if(!db.employees.length&&!localStorage.getItem("aistudio_v3_seeded")){
+  DEFAI.forEach(a=>db.employees.push({id:uid()+Math.random(),name:a[0],role:a[1],dept:a[2],st:1,at:Date.now()}));
+  localStorage.setItem("aistudio_v3_seeded","1");
 }
-
-/* ============ 功能目录 ============ */
+/* ================= 功能目录 ================= */
 const FEATS={
-biz:[["创业项目管理","创建/跟进/复盘全流程"],["商业计划书","概述/市场/盈利/融资/风控"],["市场调研","规模/需求/用户画像/竞争程度"],["竞争对手分析","产品/价格/份额/营销拆解"],["商业模式设计","谁出钱/谁赚钱/怎么分"],["产品策划","定位/功能/价格/迭代计划"],["品牌创建","名称/Logo/视觉/口号/故事"],["数字商品开发","提示词/电子书/课程/模板/源码"],["AI商城","分类/上架/订单/售后"],["会员商城","等级/权益/续费/到期提醒"],["卡密商城","批量导入/库存/自动发货"],["虚拟商品交易","展示/购买/自动交付"],["商品上架","封面/介绍/规格/标签"],["商品定价","成本/竞品/利润率测算"],["订单管理","待付款/待交付/退款"],["客户管理","资料/等级/消费/回访"],["营销推广","优惠券/满减/分销/效果分析"],["盈利分析","销售额/成本/毛利/盈亏平衡"]],
-game:[["游戏项目管理","名称/引擎/预算/进度/版本"],["游戏创意库","题材/玩法/特色/评分/转项目"],["游戏世界观","起源/地图/势力/种族/规则"],["游戏剧情","主线/支线/章节/分支/结局"],["角色设计","主角/NPC/BOSS/职业/属性"],["人物建模","原画/3D/骨骼/动作/优化"],["场景建模","野外/城镇/地下城/昼夜/光照"],["武器设计","剑/弓/法杖/品质/技能"],["装备设计","防具/饰品/强化/升星/合成"],["技能设计","主动/被动/连招/特效/伤害"],["属性系统","生命/攻击/暴击/闪避/战力"],["战斗系统","实时/自动/连击/BOSS/结算"],["怪物系统","普通/精英/世界BOSS/掉落/AI"],["NPC系统","对话/商店/任务/好感度"],["任务系统","主线/日常/限时/奖励/追踪"],["副本系统","普通/团队/爬塔/排行榜"],["地图编辑","地形/传送/怪物分布"],["UI界面设计","登录/背包/商城/战斗HUD"],["游戏测试","功能/性能/兼容/Bug/报告"],["游戏发布","APK/AAB/图标/签名/商店上架"]],
-media:[["AI漫剧","题材/剧本/分镜/配音/合成/审核"],["AI短视频","选题/脚本/数字人/剪辑/发布"],["AI电影","大纲/剧本/镜头/一致性/后期"],["AI动画","2D/3D/Q版/动作/合成"],["AI小说","世界观/大纲/正文/伏笔管理"],["AI漫画","人设/分镜/排版/上色/连载"],["AI配音","多角色/情绪/语速/剪辑"],["AI图片生成","写实/二次元/海报/封面"],["AI视频生成","文生视频/图生视频/运镜"],["自媒体运营","账号/选题/发布日历/数据"]],
-inv:[["市场总览","A股/港股/美股/情绪/资金流向"],["行业板块分析","存储/半导体设备/AI算力等"],["个股研究","基本面/财报/估值/风险"],["基金研究","规模/经理/持仓/回撤"],["ETF研究","跟踪指数/费率/成分股"],["宏观经济","GDP/CPI/PMI/利率/政策"],["投资组合","持仓/比例/盈亏/回撤"],["投资计划","定投/止盈止损/复盘"],["行情预测","今日/本周/月度/多情景"],["投资风险管理","仓位/回撤监控/预警"]],
-ai:[["AI总指挥","拆解任务/分配/汇总/质检"],["AI项目经理","规划/排期/验收"],["AI程序员","开发/调试/测试/打包"],["AI游戏设计师","策划/数值/关卡"],["AI美术设计师","原画/UI/海报"],["AI视频导演","分镜/风格/审核"],["AI编剧","故事/台词/大纲"],["AI商业顾问","机会/定价/风险"],["AI投资研究员","市场/财报/估值"],["AI数据分析师","统计/可视化/报告"],["多AI协作","并行/交叉验证/融合"],["AI执行流水线","需求→方案→执行→验收"],["AI能力中心","文本/图片/视频/代码/搜索"],["AI公司组织架构","CEO/CTO/CFO/CMO/团队"]],
-news:[["全球新闻","国际/中国/美欧/亚洲"],["今日热点","热搜/社交媒体热点"],["科技新闻","AI/芯片/新能源/航天"],["AI行业新闻","大模型动态/产品发布"],["GitHub热门","今日/本周/AI开源"],["创业机会","新赛道/数字商品/出海"],["每日资讯摘要","十大新闻/趋势/提醒"]],
-files:[["图片管理","设计稿、截图"],["视频管理","成片、素材"],["音频管理","配音、BGM"],["代码管理","脚本、工程"],["文档管理","方案、合同"],["项目素材","按项目归档"],["文件分类","标签体系"],["文件搜索","全文检索"],["云端备份","多地备份"]]};
-function buildFeats(){
- for(const k in FEATS){
-  const el=document.getElementById("feat-"+k);if(!el)continue;
-  el.innerHTML=FEATS[k].map(f=>`<div class="f" onclick="this.classList.toggle('open')"><b>${f[0]}</b><span>${f[1]}<br><span class="tag">目录 · 点我收起</span></span></div>`).join("");
- }
+biz:[["创业项目管理","创建/跟进创业项目，阶段从机会到在售全流程"],["商业计划书","一键生成计划书框架发我来写"],["市场调研","行业规模/用户痛点/竞争程度"],["竞争对手分析","价格/功能/流量来源对比"],["商业模式设计","9种模式+成本利润测算"],["数字商品开发","提示词/电子书/课程/模板"],["AI商城","商品上下架/订单/售后"],["会员商城","四档会员+到期提醒"],["卡密商城","卡密导入/库存/自动发货"],["营销推广","渠道/转化/成本分析"]],
+opp:[["全球创业机会","海内外低成本创业项目库"],["AI工具商业化","把AI能力包装成商品"],["SaaS机会","订阅制软件方向"],["跨境电商","海外平台选品"],["内容变现","流量变现路径"],["开源商业化","开源项目变现"],["机会评分","1-5星+一键转项目"],["风险评估","启动资金/盈利模式/风险"],["执行方案","生成可落地的执行步骤"]],
+crm:[["客户资料","姓名/联系/来源/分组"],["购买记录","每笔订单可查"],["需求分析","客户痛点记录"],["销售线索","潜在客户跟进"],["商机管理","阶段推进"],["自动报价","生成报价单文本"],["复购分析","复购率统计"],["客户价值","分级管理"]],
+mkt:[["品牌推广","品牌资产管理"],["短视频营销","抖音/快手/B站/小红书"],["社交媒体运营","内容日历"],["广告素材生成","发我来做图"],["营销文案生成","发我来写"],["活动策划","优惠/裂变活动"],["优惠券管理","券码发放记录"],["转化分析","渠道转化率"]],
+prodfac:[["产品创意生成","头脑风暴记录"],["需求验证","市场需求验证"],["原型设计","原型图发我来画"],["功能规划","功能清单"],["界面生成","UI发我来做"],["产品开发","开发任务拆解"],["产品测试","测试用例"],["定价包装","价格/包装"],["产品发布","发布清单"],["收益分析","产品收益统计"]],
+game:[["游戏项目管理","立项/进度/版本"],["游戏创意库","创意收集"],["世界观/剧情","设定文档"],["角色/怪物设计","美术需求发我"],["数值/战斗系统","数值策划"],["Unity项目","项目文件管理"],["Godot项目","项目文件管理"],["构建测试","构建状态跟踪"],["版本管理","版本号记录"],["游戏发布","发布清单"]],
+appfac:[["网站开发","需求发我来建站"],["安卓应用","需求发我来打包"],["iOS应用","方案与上架"],["小游戏","H5小游戏"],["3D游戏","Godot/Unity"],["管理系统","后台系统"],["商城系统","电商系统"],["数据库设计","表结构"],["前后端代码","发我来写"],["部署上线","部署记录"],["版本更新","更新日志"]],
+media:[["AI漫剧","分镜/配音/成片"],["AI短视频","批量生产"],["AI小说","长篇连载"],["AI漫画","格漫"],["AI配音","大陆口音"],["AI数字人","形象+声音"],["剧本创作","发我来写"],["分镜设计","镜头表"],["素材库","图片/音频/视频素材"],["批量生产","批量任务"],["发布管理","平台发布记录"]],
+inv:[["A股/港股/美股","市场观察"],["基金/ETF","定投跟踪"],["行业板块","半导体/存储芯片"],["个股研究","财报/估值"],["资金流向","主力动向"],["宏观经济","政策分析"],["持仓管理","手动记录持仓"],["风险评估","风险等级"],["行情预测","周/月展望"],["免责声明","页面不提供实时行情，数据以券商为准"]],
+tools:[["AI工具搜索","记录想试的工具"],["工具收藏","收藏夹"],["工具测评","实测打分"],["模型对比","不同模型对比"],["API价格对比","接口成本"],["开源软件","GitHub项目推荐"],["安装指南","部署步骤"],["连接管理","已接工具"]],
+cloud:[["云服务器","服务器档案"],["网站部署","部署记录"],["数据库","数据库档案"],["域名管理","域名/到期"],["SSL证书","证书到期提醒"],["运行监控","状态记录"],["自动备份","备份记录"],["成本统计","服务器开支"]],
+news:[["全球热点","手动收录"],["行业新闻","分类收录"],["来源标注","每条记来源"],["可信度","高/中/低"],["去重","重复过滤"],["发布时间","时间线"]],
+money:[["收入记账","分类记收入"],["支出记账","分类记支出"],["现金流","月度出入"],["成本统计","成本归集"],["利润核算","收入-成本"],["预算管理","分类预算+预警"],["账本导出","导出CSV"]],
+perf:[["任务完成率","自动统计"],["执行成功率","引擎统计"],["平均耗时","执行耗时"],["成本统计","任务成本"],["代码质量","评分"],["内容质量","评分"],["部门排名","部门绩效榜"],["失败分析","失败原因"],["改进方案","生成改进建议"]],
+data:[["经营总览","跨部门数据"],["任务分析","状态分布"],["财务分析","收支分类"],["项目分析","部门分布"],["创意分析","评分分布"],["趋势","月度趋势"]],
+kb:[["个人知识库","笔记/收藏"],["创业知识","商业笔记"],["游戏开发","技术笔记"],["编程知识","代码片段"],["投资知识","研究笔记"],["商业案例","案例库"],["全文检索","关键词搜索"],["自动分类","标签管理"]],
+mgmt:[["AI员工管理","增删/岗位/状态"],["部门管理","9大部门"],["任务分配","派单给AI员工"],["工作报告","部门日报"],["绩效统计","部门KPI"],["组织架构","CEO/COO/CTO/CFO/CMO"]],
+engine:[["自然语言下单","一句话派活"],["自动拆解","任务拆子步骤"],["执行计划","步骤清单"],["多AI并行","部门协作"],["文件生成","交付文件"],["错误检查","自检"],["失败记录","失败归档"],["暂停继续取消","流程控制"],["关键授权","敏感操作等你确认"]],
+ai:[["AI总指挥","全局调度"],["部门AI","9部门专员"],["多AI协作","并行任务"],["任务分配","自动派单"],["工作流","流程管理"],["结果验收","验收标准"],["提交执行","一键复制指令发我"]],
+legal:[["合同模板","合作/授权/保密"],["合同检查","条款核对"],["商业授权","授权记录"],["数字商品授权","授权码管理"],["版权管理","作品登记"],["商标管理","商标档案"],["隐私政策","模板"],["用户协议","模板"],["风险提醒","合规事项"]],
+files:[["文件档案","名称/版本/说明"],["版本控制","版本号"],["备份恢复","快照"],["真实文件生成","HTML/CSV/JSON下载"],["导出","一键导出"]],
+autos:[["定时任务","12个真实任务"],["工作流","去AI指挥创建"],["授权控制","敏感操作需确认"],["执行记录","日志"]],
+tasks:[["任务管理","增删改查"],["优先级","高/中/低"],["截止日期","到期提醒"],["三态流转","待处理/进行中/已完成"],["派单","指派给AI员工"],["失败重试","失败可重开"],["执行日志","全程记录"]],
+ideas:[["创意收集","随时记"],["创意评分","1-5星"],["一键转项目","转创业项目"],["分类","标签"]],
+};
+function featHTML(id){
+return (FEATS[id]||[]).map((f,i)=>'<div class="feat'+(i===0?" open":"")+'"><button onclick="this.parentNode.classList.toggle(\'open\')"><span>'+f[0]+'</span><span>›</span></button><div class="f"><div>'+f[1]+'</div><div><b>要用这个功能：</b>点下方「提交给AI执行」，描述需求发我，我来分析→规划→执行→生成文件→自检，你验收。</div></div></div>').join("");
 }
-
-/* ============ 自动化（只读） ============ */
-const AUTOS=[
- ["🌍 全球新闻速览","每天 07:50"],["📊 每日盘前预判","交易日 08:00"],["🔥 热榜双榜","每天 08:00"],
- ["📧 Gmail安全汇总","每天 08:50"],["📖 财富与商业30讲","每天 12:50"],["🔤 每日英语","每天 20:50"],
- ["💰 持仓收益播报","交易日 20:30"],["📚 每日一书","每天 21:50"],["🧠 每日学习成果","每天 06:50"],
- ["💾 同步与备份","每天 23:50"],["📕 小说连载","每 30 分钟"]];
-function renderAutos(){
- const el=document.getElementById("autoList");if(!el)return;
- el.innerHTML=AUTOS.map(a=>`<div class="item"><b>${a[0]}</b><p>${a[1]} · <span style="color:var(--green);font-weight:800">运行中</span></p></div>`).join("");
+function subAICard(mod){
+return '<div class="fcard"><h3>🚀 提交给 AI 执行</h3><textarea id="aiReq-'+mod+'" placeholder="描述要 AI 做的事，越具体越好"></textarea><button class="act" onclick="subAI(\''+mod+'\')">生成执行指令并复制</button><p style="font-size:10px;color:var(--dim);margin-top:8px;line-height:1.7">页面不内置模型。复制后发到聊天里，我来分析、规划、执行、生成真实文件并自检，你最后验收。敏感操作（花钱/删数据/对外发布）我会先请你确认。</p></div>';
 }
-
-/* ============ 通用增删 ============ */
-const NAMES={biz:"创业项目",game:"游戏项目",media:"作品",invest:"研究",ideas:"创意"};
-function addItem(type,nid,did){
- const n=document.getElementById(nid).value.trim();
- if(!n)return alert("请填写名称");
- db[type].push({id:uid(),name:n,desc:document.getElementById(did).value.trim(),prog:0,at:Date.now()});
- logA("新增"+NAMES[type]+"："+n);
- document.getElementById(nid).value="";document.getElementById(did).value="";
- save();render();
+function subAI(mod){
+const el=document.getElementById("aiReq-"+mod);const q=el?el.value.trim():"";
+if(!q)return alert("先描述要 AI 做的事");
+const s=secById(mod);
+const t="模块："+(s?s.name:mod)+"；需求："+q+"。要求：先分析再规划，然后执行并生成真实文件，完成后自检，交付时列明已完成/未完成/受限三档，不虚构结果，等我验收。";
+const done=()=>{logA("提交AI任务："+(s?s.name:mod));save();render();alert("已复制，发到聊天里我就开工")};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done).catch(()=>alert("复制失败，请长按手动复制"))}
+else alert("请长按复制：\n"+t);
 }
-function delItem(type,id){if(!confirm("确定删除？"))return;db[type]=db[type].filter(x=>x.id!==id);save();render()}
-function progItem(type,id,d){const x=db[type].find(x=>x.id===id);if(!x)return;x.prog=Math.max(0,Math.min(100,(x.prog||0)+d));save();render()}
-function projCard(x,type,mod){
- return `<div class="item"><b>${esc(x.name)}</b> <span style="font-size:10px;color:var(--cyan)">${mod}</span>
- <p>${esc(x.desc||"暂无说明")}</p>
- <div class="bar2"><i style="width:${x.prog||0}%"></i></div>
- <div style="font-size:10px;color:var(--sub)">进度 ${x.prog||0}%</div>
- <div class="row"><button class="ghost" onclick="progItem('${type}',${x.id},10)">+10%</button>
- <button class="ghost" onclick="progItem('${type}',${x.id},-10)">−10%</button>
- <button class="ghost" onclick="delItem('${type}',${x.id})">删除</button></div></div>`;
+/* ================= 导航 ================= */
+let curTab="home",curMod=null;
+function buildRail(){
+  document.getElementById("rail").innerHTML='<div class="rlogo">Ai</div>'+SECTIONS.map(s=>'<button class="rbtn" data-s="'+s.id+'"><span class="ic">'+s.ic+'</span>'+s.name+'</button>').join("");
+  document.querySelectorAll(".rbtn").forEach(b=>b.onclick=()=>goSec(b.dataset.s));
 }
-
-/* ============ 任务 ============ */
-const PRIO={hi:["高优先级","p-hi"],mid:["中优先级","p-mid"],lo:["低优先级","p-lo"]};
+const TABS=[["home","🏠","首页"],["company","🏢","公司"],["cmd","🎛","AI指挥"],["projects","📁","项目"],["my","👤","我的"]];
+function buildTabs(){
+  const todo=db.tasks.filter(x=>(x.st||0)<2).length;
+  document.getElementById("tabbar").innerHTML=
+    tabBtn(0)+tabBtn(1)+'<div class="micbtn"><button onclick="go(\'cmd\')" title="AI指挥">🎙</button></div>'+tabBtn(2)+tabBtn(3)+tabBtn(4);
+  function tabBtn(i){const t=TABS[i];return '<button class="tab'+(curTab===t[0]?" on":"")+'" onclick="go(\''+t[0]+'\')"><span class="ic">'+t[1]+'</span>'+t[2]+(i===3&&todo?'<span class="bdg">'+todo+'</span>':"")+'</button>'}
+}
+function go(tab){curTab=tab;curMod=null;render()}
+function goSec(id){
+  const s=secById(id);if(!s)return;
+  if(s.tab){go(s.tab);return}
+  curMod=id;curTab="__mod";render();
+}
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
+  document.getElementById("page-"+id).classList.add("on");
+  document.querySelectorAll(".rbtn").forEach(b=>b.classList.toggle("on",b.dataset.s===(curTab==="__mod"?curMod:curTab)));
+}
+/* ================= 首页：公司经营驾驶舱 ================= */
+function moneySum(){
+  let income=0,exp=0;const m=todayStr().slice(0,7);
+  let mincome=0,mexp=0;
+  db.money.forEach(x=>{const a=+x.amount||0;
+    if(x.type==="income"){income+=a;if(fdate(x.at).indexOf(m)===0||new Date(x.at).getMonth()===new Date().getMonth())mincome+=a}
+    else{exp+=a;if(new Date(x.at).getMonth()===new Date().getMonth())mexp+=a}});
+  return {income,exp,profit:income-exp,mincome,mexp,mprofit:mincome-mexp};
+}
+function allProjects(){
+  const out=[];
+  Object.keys(PROJCOLLS).forEach(sec=>{const coll=PROJCOLLS[sec];
+    (db[coll]||[]).forEach(p=>out.push(Object.assign({sec},p)))});
+  return out;
+}
+function renderHome(){
+  const h=new Date().getHours();const greet=h<6?"夜深了":h<9?"早上好":h<12?"上午好":h<14?"中午好":h<18?"下午好":"晚上好";
+  const d=new Date();const wd="日一二三四五六"[d.getDay()];
+  const ms=moneySum();
+  const projs=allProjects();
+  const todo=db.tasks.filter(x=>(x.st||0)<2);
+  const doneTasks=db.tasks.filter(x=>x.st===2).length;
+  const goalDone=db.goals.filter(g=>g.target>0&&g.cur>=g.target).length;
+  const aiOn=db.employees.filter(e=>e.st!==0).length;
+  const maxM=Math.max(ms.mincome,ms.mexp,1);
+  document.getElementById("page-home").innerHTML=
+  '<div class="hd"><h1>AI 工作室</h1><div class="who">个人AI公司<br>创始人</div></div>'
+  +'<div class="hero"><div class="runbadge"><b>AI<br>运行中</b></div>'
+  +'<svg class="castle" viewBox="0 0 150 90"><path d="M10 90 L10 45 L25 45 L25 30 L35 30 L35 45 L45 45 L45 20 L55 20 L55 12 L65 12 L65 20 L75 20 L75 45 L85 45 L85 30 L95 30 L95 45 L110 45 L110 90 Z" fill="#1c3268" stroke="#5aa2ff" stroke-width="1.5"/><rect x="60" y="55" width="14" height="35" fill="#0d1c44"/><circle cx="67" cy="35" r="5" fill="#ffd778"/></svg>'
+  +'<div class="greet">'+greet+'，创始人</div><div class="date">'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+wd+' · 公司经营驾驶舱</div></div>'
+  +'<div class="stats">'
+  +stat("💼","进行中项目",projs.length,"↑ 全部署")
+  +stat("✓","待完成任务",todo.length,"↓ "+doneTasks+"已完成")
+  +stat("🤖","AI员工在线",aiOn,"↑ "+db.employees.length+"人")
+  +stat("¥","累计利润","¥"+ms.profit,"本月 ¥"+ms.mprofit)
+  +'</div>'
+  +'<div class="card"><h4>💰 公司财务驾驶舱</h4>'
+  +'<div class="kv"><span>本月收入</span><b style="color:var(--ok)">¥'+ms.mincome+'</b></div>'
+  +'<div class="bar2"><i style="width:'+Math.round(ms.mincome/maxM*100)+'%"></i></div>'
+  +'<div class="kv"><span>本月支出</span><b style="color:var(--bad)">¥'+ms.mexp+'</b></div>'
+  +'<div class="bar2"><i style="width:'+Math.round(ms.mexp/maxM*100)+'%;background:linear-gradient(90deg,#ff5d6c,#ffb020)"></i></div>'
+  +'<div class="kv"><span>本月利润</span><b>¥'+ms.mprofit+'</b></div>'
+  +'<div style="font-size:10px;color:var(--dim);margin-top:6px">去「经营账本」记账，数据实时进驾驶舱</div></div>'
+  +'<div class="sec-title"><h3>◉ 部门快捷入口</h3><a onclick="go(\'company\')">公司全览 →</a></div>'
+  +'<div class="mods">'+DEPTS.slice(0,5).map(dp=>'<div class="mod" style="background:'+dp.color+'" onclick="openDept(\''+dp.id+'\')"><div class="mi">'+dp.ic+'</div><b>'+dp.name.replace(/部$/,"")+'</b><span>'+dp.descs[0]+'</span><span class="go">进入 →</span></div>').join("")+'</div>'
+  +'<div class="sec-title"><h3>◉ 今日重点任务</h3><a onclick="goSec(\'tasks\')">查看全部 →</a></div>'
+  +'<div class="card">'+(todo.length?todo.slice(0,4).map(taskRowMini).join(""):'<div class="empty">暂无任务，去任务中心添加</div>')+'</div>'
+  +'<div class="sec-title"><h3>◉ 目标进度</h3><a onclick="go(\'my\')">管理 →</a></div>'
+  +'<div class="card" id="homeGoals">'+goalsHTML(4)+'</div>'
+  +'<div class="sec-title"><h3>◉ 最新动态</h3></div>'
+  +'<div class="card">'+logHTML(8)+'</div>'
+  +'<div class="ver">AI工作室 · v20261030-5 · 统一数据库 aistudio_v3</div>';
+}
+function stat(ic,t,v,d){return '<div class="stat"><div class="t"><i>'+ic+'</i>'+t+'</div><div class="v">'+v+'</div><div class="d">'+d+'</div></div>'}
+function taskRowMini(x){return '<div style="font-size:12px;padding:7px 0;border-bottom:1px solid rgba(120,181,255,.07)">• '+esc(x.name)+'</div>'}
+function goalsHTML(n){
+  if(!db.goals.length)return '<div class="empty">暂无目标，去「我的」添加</div>';
+  return db.goals.slice(0,n).map(g=>{const p=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
+   return '<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><b>'+esc(g.name)+'</b><span style="color:var(--sub)">'+g.cur+'/'+g.target+' · '+p+'%</span></div><div class="bar2"><i style="width:'+p+'%"></i></div></div>'}).join("");
+}
+function logHTML(n){
+  if(!db.log.length)return '<div class="empty">暂无动态</div>';
+  return db.log.slice(0,n).map(l=>'<div style="font-size:11px;color:var(--sub);padding:6px 0;border-bottom:1px solid rgba(120,181,255,.07)"><span style="color:var(--dim)">'+fdate(l.at)+'</span> · '+esc(l.t)+'</div>').join("");
+}
+/* ================= 公司页 ================= */
+function renderCompany(){
+document.getElementById("page-company").innerHTML=
+'<div class="hd"><h1>公司</h1><div class="who">9大部门<br>'+db.employees.length+'名AI员工</div></div>'
++'<div class="note">🏢 个人AI公司组织架构：总指挥中心统一接收任务、统一调度、统一验收。各部门有专业AI团队，点部门展开进模块。</div>'
++DEPTS.map((dp,i)=>'<div class="dept'+(i===0?" open":"")+'"><button onclick="this.parentNode.classList.toggle(\'open\')"><span>'+dp.ic+' '+dp.name+'</span><span>›</span></button>'
++'<div class="mods2">'+dp.mods.map((m,j)=>{const s=secById(m);return '<div class="mod" style="background:'+dp.color+'" onclick="goSec(\''+m+'\')"><div class="mi">'+s.ic+'</div><b>'+s.name+'</b><span>'+(dp.descs[j]||"")+'</span><span class="go">进入 →</span></div>'}).join("")+'</div></div>').join("")
++'<div class="ver">统一基础设施：数据库 · 模型接口 · 文件中心 · 自动化 · 云端同步</div>';
+}
+function openDept(id){go("company");setTimeout(()=>{const ds=document.querySelectorAll(".dept");const i=DEPTS.findIndex(d=>d.id===id);if(ds[i]&&!ds[i].classList.contains("open"))ds[i].classList.add("open");if(ds[i])ds[i].scrollIntoView({block:"start"})},80)}
+/* ================= AI指挥中心 ================= */
+const EST=["待执行","执行中","等待验收","已完成","失败"];
+function renderCmd(){
+const execs=db.execs.slice().reverse();
+const wfs=db.workflows.slice().reverse();
+document.getElementById("page-cmd").innerHTML=
+'<div class="hd"><h1>AI 指挥</h1><div class="who">总指挥中心<br>统一调度 · 统一验收</div></div>'
++'<div class="sec-title"><h3>🤖 AI 员工大厅</h3><a onclick="goSec(\'mgmt\')">管理 →</a></div>'
++'<div class="card">'+(db.employees.length?db.employees.slice(0,6).map(empRowMini).join(""):'<div class="empty">暂无员工</div>')
++'<div style="font-size:10px;color:var(--dim);margin-top:6px">共 '+db.employees.length+' 名 · 在线 '+db.employees.filter(e=>e.st!==0).length+' 名</div></div>'
++'<div class="sec-title"><h3>⚙ 自动执行引擎</h3><a onclick="goSec(\'engine\')">全部 →</a></div>'
++'<div class="fcard"><h3>下达新任务</h3>'
++'<input id="exName" placeholder="任务名称，如：写一份上架文案">'
++'<textarea id="exReq" placeholder="自然语言描述需求，越具体越好"></textarea>'
++'<select id="exDept">'+DEPTS.map(d=>'<option value="'+d.id+'">'+d.name+'</option>').join("")+'</select>'
++'<button class="act" onclick="newExec()">生成执行计划</button></div>'
++(execs.length?'<div class="sec-title"><h3>◉ 执行中的任务</h3></div>'+execs.slice(0,3).map(execCard).join(""):'')
++'<div class="sec-title"><h3>🔧 工作流</h3><a onclick="goSec(\'engine\')">管理工作流 →</a></div>'
++'<div class="card">'+(wfs.length?wfs.slice(0,3).map(wfRowMini).join(""):'<div class="empty">暂无工作流，去「执行引擎」创建</div>')+'</div>'
++'<div class="note">执行引擎是真实的任务跟踪器：计划、步骤状态、日志都如实记录。真正的AI执行发生在聊天里——点步骤里的「复制指令」发我，我干完你点验收。不虚报完成。</div>';
+}
+function empRowMini(e){
+return '<div class="emp"><div class="av">'+(e.st===0?"💤":"🤖")+'</div><div class="in"><b>'+esc(e.name)+'</b><p>'+esc(e.role||"")+' · '+deptName(e.dept)+'</p></div><span class="stag '+(e.st===0?"p-lo":"p-hi")+'">'+(e.st===0?"休假":"在岗")+'</span></div>';
+}
+function deptName(id){const d=DEPTS.find(d=>d.id===id);return d?d.name.replace(/部$/,""):"公司"}
+function newExec(){
+const n=document.getElementById("exName").value.trim(),q=document.getElementById("exReq").value.trim(),dp=document.getElementById("exDept").value;
+if(!n||!q)return alert("填写任务名称和需求描述");
+const steps=["需求分析：拆解需求要点","制定方案：输出执行方案","AI执行：生成指令发创始人（我）执行","结果检查：核对交付物","用户验收：等你确认","交付归档：记录归档"].map(t=>({t,st:0,note:""}));
+db.execs.push({id:uid(),name:n,req:q,dept:dp,steps,cur:0,st:0,at:Date.now()});
+document.getElementById("exName").value="";document.getElementById("exReq").value="";
+logA("执行引擎接单："+n);save();render();
+}
+function execCard(x){
+const done=x.steps.filter(s=>s.st===3).length;
+const stTxt=["⏳ 待执行","▶ 执行中","🔍 等待验收","✅ 已完成","❌ 失败"][x.st];
+return '<div class="item"><b>'+esc(x.name)+'</b> <span class="stag '+(x.st===3?"p-hi":x.st===4?"p-lo":"p-mid")+'">'+stTxt+'</span>'
++'<p>'+esc(x.req).slice(0,60)+'… · '+deptName(x.dept)+' · 进度 '+done+'/'+x.steps.length+'</p><div class="bar"><i style="width:'+Math.round(done/x.steps.length*100)+'%"></i></div>'
++x.steps.map((s,i)=>'<div class="step"><div class="n">'+(i+1)+'</div><div class="b"><p>'+esc(s.t)+'</p>'
++(s.note?'<small>📝 '+esc(s.note)+'</small>':"")
++'<div class="row" style="margin-top:6px"><button class="ghost" onclick="execStep('+x.id+','+i+')">'+EST[s.st]+' ›</button>'
++(s.t.indexOf("AI执行")===0?'<button class="ghost" onclick="execCopy('+x.id+')">复制指令</button>':"")
++'<button class="ghost" onclick="execNote('+x.id+','+i+')">备注</button></div></div></div>').join("")
++'<div class="row"><button class="ghost" onclick="execFinish('+x.id+')">🏁 完结</button><button class="ghost" onclick="execDel('+x.id+')">删除</button></div></div>';
+}
+function execStep(eid,i){
+const x=db.execs.find(e=>e.id===eid);if(!x)return;const s=x.steps[i];
+s.st=(s.st+1)%5; // 待执行→执行中→等待验收→已完成→失败→待执行
+if(s.st===3)logA("执行步骤完成："+x.name+" / "+s.t);
+save();render();
+}
+function execCopy(eid){
+const x=db.execs.find(e=>e.id===eid);if(!x)return;
+const t=""+x.name+"；需求："+x.req+"。要求：先分析再规划，然后执行并生成真实文件，完成后自检，交付时列明已完成/未完成/受限三档，不虚构结果，等我验收。";
+if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>alert("已复制，发到聊天里我就开工")).catch(()=>alert("复制失败"));
+else alert(t);
+}
+function execNote(eid,i){
+const x=db.execs.find(e=>e.id===eid);if(!x)return;
+const n=prompt("步骤备注",x.steps[i].note||"");if(n===null)return;
+x.steps[i].note=n;save();render();
+}
+function execFinish(eid){const x=db.execs.find(e=>e.id===eid);if(!x)return;x.st=3;x.steps.forEach(s=>{if(s.st<3)s.st=3});logA("执行任务完结："+x.name);save();render()}
+function execDel(eid){if(!confirm("删除这条执行记录？"))return;db.execs=db.execs.filter(e=>e.id!==eid);save();render()}
+function wfRowMini(w){return '<div style="font-size:12px;padding:7px 0;border-bottom:1px solid rgba(120,181,255,.07)">🔧 '+esc(w.name)+' <span style="color:var(--dim)">· '+w.steps.length+'步</span></div>'}
+/* ================= 项目页 ================= */
+function renderProjects(){
+const projs=allProjects();
+document.getElementById("page-projects").innerHTML=
+'<div class="hd"><h1>项目</h1><div class="who">跨部门<br>'+projs.length+'个项目</div></div>'
++'<div class="note">全部项目统一管理：版本、里程碑、交付验收。点项目进所属模块看详情。</div>'
++(projs.length?projs.map(p=>{
+const miles=db.miles.filter(m=>m.pid===p.id);
+const mdone=miles.filter(m=>m.done).length;
+return '<div class="item"><b>'+esc(p.name)+'</b> <span class="stag p-mid">'+(NAMES[p.sec]||p.sec)+'</span>'
++(p.acc?'<span class="stag p-hi">已验收</span>':"")
++'<p>'+esc(p.desc||"暂无说明")+'</p><div class="bar"><i style="width:'+(+p.prog||0)+'%"></i></div>'
++'<div class="meta">进度 '+(+p.prog||0)+'% · 里程碑 '+mdone+'/'+miles.length+' · '+fdate(p.at)+'</div>'
++'<div class="row" style="margin-top:6px"><button class="ghost" onclick="goSec(\''+p.sec+'\')">进模块</button><button class="ghost" onclick="projAcc(\''+p.sec+'\','+p.id+')">'+(p.acc?"取消验收":"交付验收")+'</button></div></div>'}).join("")
+:'<div class="card"><div class="empty">暂无项目，去各中心添加</div></div>')
++'<div class="ver">版本管理：在模块里用 ±10% 步进更新进度；里程碑在各模块项目卡里添加</div>';
+}
+function projAcc(sec,id){
+const p=(db[PROJCOLLS[sec]]||[]).find(x=>x.id===id);if(!p)return;
+p.acc=!p.acc;if(p.acc)logA("项目验收通过："+p.name);save();render();
+}
+/* ================= 通用模块页 ================= */
+function renderMod(id){
+  const s=secById(id);
+  let html='<div class="hd"><h1>'+s.ic+' '+s.name+'</h1><div class="who">'+deptName(s.dept)+'<br>模块</div></div>';
+  if(PROJCOLLS[id])html+=projModHTML(id);
+  else if(id==="ideas")html+=ideasHTML();
+  else if(id==="tasks")html+=tasksHTML();
+  else if(id==="money")html+=moneyHTML();
+  else if(id==="kb")html+=kbHTML();
+  else if(id==="crm")html+=crmHTML();
+  else if(id==="mgmt")html+=mgmtHTML();
+  else if(id==="engine")html+=engineHTML();
+  else if(id==="ai")html+=aiHTML();
+  else if(id==="legal")html+=legalHTML();
+  else if(id==="files")html+=filesHTML();
+  else if(id==="news")html+=newsHTML();
+  else if(id==="autos")html+=autosHTML();
+  else if(id==="data")html+=dataHTML();
+  else if(id==="perf")html+=perfHTML();
+  else if(id==="tools")html+=toolsHTML();
+  else if(id==="cloud")html+=cloudHTML();
+  else if(id==="my")html+=myHTML();
+  html+='<div class="sec-title"><h3>📖 功能目录</h3></div>'+featHTML(id)+subAICard(id);
+  document.getElementById("modBody").innerHTML=html;
+}
+/* ---- 通用项目型模块 ---- */
+const STAGES=["机会","验证","开发","上架","在售"];
+function projModHTML(id){
+  const coll=PROJCOLLS[id],list=db[coll];
+  let form='<div class="fcard"><h3>＋ 新增'+NAMES[id]+'</h3><input id="pn-'+id+'" placeholder="名称">'
+   +'<textarea id="pd-'+id+'" placeholder="说明"></textarea>';
+  if(id==="biz")form+='<select id="px-'+id+'">'+STAGES.map(s=>'<option>'+s+'</option>').join("")+'</select>';
+  if(id==="game")form+='<select id="px-'+id+'"><option>Unity</option><option>Godot</option><option>HTML5</option></select><select id="py-'+id+'"><option>未构建</option><option>构建中</option><option>测试版</option><option>已发布</option></select>';
+  if(id==="inv")form+='<select id="px-'+id+'"><option>低风险</option><option>中风险</option><option>高风险</option></select><div class="note">页面不提供实时行情与买卖建议，数据以券商为准。</div>';
+  if(id==="opp")form+='<select id="px-'+id+'"><option value="3">★★★ 一般</option><option value="5">★★★★★ 极佳</option><option value="4">★★★★ 很好</option><option value="2">★★ 较弱</option><option value="1">★ 很弱</option></select>';
+  form+='<button class="act" onclick="addProj(\''+id+'\')">添加</button></div>';
+  const cards=list.slice().reverse().map(p=>{
+    let extra="";
+    if(id==="biz")extra='<span class="stag p-mid">'+esc(p.stage||"机会")+'</span>';
+    if(id==="game")extra='<span class="stag p-mid">'+esc(p.engine||"")+'</span> <span class="stag '+(p.build==="已发布"?"p-hi":"p-lo")+'">'+esc(p.build||"未构建")+'</span>';
+    if(id==="inv")extra='<span class="stag '+(p.risk==="高风险"?"p-lo":"p-mid")+'">'+esc(p.risk||"")+'</span>';
+    if(id==="opp")extra='<span class="stars">'+"★".repeat(+p.score||3)+'</span>';
+    const miles=db.miles.filter(m=>m.pid===p.id);
+    return '<div class="item"><b>'+esc(p.name)+'</b> '+extra
+    +'<p>'+esc(p.desc||"暂无说明")+'</p><div class="bar"><i style="width:'+(+p.prog||0)+'%"></i></div>'
+    +'<div class="meta">进度 '+(+p.prog||0)+'% · 里程碑 '+miles.filter(m=>m.done).length+'/'+miles.length+(p.acc?' · ✅已验收':"")+'</div>'
+    +(miles.length?miles.map(m=>'<div style="font-size:11px;padding:3px 0"><span onclick="mileTog('+m.id+')" style="cursor:pointer">'+(m.done?"✅":"⬜")+'</span> '+esc(m.title)+' <span style="color:var(--dim);cursor:pointer" onclick="mileDel('+m.id+')">✕</span></div>').join(""):"")
+    +'<div class="row" style="margin-top:6px"><button class="ghost" onclick="progStep(\''+id+'\','+p.id+',10)">+10%</button><button class="ghost" onclick="progStep(\''+id+'\','+p.id+',-10)">−10%</button>'
+    +(id==="opp"?'<button class="ghost" onclick="oppToBiz('+p.id+')">转项目</button>':"")
+    +'<button class="ghost" onclick="addMile('+p.id+',\''+esc(p.name)+'\')">+里程碑</button>'
+    +'<button class="ghost" onclick="delProj(\''+id+'\','+p.id+')">删除</button></div></div>'}).join("");
+  let extra2="";
+  if(id==="media")extra2='<div class="sec-title"><h3>🗃 素材库</h3></div>'+assetsHTML()+'<div class="sec-title"><h3>📢 发布管理</h3></div>'+publishHTML();
+  return form+(list.length?cards:'<div class="card"><div class="empty">暂无，去上面添加</div></div>')+extra2;
+}
+function addProj(id){
+  const coll=PROJCOLLS[id];
+  const n=document.getElementById("pn-"+id).value.trim();if(!n)return alert("填写名称");
+  const o={id:uid(),name:n,desc:document.getElementById("pd-"+id).value.trim(),prog:0,at:Date.now()};
+  const x=document.getElementById("px-"+id);const y=document.getElementById("py-"+id);
+  if(id==="biz"&&x)o.stage=x.value;
+  if(id==="game"&&x){o.engine=x.value;o.build=y.value}
+  if(id==="inv"&&x)o.risk=x.value;
+  if(id==="opp"&&x)o.score=+x.value;
+  db[coll].push(o);logA("新增"+NAMES[id]+"："+n);save();render();
+}
+function progStep(id,pid,d){const p=db[PROJCOLLS[id]].find(x=>x.id===pid);if(!p)return;p.prog=Math.max(0,Math.min(100,(+p.prog||0)+d));save();render()}
+function delProj(id,pid){if(!confirm("删除？"))return;db[PROJCOLLS[id]]=db[PROJCOLLS[id]].filter(x=>x.id!==pid);db.miles=db.miles.filter(m=>m.pid!==pid);save();render()}
+function oppToBiz(pid){const o=db.opp.find(x=>x.id===pid);if(!o)return;db.biz.push({id:uid(),name:o.name,desc:o.desc,prog:0,stage:"机会",at:Date.now()});logA("机会转项目："+o.name);save();render();alert("已转入创业中心")}
+function addMile(pid,pname){const t=prompt("里程碑名称","v1.0 交付");if(!t)return;db.miles.push({id:uid(),pid,title:t,done:false,at:Date.now()});save();render()}
+function mileTog(mid){const m=db.miles.find(x=>x.id===mid);if(m){m.done=!m.done;save();render()}}
+function mileDel(mid){db.miles=db.miles.filter(x=>x.id!==mid);save();render()}
+function assetsHTML(){
+  return '<div class="fcard"><h3>＋ 添加素材</h3><div class="row"><input id="asN" placeholder="素材名称"><select id="asT"><option>图片</option><option>音频</option><option>视频</option><option>文档</option></select></div><button class="act" onclick="addAsset()">添加</button>'
+  +(db.assets.length?db.assets.slice().reverse().map(a=>'<div class="item"><b>'+esc(a.name)+'</b> <span class="stag p-mid">'+esc(a.type)+'</span><div class="meta">'+fdate(a.at)+' <span style="cursor:pointer" onclick="delAsset('+a.id+')">删除</span></div></div>').join(""):'<div class="empty">暂无素材</div>')+'</div>';
+}
+function addAsset(){const n=document.getElementById("asN").value.trim();if(!n)return alert("填写名称");db.assets.push({id:uid(),name:n,type:document.getElementById("asT").value,at:Date.now()});save();render()}
+function delAsset(id){db.assets=db.assets.filter(a=>a.id!==id);save();render()}
+function publishHTML(){
+  return '<div class="fcard"><h3>＋ 发布记录</h3><div class="row"><input id="puT" placeholder="内容标题"><select id="puP"><option>抖音</option><option>快手</option><option>B站</option><option>小红书</option><option>YouTube</option></select></div><select id="puS"><option>待发布</option><option>已发布</option><option>草稿</option></select><button class="act" onclick="addPub()">添加</button>'
+  +(db.publish.length?db.publish.slice().reverse().map(p=>'<div class="item"><b>'+esc(p.title)+'</b> <span class="stag '+(p.st==="已发布"?"p-hi":"p-mid")+'">'+esc(p.st)+'</span><div class="meta">'+esc(p.plat)+' · '+fdate(p.at)+' <span style="cursor:pointer" onclick="delPub('+p.id+')">删除</span></div></div>').join(""):'<div class="empty">暂无发布记录</div>')+'</div>';
+}
+function addPub(){const t=document.getElementById("puT").value.trim();if(!t)return alert("填写标题");db.publish.push({id:uid(),title:t,plat:document.getElementById("puP").value,st:document.getElementById("puS").value,at:Date.now()});save();render()}
+function delPub(id){db.publish=db.publish.filter(p=>p.id!==id);save();render()}
+/* ---- 创意库 ---- */
+function ideasHTML(){
+  return '<div class="fcard"><h3>＋ 记录创意</h3><input id="ideaN" placeholder="创意一句话"><textarea id="ideaD" placeholder="详细说明"></textarea><select id="ideaS"><option value="3">★★★ 一般</option><option value="5">★★★★★ 极佳</option><option value="4">★★★★ 很好</option><option value="2">★★ 较弱</option><option value="1">★ 很弱</option></select><button class="act" onclick="addIdea()">添加</button></div>'
+  +(db.ideas.length?db.ideas.slice().reverse().map(x=>'<div class="item"><b>'+esc(x.name)+'</b> <span class="stars">'+"★".repeat(+x.score||3)+'</span><p>'+esc(x.desc||"")+'</p><div class="row"><button class="ghost" onclick="ideaToBiz('+x.id+')">一键转项目</button><button class="ghost" onclick="delIdea('+x.id+')">删除</button></div></div>').join(""):'<div class="card"><div class="empty">暂无创意</div></div>');
+}
+function addIdea(){const n=document.getElementById("ideaN").value.trim();if(!n)return alert("填写创意");db.ideas.push({id:uid(),name:n,desc:document.getElementById("ideaD").value.trim(),score:+document.getElementById("ideaS").value,at:Date.now()});logA("新增创意："+n);save();render()}
+function delIdea(id){db.ideas=db.ideas.filter(x=>x.id!==id);save();render()}
+function ideaToBiz(id){const x=db.ideas.find(i=>i.id===id);if(!x)return;db.biz.push({id:uid(),name:x.name,desc:x.desc,prog:0,stage:"机会",at:Date.now()});db.ideas=db.ideas.filter(i=>i.id!==id);logA("创意转项目："+x.name);save();render();alert("已转入创业中心")}
+/* ---- 任务中心 ---- */
+const TST=["待处理","进行中","等待验收","已完成","失败"];
+function tasksHTML(){
+  const f=window._taskF||"all";
+  const list=db.tasks.filter(x=>f==="all"||(f==="todo"&&(x.st||0)<3)||(f==="done"&&x.st===3)||(f==="fail"&&x.st===4));
+  return '<div class="fcard"><h3>＋ 新建任务</h3><input id="taskName" placeholder="任务名称"><div class="row"><select id="taskPrio"><option value="hi">高优先级</option><option value="mid" selected>中优先级</option><option value="lo">低优先级</option></select><input id="taskDue" type="date"></div><select id="taskEmp"><option value="">不派单</option>'+db.employees.map(e=>'<option value="'+e.id+'">'+esc(e.name)+'</option>').join("")+'</select><button class="act" onclick="addTask()">添加任务</button></div>'
+  +'<div class="row" style="margin-bottom:10px">'+[["all","全部"],["todo","未完成"],["done","已完成"],["fail","失败"]].map(x=>'<button class="ghost" style="'+(f===x[0]?"border-color:var(--acc);color:var(--acc)":"")+'" onclick="_taskF=\''+x[0]+'\';render()">'+x[1]+'</button>').join("")+'</div>'
+  +(list.length?list.slice().reverse().map(x=>{
+    const emp=db.employees.find(e=>e.id===x.emp);
+    return '<div class="taskrow"><div class="no">'+(x.st===3?"✓":x.st===4?"✕":"•")+'</div><div class="tt" style="'+(x.st===3?"text-decoration:line-through;color:var(--dim)":"")+'">'+esc(x.name)
+    +(x.due?'<br><span style="font-size:10px;color:var(--dim)">📅 '+x.due+'</span>':"")
+    +(emp?'<br><span style="font-size:10px;color:var(--acc)">🤖 '+esc(emp.name)+'</span>':"")
+    +(x.retry?'<br><span style="font-size:10px;color:var(--warn)">↻ 已重试'+x.retry+'次</span>':"")+'</div>'
+    +'<button class="ghost" onclick="cycTask('+x.id+')">'+TST[x.st||0]+' ›</button>'
+    +(x.st===4?'<button class="ghost" onclick="retryTask('+x.id+')">重试</button>':"")
+    +'<button class="ghost" onclick="delTask('+x.id+')">删</button></div>'}).join(""):'<div class="card"><div class="empty">暂无任务</div></div>')
+  +'<div class="note">自动分配：新建时选AI员工即派单。失败任务点「重试」重开并计数。执行日志在首页「最新动态」。</div>';
+}
 function addTask(){
- const n=document.getElementById("taskName").value.trim();
- if(!n)return alert("填写任务");
- db.tasks.push({id:uid(),name:n,prio:document.getElementById("taskPrio").value,st:0,due:document.getElementById("taskDue").value,at:Date.now()});
- document.getElementById("taskDue").value="";
- logA("新增任务："+n);
- document.getElementById("taskName").value="";save();render();
+  const n=document.getElementById("taskName").value.trim();if(!n)return alert("填写任务名称");
+  db.tasks.push({id:uid(),name:n,prio:document.getElementById("taskPrio").value,st:0,due:document.getElementById("taskDue").value,emp:document.getElementById("taskEmp").value||null,at:Date.now()});
+  document.getElementById("taskName").value="";document.getElementById("taskDue").value="";
+  logA("新增任务："+n);save();render();
 }
-function cycTask(id){const x=db.tasks.find(x=>x.id===id);if(!x)return;x.st=((x.st||0)+1)%3;if(x.st===2)logA("完成任务："+x.name);save();render()}
-function delTask(id){if(!confirm("确定删除？"))return;db.tasks=db.tasks.filter(x=>x.id!==id);save();render()}
-const TST=[["待处理","p-lo"],["进行中","p-mid"],["已完成","p-hi"]];
-function taskRow(x){
- const st=x.st||0,due=x.due?`<br><span style="font-size:10px;color:var(--dim)">📅 截止 ${x.due}</span>`:"";
- return `<div class="taskrow"><div class="no">${st===2?"✓":"•"}</div><div class="tt" style="${st===2?"text-decoration:line-through;color:var(--dim)":""}">${esc(x.name)}${due}</div>
- <span class="prio ${PRIO[x.prio][1]}">${PRIO[x.prio][0]}</span>
- <button class="ghost" onclick="cycTask(${x.id})">${TST[st][0]}</button>
- <button class="ghost" onclick="delTask(${x.id})">删</button></div>`;
-}
-
-/* ============ 账本 ============ */
-function addMoney(){
- const a=Number(document.getElementById("moneyAmount").value);
- if(!(a>0))return alert("请输入有效金额");
- db.money.push({id:uid(),type:document.getElementById("moneyType").value,cat:document.getElementById("moneyCat").value,amount:a,note:document.getElementById("moneyNote").value.trim(),at:Date.now()});
- logA((document.getElementById("moneyType").value==="income"?"记收入 ¥":"记支出 ¥")+a);
- document.getElementById("moneyAmount").value="";document.getElementById("moneyNote").value="";
- save();render();
-}
-function delMoney(id){if(!confirm("确定删除？"))return;db.money=db.money.filter(x=>x.id!==id);save();render()}
-
+function cycTask(id){const x=db.tasks.find(x=>x.id===id);if(!x)return;x.st=((x.st||0)+1)%5;if(x.st===3)logA("完成任务："+x.name);if(x.st===4)logA("任务失败："+x.name);save();render()}
+function retryTask(id){const x=db.tasks.find(x=>x.id===id);if(!x)return;x.st=1;x.retry=(x.retry||0)+1;logA("任务重试："+x.name);save();render()}
+function delTask(id){db.tasks=db.tasks.filter(x=>x.id!==id);save();render()}
+/* ---- 经营账本 ---- */
 const CATS={income:["商品销售","会员收入","项目收入","服务收入","其他收入"],expense:["AI模型费用","软件订阅","广告推广","开发费用","商品采购","其他支出"]};
-function chgCat(){const t=document.getElementById("moneyType").value;document.getElementById("moneyCat").innerHTML=CATS[t].map(c=>`<option>${c}</option>`).join("")}
-/* ============ 复制/生成 ============ */
-function copyText(id){
- const el=document.getElementById(id);
- (navigator.clipboard?navigator.clipboard.writeText(el.value):Promise.reject()).then(()=>alert("已复制")).catch(()=>{el.select();document.execCommand("copy");alert("已复制")});
+function moneyHTML(){
+  const ms=moneySum();
+  const budgets=db.budgets;
+  let bh='<div class="card"><h4>💰 本月预算预警</h4>';
+  CATS.expense.forEach(c=>{
+    const spent=db.money.filter(x=>x.type==="expense"&&x.cat===c&&new Date(x.at).getMonth()===new Date().getMonth()).reduce((s,x)=>s+(+x.amount||0),0);
+    const b=+budgets[c]||0;
+    bh+='<div class="kv"><span>'+c+'</span><b>'+(b?('¥'+spent+' / ¥'+b+(spent>b?' <span style="color:var(--bad)">超支!</span>':"")):("¥"+spent+"（未设预算）"))+'</b></div>';
+  });
+  bh+='<div class="row" style="margin-top:8px"><input id="budCat" placeholder="如：广告推广" style="margin:0"><input id="budAmt" type="number" placeholder="月预算" style="margin:0"><button class="ghost" onclick="setBudget()">设预算</button></div></div>';
+  return '<div class="stats"><div class="stat"><div class="t"><i>💵</i>总收入</div><div class="v">¥'+ms.income+'</div></div><div class="stat"><div class="t"><i>💸</i>总支出</div><div class="v">¥'+ms.exp+'</div></div></div>'
+  +'<div class="card"><h4>现金流</h4><div class="kv"><span>累计利润</span><b style="color:'+(ms.profit>=0?"var(--ok)":"var(--bad)")+'">¥'+ms.profit+'</b></div><div class="kv"><span>本月利润</span><b>¥'+ms.mprofit+'</b></div></div>'
+  +bh
+  +'<div class="fcard"><h3>＋ 记一笔</h3><div class="row"><select id="moneyType" onchange="chgCat()"><option value="income">收入</option><option value="expense">支出</option></select><select id="moneyCat"></select></div><div class="row"><input id="moneyAmount" type="number" placeholder="金额"><input id="moneyNote" placeholder="备注"></div><button class="act" onclick="addMoney()">记账</button></div>'
+  +'<div class="sec-title"><h3>◉ 明细</h3><a onclick="dlCSV()">导出CSV →</a></div>'
+  +(db.money.length?db.money.slice().reverse().slice(0,30).map(x=>'<div class="item"><b>'+esc(x.note||x.cat||"收支")+'</b> <span class="stag '+(x.type==="income"?"p-hi":"p-lo")+'">'+(x.type==="income"?"+":"−")+'¥'+x.amount+'</span><div class="meta">'+esc(x.cat||"")+' · '+fdate(x.at)+' <span style="cursor:pointer" onclick="delMoney('+x.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无记录</div></div>');
 }
-function genPrompt(){
- const q=document.getElementById("request").value.trim();
- if(!q)return alert("先写任务");
- document.getElementById("output").value="请你直接执行以下任务："+q+"。请交付真实成果、完整代码或文件，列明完成情况、测试情况和未解决问题。不要只给计划，不要虚构结果。";
+function chgCat(){const t=document.getElementById("moneyType").value;const el=document.getElementById("moneyCat");if(el)el.innerHTML=CATS[t].map(c=>"<option>"+c+"</option>").join("")}
+function addMoney(){
+  const a=+document.getElementById("moneyAmount").value;if(!(a>0))return alert("填写金额");
+  db.money.push({id:uid(),type:document.getElementById("moneyType").value,cat:document.getElementById("moneyCat").value,amount:a,note:document.getElementById("moneyNote").value.trim(),at:Date.now()});
+  document.getElementById("moneyAmount").value="";document.getElementById("moneyNote").value="";
+  logA((document.getElementById("moneyType").value==="income"?"记收入 ¥":"记支出 ¥")+a);save();render();
 }
-
-function subAI(){
- const m=document.getElementById("aiMod").value,q=document.getElementById("aiReq").value.trim();
- if(!q)return alert("先描述要 AI 做的事");
- const t="【AI执行任务】模块："+m+"；需求："+q+"。要求：先分析再规划，然后执行并生成真实文件，完成后自检，交付时列明已完成/未完成/受限三档，不要虚构结果，等我验收。";
- (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{logA("提交AI任务："+m);save();alert("已复制，发到聊天里我就开工")}).catch(()=>alert("复制失败，请长按手动复制"));
+function delMoney(id){db.money=db.money.filter(x=>x.id!==id);save();render()}
+function setBudget(){const c=document.getElementById("budCat").value.trim(),a=+document.getElementById("budAmt").value;if(!c||!(a>0))return alert("填写分类和金额");db.budgets[c]=a;save();render()}
+function dlCSV(){
+  let csv="时间,类型,分类,金额,备注\n";
+  db.money.forEach(x=>{csv+=[fdate(x.at),x.type==="income"?"收入":"支出",x.cat,x.amount,'"'+(x.note||"").replace(/"/g,'""')+'"'].join(",")+"\n"});
+  dlBlob(csv,"账本-"+todayStr()+".csv","text/csv");
 }
-/* ============ 数据导出/导入/清空 ============ */
-function exportData(){
- const blob=new Blob([JSON.stringify(db)],{type:"application/json"});
- const a=document.createElement("a");a.href=URL.createObjectURL(blob);
- a.download="aistudio-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();
+/* ---- 知识大脑 ---- */
+function kbHTML(){
+  const q=(window._kbQ||"").toLowerCase();
+  const list=db.know.filter(x=>!q||(x.title+x.content+(x.tags||"")).toLowerCase().indexOf(q)>=0);
+  return '<div class="fcard"><h3>＋ 记一条知识</h3><input id="kbT" placeholder="标题"><textarea id="kbC" placeholder="内容"></textarea><input id="kbG" placeholder="标签，逗号分隔"><button class="act" onclick="addKb()">保存</button></div>'
+  +'<div class="searchbar"><input id="kbQ" placeholder="🔍 全文检索" value="'+esc(window._kbQ||"")+'" oninput="_kbQ=this.value;renderKbOnly()"></div><div id="kbList">'
+  +(list.length?list.slice().reverse().map(x=>'<div class="item"><b>'+esc(x.title)+'</b><p>'+esc(x.content).slice(0,120)+'</p><div class="meta">'+esc(x.tags||"")+' · '+fdate(x.at)+' <span style="cursor:pointer" onclick="delKb('+x.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无知识</div></div>')+'</div>';
 }
-function importData(inp){
- const f=inp.files[0];if(!f)return;
- const r=new FileReader();
- r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.tasks)throw 0;db=d;save();render();alert("导入成功")}catch(e){alert("文件格式不对")}};
- r.readAsText(f);inp.value="";
+function renderKbOnly(){const q=(window._kbQ||"").toLowerCase();const list=db.know.filter(x=>!q||(x.title+x.content+(x.tags||"")).toLowerCase().indexOf(q)>=0);
+  document.getElementById("kbList").innerHTML=list.length?list.slice().reverse().map(x=>'<div class="item"><b>'+esc(x.title)+'</b><p>'+esc(x.content).slice(0,120)+'</p><div class="meta">'+esc(x.tags||"")+' · '+fdate(x.at)+' <span style="cursor:pointer" onclick="delKb('+x.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">无匹配</div></div>'}
+function addKb(){const t=document.getElementById("kbT").value.trim();if(!t)return alert("填写标题");db.know.push({id:uid(),title:t,content:document.getElementById("kbC").value.trim(),tags:document.getElementById("kbG").value.trim(),at:Date.now()});logA("知识入库："+t);save();render()}
+function delKb(id){db.know=db.know.filter(x=>x.id!==id);save();render()}
+/* ---- 客户与销售 ---- */
+function crmHTML(){
+  return '<div class="fcard"><h3>＋ 新增客户</h3><div class="row"><input id="cuN" placeholder="姓名/公司"><input id="cuP" placeholder="联系方式"></div><div class="row"><input id="cuS" placeholder="来源"><select id="cuL"><option>潜在</option><option>意向</option><option>成交</option><option>复购</option></select></div><input id="cuD" placeholder="需求备注"><button class="act" onclick="addCu()">添加</button></div>'
+  +'<div class="stats"><div class="stat"><div class="t"><i>🤝</i>客户总数</div><div class="v">'+db.customers.length+'</div></div><div class="stat"><div class="t"><i>💰</i>成交客户</div><div class="v">'+db.customers.filter(c=>c.level==="成交"||c.level==="复购").length+'</div></div></div>'
+  +(db.customers.length?db.customers.slice().reverse().map(c=>'<div class="item"><b>'+esc(c.name)+'</b> <span class="stag '+(c.level==="成交"||c.level==="复购"?"p-hi":"p-mid")+'">'+esc(c.level)+'</span><p>'+esc(c.demand||"")+'</p><div class="meta">'+esc(c.phone||"")+' · 来源'+esc(c.src||"未知")+' · '+fdate(c.at)+' <span style="cursor:pointer" onclick="delCu('+c.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无客户</div></div>');
 }
-function wipeData(){if(confirm("清空本机全部数据？此操作不可恢复！")){localStorage.removeItem(DBKEY);db={biz:[],game:[],media:[],invest:[],ideas:[],tasks:[],money:[],log:[],goals:[]};render();alert("已清空")}}
-/* ============ 目标 ============ */
+function addCu(){const n=document.getElementById("cuN").value.trim();if(!n)return alert("填写姓名");db.customers.push({id:uid(),name:n,phone:document.getElementById("cuP").value.trim(),src:document.getElementById("cuS").value.trim(),level:document.getElementById("cuL").value,demand:document.getElementById("cuD").value.trim(),at:Date.now()});logA("新增客户："+n);save();render()}
+function delCu(id){db.customers=db.customers.filter(c=>c.id!==id);save();render()}
+/* ---- 公司管理中心：AI员工 ---- */
+function mgmtHTML(){
+const depts={};db.employees.forEach(e=>{(depts[e.dept]=depts[e.dept]||[]).push(e)});
+return '<div class="fcard"><h3>＋ 新增AI员工</h3><div class="row"><input id="emN" placeholder="名称，如：AI 文案师"><input id="emR" placeholder="岗位职责"></div><select id="emD">'+DEPTS.map(d=>'<option value="'+d.id+'">'+d.name+'</option>').join("")+'</select><button class="act" onclick="addEmp()">添加</button></div>'
++'<div class="sec-title"><h3>◉ 部门绩效</h3></div><div class="card">'
++DEPTS.map(d=>{const n=(depts[d.id]||[]).length;const t=db.tasks.filter(x=>{const e=db.employees.find(e=>e.id===x.emp);return e&&e.dept===d.id&&(x.st===3)}).length;
+return '<div class="kv"><span>'+d.ic+' '+d.name+'</span><b>'+n+'人 · 完成'+t+'任务</b></div>'}).join("")+'</div>'
++'<div class="sec-title"><h3>◉ 员工名册</h3></div>'
++(db.employees.length?db.employees.map(e=>'<div class="emp"><div class="av">'+(e.st===0?"💤":"🤖")+'</div><div class="in"><b>'+esc(e.name)+'</b><p>'+esc(e.role||"")+' · '+deptName(e.dept)+'</p></div><button class="ghost" onclick="empTog('+e.id+')">'+(e.st===0?"返岗":"休假")+'</button><button class="ghost" onclick="empDel('+e.id+')">删</button></div>').join(""):'<div class="card"><div class="empty">暂无员工</div></div>')
++'<div class="note">AI员工是任务派单与绩效统计的组织方式。真实执行由聊天里的我完成，派单后把指令发我即可。</div>';
+}
+function addEmp(){const n=document.getElementById("emN").value.trim();if(!n)return alert("填写名称");db.employees.push({id:uid(),name:n,role:document.getElementById("emR").value.trim(),dept:document.getElementById("emD").value,st:1,at:Date.now()});logA("新增AI员工："+n);save();render()}
+function empTog(id){const e=db.employees.find(e=>e.id===id);if(e){e.st=e.st===0?1:0;save();render()}}
+function empDel(id){if(!confirm("删除该员工？"))return;db.employees=db.employees.filter(e=>e.id!==id);save();render()}
+/* ---- 执行引擎模块页 ---- */
+function engineHTML(){
+return '<div class="fcard"><h3>＋ 下达任务</h3><input id="exName2" placeholder="任务名称"><textarea id="exReq2" placeholder="自然语言描述需求"></textarea><select id="exDept2">'+DEPTS.map(d=>'<option value="'+d.id+'">'+d.name+'</option>').join("")+'</select><button class="act" onclick="newExec2()">生成执行计划</button></div>'
++'<div class="sec-title"><h3>◉ 工作流</h3></div>'
++'<div class="fcard"><h3>＋ 新建工作流</h3><input id="wfN" placeholder="工作流名称"><textarea id="wfS" placeholder="步骤，每行一步"></textarea><button class="act" onclick="addWf()">创建</button></div>'
++(db.workflows.length?db.workflows.slice().reverse().map(w=>'<div class="item"><b>🔧 '+esc(w.name)+'</b> <span class="stag '+(w.st===2?"p-hi":w.st===1?"p-mid":"p-lo")+'">'+["未运行","运行中","已完成"][w.st||0]+'</span>'
++w.steps.map((s,i)=>'<div class="step"><div class="n">'+(i+1)+'</div><div class="b"><p style="'+(s.st?"text-decoration:line-through;color:var(--dim)":"")+'">'+esc(s.t)+'</p><div class="row" style="margin-top:4px"><button class="ghost" onclick="wfStep('+w.id+','+i+',-1)">↑</button><button class="ghost" onclick="wfStep('+w.id+','+i+',1)">↓</button><button class="ghost" onclick="wfTog('+w.id+','+i+')">'+(s.st?"恢复":"完成")+'</button></div></div></div>').join("")
++'<div class="row"><button class="ghost" onclick="wfRun('+w.id+')">'+(w.st===1?"⏸ 暂停":"▶ 运行")+'</button><button class="ghost" onclick="wfDel('+w.id+')">删除</button></div></div>').join(""):'<div class="card"><div class="empty">暂无工作流</div></div>')
++'<div class="sec-title"><h3>◉ 执行记录</h3></div>'
++(db.execs.length?db.execs.slice().reverse().map(execCard).join(""):'<div class="card"><div class="empty">暂无执行记录，去AI指挥页下达任务</div></div>');
+}
+function newExec2(){
+const n=document.getElementById("exName2").value.trim(),q=document.getElementById("exReq2").value.trim(),dp=document.getElementById("exDept2").value;
+if(!n||!q)return alert("填写任务名称和需求描述");
+const steps=["需求分析：拆解需求要点","制定方案：输出执行方案","AI执行：生成指令发创始人（我）执行","结果检查：核对交付物","用户验收：等你确认","交付归档：记录归档"].map(t=>({t,st:0,note:""}));
+db.execs.push({id:uid(),name:n,req:q,dept:dp,steps,cur:0,st:0,at:Date.now()});
+logA("执行引擎接单："+n);save();render();
+}
+function addWf(){const n=document.getElementById("wfN").value.trim();const ss=document.getElementById("wfS").value.split("\n").map(s=>s.trim()).filter(Boolean);if(!n||!ss.length)return alert("填写名称和至少一步");db.workflows.push({id:uid(),name:n,steps:ss.map(t=>({t,st:0})),st:0,at:Date.now()});logA("新建工作流："+n);save();render()}
+function wfStep(wid,i,d){const w=db.workflows.find(x=>x.id===wid);if(!w)return;const j=i+d;if(j<0||j>=w.steps.length)return;const t=w.steps[i];w.steps[i]=w.steps[j];w.steps[j]=t;save();render()}
+function wfTog(wid,i){const w=db.workflows.find(x=>x.id===wid);if(!w)return;w.steps[i].st=w.steps[i].st?0:1;if(w.steps.every(s=>s.st))w.st=2;save();render()}
+function wfRun(wid){const w=db.workflows.find(x=>x.id===wid);if(!w)return;w.st=w.st===1?0:1;logA((w.st===1?"运行工作流：":"暂停工作流：")+w.name);save();render()}
+function wfDel(wid){if(!confirm("删除？"))return;db.workflows=db.workflows.filter(x=>x.id!==wid);save();render()}
+/* ---- AI助手：多AI部门协作 ---- */
+function aiHTML(){
+return '<div class="fcard"><h3>🚀 提交给 AI 执行</h3><select id="aiDept">'+DEPTS.map(d=>'<option value="'+d.id+'">'+d.name+'</option>').join("")+'</select><textarea id="aiReq-ai" placeholder="描述要哪个部门的AI做什么，越具体越好"></textarea><button class="act" onclick="subAIDept()">生成执行指令并复制</button><p style="font-size:10px;color:var(--dim);margin-top:8px;line-height:1.7">多AI协作说明：页面按部门组织AI员工，真实执行发生在聊天里。复制指令发我，我会按部门角色分析→规划→执行→生成文件→自检，你验收。</p></div>'
++'<div class="sec-title"><h3>◉ 部门AI速览</h3></div>'
++DEPTS.map(d=>{const es=db.employees.filter(e=>e.dept===d.id&&e.st!==0);return '<div class="item"><b>'+d.ic+' '+d.name+'</b><p>'+(es.length?es.map(e=>esc(e.name)).join("、"):"暂无在岗员工")+'</p></div>'}).join("");
+}
+function subAIDept(){
+const q=document.getElementById("aiReq-ai").value.trim();if(!q)return alert("先描述需求");
+const dp=document.getElementById("aiDept");const dname=dp.options[dp.selectedIndex].text;
+const t="部门："+dname+"；需求："+q+"。要求：以该部门专业AI的视角分析→规划→执行→生成真实文件→自检，交付时列明已完成/未完成/受限三档，不虚构结果，等我验收。";
+if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>{logA("提交AI任务："+dname);save();alert("已复制，发到聊天里我就开工")}).catch(()=>alert("复制失败"));
+else alert(t);
+}
+/* ---- 合同与合规 ---- */
+function legalHTML(){
+return '<div class="fcard"><h3>＋ 合同/授权记录</h3><div class="row"><input id="ctT" placeholder="名称"><select id="ctY"><option>合作协议</option><option>授权书</option><option>保密协议</option><option>数字商品授权</option><option>版权登记</option><option>商标</option></select></div><input id="ctN" placeholder="说明"><button class="act" onclick="addCt()">添加</button></div>'
++'<div class="sec-title"><h3>◉ 常用模板</h3></div><div class="card">'
++["合作协议模板","数字商品授权书模板","保密协议模板","隐私政策模板","用户协议模板"].map(t=>'<div class="kv"><span>'+t+'</span><b style="cursor:pointer;color:var(--acc)" onclick="document.getElementById(\'aiReq-legal\').value=\'帮我生成'+t+'，要正式、可直接用的版本\';subAI(\'legal\')">找AI生成 →</b></div>').join("")+'</div>'
++'<div class="sec-title"><h3>◉ 我的档案</h3></div>'
++(db.contracts.length?db.contracts.slice().reverse().map(c=>'<div class="item"><b>'+esc(c.title)+'</b> <span class="stag p-mid">'+esc(c.type)+'</span><p>'+esc(c.note||"")+'</p><div class="meta">'+fdate(c.at)+' <span style="cursor:pointer" onclick="delCt('+c.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无档案</div></div>')
++'<div class="note">模板由聊天里的我按你的实际情况生成，此处只做档案管理，不构成法律意见。</div>';
+}
+function addCt(){const t=document.getElementById("ctT").value.trim();if(!t)return alert("填写名称");db.contracts.push({id:uid(),title:t,type:document.getElementById("ctY").value,note:document.getElementById("ctN").value.trim(),at:Date.now()});save();render()}
+function delCt(id){db.contracts=db.contracts.filter(c=>c.id!==id);save();render()}
+/* ---- 文件中心：真实文件交付 ---- */
+function filesHTML(){
+return '<div class="card"><h4>📥 真实文件生成（即刻下载）</h4>'
++'<div class="row"><button class="ghost" onclick="dlReport()">经营报告HTML</button><button class="ghost" onclick="dlCSV()">账本CSV</button></div>'
++'<div class="row" style="margin-top:8px"><button class="ghost" onclick="dlJSON()">全部数据JSON</button><button class="ghost" onclick="dlTasks()">任务清单TXT</button></div>'
++'<div style="font-size:10px;color:var(--dim);margin-top:8px">文件由本机数据真实生成，可直接下载保存。APK/ZIP等需在聊天里发我制作。</div></div>'
++'<div class="fcard"><h3>＋ 文件档案</h3><div class="row"><input id="flN" placeholder="文件名"><input id="flV" placeholder="版本，如 v1.0"></div><input id="flD" placeholder="说明"><button class="act" onclick="addFl()">添加</button></div>'
++(db.files.length?db.files.slice().reverse().map(f=>'<div class="item"><b>'+esc(f.name)+'</b> <span class="stag p-mid">'+esc(f.ver||"")+'</span><p>'+esc(f.desc||"")+'</p><div class="meta">'+fdate(f.at)+' <span style="cursor:pointer" onclick="delFl('+f.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无档案</div></div>')
++'<div class="note">版本控制：每次更新改版本号并记一条说明；备份恢复在「我的」里做快照。</div>';
+}
+function dlBlob(content,name,type){
+const b=new Blob([content],{type:type+";charset=utf-8"});const u=URL.createObjectURL(b);
+const a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();
+setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},800);
+}
+function dlReport(){
+const ms=moneySum();
+const h="<!DOCTYPE html><html lang=zh><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>经营报告 "+todayStr()+"</title></head><body style='font-family:sans-serif;padding:20px;max-width:700px;margin:auto'>"
++"<h2>个人AI公司经营报告（"+todayStr()+"）</h2>"
++"<p>累计收入 ¥"+ms.income+" · 累计支出 ¥"+ms.exp+" · 累计利润 ¥"+ms.profit+"</p>"
++"<p>本月收入 ¥"+ms.mincome+" · 本月支出 ¥"+ms.mexp+" · 本月利润 ¥"+ms.mprofit+"</p>"
++"<h3>项目（"+allProjects().length+"）</h3><ul>"+allProjects().map(p=>"<li>"+esc(p.name)+"（"+(NAMES[p.sec]||"")+"）"+(p.prog||0)+"%</li>").join("")+"</ul>"
++"<h3>任务</h3><p>待完成 "+db.tasks.filter(x=>(x.st||0)<2).length+" · 已完成 "+db.tasks.filter(x=>x.st===2).length+"</p>"
++"<h3>目标</h3><ul>"+db.goals.map(g=>"<li>"+esc(g.name)+" "+g.cur+"/"+g.target+"</li>").join("")+"</ul>"
++"<p style='color:#888;font-size:12px'>由个人AI工作室本机数据生成</p></body></html>";
+dlBlob(h,"经营报告-"+todayStr()+".html","text/html");
+}
+function dlJSON(){dlBlob(JSON.stringify(db),"工作室数据-"+todayStr()+".json","application/json")}
+function dlTasks(){dlBlob("任务清单 "+todayStr()+"\n\n"+db.tasks.map(x=>"["+TST[x.st||0]+"] "+x.name+(x.due?"（截止"+x.due+"）":"")).join("\n"),"任务清单-"+todayStr()+".txt","text/plain")}
+function addFl(){const n=document.getElementById("flN").value.trim();if(!n)return alert("填写文件名");db.files.push({id:uid(),name:n,ver:document.getElementById("flV").value.trim(),desc:document.getElementById("flD").value.trim(),at:Date.now()});save();render()}
+function delFl(id){db.files=db.files.filter(f=>f.id!==id);save();render()}
+/* ---- 全球资讯 ---- */
+function newsHTML(){
+return '<div class="fcard"><h3>＋ 收录资讯</h3><input id="nwT" placeholder="标题"><div class="row"><input id="nwS" placeholder="来源"><select id="nwC"><option>高可信</option><option>中可信</option><option>低可信</option></select></div><input id="nwU" placeholder="原文链接"><button class="act" onclick="addNw()">收录</button></div>'
++(db.news.length?db.news.slice().reverse().map(n=>'<div class="item"><b>'+esc(n.title)+'</b> <span class="stag '+(n.trust==="高可信"?"p-hi":n.trust==="中可信"?"p-mid":"p-lo")+'">'+esc(n.trust)+'</span><div class="meta">来源 '+esc(n.src||"未知")+' · '+fdate(n.at)+(n.url?' · <a href="'+esc(n.url)+'" style="color:var(--acc)">原文</a>':"")+' <span style="cursor:pointer" onclick="delNw('+n.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无收录。每天的全球新闻推送会自动到汇总聊天，这里只收录你想留的。</div></div>')
++'<div class="note">去重规则：同一事件只留一条，保留来源最早或最可信的。</div>';
+}
+function addNw(){const t=document.getElementById("nwT").value.trim();if(!t)return alert("填写标题");db.news.push({id:uid(),title:t,src:document.getElementById("nwS").value.trim(),trust:document.getElementById("nwC").value,url:document.getElementById("nwU").value.trim(),at:Date.now()});save();render()}
+function delNw(id){db.news=db.news.filter(n=>n.id!==id);save();render()}
+/* ---- 自动化中心 ---- */
+function autosHTML(){
+return '<div class="card"><h4>⏰ 真实定时任务（云端在跑）</h4>'
++REALCRONS.map(c=>'<div class="kv"><span>'+c[0]+' · '+c[1]+'</span><b>'+c[2]+'</b></div>').join("")+'</div>'
++'<div class="fcard"><h3>🔧 可视化工作流</h3><p style="font-size:11px;color:var(--sub);margin-bottom:8px">工作流在「AI指挥 → 执行引擎」里创建：步骤可视化、可排序、可暂停、可取消。</p><button class="act ghost" onclick="goSec(\'engine\')">去管理工作流 →</button></div>'
++'<div class="note">授权控制：定时任务只读/只写它自己的数据；花钱、删数据、对外发布这类敏感操作，云端执行前会在聊天里请你确认，不会悄悄做。</div>';
+}
+/* ---- 数据分析：跨部门 ---- */
+function dataHTML(){
+const projs=allProjects();
+const byDept={};projs.forEach(p=>{const d=secById(p.sec);const dn=d?deptName(d.dept):"?";byDept[dn]=(byDept[dn]||0)+1});
+const tTodo=db.tasks.filter(x=>(x.st||0)<2).length,tDone=db.tasks.filter(x=>x.st===3).length,tFail=db.tasks.filter(x=>x.st===4).length;
+const ms=moneySum();
+const maxP=Math.max.apply(null,[1].concat(Object.values(byDept)));
+const avgScore=db.ideas.length?(db.ideas.reduce((s,x)=>s+(+x.score||3),0)/db.ideas.length).toFixed(1):"—";
+return '<div class="card"><h4>📁 项目部门分布</h4>'+Object.keys(byDept).map(k=>'<div class="kv"><span>'+k+'</span><b>'+byDept[k]+'个</b></div><div class="bar"><i style="width:'+Math.round(byDept[k]/maxP*100)+'%"></i></div>').join("")+'</div>'
++'<div class="card"><h4>✓ 任务状态</h4><div class="kv"><span>未完成</span><b>'+tTodo+'</b></div><div class="kv"><span>已完成</span><b>'+tDone+'</b></div><div class="kv"><span>失败</span><b>'+tFail+'</b></div></div>'
++'<div class="card"><h4>💰 财务</h4><div class="kv"><span>累计收入</span><b style="color:var(--ok)">¥'+ms.income+'</b></div><div class="kv"><span>累计支出</span><b style="color:var(--bad)">¥'+ms.exp+'</b></div><div class="kv"><span>利润</span><b>¥'+ms.profit+'</b></div></div>'
++'<div class="card"><h4>💡 创意</h4><div class="kv"><span>创意总数</span><b>'+db.ideas.length+'</b></div><div class="kv"><span>平均评分</span><b>'+avgScore+' ★</b></div><div class="kv"><span>知识条目</span><b>'+db.know.length+'</b></div><div class="kv"><span>客户数</span><b>'+db.customers.length+'</b></div></div>';
+}
+/* ---- 绩效与质量 ---- */
+function perfHTML(){
+const t=db.tasks,tDone=t.filter(x=>x.st===3).length;
+const e=db.execs,eDone=e.filter(x=>x.st===3).length;
+const rate=t.length?Math.round(tDone/t.length*100):0;
+const erate=e.length?Math.round(eDone/e.length*100):0;
+let avgMin="—";
+if(eDone){const ds=e.filter(x=>x.st===3&&x.finAt&&x.at);if(ds.length)avgMin=Math.round(ds.reduce((s,x)=>s+(x.finAt-x.at),0)/ds.length/60000)+"分钟"}
+const fails=t.filter(x=>x.st===4);
+return '<div class="stats"><div class="stat"><div class="t"><i>✓</i>任务完成率</div><div class="v">'+rate+'%</div><div class="d">'+tDone+'/'+t.length+'</div></div>'
++'<div class="stat"><div class="t"><i>⚙</i>执行成功率</div><div class="v">'+erate+'%</div><div class="d">'+eDone+'/'+e.length+'</div></div></div>'
++'<div class="card"><h4>⏱ 效率</h4><div class="kv"><span>执行任务平均耗时</span><b>'+avgMin+'</b></div><div class="kv"><span>失败任务数</span><b>'+fails.length+'</b></div></div>'
++(fails.length?'<div class="card"><h4>❌ 失败原因分析</h4>'+fails.map(x=>'<div class="kv"><span>'+esc(x.name)+'</span><b style="cursor:pointer;color:var(--acc)" onclick="retryTask('+x.id+')">重试 →</b></div>').join("")+'</div>':"")
++'<div class="fcard"><h3>📝 质量评分</h3><p style="font-size:11px;color:var(--sub);margin-bottom:8px">给最近的交付打分，分数进绩效统计：</p><div class="row"><input id="qN" placeholder="交付物名称"><select id="qS"><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option><option value="2">★★</option><option value="1">★</option></select></div><button class="act" onclick="addQ()">记录评分</button><div id="qList" style="margin-top:8px">'+(db.qlist||[]).map(q=>'<div class="kv"><span>'+esc(q.n)+'</span><b class="stars">'+"★".repeat(q.s)+'</b></div>').join("")+'</div></div>'
++'<div class="note">自动改进方案：失败任务先看失败分析，点重试重开；需要我出改进方案就点下方「提交给AI执行」。</div>';
+}
+function addQ(){const n=document.getElementById("qN").value.trim();if(!n)return alert("填写名称");if(!db.qlist)db.qlist=[];db.qlist.unshift({n,s:+document.getElementById("qS").value,at:Date.now()});db.qlist=db.qlist.slice(0,30);logA("质量评分："+n);save();render()}
+/* ---- 软件与工具 ---- */
+function toolsHTML(){
+const rec=[["GitHub Trending","https://github.com/trending","每日新星项目"],["Public APIs","https://github.com/public-apis/public-apis","免Key接口清单"],["即梦AI","https://www.capcut.cn","视频生成（已登录）"],["Vidu","https://www.vidu.studio","视频生成4K"]];
+return '<div class="fcard"><h3>＋ 收藏工具</h3><div class="row"><input id="tlN" placeholder="工具名"><input id="tlU" placeholder="网址"></div><input id="tlD" placeholder="说明"><button class="act" onclick="addTl()">收藏</button></div>'
++'<div class="sec-title"><h3>◉ 推荐</h3></div>'+rec.map(r=>'<div class="item"><b>'+r[0]+'</b><p>'+r[2]+'</p><div class="meta"><a href="'+r[1]+'" style="color:var(--acc)">'+r[1]+'</a></div></div>').join("")
++'<div class="sec-title"><h3>◉ 我的收藏</h3></div>'
++(db.toolsx.length?db.toolsx.slice().reverse().map(t=>'<div class="item"><b>'+esc(t.name)+'</b><p>'+esc(t.desc||"")+'</p><div class="meta">'+(t.url?'<a href="'+esc(t.url)+'" style="color:var(--acc)">'+esc(t.url)+'</a> ':"")+fdate(t.at)+' <span style="cursor:pointer" onclick="delTl('+t.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无收藏</div></div>');
+}
+function addTl(){const n=document.getElementById("tlN").value.trim();if(!n)return alert("填写名称");db.toolsx.push({id:uid(),name:n,url:document.getElementById("tlU").value.trim(),desc:document.getElementById("tlD").value.trim(),at:Date.now()});save();render()}
+function delTl(id){db.toolsx=db.toolsx.filter(t=>t.id!==id);save();render()}
+/* ---- 云服务器 ---- */
+function cloudHTML(){
+return '<div class="fcard"><h3>＋ 服务器/服务档案</h3><div class="row"><input id="clN" placeholder="名称"><select id="clT"><option>云服务器</option><option>网站</option><option>数据库</option><option>域名</option><option>SSL证书</option><option>存储</option></select></div><input id="clD" placeholder="说明/到期时间"><button class="act" onclick="addCl()">添加</button></div>'
++(db.clouds.length?db.clouds.slice().reverse().map(c=>'<div class="item"><b>'+esc(c.name)+'</b> <span class="stag p-mid">'+esc(c.type)+'</span><p>'+esc(c.desc||"")+'</p><div class="meta">'+fdate(c.at)+' <span style="cursor:pointer" onclick="delCl('+c.id+')">删除</span></div></div>').join(""):'<div class="card"><div class="empty">暂无档案</div></div>')
++'<div class="note">真实的服务器操作（部署/重启/续费）在聊天里发我做，这里只做档案、到期提醒和成本记录。</div>';
+}
+function addCl(){const n=document.getElementById("clN").value.trim();if(!n)return alert("填写名称");db.clouds.push({id:uid(),name:n,type:document.getElementById("clT").value,desc:document.getElementById("clD").value.trim(),at:Date.now()});save();render()}
+function delCl(id){db.clouds=db.clouds.filter(c=>c.id!==id);save();render()}
+/* ---- 我的 ---- */
+function myHTML(){
+  return '<div class="hd"><h1>我的</h1><div class="who">创始人<br>数据本机保存</div></div>'
+  +'<div class="fcard"><h3>🎯 目标管理</h3><div class="row"><input id="goalName" placeholder="目标名称"><input id="goalTarget" type="number" placeholder="目标值"></div><div class="row"><input id="goalCur" type="number" placeholder="当前值"><button class="act" onclick="addGoal()">添加目标</button></div><div id="goalsList" style="margin-top:8px">'
+  +(db.goals.length?db.goals.map(g=>{const p=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
+    return '<div class="item"><b>'+esc(g.name)+'</b><p>'+g.cur+'/'+g.target+' · '+p+'%</p><div class="bar2"><i style="width:'+p+'%"></i></div><div class="row"><button class="ghost" onclick="goalStep('+g.id+',1)">+1</button><button class="ghost" onclick="goalStep('+g.id+',10)">+10</button><button class="ghost" onclick="goalStep('+g.id+',-10)">−10</button><button class="ghost" onclick="delGoal('+g.id+')">删除</button></div></div>'}).join(""):'<div class="empty">暂无目标</div>')+'</div></div>'
+  +'<div class="fcard"><h3>🛡 数据备份与回滚</h3><p style="font-size:11px;color:var(--sub);margin-bottom:8px">快照保存在本机，误删/改错可回滚到任意快照（保留最近5个）。</p><button class="act" onclick="mkBackup()">立即备份快照</button><div style="margin-top:8px">'
+  +((db.backups||[]).length?db.backups.slice().reverse().map((b,i)=>'<div class="kv"><span>快照 · '+fdate(b.at)+'（'+b.size+'项）</span><b><span style="cursor:pointer;color:var(--acc)" onclick="restoreBackup('+(db.backups.length-1-i)+')">回滚</span></b></div>').join(""):'<div class="empty">暂无快照</div>')+'</div></div>'
+  +'<div class="fcard"><h3>📤 数据导出 / 📥 导入</h3><div class="row"><button class="act ghost" onclick="dlJSON()">导出JSON</button><button class="act ghost" onclick="document.getElementById(\'impF\').click()">导入JSON</button></div><input type="file" id="impF" accept=".json" style="display:none" onchange="impJSON(this)"><button class="act ghost" style="margin-top:8px;color:var(--bad);border-color:rgba(255,93,108,.4)" onclick="wipeData()">清空全部数据</button></div>'
+  +'<div class="fcard"><h3>⚙ 设置</h3><div class="kv"><span>默认AI模型</span><b>'+esc(db.settings.model||"Muse")+'</b></div><select id="setModel" onchange="db.settings.model=this.value;save()"><option'+(db.settings.model!=="Muse Deep"?" selected":"")+'>Muse</option><option'+(db.settings.model==="Muse Deep"?" selected":"")+'>Muse Deep</option><option'+(db.settings.model==="GPT"?" selected":"")+'>GPT</option><option'+(db.settings.model==="Gemini"?" selected":"")+'>Gemini</option></select>'
+  +'<div class="note">🔐 安全说明：API密钥不要存在页面里。需要调模型接口时在聊天里发我，密钥走加密通道。单用户本机应用，无多账号权限体系；重要操作（删数据/花钱/发布）云端执行前会请你确认。</div></div>'
+  +'<div class="card"><div class="kv"><span>统一数据库</span><b>aistudio_v3</b></div><div class="kv"><span>版本</span><b>v20261030-5</b></div><div class="kv"><span>操作日志</span><b>'+db.log.length+'条</b></div></div>';
+}
 function addGoal(){
- const n=document.getElementById("goalName").value.trim(),t=Number(document.getElementById("goalTarget").value),c=Number(document.getElementById("goalCur").value)||0;
- if(!n||!(t>0))return alert("填写目标名称和目标值");
- db.goals.push({id:uid(),name:n,target:t,cur:c,at:Date.now()});
- document.getElementById("goalName").value="";document.getElementById("goalTarget").value="";document.getElementById("goalCur").value="";
- logA("新增目标："+n);save();render();
+  const n=document.getElementById("goalName").value.trim(),t=+document.getElementById("goalTarget").value,c=+document.getElementById("goalCur").value||0;
+  if(!n||!(t>0))return alert("填写目标名称和目标值");
+  db.goals.push({id:uid(),name:n,target:t,cur:c,at:Date.now()});
+  logA("新增目标："+n);save();render();
 }
 function goalStep(id,d){const g=db.goals.find(g=>g.id===id);if(!g)return;g.cur=Math.max(0,g.cur+d);save();render()}
-function delGoal(id){if(!confirm("确定删除？"))return;db.goals=db.goals.filter(g=>g.id!==id);save();render()}
-
-/* ============ 渲染 ============ */
-const MODN={biz:"创业",game:"游戏",media:"内容",invest:"投资"};
-const MODI={biz:"💼",game:"🎮",media:"🎬",invest:"📊"};
-function moneySum(){let i=0,o=0;db.money.forEach(x=>x.type==="income"?i+=x.amount:o+=x.amount);return[i,o]}
-function render(){
- /* 问候+日期 */
- const h=new Date().getHours();
- document.getElementById("greet").textContent=(h<6?"凌晨好":h<9?"早上好":h<12?"上午好":h<14?"中午好":h<18?"下午好":"晚上好")+"，创始人！";
- const d=new Date(),wk="日一二三四五六"[d.getDay()];
- document.getElementById("todayDate").textContent=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${wk}`;
- /* 首页统计 */
- const t0=today0();
- const projs=[...db.biz,...db.game,...db.media,...db.invest];
- const newToday=projs.filter(x=>x.at>=t0).length;
- document.getElementById("stProj").textContent=projs.length;
- document.getElementById("stProjD").textContent="↑ "+newToday;
- const undo=db.tasks.filter(x=>(x.st||0)<2),done=db.tasks.filter(x=>x.st===2);
- document.getElementById("stTask").textContent=undo.length;
- document.getElementById("stTaskD").textContent="↓ "+done.length;
- document.getElementById("stTaskD").className="d "+(done.length?"down":"");
- document.getElementById("stIdea").textContent=db.ideas.length;
- document.getElementById("stIdeaD").textContent="↑ "+db.ideas.filter(x=>x.at>=t0).length;
- const[inc,out]=moneySum();
- document.getElementById("stInc").textContent="¥"+inc.toLocaleString();
- const mi=db.money.filter(x=>x.type==="income"&&x.at>=t0).reduce((a,x)=>a+x.amount,0);
- document.getElementById("stIncD").textContent="↑ 今日¥"+mi.toLocaleString();
- /* 首页任务 */
- const ht=document.getElementById("homeTasks");
- const top=undo.slice(0,4);
- ht.innerHTML=top.length?top.map((x,i)=>`<div class="taskrow"><div class="no">${i+1}</div><div class="tt">${esc(x.name)}</div><span class="prio ${PRIO[x.prio][1]}">${PRIO[x.prio][0]}</span></div>`).join("")
-  :'<div class="empty">暂无任务，去任务中心添加</div>';
- /* 首页项目动态 */
- const hp=document.getElementById("homeProj");
- const lat=projs.slice(-4).reverse();
- const TH={biz:["linear-gradient(150deg,#b45309,#f59e0b)","🚀"],game:["linear-gradient(150deg,#6d28d9,#a78bfa)","🎮"],media:["linear-gradient(150deg,#be185d,#f472b6)","🎬"],invest:["linear-gradient(150deg,#0f766e,#34d399)","📊"]};
- function modOf(x){for(const k of["biz","game","media","invest"])if(db[k].includes(x))return k;return"biz"}
- hp.innerHTML=lat.length?lat.map(x=>{const m=modOf(x);return `<div class="pcard"><div class="th" style="background:${TH[m][0]}"><span class="st">${x.prog>=100?"已完成":x.prog>0?"进行中":"筹备中"}</span>${TH[m][1]}</div>
-  <div class="bd"><b>${esc(x.name)}</b><span>${MODN[m]} · ${esc((x.desc||"").slice(0,14))}</span>
-  <div class="bar"><i style="width:${x.prog||0}%"></i></div><div class="pc">${x.prog||0}%</div></div></div>`}).join("")
-  :'<div class="empty" style="grid-column:1/-1">暂无项目，去各中心添加</div>';
- /* 目标+动态 */
- const hg=document.getElementById("homeGoals");
- hg.innerHTML=db.goals.length?db.goals.slice(0,4).map(g=>{const p=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
-  return `<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(g.name)}</b><span style="color:var(--sub)">${g.cur}/${g.target} · ${p}%</span></div><div class="bar2"><i style="width:${p}%"></i></div></div>`}).join("")
-  :'<div class="empty">暂无目标，去「我的」添加</div>';
- const hl=document.getElementById("homeLog");
- hl.innerHTML=db.log.length?db.log.slice(0,8).map(l=>{const d=new Date(l.at);
-  return `<div style="font-size:11px;color:var(--sub);padding:6px 0;border-bottom:1px solid rgba(120,181,255,.07)"><span style="color:var(--dim)">${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}</span> · ${esc(l.t)}</div>`}).join("")
-  :'<div class="empty">暂无动态</div>';
- /* 各列表 */
- const L=(id,arr,type,mod)=>{const el=document.getElementById(id);if(el)el.innerHTML=arr.length?arr.slice().reverse().map(x=>projCard(x,type,mod)).join(""):'<div class="empty">暂无记录</div>'};
- L("bizList",db.biz,"biz","创业");L("gameList",db.game,"game","游戏");L("mediaList",db.media,"media","内容");L("investList",db.invest,"invest","投资");
- const il=document.getElementById("ideasList");
- if(il)il.innerHTML=db.ideas.length?db.ideas.slice().reverse().map(x=>`<div class="item"><b>💡 ${esc(x.name)}</b><p>${esc(x.desc||"")}</p><div class="row"><button class="ghost" onclick="delItem('ideas',${x.id})">删除</button></div></div>`).join(""):'<div class="empty">暂无创意</div>';
- const tu=document.getElementById("tasksUndo"),td=document.getElementById("tasksDone");
- if(tu){tu.innerHTML=undo.length?undo.map(taskRow).join(""):'<div class="empty">全部完成 🎉</div>';
-  td.innerHTML=done.length?done.map(taskRow).join(""):'<div class="empty">暂无已完成</div>';
-  document.getElementById("tcUndo").textContent="("+undo.length+")";}
- /* 账本 */
- document.getElementById("mInc").textContent="¥"+inc.toLocaleString();
- document.getElementById("mOut").textContent="¥"+out.toLocaleString();
- const net=inc-out,ne=document.getElementById("mNet");
- ne.textContent="¥"+net.toLocaleString();ne.style.color=net>=0?"var(--green)":"var(--red)";
- document.getElementById("mCnt").textContent=db.money.length;
- const ml=document.getElementById("moneyList");
- if(ml)ml.innerHTML=db.money.length?db.money.slice().reverse().map(x=>`<div class="item"><b>${esc(x.note||x.cat||"收支记录")}</b> <span style="font-size:10px;color:var(--dim)">${esc(x.cat||"")}</span>
-  <span style="float:right;font-weight:900;color:${x.type==="income"?"var(--green)":"var(--red)"}">${x.type==="income"?"+":"-"}¥${x.amount.toFixed(2)}</span>
-  <div class="row"><button class="ghost" onclick="delMoney(${x.id})">删除</button></div></div>`).join(""):'<div class="empty">暂无记录</div>';
- /* 项目管理 */
- document.getElementById("pAll").textContent=projs.length;
- document.getElementById("pAvg").textContent=(projs.length?Math.round(projs.reduce((a,x)=>a+(x.prog||0),0)/projs.length):0)+"%";
- const pl=document.getElementById("projectsList");
- if(pl)pl.innerHTML=projs.length?projs.slice().reverse().map(x=>projCard(x,modOf(x),MODN[modOf(x)]+" · "+MODI[modOf(x)])).join(""):'<div class="empty">暂无项目</div>';
- /* 目标列表（我的页） */
- const gl=document.getElementById("goalsList");
- if(gl)gl.innerHTML=db.goals.length?db.goals.map(g=>{const p=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
-  return `<div class="item"><b>${esc(g.name)}</b><p>${g.cur}/${g.target} · ${p}%</p><div class="bar2"><i style="width:${p}%"></i></div>
-  <div class="row"><button class="ghost" onclick="goalStep(${g.id},1)">+1</button><button class="ghost" onclick="goalStep(${g.id},10)">+10</button><button class="ghost" onclick="goalStep(${g.id},-10)">−10</button><button class="ghost" onclick="delGoal(${g.id})">删除</button></div></div>`}).join(""):'<div class="empty">暂无目标</div>';
- /* 消息 */ 
- const msgs=[  ["🤖","AI工作室云端同步运行中","版本 v20261030-4 · 自动更新已开启"],
-  ["✓","待完成任务 "+undo.length+" 个",undo.length?"去任务中心查看":"全部完成，干得漂亮"],
-  ["⚙️","今日自动化推送就绪","全球新闻 07:50 · 盘前预判 08:00 · 更多定时任务运行中"]
- ];
- document.getElementById("msgsList").innerHTML=msgs.map(m=>`<div class="item"><b>${m[0]} ${m[1]}</b><p>${m[2]}</p></div>`).join("");
- document.getElementById("msgBdg").textContent=Math.min(9,msgs.length);
- document.getElementById("msgBdg").style.display="flex";
- /* 数据分析 */
- const dt=document.getElementById("dataTasks");
- if(dt){const c={hi:0,mid:0,lo:0};db.tasks.forEach(x=>c[x.prio]++);
-  const mx=Math.max(1,c.hi,c.mid,c.lo);
-  dt.innerHTML=[["高优先级",c.hi,"#f87171"],["中优先级",c.mid,"#60a5fa"],["低优先级",c.lo,"#34d399"]].map(r=>
-  `<div style="font-size:11px;color:var(--sub);margin:8px 0">${r[0]} ${r[1]}<div class="bar2"><i style="width:${r[1]/mx*100}%;background:${r[2]}"></i></div></div>`).join("");}
- const dm=document.getElementById("dataMoney");
- if(dm){const mx=Math.max(1,inc,out);
-  dm.innerHTML=`<div style="font-size:11px;color:var(--sub);margin:8px 0">收入 ¥${inc.toLocaleString()}<div class="bar2"><i style="width:${inc/mx*100}%;background:#34d399"></i></div></div>
-  <div style="font-size:11px;color:var(--sub);margin:8px 0">支出 ¥${out.toLocaleString()}<div class="bar2"><i style="width:${out/mx*100}%;background:#f87171"></i></div></div>`;}
- const dp=document.getElementById("dataProj");
- if(dp){const cs=[db.biz.length,db.game.length,db.media.length,db.invest.length];const mx=Math.max(1,...cs);
-  dp.innerHTML=["创业","游戏","内容","投资"].map((n,i)=>`<div style="font-size:11px;color:var(--sub);margin:8px 0">${n} ${cs[i]}<div class="bar2"><i style="width:${cs[i]/mx*100}%"></i></div></div>`).join("");}
- buildFeats();renderAutos();
+function delGoal(id){if(!confirm("删除？"))return;db.goals=db.goals.filter(g=>g.id!==id);save();render()}
+function mkBackup(){
+  const snap={at:Date.now(),size:ALLCOLLS.reduce((s,k)=>s+(db[k]||[]).length,0),data:JSON.stringify(db)};
+  if(!db.backups)db.backups=[];
+  db.backups.push({at:snap.at,size:snap.size,data:snap.data});
+  db.backups=db.backups.slice(-5);
+  logA("创建数据快照");save();render();alert("快照已保存");
 }
-buildFeats();renderAutos();chgCat();render();
+function restoreBackup(i){
+  if(!confirm("回滚到该快照？当前数据将被替换！"))return;
+  const b=db.backups[i];if(!b)return;
+  const cur=JSON.stringify(db);
+  db=JSON.parse(b.data);
+  if(!db.backups)db.backups=[];
+  save();logA("数据回滚到快照");save();render();alert("已回滚");
+}
+function impJSON(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||typeof d!=="object")throw 0;db=d;ALLCOLLS.forEach(k=>{if(!Array.isArray(db[k]))db[k]=[]});logA("导入数据");save();render();alert("导入成功")}catch(e){alert("文件格式不对")}};
+  r.readAsText(f);
+}
+function wipeData(){if(confirm("清空本机全部数据？此操作不可恢复！建议先备份快照。")){localStorage.removeItem(DBKEY);location.reload()}}
+/* ================= 总渲染 ================= */
+function render(){
+  buildTabs();
+  if(curTab==="home"){renderHome();showPage("home")}
+  else if(curTab==="company"){renderCompany();showPage("company")}
+  else if(curTab==="cmd"){renderCmd();showPage("cmd")}
+  else if(curTab==="projects"){renderProjects();showPage("projects")}
+  else if(curTab==="my"){document.getElementById("page-my").innerHTML=myHTML();showPage("my")}
+  else if(curTab==="__mod"&&curMod){renderMod(curMod);showPage("mod");
+    if(curMod==="money")chgCat();
+    if(window.scrollTo)window.scrollTo(0,0);}
+}
+/* execFinish 补 finAt（绩效耗时用） */
+const _execFinish=execFinish;
+execFinish=function(eid){const x=db.execs.find(e=>e.id===eid);if(x)x.finAt=Date.now();_execFinish(eid)};
+buildRail();render();
 </script>
 </body>
 </html>
