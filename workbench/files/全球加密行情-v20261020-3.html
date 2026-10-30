@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>全球加密行情</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#080B12;color:#E8F1FF;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:40px}
+.hero{background:radial-gradient(120% 90% at 50% 0%,#12324a 0%,#080B12 62%);padding:38px 20px 22px;text-align:center}
+.logo{font-size:19px;font-weight:800;color:#72D5FF;letter-spacing:1px}
+.sub{font-size:12px;color:#7E93B0;margin-top:8px}
+.sub b{color:#B9CBE4;font-weight:600}
+.ov{display:flex;gap:8px;max-width:640px;margin:18px auto 0;padding:0 18px}
+.ov .cell{flex:1;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:12px 6px;text-align:center}
+.ov .v{font-size:15px;font-weight:800;color:#fff;white-space:nowrap}
+.ov .k{font-size:10px;color:#7E93B0;margin-top:4px}
+.netwarn{display:none;max-width:640px;margin:16px auto 0;padding:16px 18px;background:rgba(255,60,60,.12);border:1px solid rgba(255,90,90,.55);border-radius:14px;font-size:13px;line-height:1.9;color:#FFD9D9}
+.netwarn b{color:#FF5A5A}
+.tabs{display:flex;gap:8px;max-width:640px;margin:20px auto 0;padding:0 18px}
+.tabs button{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#9FB3CC;font-size:14px;font-weight:700;cursor:pointer}
+.tabs button.on{background:linear-gradient(135deg,#72D5FF,#3B9BFF);color:#04121F;border:none}
+.search{max-width:640px;margin:14px auto 0;padding:0 18px}
+.search input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;color:#E8F1FF;font-size:14px;outline:none}
+.chips{display:flex;gap:8px;max-width:640px;margin:12px auto 0;padding:0 18px}
+.chips button{padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:transparent;color:#9FB3CC;font-size:12px;font-weight:600;cursor:pointer}
+.chips button.on{background:rgba(114,213,255,.15);color:#72D5FF;border-color:rgba(114,213,255,.5)}
+.wrap{max-width:640px;margin:14px auto 0;padding:0 18px}
+.row{display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:8px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:14px;cursor:pointer}
+.row:active{background:rgba(114,213,255,.08)}
+.rank{flex:none;width:26px;text-align:center;font-size:12px;color:#7E93B0;font-weight:700}
+.row img{flex:none;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08)}
+.tk{flex:none;width:34px;height:34px;border-radius:10px;background:rgba(114,213,255,.12);color:#72D5FF;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.1;padding:2px}
+.mid{flex:1;min-width:0}
+.mid .nm{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mid .sm{font-size:11px;color:#7E93B0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.right{flex:none;text-align:right}
+.right .pr{font-size:14px;font-weight:700}
+.pcts{flex:none;display:flex;gap:6px;margin-left:2px}
+.pct{font-size:11px;font-weight:700;padding:4px 7px;border-radius:8px;min-width:60px;text-align:center}
+.up{color:#FF6B6B}.dn{color:#35D07F}
+.pct.up{background:rgba(255,90,90,.13)}.pct.dn{background:rgba(53,208,127,.13)}
+.pct small{display:block;font-size:9px;font-weight:400;color:#7E93B0}
+.loading{text-align:center;color:#7E93B0;font-size:13px;padding:30px 0}
+.secttl{font-size:12px;color:#7E93B0;margin:16px 2px 10px;font-weight:700;letter-spacing:1px}
+.foot{text-align:center;font-size:11px;color:#4A5F78;margin-top:26px;line-height:2;padding:0 20px}
+.sheet{display:none;position:fixed;inset:0;background:#080B12;z-index:50;overflow-y:auto;padding:0 0 50px}
+.sheet .bar{position:sticky;top:0;background:rgba(8,11,18,.92);backdrop-filter:blur(10px);padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.08);z-index:2}
+.sheet .bar button{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#E8F1FF;border-radius:10px;padding:8px 14px;font-size:13px;cursor:pointer}
+.sheet .bar .t{font-size:16px;font-weight:800}
+.dwrap{max-width:640px;margin:0 auto;padding:18px}
+.dprice{font-size:30px;font-weight:800}
+.dpct{font-size:14px;font-weight:700;margin-top:4px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:13px;margin-top:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px}
+.kv .k{color:#7E93B0;white-space:nowrap}
+.kv .v{text-align:right;word-break:break-all}
+.rbtns{display:flex;gap:8px;margin:20px 0 10px}
+.rbtns button{flex:1;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:transparent;color:#9FB3CC;font-size:12px;font-weight:700;cursor:pointer}
+.rbtns button.on{background:rgba(114,213,255,.15);color:#72D5FF;border-color:rgba(114,213,255,.5)}
+canvas{width:100%;display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px}
+.cstat{display:flex;justify-content:space-between;font-size:11px;color:#7E93B0;margin-top:8px;padding:0 2px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo">🌍 全球加密行情</div>
+  <div class="sub">数据同步于 <b id="syncTime">—</b> · 股票60秒/币榜3分钟 · <span id="mktState">加载中</span> · <span onclick="manualRefresh()" style="color:#72D5FF;text-decoration:underline;cursor:pointer">↻ 手动刷新</span></div>
+  <div class="ov">
+    <div class="cell"><div class="v" id="ovCap">—</div><div class="k">全球总市值</div></div>
+    <div class="cell"><div class="v" id="ovVol">—</div><div class="k">24h 成交量</div></div>
+    <div class="cell"><div class="v" id="ovBtc">—</div><div class="k">BTC 市占率</div></div>
+    <div class="cell"><div class="v" id="ovChg">—</div><div class="k">总市值24h</div></div>
+  </div>
+</div>
+
+<div class="netwarn" id="netWarn">🔴 <b>行情数据被当前窗口拦截了</b><br>这个页面要连 CoinGecko、东方财富等行情接口，现在连不上——多半是在聊天/应用的内置预览里打开的。请用浏览器（Chrome）打开本文件，数据会自动同步。</div>
+
+<div class="tabs">
+  <button id="tabCoin" class="on" onclick="switchTab('coin')">🪙 加密货币</button>
+  <button id="tabStock" onclick="switchTab('stock')">🏢 上市公司</button>
+</div>
+
+<div class="search"><input id="q" type="text" placeholder="搜索币种 / 公司 / 代码…" oninput="render()"></div>
+
+<div class="chips" id="sortChips">
+  <button data-s="cap" class="on" onclick="setSort('cap')">市值排行</button>
+  <button data-s="up" onclick="setSort('up')">24h 涨幅榜</button>
+  <button data-s="dn" onclick="setSort('dn')">24h 跌幅榜</button>
+</div>
+
+<div class="wrap" id="listWrap"><div class="loading">正在同步全球行情…</div></div>
+
+<div class="foot">河马 · 全球加密行情 v20261020-3<br>数据来源：CoinGecko（币）/ 东方财富 · CNBC · Nasdaq（股票）<br>公开接口可能有延迟，不构成投资建议</div>
+
+<div class="sheet" id="sheet">
+  <div class="bar"><button onclick="closeSheet()">← 返回</button><span class="t" id="dTitle">详情</span></div>
+  <div class="dwrap">
+    <div class="dprice" id="dPrice">—</div>
+    <div class="dpct" id="dPct"></div>
+    <div class="rbtns" id="dRanges"></div>
+    <canvas id="dChart" height="200"></canvas>
+    <div class="cstat"><span id="cFrom"></span><span id="cMid"></span><span id="cTo"></span></div>
+    <div class="kv" id="dKv"></div>
+  </div>
+</div>
+
+<script>
+var $ = function(id){return document.getElementById(id)};
+var tab = 'coin', sortMode = 'cap';
+var coins = [], quotes = {}, globalOk = false, coinOk = false, stockOk = false;
+var curDetail = null;
+
+/* ========= 格式化 ========= */
+function fmtPrice(v){
+  if(v==null||isNaN(v)) return '—';
+  if(v>=1000) return '$'+v.toLocaleString('en-US',{maximumFractionDigits:2});
+  if(v>=1) return '$'+v.toFixed(2);
+  if(v>=0.01) return '$'+v.toFixed(4);
+  return '$'+v.toPrecision(3);
+}
+function fmtPct(v){
+  if(v==null||isNaN(v)) return '—';
+  return (v>0?'+':'')+v.toFixed(2)+'%';
+}
+function pctCls(v){ return (v==null||isNaN(v))?'':(v>=0?'up':'dn'); }
+function fmtCap(v){
+  if(v==null||isNaN(v)) return '—';
+  if(v>=1e12) return '$'+(v/1e12).toFixed(2)+'万亿';
+  if(v>=1e8) return '$'+(v/1e8).toFixed(1)+'亿';
+  if(v>=1e4) return '$'+(v/1e4).toFixed(1)+'万';
+  return '$'+v.toFixed(0);
+}
+function fmtDate(ts){
+  var d = new Date(ts);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+async function jget(url, timeout){
+  var ctl = new AbortController(); var t = setTimeout(function(){ctl.abort()}, timeout||12000);
+  try{ var r = await fetch(url, {signal: ctl.signal}); clearTimeout(t); if(!r.ok) throw 0; return await r.json(); }
+  catch(e){ clearTimeout(t); return null; }
+}
+async function tget(url, timeout){
+  var ctl = new AbortController(); var t = setTimeout(function(){ctl.abort()}, timeout||12000);
+  try{ var r = await fetch(url, {signal: ctl.signal}); clearTimeout(t); if(!r.ok) throw 0; return await r.text(); }
+  catch(e){ clearTimeout(t); return null; }
+}
+
+/* ========= 上市公司名单（加密相关） ========= */
+var STOCKS = [
+  {tk:'COIN', cn:'Coinbase交易所', en:'Coinbase', tag:'交易所 · 美股', secid:'105.COIN', cur:'$'},
+  {tk:'MSTR', cn:'微策略', en:'Strategy', tag:'BTC财库 · 美股', secid:'105.MSTR', cur:'$'},
+  {tk:'MARA', cn:'MARA矿业', en:'MARA Holdings', tag:'比特币矿企 · 美股', secid:'105.MARA', cur:'$'},
+  {tk:'RIOT', cn:'Riot矿业', en:'Riot Platforms', tag:'比特币矿企 · 美股', secid:'105.RIOT', cur:'$'},
+  {tk:'CLSK', cn:'CleanSpark矿业', en:'CleanSpark', tag:'比特币矿企 · 美股', secid:'105.CLSK', cur:'$'},
+  {tk:'HUT', cn:'Hut8矿业', en:'Hut 8', tag:'矿企/算力 · 美股', secid:'105.HUT', cur:'$'},
+  {tk:'CIFR', cn:'Cipher矿业', en:'Cipher Mining', tag:'比特币矿企 · 美股', secid:'105.CIFR', cur:'$'},
+  {tk:'IREN', cn:'IREN算力', en:'IREN', tag:'矿企/AI算力 · 美股', secid:'105.IREN', cur:'$'},
+  {tk:'CORZ', cn:'Core矿业', en:'Core Scientific', tag:'矿企/算力 · 美股', secid:'105.CORZ', cur:'$'},
+  {tk:'WULF', cn:'TeraWulf矿业', en:'TeraWulf', tag:'比特币矿企 · 美股', secid:'105.WULF', cur:'$'},
+  {tk:'GLXY', cn:'银河数字', en:'Galaxy Digital', tag:'加密金融 · 美股', secid:'105.GLXY', cur:'$'},
+  {tk:'HOOD', cn:'罗宾汉', en:'Robinhood', tag:'券商 · 美股', secid:'105.HOOD', cur:'$'},
+  {tk:'XYZ', cn:'Block支付', en:'Block（原Square）', tag:'支付 · 美股', secid:'106.XYZ', cur:'$'},
+  {tk:'PYPL', cn:'贝宝', en:'PayPal', tag:'支付 · 美股', secid:'105.PYPL', cur:'$'},
+  {tk:'TSLA', cn:'特斯拉', en:'Tesla', tag:'持有BTC · 美股', secid:'105.TSLA', cur:'$'},
+  {tk:'GME', cn:'游戏驿站', en:'GameStop', tag:'持有BTC · 美股', secid:'106.GME', cur:'$'},
+  {tk:'SMLR', cn:'Semler科学', en:'Semler Scientific', tag:'BTC财库 · 美股', secid:'105.SMLR', cur:'$'},
+  {tk:'01357', cn:'美图公司', en:'Meitu', tag:'持有BTC/ETH · 港股', secid:'116.01357', cur:'HK$'},
+  {tk:'01499', cn:'欧科云链', en:'OKG Technology', tag:'区块链 · 港股', secid:'116.01499', cur:'HK$'},
+  {tk:'01611', cn:'新火科技', en:'New Huo Technology', tag:'区块链 · 港股', secid:'116.01611', cur:'HK$'}
+];
+
+
+/* ========= 币种中文名（按 CoinGecko id） ========= */
+var ZH = {
+'bitcoin':'比特币','ethereum':'以太坊','tether':'泰达币','binancecoin':'币安币','solana':'索拉纳','ripple':'瑞波币','usd-coin':'美元币','staked-ether':'质押以太坊','dogecoin':'狗狗币','tron':'波场币','cardano':'艾达币','wrapped-bitcoin':'封装比特币','chainlink':'LINK币','polkadot':'波卡币','bitcoin-cash':'比特币现金','litecoin':'莱特币','shiba-inu':'柴犬币','avalanche-2':'雪崩币','uniswap':'UNI币','near':'NEAR币','pepe':'佩佩币','aptos':'APT币','sui':'SUI币','stellar':'恒星币','ethereum-classic':'以太经典','hedera-hashgraph':'HBAR币','cosmos':'阿童木币','filecoin':'文件币','arbitrum':'ARB币','optimism':'OP币','maker':'MKR币','vechain':'唯链币','render-token':'渲染币','the-graph':'GRT币','aave':'AAVE币','algorand':'ALGO币','theta-token':'西塔币','eos':'柚子币','neo':'小蚁币','monero':'门罗币','zcash':'大零币','dash':'达世币','tezos':'XTZ币','iota':'IOTA币','okb':'欧易币','kucoin-shares':'库币KCS','crypto-com-chain':'CRO币','leo-token':'LEO币','whitebit':'WBT币','bitget-token':'BGB币','gatechain-token':'GT币','kaspa':'KAS币','celestia':'TIA币','bittensor':'TAO币','arweave':'AR币','stacks':'STX币','injective-protocol':'INJ币','sei-network':'SEI币','jupiter-exchange-solana':'JUP币','pyth-network':'PYTH币','wormhole':'W币','the-open-network':'TON币','notcoin':'NOT币','ethena':'ENA币','ondo-finance':'ONDO币','pendle':'PENDLE币','eigenlayer':'EIGEN币','ether-fi':'ETHFI币','jito-governance-token':'JTO币','raydium':'RAY币','hyperliquid':'HYPE币','official-trump':'特朗普币','worldcoin-wld':'世界币','mantle':'MNT币','polygon-ecosystem-token':'POL币','zksync':'ZK币','starknet':'STRK币','layerzero':'ZRO币','dymension':'DYM币','saga':'SAGA币','altlayer':'ALT币','movement':'MOVE币','usual':'USUAL币','ai16z':'AI16Z币','virtuals-protocol':'VIRTUAL币','aerodrome-finance':'AERO币','based-brett':'BRETT币','degen-base':'DEGEN币','deep':'DEEP币','dogs':'DOGS币','grass':'GRASS币','io':'IO币','akash-network':'AKT币','helium':'HNT币','fetch-ai':'FET币','immutable-x':'IMX币','gala':'GALA币','the-sandbox':'沙盒币','decentraland':'MANA币','axie-infinity':'AXS币','ronin':'RON币','enjincoin':'ENJ币','thorchain':'RUNE币','quant-network':'QNT币','nexo':'NEXO币','mantra':'OM币','xdce-crowd-sale':'XDC币','flow':'FLOW币','elrond-erd-2':'EGLD币','qtum':'量子链','ontology':'本体币','waves':'波浪币','zilliqa':'ZIL币','icon':'ICX币','decred':'DCR币','curve-dao-token':'CRV币','compound-governance-token':'COMP币','synthetix-network-token':'SNX币','lido-dao':'LDO币','gmx':'GMX币','dydx':'DYDX币','blur':'BLUR币','yearn-finance':'大姨夫YFI','1inch':'1INCH币','ethereum-name-service':'ENS币','rocket-pool':'RPL币','convex-finance':'CVX币','mina-protocol':'MINA币','loopring':'LRC币','basic-attention-token':'BAT币','chiliz':'CHZ币','harmony':'ONE币','kadena':'KDA币','kusama':'KSM币','moonbeam':'GLMR币','astar':'ASTR币','celo':'CELO币','gnosis':'GNO币','metis':'METIS币','illuvium':'ILV币','yield-guild-games':'YGG币','magic':'MAGIC币','apecoin':'APE币','pax-gold':'黄金币PAXG','tether-gold':'黄金币XAUT','bittorrent':'BTT币','just':'JST币','sun-token':'SUN币','reserve-rights-token':'RSR币','api3':'API3币','band-protocol':'BAND币','uma':'UMA币','tellor':'TRB币','siacoin':'SC币','digibyte':'DGB币','horizen':'ZEN币','verge':'XVG币','steem':'STEEM币','hive':'HIVE币','radix':'XRD币','casper-network':'CSPR币','coredaoorg':'CORE币','flare-networks':'FLR币','kujira':'KUJI币','neutron':'NTRN币','osmosis':'OSMO币','terra-luna-2':'LUNA币','terra-luna':'LUNC币','first-digital-usd':'FDUSD币','dai':'DAI币','ethena-usde':'USDe币','paypal-usd':'PYUSD币','true-usd':'TUSD币','frax':'FRAX币','usdd':'USDD币','coinbase-wrapped-btc':'cbBTC币','wrapped-eeth':'weETH币','mantle-staked-ether':'mETH币','binance-staked-sol':'BNSOL币','msol':'mSOL币','bonk':'BONK币','dogwifcoin':'WIF币','floki':'FLOKI币','book-of-meme':'BOME币','popcat':'POPCAT币','mog-coin':'MOG币','spx6900':'SPX币','fartcoin':'FARTCOIN币','peanut-the-squirrel':'PNUT币','goatseus-maximus':'GOAT币','turbo':'TURBO币','memecoin':'MEME币','baby-doge-coin':'BabyDoge币','arkham':'ARKM币','ocean-protocol':'OCEAN币','singularitynet':'AGIX币','numeraire':'NMR币','pha':'PHA币','jasmycoin':'JASMY币','livepeer':'LPT币','aioz-network':'AIOZ币','alchemy-pay':'ACH币','request':'REQ币','metal':'MTL币','stepn':'GMT币','bancor':'BNT币'
+};
+function zhn(c){ return ZH[c.id] || ''; }
+
+/* ========= 数据加载 ========= */
+async function loadGlobal(){
+  var g = await jget('https://api.coingecko.com/api/v3/global');
+  if(g && g.data){
+    var d = g.data;
+    $('ovCap').textContent = fmtCap(d.total_market_cap && d.total_market_cap.usd);
+    $('ovVol').textContent = fmtCap(d.total_volume && d.total_volume.usd);
+    $('ovBtc').textContent = d.market_cap_percentage ? d.market_cap_percentage.btc.toFixed(1)+'%' : '—';
+    var chg = d.market_cap_change_percentage_24h_usd;
+    var el = $('ovChg'); el.textContent = fmtPct(chg); el.className = 'v '+pctCls(chg);
+    globalOk = true;
+    return true;
+  }
+  return false;
+}
+async function loadCoins(){
+  var pages = await Promise.all([
+    jget('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&price_change_percentage=24h,7d,30d'),
+    jget('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=2&price_change_percentage=24h,7d,30d')
+  ]);
+  var all = [];
+  if(Array.isArray(pages[0])) all = all.concat(pages[0]);
+  if(Array.isArray(pages[1])) all = all.concat(pages[1]);
+  if(all.length){ coins = all; coinOk = true; return true; }
+  return false;
+}
+async function loadStocks(){
+  var got = false;
+  /* 一：东方财富批量 */
+  var secids = STOCKS.map(function(s){return s.secid}).join(',');
+  var em = await jget('https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&invt=2&fields=f12,f14,f2,f3,f4,f15,f16,f17,f18&secids='+secids, 7000);
+  if(em && em.data && Array.isArray(em.data.diff)){
+    got = true;
+    em.data.diff.forEach(function(r){
+      var key = String(r.f12).toUpperCase();
+      quotes[key] = {price: r.f2, pct: r.f3, chg: r.f4, high: r.f15, low: r.f16, open: r.f17, prev: r.f18, src: '东方财富'};
+    });
+  }
+  /* 二：CNBC 批量补美股 */
+  var missing = STOCKS.filter(function(s){ return s.cur==='$' && !quotes[s.tk]; });
+  if(missing.length){
+    var syms = missing.map(function(s){return s.tk}).join('|');
+    var cb = await jget('https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols='+syms+'&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json', 9000);
+    var arr = cb && cb.FormattedQuoteResult && cb.FormattedQuoteResult.FormattedQuote;
+    if(Array.isArray(arr)){
+      got = true;
+      arr.forEach(function(r){
+        quotes[String(r.symbol).toUpperCase()] = {
+          price: parseFloat(r.last), pct: parseFloat(String(r.change_pct||'').replace('%','')),
+          chg: parseFloat(r.change), high: parseFloat(r.high), low: parseFloat(r.low), open: parseFloat(r.open),
+          prev: parseFloat(r.previous_day_closing), src: 'CNBC'
+        };
+      });
+    }
+  }
+  if(Object.keys(quotes).length) stockOk = true;
+  return got;
+}
+async function refreshAll(){ await Promise.all([refreshFast(), refreshCoins()]); }
+async function refreshFast(){
+  var r = await Promise.all([loadGlobal(), loadStocks()]);
+  if(r[0] || r[1]){ stampSync(); saveCache(); }
+  else {
+    $('mktState').textContent = (coinOk || stockOk) ? '网络慢 · 显示上次数据' : '同步失败';
+    if(!coinOk && !stockOk && !globalOk) $('netWarn').style.display = 'block';
+  }
+  if(tab === 'stock') render();
+}
+async function refreshCoins(){
+  var ok = await loadCoins();
+  if(ok){ stampSync(); saveCache(); }
+  if(tab === 'coin') render();
+}
+function manualRefresh(){ $('mktState').textContent = '同步中…'; refreshAll(); }
+function stampSync(){
+  var now = new Date();
+  $('syncTime').textContent = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+  $('mktState').textContent = (coinOk||stockOk) ? '已同步' : '同步失败';
+  if(!coinOk && !stockOk && !globalOk) $('netWarn').style.display = 'block';
+}
+/* ========= 本地快照：打开先显示上次数据，不再干等 ========= */
+var CK = 'hema-crypto-v3';
+function saveCache(){
+  if(!coins.length && !Object.keys(quotes).length) return;
+  try{
+    var slim = coins.map(function(c){ return {id:c.id, symbol:c.symbol, name:c.name, image:c.image, current_price:c.current_price, market_cap:c.market_cap, market_cap_rank:c.market_cap_rank, total_volume:c.total_volume, high_24h:c.high_24h, low_24h:c.low_24h, price_change_percentage_24h:c.price_change_percentage_24h, price_change_percentage_7d_in_currency:c.price_change_percentage_7d_in_currency, price_change_percentage_30d_in_currency:c.price_change_percentage_30d_in_currency, ath:c.ath, ath_date:c.ath_date, circulating_supply:c.circulating_supply}; });
+    localStorage.setItem(CK, JSON.stringify({t:Date.now(), coins:slim, quotes:quotes, ov:{cap:$('ovCap').textContent, vol:$('ovVol').textContent, btc:$('ovBtc').textContent, chg:$('ovChg').textContent, cls:$('ovChg').className}}));
+  }catch(e){}
+}
+function loadCache(){
+  try{
+    var s = JSON.parse(localStorage.getItem(CK) || 'null');
+    if(!s) return false;
+    if(Array.isArray(s.coins) && s.coins.length){ coins = s.coins; coinOk = true; }
+    if(s.quotes && Object.keys(s.quotes).length){ quotes = s.quotes; stockOk = true; }
+    if(s.ov && s.ov.cap && s.ov.cap !== '—'){
+      $('ovCap').textContent = s.ov.cap; $('ovVol').textContent = s.ov.vol; $('ovBtc').textContent = s.ov.btc;
+      var el = $('ovChg'); el.textContent = s.ov.chg; el.className = s.ov.cls; globalOk = true;
+    }
+    if(s.t){
+      var d = new Date(s.t);
+      $('syncTime').textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+'（上次）';
+    }
+    return !!(coins.length || stockOk);
+  }catch(e){ return false; }
+}
+
+/* ========= 列表渲染 ========= */
+function switchTab(t){
+  tab = t;
+  $('tabCoin').className = t==='coin' ? 'on' : '';
+  $('tabStock').className = t==='stock' ? 'on' : '';
+  $('sortChips').style.display = t==='coin' ? 'flex' : 'none';
+  render();
+}
+function setSort(m){
+  sortMode = m;
+  var bs = document.querySelectorAll('#sortChips button');
+  bs.forEach(function(b){ b.className = b.getAttribute('data-s')===m ? 'on' : ''; });
+  render();
+}
+function qmatch(s){ return s.toLowerCase().indexOf($('q').value.trim().toLowerCase()) >= 0; }
+function render(){
+  var w = $('listWrap');
+  if(tab === 'coin'){
+    if(!coins.length){ w.innerHTML = '<div class="loading">'+(coinOk?'暂无数据':'正在同步全球行情…')+'</div>'; return; }
+    var arr = coins.slice();
+    if(sortMode === 'up') arr.sort(function(a,b){return (b.price_change_percentage_24h||-999)-(a.price_change_percentage_24h||-999)});
+    if(sortMode === 'dn') arr.sort(function(a,b){return (a.price_change_percentage_24h||999)-(b.price_change_percentage_24h||999)});
+    arr = arr.filter(function(c){ return qmatch(c.name+' '+c.symbol+' '+zhn(c)); });
+    if(!arr.length){ w.innerHTML = '<div class="loading">没搜到这个币</div>'; return; }
+    w.innerHTML = '<div class="secttl">全球市值前 200 · 美元计价</div>' + arr.map(function(c){
+      return '<div class="row" onclick="openCoin(\''+c.id+'\')">'
+        + '<span class="rank">'+(c.market_cap_rank||'')+'</span>'
+        + '<img loading="lazy" src="'+c.image+'" alt="" onerror="this.style.visibility=\'hidden\'">'
+        + '<div class="mid"><div class="nm">'+(zhn(c)||c.name)+'</div><div class="sm">'+String(c.symbol).toUpperCase()+(zhn(c)?' · '+c.name:'')+' · '+fmtCap(c.market_cap)+'</div></div>'
+        + '<div class="right"><div class="pr">'+fmtPrice(c.current_price)+'</div></div>'
+        + '<div class="pcts"><span class="pct '+pctCls(c.price_change_percentage_24h)+'"><small>24h</small>'+fmtPct(c.price_change_percentage_24h)+'</span>'
+        + '<span class="pct '+pctCls(c.price_change_percentage_7d_in_currency)+'"><small>7天</small>'+fmtPct(c.price_change_percentage_7d_in_currency)+'</span></div>'
+        + '</div>';
+    }).join('');
+  } else {
+    var arr2 = STOCKS.filter(function(s){ return qmatch(s.cn+' '+s.en+' '+s.tk); });
+    if(!arr2.length){ w.innerHTML = '<div class="loading">没搜到这家公司</div>'; return; }
+    w.innerHTML = '<div class="secttl">加密相关上市公司 · 美股 + 港股主要标的</div>' + arr2.map(function(s){
+      var qt = quotes[s.tk.toUpperCase()] || quotes[parseInt(s.tk,10)+'' ] || null;
+      var pr = qt ? (s.cur + (qt.price>=100? qt.price.toLocaleString('en-US',{maximumFractionDigits:2}) : qt.price)) : '—';
+      var pc = qt ? '<span class="pct '+pctCls(qt.pct)+'"><small>今日</small>'+fmtPct(qt.pct)+'</span>' : '<span class="pct"><small>今日</small>—</span>';
+      return '<div class="row" onclick="openStock(\''+s.tk+'\')">'
+        + '<span class="tk">'+s.tk+'</span>'
+        + '<div class="mid"><div class="nm">'+s.cn+'</div><div class="sm">'+s.tag+'</div></div>'
+        + '<div class="right"><div class="pr">'+pr+'</div></div>'
+        + '<div class="pcts">'+pc+'</div></div>';
+    }).join('');
+  }
+}
+
+/* ========= 详情 ========= */
+function openSheetCommon(title){
+  $('sheet').style.display = 'block';
+  $('dTitle').textContent = title;
+  window.scrollTo(0,0);
+  $('sheet').scrollTop = 0;
+}
+function closeSheet(){ $('sheet').style.display = 'none'; curDetail = null; }
+function markRange(days){
+  var bs = document.querySelectorAll('#dRanges button');
+  bs.forEach(function(b){ b.className = parseInt(b.getAttribute('data-d'),10)===days ? 'on' : ''; });
+}
+function setRanges(el, ranges, cur, cbName){
+  el.innerHTML = ranges.map(function(r){
+    return '<button data-d="'+r+'" class="'+(r===cur?'on':'')+'" onclick="'+cbName+'('+r+')">'+(r===0?'发行以来':r+'天')+'</button>';
+  }).join('');
+}
+function drawChart(points){
+  if(points && points.length > 600){
+    var step = Math.ceil(points.length/600), np = [];
+    for(var di = 0; di < points.length; di += step) np.push(points[di]);
+    if(np[np.length-1] !== points[points.length-1]) np.push(points[points.length-1]);
+    points = np;
+  }
+  var cv = $('dChart');
+  var W = cv.clientWidth || 360, H = 200, dpr = window.devicePixelRatio || 1;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H+'px';
+  var ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+  if(!points || points.length < 2){ $('cFrom').textContent = '历史数据暂不可用'; $('cMid').textContent=''; $('cTo').textContent=''; return null; }
+  var vals = points.map(function(p){return p[1]});
+  var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+  var pad = (mx - mn) * 0.08 || mx * 0.02 || 1; mn -= pad; mx += pad;
+  var px = function(i){ return 8 + (W-16) * i / (points.length - 1); };
+  var py = function(v){ return 10 + (H-30) * (1 - (v - mn) / (mx - mn)); };
+  var up = vals[vals.length-1] >= vals[0];
+  var col = up ? '#FF6B6B' : '#35D07F';
+  var grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, up ? 'rgba(255,107,107,.35)' : 'rgba(53,208,127,.35)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  points.forEach(function(p, i){ var x = px(i), y = py(p[1]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+  ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+  ctx.lineTo(px(points.length-1), H-10); ctx.lineTo(px(0), H-10); ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.fillStyle = '#7E93B0'; ctx.font = '10px sans-serif';
+  ctx.fillText(fmtPrice(mx - pad), 10, 16);
+  ctx.fillText(fmtPrice(mn + pad), 10, H - 22);
+  $('cFrom').textContent = fmtDate(points[0][0]);
+  var chg = (vals[vals.length-1]/vals[0]-1)*100;
+  $('cMid').innerHTML = '期间 <span class="'+pctCls(chg)+'">'+fmtPct(chg)+'</span> · 高 '+fmtPrice(Math.max.apply(null, vals))+' · 低 '+fmtPrice(Math.min.apply(null, vals));
+  $('cTo').textContent = fmtDate(points[points.length-1][0]);
+  return chg;
+}
+
+/* ---- 币详情 ---- */
+async function openCoin(id){
+  var c = null;
+  coins.forEach(function(x){ if(x.id===id) c = x; });
+  if(!c) return;
+  curDetail = {type:'coin', id:id, sym:String(c.symbol).toUpperCase()};
+  openSheetCommon((zhn(c)? zhn(c)+' · ':'') + c.name + ' (' + String(c.symbol).toUpperCase() + ')');
+  $('dPrice').textContent = fmtPrice(c.current_price);
+  var p = $('dPct'); p.textContent = '24h ' + fmtPct(c.price_change_percentage_24h); p.className = 'dpct ' + pctCls(c.price_change_percentage_24h);
+  setRanges($('dRanges'), [7,30,90,365,0], 30, 'coinRange');
+  setKv([
+    ['市值排名', '#'+(c.market_cap_rank||'—')],
+    ['市值', fmtCap(c.market_cap)],
+    ['24h 成交量', fmtCap(c.total_volume)],
+    ['24h 最高 / 最低', fmtPrice(c.high_24h)+' / '+fmtPrice(c.low_24h)],
+    ['7天涨跌', fmtPct(c.price_change_percentage_7d_in_currency)],
+    ['30天涨跌', fmtPct(c.price_change_percentage_30d_in_currency)],
+    ['流通量', c.circulating_supply ? Math.round(c.circulating_supply).toLocaleString('en-US') : '—'],
+    ['历史最高', fmtPrice(c.ath)+'（'+(c.ath_date?String(c.ath_date).slice(0,10):'')+'）']
+  ]);
+  drawChart(null);
+  coinRange(30);
+}
+async function coinRange(days){
+  if(!curDetail || curDetail.type!=='coin') return;
+  if(days === 0){ markRange(0); loadCoinFull(); return; }
+  markRange(days);
+  $('cFrom').textContent = '加载历史中…'; $('cMid').textContent=''; $('cTo').textContent='';
+  var url = 'https://api.coingecko.com/api/v3/coins/'+curDetail.id+'/market_chart?vs_currency=usd&days='+days+(days>=30?'&interval=daily':'');
+  var d = await jget(url, 15000);
+  if(d && Array.isArray(d.prices) && d.prices.length){
+    var pts = d.prices;
+    if(pts.length > 400){ var step = Math.ceil(pts.length/400); pts = pts.filter(function(_,i){return i%step===0 || i===d.prices.length-1}); }
+    drawChart(pts);
+  } else {
+    drawChart(null);
+  }
+}
+
+
+/* ---- 币：发行以来全历史 ---- */
+async function loadCoinFull(){
+  var id = curDetail.id;
+  $('cFrom').textContent = '加载发行以来全历史…'; $('cMid').textContent=''; $('cTo').textContent='';
+  var pts = null;
+  if(id === 'bitcoin'){
+    var bc = await jget('https://api.blockchain.info/charts/market-price?timespan=all&format=json&sampled=true', 20000);
+    if(bc && Array.isArray(bc.values)){
+      pts = bc.values.filter(function(v){return v.y > 0}).map(function(v){ return [v.x*1000, v.y]; });
+      if(!pts.length) pts = null;
+    }
+  }
+  var skipB = {'tether':1,'usd-coin':1,'dai':1,'first-digital-usd':1,'ethena-usde':1,'paypal-usd':1,'true-usd':1,'frax':1,'usdd':1,'staked-ether':1,'wrapped-bitcoin':1,'wrapped-eeth':1,'coinbase-wrapped-btc':1,'mantle-staked-ether':1};
+  if(!pts && !skipB[id]){
+    var pair = curDetail.sym + 'USDT';
+    var start = 0, out = [];
+    for(var i = 0; i < 8; i++){
+      var rows = await jget('https://data-api.binance.vision/api/v3/klines?symbol='+pair+'&interval=1d&startTime='+start+'&limit=1000', 15000);
+      if(!Array.isArray(rows) || !rows.length) break;
+      rows.forEach(function(r){ out.push([r[0], parseFloat(r[4])]); });
+      if(rows.length < 1000) break;
+      start = rows[rows.length-1][0] + 86400000;
+    }
+    if(out.length > 10) pts = out;
+  }
+  if(!pts){
+    var d = await jget('https://api.coingecko.com/api/v3/coins/'+id+'/market_chart?vs_currency=usd&days=365&interval=daily', 15000);
+    if(d && Array.isArray(d.prices) && d.prices.length) pts = d.prices;
+  }
+  if(!curDetail || curDetail.type !== 'coin' || curDetail.id !== id) return;
+  drawChart(pts);
+}
+
+/* ---- 股票详情 ---- */
+async function openStock(tk){
+  var s = null;
+  STOCKS.forEach(function(x){ if(x.tk===tk) s = x; });
+  if(!s) return;
+  curDetail = {type:'stock', tk:tk, secid:s.secid, cur:s.cur, hist:null};
+  openSheetCommon(s.cn + ' · ' + s.tk);
+  var qt = quotes[tk.toUpperCase()] || quotes[parseInt(tk,10)+''] || null;
+  if(qt){
+    $('dPrice').textContent = s.cur + qt.price;
+    var pe = $('dPct'); pe.textContent = '今日 ' + fmtPct(qt.pct) + (qt.chg!=null ? '（'+(qt.chg>0?'+':'')+qt.chg+'）' : ''); pe.className = 'dpct ' + pctCls(qt.pct);
+    setKv([
+      ['今日开盘', qt.open!=null? s.cur+qt.open : '—'],
+      ['今日最高', qt.high!=null? s.cur+qt.high : '—'],
+      ['今日最低', qt.low!=null? s.cur+qt.low : '—'],
+      ['昨日收盘', qt.prev!=null? s.cur+qt.prev : '—'],
+      ['数据来源', qt.src || '—'],
+      ['类型', s.tag]
+    ]);
+  } else {
+    $('dPrice').textContent = '—';
+    $('dPct').textContent = '行情暂不可用';
+    setKv([['类型', s.tag]]);
+  }
+  setRanges($('dRanges'), [30,90,180,365,0], 90, 'stockRange');
+  drawChart(null);
+  stockRange(90);
+}
+async function stockRange(days){
+  if(!curDetail || curDetail.type!=='stock') return;
+  markRange(days);
+  $('cFrom').textContent = '加载历史中…'; $('cMid').textContent=''; $('cTo').textContent='';
+  if(!curDetail.hist){
+    curDetail.hist = await fetchStockHist(curDetail);
+  }
+  var pts = curDetail.hist;
+  if(pts && pts.length){
+    var sel = days === 0 ? pts : pts.filter(function(p){ return p[0] >= Date.now() - days*24*3600*1000; });
+    if(sel.length < 2) sel = pts.slice(-Math.min(pts.length, days));
+    drawChart(sel);
+  } else {
+    drawChart(null);
+  }
+}
+async function fetchStockHist(det){
+  /* 一：东方财富 K 线 */
+  var em = await jget('https://push2his.eastmoney.com/api/qt/stock/kline/get?secid='+det.secid+'&fields1=f1&fields2=f51,f53&klt=101&fqt=1&beg=19900101&end=20500101', 9000);
+  if(em && em.data && Array.isArray(em.data.klines) && em.data.klines.length){
+    return em.data.klines.map(function(line){
+      var a = line.split(',');
+      return [ new Date(a[0]).getTime(), parseFloat(a[1]) ];
+    }).filter(function(p){ return !isNaN(p[1]); });
+  }
+  /* 二：Nasdaq 历史（仅美股） */
+  if(det.cur === '$'){
+    var fs = '1980-01-01';
+    var nd = await jget('https://api.nasdaq.com/api/quote/'+det.tk+'/historical?assetclass=stocks&fromdate='+fs+'&limit=9999', 12000);
+    var rows = nd && nd.data && nd.data.tradesTable && nd.data.tradesTable.rows;
+    if(Array.isArray(rows) && rows.length){
+      return rows.map(function(r){
+        return [ new Date(r.date).getTime(), parseFloat(String(r.close).replace(/[$,]/g,'')) ];
+      }).filter(function(p){ return !isNaN(p[1]); }).reverse();
+    }
+  }
+  return null;
+}
+function setKv(rows){
+  $('dKv').innerHTML = rows.map(function(r){return '<span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span>'}).join('');
+}
+
+/* ========= 启动 ========= */
+if(loadCache()){ render(); $('mktState').textContent = '显示上次数据 · 后台同步中'; }
+refreshAll();
+setInterval(refreshFast, 60000);
+setInterval(refreshCoins, 180000);
+</script>
+</body>
+</html>

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>魂灵纪元 · 原创魂师RPG</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#07130d;font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:#eef7ee}
+#cv{position:fixed;inset:0;display:block}
+.bar{position:fixed;top:0;left:0;right:0;padding:calc(6px + env(safe-area-inset-top)) 10px 6px;background:linear-gradient(180deg,rgba(4,18,10,.88),rgba(4,18,10,.55) 80%,transparent);z-index:20;pointer-events:none}
+.brow{display:flex;align-items:center;gap:8px}
+.avatar{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9a8,#d99a26 70%);border:2px solid #ffe9a8;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;box-shadow:0 0 12px #d99a2688}
+.bmid{flex:1;min-width:0}
+.bname{font-size:14px;font-weight:800;text-shadow:0 1px 3px #000}
+.bname span{color:#ffd968;font-size:12px}
+.meter{height:9px;border-radius:6px;background:#00000088;border:1px solid #ffffff33;overflow:hidden;margin-top:3px}
+.meter i{display:block;height:100%;border-radius:6px;transition:width .15s}
+#hpF{background:linear-gradient(90deg,#ff5d5d,#ff9a5d)}#mpF{background:linear-gradient(90deg,#3d8bff,#6ee7ff)}#xpF{background:linear-gradient(90deg,#9dff57,#e3ff6e);height:100%}
+.meter.xp{height:5px}
+.bres{font-size:12px;font-weight:700;text-align:right;line-height:1.5;text-shadow:0 1px 3px #000;flex:none}
+.hbtns{position:fixed;top:calc(64px + env(safe-area-inset-top));right:8px;z-index:21;display:flex;flex-direction:column;gap:7px}
+.hbtn{pointer-events:auto;background:rgba(8,28,16,.82);border:1.5px solid #ffd96888;color:#ffeeb0;border-radius:12px;padding:7px 10px;font-size:12px;font-weight:800;backdrop-filter:blur(4px)}
+.hbtn:active{transform:scale(.94)}
+#ringsBar{position:fixed;top:calc(64px + env(safe-area-inset-top));left:8px;z-index:20;display:flex;gap:4px;pointer-events:none}
+.ringDot{width:22px;height:22px;border-radius:50%;border:3px solid #666;background:#00000055;box-shadow:0 0 6px #000}
+#questBox{position:fixed;left:8px;top:calc(94px + env(safe-area-inset-top));z-index:19;background:rgba(4,20,10,.66);border:1px solid #ffffff2e;border-radius:10px;padding:6px 9px;font-size:11.5px;line-height:1.55;max-width:46vw;pointer-events:none}
+#questBox b{color:#ffd968}
+#bossBar{position:fixed;top:calc(112px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(430px,72vw);z-index:19;display:none}
+#bossBar .nm{text-align:center;font-size:13px;font-weight:900;color:#ffb3b3;text-shadow:0 1px 4px #000}
+#bossBar .meter{height:11px}
+#bossF{background:linear-gradient(90deg,#c81e1e,#ff7b54)}
+#joy{position:fixed;left:18px;bottom:calc(22px + env(safe-area-inset-bottom));width:124px;height:124px;border-radius:50%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.28);z-index:22;touch-action:none}
+#joyKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffffffcc,#9fd8aacc 75%);transform:translate(-50%,-50%);box-shadow:0 2px 10px #0009}
+.acts{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:22;display:grid;grid-template-columns:repeat(3,58px);gap:9px;touch-action:none}
+.abtn{width:58px;height:58px;border-radius:50%;border:2px solid #ffffff55;background:radial-gradient(circle at 35% 28%,#2c5f43,#0d2c1a 78%);color:#fff;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 3px 10px #000a;text-align:center;line-height:1.15}
+.abtn .ic{font-size:19px}
+.abtn:active{transform:scale(.92)}
+.abtn.atk{background:radial-gradient(circle at 35% 28%,#8a5a1d,#4a2c07 78%);width:66px;height:66px}
+.abtn.ult{background:radial-gradient(circle at 35% 28%,#7a2ea6,#38054f 78%);border-color:#e9b0ff}
+.abtn.lock{filter:grayscale(1);opacity:.55}
+.abtn .cdov{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;font-size:15px;color:#ffd968}
+.abtn .key{position:absolute;bottom:-5px;right:-2px;background:#000c;border-radius:6px;font-size:9px;padding:1px 4px;color:#ffeeb0}
+#absorbBtn{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:23;display:none;background:linear-gradient(180deg,#ffd968,#e09b1f);color:#3a2503;border:none;border-radius:24px;padding:12px 26px;font-size:15px;font-weight:900;box-shadow:0 0 22px #ffd968aa}
+#absorbBtn:active{transform:translateX(-50%) scale(.95)}
+#chanWrap{position:fixed;left:50%;bottom:calc(205px + env(safe-area-inset-bottom));transform:translateX(-50%);width:220px;z-index:23;display:none}
+#chanWrap .meter{height:12px}
+#chanF{background:linear-gradient(90deg,#c084fc,#f0abfc)}
+#toast{position:fixed;top:38%;left:50%;transform:translate(-50%,-50%);z-index:40;pointer-events:none;text-align:center;width:92vw}
+#toast .t1{font-size:21px;font-weight:900;color:#ffd968;text-shadow:0 2px 10px #000,0 0 24px #d99a26;opacity:0;transition:opacity .25s}
+#toast .t2{font-size:13px;color:#e8ffe8;text-shadow:0 1px 6px #000;margin-top:4px;opacity:0;transition:opacity .25s}
+.ovl{position:fixed;inset:0;z-index:50;background:rgba(3,12,6,.9);display:none;align-items:center;justify-content:center;padding:14px;overflow-y:auto}
+.ovl.show{display:flex}
+.card{max-height:92vh;overflow-y:auto;background:linear-gradient(165deg,#123524,#081c10);border:1.5px solid #ffd96866;border-radius:18px;padding:20px 16px;max-width:520px;width:100%;box-shadow:0 10px 40px #000}
+.card h1{text-align:center;font-size:26px;color:#ffd968;letter-spacing:3px;text-shadow:0 0 18px #d99a2688}
+.card h2{text-align:center;font-size:17px;color:#ffd968;margin-bottom:10px}
+.card .sub{text-align:center;font-size:12.5px;color:#bcd8bc;margin:6px 0 14px;line-height:1.6}
+.souls{display:flex;flex-direction:column;gap:10px}
+.soul{border:1.5px solid #ffffff2e;border-radius:14px;padding:12px;display:flex;gap:12px;background:#ffffff09;cursor:pointer}
+.soul:active{transform:scale(.98)}
+.soul .sic{font-size:38px;flex:none;width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:#00000055}
+.soul b{font-size:15.5px}
+.soul p{font-size:12px;color:#c4dcc4;line-height:1.55;margin-top:2px}
+.soul .tag{display:inline-block;font-size:10.5px;background:#ffd968;color:#3a2503;border-radius:8px;padding:1px 7px;font-weight:800;margin-left:6px;vertical-align:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;font-size:13px;line-height:1.5}
+.grid2 span{color:#a9c8a9}.grid2 b{text-align:right;color:#fff}
+.pbtn{display:block;width:100%;margin-top:12px;background:linear-gradient(180deg,#ffd968,#e09b1f);color:#3a2503;border:none;border-radius:12px;padding:12px;font-size:15px;font-weight:900}
+.pbtn.ghost{background:#ffffff14;color:#ffeeb0;border:1px solid #ffd96866}
+.mini{background:#ffd968;color:#3a2503;border:none;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;margin-left:6px}.mini.gh{background:#ffffff1c;color:#ffeeb0;border:1px solid #ffd96855}.mini:disabled{opacity:.4}textarea{width:100%;height:74px;background:#00000066;color:#dff5df;border:1px solid #ffffff33;border-radius:10px;padding:8px;font-size:11px;margin-top:8px}
+.ringRow{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:5px 0;border-bottom:1px dashed #ffffff1e}
+.ringRow .rd{width:18px;height:18px;border-radius:50%;flex:none}
+#awake{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 55%,rgba(20,60,35,.88),rgba(2,8,4,.96) 75%);flex-direction:column;text-align:center;padding:20px}
+#awake.show{display:flex}
+#awake .aic{font-size:92px;animation:apulse 1s ease-in-out infinite alternate;filter:drop-shadow(0 0 30px #ffd968)}
+@keyframes apulse{from{transform:scale(1)}to{transform:scale(1.13)}}
+#awake h2{color:#ffd968;font-size:24px;margin-top:10px;letter-spacing:2px}
+#awake p{color:#d8f0d8;font-size:13.5px;line-height:1.7;margin-top:8px;max-width:420px}
+#foot{position:fixed;left:6px;bottom:3px;z-index:15;font-size:9.5px;color:#ffffff55;pointer-events:none}
+</style></head><body>
+<canvas id="cv"></canvas>
+<div class="bar"><div class="brow">
+<div class="avatar" id="avIc">⚔️</div>
+<div class="bmid"><div class="bname" id="pName">未觉醒 <span id="pTitle"></span></div>
+<div class="meter"><i id="hpF" style="width:100%"></i></div>
+<div class="meter"><i id="mpF" style="width:100%"></i></div>
+<div class="meter xp"><i id="xpF" style="width:0%"></i></div></div>
+<div class="bres"><div id="lvTx">Lv.1</div><div>🪙<span id="goldTx">0</span> · 💠<span id="coreTx">0</span></div><div style="font-size:10.5px;color:#bcd8bc" id="hpTx"></div></div>
+</div></div>
+<div id="ringsBar"></div>
+<div id="questBox">📜 <b>主线</b>：猎杀魂兽<br><span id="questTx">击杀魂兽 0/5</span><br><span id="storyTx" style="color:#c4a8ff"></span><br><span id="wxTx" style="color:#9be7ff"></span><br><span id="eventTx" style="color:#ffd968"></span></div>
+<div class="hbtns">
+<button class="hbtn" id="btnPanel">🧍 属性</button>
+<button class="hbtn" id="btnWorld">🌍 世界</button>
+<button class="hbtn" id="btnDomain">🌐 领域</button>
+<button class="hbtn" id="btnBoss">👹 挑战BOSS</button>
+<button class="hbtn" id="btnHeal">🏥 回学院</button>
+</div>
+<div id="bossBar"><div class="nm">👹 裂地犀王</div><div class="meter"><i id="bossF" style="width:100%"></i></div></div>
+<div id="joy"><div id="joyKnob"></div></div>
+<div class="acts">
+<button class="abtn" data-skill="0"><span class="ic">✨</span><span class="sn">魂技一</span><span class="cdov"></span><span class="key">1</span></button>
+<button class="abtn" data-skill="1"><span class="ic">🌟</span><span class="sn">魂技二</span><span class="cdov"></span><span class="key">2</span></button>
+<button class="abtn" data-act="dodge"><span class="ic">💨</span>闪避<span class="cdov"></span><span class="key">空格</span></button>
+<button class="abtn" data-skill="3"><span class="ic">🌀</span><span class="sn">四技</span><span class="cdov"></span><span class="key">4</span></button>
+<button class="abtn" data-skill="4"><span class="ic">🛡️</span><span class="sn">护盾</span><span class="cdov"></span><span class="key">5</span></button>
+<button class="abtn ult lock" data-skill="2"><span class="ic">☄️</span><span class="sn">绝技</span><span class="cdov"></span><span class="key">3</span></button>
+<button class="abtn" data-act="heavy"><span class="ic">💢</span>重击<span class="cdov"></span><span class="key">K</span></button>
+<button class="abtn" data-act="guard"><span class="ic">🧱</span>格挡<span class="cdov"></span><span class="key">L</span></button>
+<button class="abtn ult" data-skill="5"><span class="ic">🌟</span><span class="sn">融合技</span><span class="cdov"></span><span class="key">6</span></button>
+<button class="abtn" style="visibility:hidden"></button>
+<button class="abtn" style="visibility:hidden"></button>
+<button class="abtn atk" data-act="atk"><span class="ic">⚔️</span>普攻<span class="cdov"></span><span class="key">J</span></button>
+</div>
+<button id="absorbBtn">🌀 按住吸收魂环</button>
+<div id="chanWrap"><div class="meter"><i id="chanF" style="width:0%"></i></div></div>
+<div id="toast"><div class="t1" id="toast1"></div><div class="t2" id="toast2"></div></div>
+<div id="foot">魂灵纪元 v20261022-8 · 原创世界/角色/武魂，与任何原作无关</div>
+
+<div class="ovl show" id="startOvl"><div class="card">
+<h1>魂 灵 纪 元</h1><div class="sub">原创东方玄幻魂师 RPG · V8.0 多世界终局版<br>三大世界切换 · 终局副本三难度与成绩记录 · 成就墙 · 本地商会交易 · 坐骑收藏 · 配置校验工具 · 人物恒居中（对应多世界与终局玩法规格）</div>
+<div class="souls" id="soulList"></div>
+<div class="sub" id="hasSaveTx"></div>
+<button class="pbtn ghost" id="btnContinue" style="display:none">▶ 继续上次存档</button>
+</div></div>
+
+<div class="ovl" id="panelOvl"><div class="card">
+<h2>🧍 魂师属性</h2><div class="grid2" id="attrGrid"></div>
+<h2 style="margin-top:14px">🌀 已吸收魂环（<span id="ringCnt">0</span>/9）</h2><div id="ringList"></div>
+<h2 style="margin-top:14px">⬆ 武魂进阶（<span id="advTx">0</span> 阶）</h2><div id="advBox"></div>
+<h2 style="margin-top:14px">📖 魂兽图鉴（击杀解锁）</h2><div id="codexBox"></div>
+<h2 style="margin-top:14px">🦴 魂骨（六部位 · 套装效果）</h2><div id="boneBox"></div><div id="boneBagBox"></div>
+<h2 style="margin-top:14px">🐴 坐骑收藏（外观收藏 · 移速加成）</h2><div id="mountBox"></div>
+<h2 style="margin-top:14px">👑 神位晋升 / 领域</h2><div id="godBox"></div>
+<h2 style="margin-top:14px">🌟 武魂进化 / 融合技</h2><div id="evoBox"></div>
+<h2 style="margin-top:14px">🎨 外观与画质</h2><div id="appearBox"></div>
+<h2 style="margin-top:14px">🎒 装备与背包</h2><div id="equipBox"></div><div id="bagBox"></div>
+<h2 style="margin-top:14px">🧺 材料（打怪掉落 · 5个合成随机装备）</h2><div id="matBox"></div>
+<button class="pbtn ghost" id="btnCraft">🔨 材料合成装备（耗任意材料×5）</button>
+<h2 style="margin-top:14px">🗄 魂环仓库（未装备）</h2><div id="ringBagBox"></div>
+<h2 style="margin-top:14px">📜 任务（完成点领取 · 每项只能领一次）</h2><div id="taskBox"></div>
+<h2 style="margin-top:14px">📖 战斗日志</h2><div id="logBox" style="font-size:12px;color:#a9c8a9;line-height:1.7"></div>
+<button class="pbtn" id="btnExport">📋 导出存档码</button>
+<textarea id="ioBox" placeholder="存档码会显示在这里；也可以把存档码粘贴进来再点导入"></textarea>
+<button class="pbtn ghost" id="btnImport">📥 导入存档码</button>
+<button class="pbtn ghost" id="btnWipe">🗑 清除存档重开</button>
+<button class="pbtn" id="btnClosePanel">返回游戏</button>
+</div></div>
+
+<div class="ovl" id="storyOvl" style="z-index:90"><div class="card"><h2>📖 主线剧情</h2><p id="storySpeaker" style="color:#ffd968;font-size:13px;margin-top:6px"></p><p id="storyText" style="font-size:14.5px;line-height:1.75;margin:10px 0;min-height:52px"></p><div id="choiceBox" style="display:none"><p id="choiceQ" style="font-size:13.5px;color:#ffd968;margin-bottom:8px"></p><button class="pbtn" id="btnChoiceA" style="margin-bottom:8px"></button><button class="pbtn ghost" id="btnChoiceB"></button></div><button class="pbtn" id="btnStoryNext">下一句 ▶</button></div></div>
+<div class="ovl" id="worldOvl"><div class="card">
+<h2>🌍 大世界（分区地图）</h2><div id="regionBox"></div>
+<h2 style="margin-top:14px">🏫 魂师学院</h2><div id="academyBox"></div>
+<h2 style="margin-top:14px">🏯 宗门 <span style="font-size:11px;color:#ffb3b3">单机系统 · 成员为本地模拟数据，非真实在线玩家</span></h2><div id="sectBox"></div>
+<h2 style="margin-top:14px">🌀 副本（多波 + 终局首领）</h2><div id="dungeonBox"></div>
+<h2 style="margin-top:14px">⚔️ 竞技场（AI 对手 · 单机）</h2><div id="arenaBox"></div>
+<h2 style="margin-top:14px">📖 主线剧情（五章）</h2><div id="storyBox"></div>
+<h2>🏪 本地商会（NPC 交易模拟）</h2><div id="marketBox"></div>
+<h2 style="margin-top:14px">🏅 成就墙</h2><div id="achvBox"></div>
+<h2>🏆 本地赛季（单机 · 非在线赛季）</h2><div id="seasonBox"></div>
+<h2 style="margin-top:14px">👥 团队首领挑战（AI 队友陪打 · 单机）</h2><div id="teamBox"></div>
+<h2 style="margin-top:14px">🌐 联机状态</h2><div id="netBox"></div>
+<h2 style="margin-top:14px">🛠️ 开发者后台（本地工具 · 操作留审计）</h2><div id="devBox"></div><p style="margin-top:6px"><button class="mini" data-act4="validateCfg">🧪 配置校验</button> <button class="mini" data-act4="spawnTest">🧫 召唤配置测试怪</button></p><pre id="cfgReport" style="font-size:11px;color:#a9c8a9;white-space:pre-wrap;margin-top:4px"></pre>
+<h2 style="margin-top:14px">📒 资源流水（最近）</h2><div id="ledgerBox"></div>
+<h2 style="margin-top:14px">🌿 流派天赋（每5级+进阶得点）</h2><div id="talentBox"></div>
+<button class="pbtn" id="btnCloseWorld">返回游戏</button>
+</div></div>
+<div id="awake"><div class="aic" id="awIc">⚔️</div><h2 id="awTitle">武魂觉醒</h2><p id="awTx"></p><button class="pbtn" style="max-width:260px" id="btnAwOk">踏入雾隐魂森</button></div>
+
+<script>
+"use strict";
+/* ===== CONFIG 配置区：数值全进表，代码只读表 ===== */
+const SAVE_KEY="hema-hunling-jiyuan-v1";
+const WORLD={w:2200,h:1600};
+const LIMIT={particle:110,floater:38,proj:42,enemy:9};
+const SEASON_LEN=28;
+function seasonIdNow(){return Math.floor(Date.now()/86400000/SEASON_LEN)}
+function seasonDaysLeft(){const day=Math.floor(Date.now()/86400000);return SEASON_LEN-(day%SEASON_LEN)}
+function checkSeason(){const sid=seasonIdNow();if(S.seasonSid!==sid){if(S.seasonSid){S.seasonHistory.push({sid:S.seasonSid,pts:S.seasonPts})}S.seasonSid=sid;S.seasonPts=0;S.seasonClaimed=[];addLog("本地赛季 第 "+sid+" 赛季开始")}}
+function audit(act){S.audit=S.audit||[];S.audit.unshift({t:new Date().toLocaleString(),act});if(S.audit.length>30)S.audit.length=30}
+const TITLES=[[90,"封号斗罗"],[80,"魂斗罗"],[70,"魂圣"],[60,"魂帝"],[50,"魂王"],[40,"魂宗"],[30,"魂尊"],[20,"大魂师"],[10,"魂师"],[1,"魂士"]];
+const RING_TIERS=[{min:10000,name:"万年·黑",col:"#3b3b46",glow:"#888"}, {min:1000,name:"千年·紫",col:"#8b3fd9",glow:"#c084fc"},{min:100,name:"百年·黄",col:"#e8c832",glow:"#fde047"},{min:0,name:"十年·白",col:"#e8e8e8",glow:"#ffffff"}];
+const SOULS={
+ sword:{name:"破晓剑",ic:"⚔️",tag:"器武魂 · 爆发",col:"#ffd968",desc:"攻高暴高，身板偏薄。靠剑气远程压制，绝技一剑开天。",base:{hp:105,mp:60,atk:20,def:4,crit:15,critD:60,spd:172},
+  skills:[{n:"裂空斩",ic:"🗡️",mp:8,cd:2.2,type:"proj",mul:1.5,desc:"发出一道剑气"},
+          {n:"万剑归影",ic:"✨",mp:16,cd:6,type:"aoe",mul:1.9,r:130,desc:"周身剑影绞杀"},
+          {n:"破晓天光",ic:"☄️",mp:35,cd:16,type:"beam",mul:4.2,desc:"绝技：天光巨剑坠落"}]},
+ dragon:{name:"炎爪龙",ic:"🐉",tag:"兽武魂 · 近战坦克",col:"#ff8a5d",desc:"血厚攻高，贴身撕咬带灼烧。绝技化身炎龙横扫全场。",base:{hp:160,mp:55,atk:18,def:8,crit:10,critD:50,spd:160},
+  skills:[{n:"炎爪撕裂",ic:"🔥",mp:8,cd:2.4,type:"cone",mul:1.7,status:"burn",desc:"扇形炎爪+灼烧"},
+          {n:"龙焰喷吐",ic:"🌋",mp:16,cd:6.5,type:"coneBig",mul:2.1,status:"burn",desc:"大范围龙焰"},
+          {n:"炎龙降临",ic:"☄️",mp:35,cd:16,type:"aoeBig",mul:4.0,status:"burn",desc:"绝技：炎龙冲击全场"}]},
+ vine:{name:"青藤灵",ic:"🌿",tag:"植物武魂 · 控制回复",col:"#7be382",desc:"藤蔓缠绕控场，飞叶连射，还能给自己回血。绝技森罗万象。",base:{hp:125,mp:75,atk:16,def:6,crit:10,critD:50,spd:166},
+  skills:[{n:"灵叶飞刃",ic:"🍃",mp:7,cd:2,type:"proj3",mul:1.15,desc:"三片飞叶齐射"},
+          {n:"藤蔓缠绕",ic:"🪢",mp:15,cd:6,type:"aoe",mul:1.3,r:140,status:"root",desc:"缠绕定身周围敌人"},
+          {n:"森罗复苏",ic:"🌳",mp:32,cd:16,type:"healAoe",mul:2.6,desc:"绝技：回血+全场藤刺"}]}
+};
+SOULS.hammer={name:"震岳锤",ic:"🔨",tag:"器武魂 · 坦克控制",col:"#fbbf24",desc:"血厚防高，重锤带定身。绝技天崩地裂，是队伍里的磐石。",base:{hp:170,mp:50,atk:17,def:10,crit:8,critD:50,spd:150},skills:[{n:"震岳击",ic:"🔨",mp:8,cd:2.4,type:"cone",mul:1.7,status:"root",desc:"重锤砸地+短定身"},{n:"裂地冲击",ic:"💥",mp:16,cd:6.5,type:"aoe",mul:1.9,r:140,desc:"周身裂地冲击"},{n:"天崩地裂",ic:"🌋",mp:35,cd:16,type:"beam",mul:4.0,desc:"绝技：山岳崩落"}]};
+SOULS.bow={name:"流星弓",ic:"🏹",tag:"器武魂 · 远程暴击",col:"#7dd3fc",desc:"射速快、暴击高，身法灵动。绝技星陨一箭，千里取首。",base:{hp:100,mp:60,atk:19,def:3,crit:20,critD:70,spd:182},skills:[{n:"穿云箭",ic:"🏹",mp:7,cd:1.8,type:"proj",mul:1.5,desc:"一箭穿云"},{n:"流星箭雨",ic:"🌧️",mp:16,cd:6,type:"aoe",mul:1.8,r:150,desc:"箭雨覆盖"},{n:"星陨一箭",ic:"🌠",mp:35,cd:15,type:"beam",mul:4.4,desc:"绝技：星陨坠落"}]};
+SOULS.bell={name:"九转铃",ic:"🔔",tag:"器武魂 · 魂力续航",col:"#f0abfc",desc:"魂力澎湃，音波攻防一体。绝技九转天音，震慑群敌。",base:{hp:120,mp:85,atk:16,def:5,crit:10,critD:50,spd:165},skills:[{n:"灵音击",ic:"🎵",mp:8,cd:2.2,type:"proj",mul:1.5,desc:"音波冲击"},{n:"回响震荡",ic:"🔊",mp:16,cd:6.5,type:"cone",mul:1.8,status:"root",desc:"音波定身"},{n:"九转天音",ic:"🎶",mp:35,cd:16,type:"beam",mul:3.8,desc:"绝技：天音灌顶"}]};
+const BEASTS={
+ wolf:{name:"幽林狼",ic:"🐺",hp:46,atk:9,def:2,spd:96,exp:26,gold:9,ringMin:10,ringMax:99,r:20,melee:1},
+ vine:{name:"荆棘藤妖",ic:"🌵",hp:64,atk:11,def:3,spd:52,exp:38,gold:14,ringMin:100,ringMax:920,r:22,ranged:1},
+ boss:{name:"裂地犀王",ic:"🦏",hp:780,atk:22,def:9,spd:74,exp:420,gold:260,ringMin:1200,ringMax:8600,r:40,boss:1}
+};
+/* ===== V2.0 新增配置：新魂兽/第四魂技/护盾/被动/装备/任务 ===== */
+BEASTS.spider={name:"毒雾蛛",ic:"🕷️",hp:52,atk:12,def:2,spd:88,exp:34,gold:13,ringMin:100,ringMax:700,r:19,ranged:1,poison:1};
+BEASTS.bear={name:"铁背熊",ic:"🐻",hp:150,atk:15,def:8,spd:46,exp:55,gold:20,ringMin:100,ringMax:980,r:26,melee:1};
+BEASTS.bat={name:"夜翼蝠",ic:"🦇",hp:30,atk:10,def:1,spd:150,exp:22,gold:8,ringMin:10,ringMax:120,r:16,melee:1};
+const EXTRA_SKILLS={hammer:{n:"冲锋重锤",ic:"🐂",mp:14,cd:5,type:"dash",mul:2.0,desc:"冲锋位移+重锤"},bow:{n:"疾风掠影",ic:"🍃",mp:14,cd:5,type:"dash",mul:1.2,desc:"疾风位移+一箭"},bell:{n:"镇魂音波",ic:"🔔",mp:14,cd:5.5,type:"aoeStun",mul:1.6,r:150,desc:"范围音波+定身"},sword:{n:"御剑破空",ic:"🗡️",mp:14,cd:5,type:"dash",mul:2.2,desc:"位移斩：突进150+短暂无敌"},dragon:{n:"地裂震击",ic:"💥",mp:14,cd:5.5,type:"aoeStun",mul:1.6,r:125,desc:"范围震击+定身"},vine:{n:"寄生种子",ic:"🌰",mp:12,cd:4.5,type:"seed",mul:1.2,desc:"种子命中持续中毒"}};
+const SHIELD_SKILL={n:"魂力护盾",ic:"🛡️",mp:12,cd:10,type:"shield",mul:0,desc:"护盾=生命上限35%，先扣盾不扣血"};
+for(const k of Object.keys(SOULS)){SOULS[k].skills.push(EXTRA_SKILLS[k],SHIELD_SKILL)}
+const PASSIVES={sword:{n:"被动·剑意",desc:"暴击+5% · 吸血+2%"},dragon:{n:"被动·龙血",desc:"防御+4 · 吸血+3%"},vine:{n:"被动·生生不息",desc:"闪避+4% · 魂力回复翻倍"},hammer:{n:"被动·磐石体",desc:"防御+6 · 生命+8%"},bow:{n:"被动·鹰眼",desc:"暴击+8%"},bell:{n:"被动·灵泉",desc:"魂力上限+25%"}};
+function qualityOf(y){return y>=10000?"传说":y>=1000?"史诗":y>=100?"稀有":"普通"}
+const MAT_NAMES={fang:"狼牙",vine:"藤芯",silk:"蛛丝",paw:"熊掌",wing:"蝠翼",fur:"火绒",feather:"霜羽"};
+const EQUIPS=[{tid:"g1",slot:"weapon",name:"神辉之剑",ic:"🌟",rarity:"神级",atk:30,crit:5},{tid:"g2",slot:"armor",name:"星穹神甲",ic:"🛡️",rarity:"神级",hp:220,def:16},
+ {tid:"w1",slot:"weapon",name:"精铁剑",ic:"🗡️",rarity:"普通",atk:6},{tid:"w2",slot:"weapon",name:"狼牙刃",ic:"🗡️",rarity:"稀有",atk:11,crit:2},{tid:"w3",slot:"weapon",name:"破晓之刃",ic:"⚔️",rarity:"史诗",atk:19,crit:4},{tid:"w4",slot:"weapon",name:"龙牙剑",ic:"🐉",rarity:"传说",atk:32,crit:6},
+ {tid:"a1",slot:"armor",name:"藤编甲",ic:"🥋",rarity:"普通",hp:35,def:2},{tid:"a2",slot:"armor",name:"铁背铠",ic:"🛡️",rarity:"稀有",hp:70,def:5},{tid:"a3",slot:"armor",name:"犀纹重甲",ic:"🦏",rarity:"史诗",hp:120,def:9},{tid:"a4",slot:"armor",name:"犀王宝甲",ic:"👑",rarity:"传说",hp:200,def:14},
+ {tid:"t1",slot:"trinket",name:"石灵坠",ic:"📿",rarity:"普通",crit:2,hp:15},{tid:"t2",slot:"trinket",name:"蛛丝戒",ic:"💍",rarity:"稀有",atk:4,crit:2},{tid:"t3",slot:"trinket",name:"灵核坠",ic:"🔮",rarity:"史诗",atk:8,hp:50,crit:3},{tid:"t4",slot:"trinket",name:"犀王角",ic:"🦄",rarity:"传说",atk:13,crit:5,hp:60}];
+const RAR_W={"普通":55,"稀有":28,"史诗":12,"传说":5};
+function pickEquipTpl(rareOnly){const pool=EQUIPS.filter(t=>!rareOnly||t.rarity==="史诗"||t.rarity==="传说");let tot=pool.reduce((a,t)=>a+RAR_W[t.rarity],0),r=Math.random()*tot;for(const t of pool){r-=RAR_W[t.rarity];if(r<=0)return t}return pool[0]}
+function makeEquip(rareOnly){const t=pickEquipTpl(rareOnly);return {tid:t.tid,slot:t.slot,name:t.name,ic:t.ic,rarity:t.rarity,atk:t.atk||0,hp:t.hp||0,def:t.def||0,crit:t.crit||0,enh:0}}
+const TASKS=[
+ {id:"k5",name:"初入魂森",desc:"击杀魂兽 5 只",type:"kills",need:5,rew:{gold:60}},
+ {id:"k20",name:"魂森猎手",desc:"累计击杀 20 只",type:"kills",need:20,rew:{gold:150}},
+ {id:"k60",name:"百兽克星",desc:"累计击杀 60 只",type:"kills",need:60,rew:{gold:400,cores:3}},
+ {id:"r1",name:"第一枚魂环",desc:"吸收魂环 1 枚",type:"rings",need:1,rew:{gold:100}},
+ {id:"r4",name:"四环之路",desc:"累计吸收魂环 4 枚",type:"rings",need:4,rew:{cores:5}},
+ {id:"b1",name:"犀王终结者",desc:"击杀裂地犀王 1 次",type:"boss",need:1,rew:{gold:300,cores:4}},
+ {id:"m15",name:"材料收集者",desc:"累计获得材料 15 个",type:"mats",need:15,rew:{gold:120}},
+ {id:"a1",name:"武魂进阶",desc:"武魂进阶 1 次",type:"adv",need:1,rew:{cores:3}},
+ {id:"e1",name:"全副武装",desc:"三个装备槽全部装上",type:"equipped",need:3,rew:{gold:150}}];
+function taskProg(t){return t.type==="kills"?S.kills:t.type==="boss"?S.bossKills:t.type==="rings"?S.ringsAbsorbed:t.type==="mats"?S.matsTotal:t.type==="adv"?S.adv:t.type==="equipped"?["weapon","armor","trinket"].filter(k=>S.equip&&S.equip[k]).length:0}
+/* ===== V3.0 配置：区域/主题/副本/宝箱/采集点 ===== */
+BEASTS.golem={name:"石像傀儡",ic:"🗿",hp:260,atk:18,def:14,spd:34,exp:90,gold:34,ringMin:500,ringMax:3000,r:30,melee:1};
+BEASTS.shadow={name:"影牙兽",ic:"🐈‍⬛",hp:90,atk:24,def:4,spd:135,exp:80,gold:30,ringMin:300,ringMax:2000,r:20,melee:1};
+BEASTS.fox={name:"烈焰狐",ic:"🦊",hp:85,atk:21,def:3,spd:148,exp:70,gold:26,ringMin:300,ringMax:1800,r:19,melee:1};
+BEASTS.frost={name:"寒霜鸟",ic:"🦢",hp:95,atk:23,def:4,spd:105,exp:95,gold:36,ringMin:800,ringMax:3500,r:20,ranged:1};
+BEASTS.mentor={name:"导师分身",ic:"🧙",hp:520,atk:20,def:8,spd:92,exp:220,gold:160,ringMin:800,ringMax:2400,r:24,melee:1};
+BEASTS.duelist={name:"AI魂师",ic:"🥷",hp:330,atk:16,def:6,spd:118,exp:0,gold:0,ringMin:0,ringMax:0,r:21,ranged:1};
+const REGIONS={
+ academy:{name:"魂师学院",ic:"🏫",mul:1,beasts:[],need:()=>true,needTx:"",desc:"安全区：不刷魂兽，全域缓慢回满状态，有 1 个探索宝箱"},
+ forest:{name:"雾隐魂森",ic:"🌲",mul:1,beasts:["wolf","wolf","vine","bat","spider","bear"],need:()=>true,needTx:"",desc:"新手练级区，魂兽温和，3 个宝箱"},
+ ruins:{name:"古代遗迹",ic:"🏺",mul:1.6,beasts:["spider","bear","golem","bat","fox"],need:()=>S.lv>=8,needTx:"Lv.8 解锁",desc:"石像傀儡出没，魂环年份更高，3 个宝箱"},
+ secret:{name:"幻月秘境",ic:"🌙",mul:2.6,beasts:["shadow","golem","spider","bear","bat","frost","fox"],need:()=>S.lv>=15&&S.bossKills>=1,needTx:"Lv.15 + 击杀犀王1次",desc:"高危高回报，影牙兽横行，3 个宝箱"}};
+const THEMES={forest:{g0:"#10301c",g1:"#0b2413",g2:"#081a0e",tree:"#1e4d2a",dark:"#0a1f10"},academy:{g0:"#14382a",g1:"#0e2a1c",g2:"#081d12",tree:"#2a6b3f",dark:"#0c2416"},ruins:{g0:"#2e2413",g1:"#241b0d",g2:"#171106",tree:"#5c4a22",dark:"#171106"},secret:{g0:"#1d1030",g1:"#150b24",g2:"#0d0618",tree:"#3b2a5e",dark:"#0d0618"}};
+const CHESTS={academy:[{id:"a1",x:1560,y:330}],forest:[{id:"f1",x:300,y:760},{id:"f2",x:1900,y:1300},{id:"f3",x:620,y:1420}],ruins:[{id:"r1",x:350,y:700},{id:"r2",x:1800,y:500},{id:"r3",x:1100,y:1400}],secret:[{id:"s1",x:400,y:900},{id:"s2",x:1700,y:1100},{id:"s3",x:1100,y:350}]};
+const NODES={academy:[],forest:[{id:"fn1",x:500,y:1000,ic:"🌿"},{id:"fn2",x:1600,y:800,ic:"🪨"}],ruins:[{id:"rn1",x:800,y:1100,ic:"🪨"},{id:"rn2",x:1500,y:1350,ic:"🔮"}],secret:[{id:"sn1",x:700,y:600,ic:"🔮"},{id:"sn2",x:1500,y:900,ic:"🌿"}]};
+const DUNGEONS=[
+ {id:"d1",name:"藤妖洞窟",needLv:3,waves:[["vine","vine","wolf"],["vine","spider","vine","bat"],["ELITE"]],gold:150,cores:2},
+ {id:"d2",name:"遗迹深渊",needLv:8,waves:[["golem","spider"],["bear","golem","bat"],["golem","golem"],["ELITE"]],gold:320,cores:3},
+ {id:"d3",name:"犀王秘境",needLv:12,waves:[["shadow","bat"],["golem","shadow","spider"],["boss"]],gold:520,cores:4}];
+const SECTS=["青云宗","铁血门","灵药谷"];
+/* ===== V4.0 配置：魂骨/套装/武魂进化/融合技 ===== */
+const BONE_SLOTS=["head","trunk","armL","armR","legL","legR"];
+const BONE_SLOT_NAMES={head:"头部",trunk:"躯干",armL:"左臂",armR:"右臂",legL:"左腿",legR:"右腿"};
+const BONE_SETS={wind:{name:"疾风套",ic:"🌪️",desc:"攻速凌厉 · 主攻击暴击"},rock:{name:"磐石套",ic:"🪨",desc:"坚如磐石 · 主防御生命"},flame:{name:"烈焰套",ic:"🔥",desc:"烈焰焚天 · 主攻击暴伤"}};
+const BONE_BASE={head:{crit:2},trunk:{hp:45,def:3},armL:{atk:6},armR:{atk:6,crit:1},legL:{spd:5},legR:{spd:5,hp:15}};
+const QUAL_W=[["普通",50,1],["稀有",30,1.5],["史诗",15,2.2],["传说",5,3.2]];
+function rollQuality(){let tot=QUAL_W.reduce((a,q)=>a+q[1],0),r=Math.random()*tot;for(const q of QUAL_W){r-=q[1];if(r<=0)return q}return QUAL_W[0]}
+function makeBone(setKey,slot,fq){setKey=setKey||["wind","rock","flame"][Math.floor(Math.random()*3)];slot=slot||BONE_SLOTS[Math.floor(Math.random()*6)];const q=fq?[fq,0,4.5]:rollQuality();const base=BONE_BASE[slot];const b={id:"b"+Date.now()+Math.floor(Math.random()*9999),set:setKey,slot,quality:q[0],enh:0,atk:0,hp:0,def:0,crit:0,spd:0};for(const k of Object.keys(base))b[k]=Math.round(base[k]*q[2]);b.name=BONE_SETS[setKey].name+"·"+BONE_SLOT_NAMES[slot]+"魂骨";return b}
+const FUSION={sword:{n:"万剑天瀑",ic:"🌟"},dragon:{n:"炎龙地裂",ic:"🌋"},vine:{n:"世界树降临",ic:"🌳"},hammer:{n:"山岳崩天",ic:"🏔️"},bow:{n:"星陨箭阵",ic:"🌠"},bell:{n:"天籁镇魂",ic:"🔔"}};
+for(const k of Object.keys(SOULS)){SOULS[k].skills.push({n:FUSION[k].n,ic:FUSION[k].ic,mp:60,cd:30,type:"fusion",mul:6,desc:"武魂融合技：进化2阶解锁，全屏爆发"})}
+const EVO_STAGES=["初醒","凝形","化境","真身"];
+const EVO_REQ=[null,{lv:20,mats:20,cores:0,boss:0,rings:0},{lv:35,mats:40,cores:15,boss:0,rings:5},{lv:50,mats:80,cores:30,boss:3,rings:0}];
+function boneStats(){const t={atk:0,hp:0,def:0,crit:0,spd:0};const cnt={};for(const k of BONE_SLOTS){const b=S.boneEquip&&S.boneEquip[k];if(!b)continue;cnt[b.set]=(cnt[b.set]||0)+1;const m=1+0.15*(b.enh||0);t.atk+=Math.round((b.atk||0)*m);t.hp+=Math.round((b.hp||0)*m);t.def+=Math.round((b.def||0)*m);t.crit+=(b.crit||0);t.spd+=(b.spd||0)}
+ for(const sk of Object.keys(cnt)){const n=cnt[sk];if(n>=2){if(sk==="wind")t.atk*=1.05;if(sk==="rock")t.hp*=1.06;if(sk==="flame")t.crit+=3}
+  if(n>=4){if(sk==="wind")t.atk*=1.08;if(sk==="rock")t.def*=1.15;if(sk==="flame")t.atk*=1.08}
+  if(n>=6){if(sk==="wind"){t.spd+=26;t.atk*=1.1}if(sk==="rock"){t.hp*=1.15;t.def*=1.1}if(sk==="flame"){t.atk*=1.12}}}
+ t.atk=Math.round(t.atk);t.hp=Math.round(t.hp);t.def=Math.round(t.def);return {stats:t,cnt}}
+/* ===== 存档 ===== */
+let S=null;
+function defSave(){return {ver:1,soul:null,lv:1,exp:0,gold:30,cores:0,rings:[],ringBag:[],kills:0,bossKills:0,skillLv:[1,1,1,1,1,1],questStage:0,playSec:0,mats:{},matsTotal:0,bag:[],equip:{weapon:null,armor:null,trinket:null},adv:0,claimed:[],ringsAbsorbed:0,log:[],region:"forest",explore:{},chests:[],academyLv:0,mentorWins:0,trainDay:{d:"",n:0},sect:null,contrib:0,sectDay:"",dayKills:{d:"",n:0},dungeons:{},arena:{wins:0,losses:0,score:0},talents:{atk:0,def:0,ctrl:0},bones:[],boneEquip:{head:null,trunk:null,armL:null,armR:null,legL:null,legR:null},evo:0,appear:{aura:"#ffd968"},quality:"high",eventT:0,account:{id:"",name:"魂师",created:""},ledger:[],audit:[],devCfg:{exp:1,gold:1,drop:1},seasonPts:0,seasonSid:0,seasonClaimed:[],seasonHistory:[],teamDay:"",story:{ch:0,base:null,seen:-1,choiceDone:false},codex:{},god:{rank:0,trialWon:false},wbT:0,wbossKills:0,choices:[],challenge:{runs:0,deaths:0,best:{}},achvClaimed:[],mounts:{owned:[],cur:null},visited:["forest"],dunDiffSel:"普通",worldTab:"main"}}
+function migrate(o){o.skillLv=o.skillLv||[];while(o.skillLv.length<6)o.skillLv.push(1);
+ const fixR=r=>{r.id=r.id||("r"+Math.floor(Math.random()*1e9));r.enh=r.enh||0;r.quality=qualityOf(r.years);r.name=r.name||(r.from+"魂环");return r};
+ o.rings=(o.rings||[]).map(fixR);o.ringBag=(o.ringBag||[]).map(fixR);
+ if(!o.ringsAbsorbed)o.ringsAbsorbed=o.rings.length;
+ o.equip=o.equip||{weapon:null,armor:null,trinket:null};o.mats=o.mats||{};o.bag=o.bag||[];o.claimed=o.claimed||[];o.log=o.log||[];o.matsTotal=o.matsTotal||0;o.adv=o.adv||0;o.region=o.region||"forest";o.explore=o.explore||{};o.chests=o.chests||[];o.dungeons=o.dungeons||{};o.arena=o.arena||{wins:0,losses:0,score:0};o.talents=o.talents||{atk:0,def:0,ctrl:0};o.dayKills=o.dayKills||{d:"",n:0};o.trainDay=o.trainDay||{d:"",n:0};o.bones=o.bones||[];o.boneEquip=o.boneEquip||{head:null,trunk:null,armL:null,armR:null,legL:null,legR:null};o.evo=o.evo||0;o.appear=o.appear||{aura:"#ffd968"};o.quality=o.quality||"high";
+ o.account=o.account||{id:"",name:"魂师",created:""};if(!o.account.id){o.account.id="HL"+Math.floor(100000+Math.random()*900000);o.account.created=new Date().toISOString().slice(0,10)}
+ o.story=o.story||{ch:0,base:null,seen:-1,choiceDone:false};if(o.story.choiceDone===undefined)o.story.choiceDone=false;o.codex=o.codex||{};o.god=o.god||{rank:0,trialWon:false};o.wbT=o.wbT||0;o.wbossKills=o.wbossKills||0;o.choices=o.choices||[];o.challenge=o.challenge||{runs:0,deaths:0,best:{}};o.achvClaimed=o.achvClaimed||[];o.mounts=o.mounts||{owned:[],cur:null};o.visited=o.visited||["forest"];o.dunDiffSel=o.dunDiffSel||"普通";o.worldTab=o.worldTab||"main";o.ledger=o.ledger||[];o.audit=o.audit||[];o.devCfg=o.devCfg||{exp:1,gold:1,drop:1};o.seasonPts=o.seasonPts||0;o.seasonSid=o.seasonSid||0;o.seasonClaimed=o.seasonClaimed||[];o.seasonHistory=o.seasonHistory||[];o.teamDay=o.teamDay||"";if(!o._lg)o._lg={g:o.gold||0,c:o.cores||0};while(o.skillLv.length<6)o.skillLv.push(1);return o}
+function loadSave(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const sig=localStorage.getItem(SAVE_KEY+".sig");
+ if(sig&&h32(r)!==sig){const bak=localStorage.getItem(SAVE_KEY+".bak");if(bak){try{const bo=JSON.parse(bak);if(bo&&bo.ver===1){window.__saveRestored=true;return migrate(Object.assign(defSave(),bo))}}catch(e){}}window.__saveBroken=true;return null}
+ const o=JSON.parse(r);if(!o||o.ver!==1||!SOULS[o.soul]&&o.soul!==null)return null;return migrate(Object.assign(defSave(),o))}catch(e){return null}}
+let saveTimer=0;
+function h32(str){let h=5381;for(let i=0;i<str.length;i++)h=((h<<5)+h+str.charCodeAt(i))|0;return (h>>>0).toString(36)}
+function save(){if(!S)return;try{const j=JSON.stringify(S);const prev=localStorage.getItem(SAVE_KEY);if(prev&&prev!==j)localStorage.setItem(SAVE_KEY+".bak",prev);localStorage.setItem(SAVE_KEY,j);localStorage.setItem(SAVE_KEY+".sig",h32(j));
+ if(S._lg){const dg=S.gold-S._lg.g,dc=S.cores-S._lg.c;if(dg||dc){S.ledger=S.ledger||[];S.ledger.unshift({t:new Date().toLocaleString(),g:dg,c:dc,gold:S.gold,cores:S.cores});if(S.ledger.length>40)S.ledger.length=40}}
+ S._lg={g:S.gold,c:S.cores}}catch(e){}}
+function saveSoon(){saveTimer=1}
+/* ===== 衍生属性：基础+等级+魂环+技能，全不封顶 ===== */
+function ringEff(r){const m=1+0.15*(r.enh||0);return {atk:Math.round(r.atk*m),hp:Math.round(r.hp*m),def:Math.round(r.def*m),crit:r.crit||0}}
+function equipStats(){const t={atk:0,hp:0,def:0,crit:0};for(const k of ["weapon","armor","trinket"]){const it=S.equip&&S.equip[k];if(!it)continue;const m=1+0.18*(it.enh||0);t.atk+=Math.round((it.atk||0)*m);t.hp+=Math.round((it.hp||0)*m);t.def+=Math.round((it.def||0)*m);t.crit+=(it.crit||0)}return t}
+BEASTS.hawk={name:"雷霆鹰",ic:"🦅",hp:110,atk:26,def:5,spd:140,exp:120,gold:44,ringMin:1000,ringMax:4000,r:20,ranged:1};
+BEASTS.voidbeast={name:"虚空兽",ic:"👹",hp:320,atk:34,def:12,spd:88,exp:220,gold:80,ringMin:2000,ringMax:6000,r:26,melee:1};
+const GOD_RANKS=["未晋升","半神","一级神","神王"];
+const GOD_REQ=[null,{lv:40,evo:2,boss:3,cores:20},{lv:55,evo:3,rings:6,cores:40},{lv:70,evo:3,dun:3,cores:80}];
+const DOMAINS={sword:{n:"破晓领域",desc:"领域内增伤 +20%"},dragon:{n:"炎狱领域",desc:"领域内敌人每秒灼烧"},vine:{n:"森罗领域",desc:"持续回血 + 领域内敌人减速"},hammer:{n:"磐石领域",desc:"领域内减伤 40%"},bow:{n:"疾风领域",desc:"攻速提升 + 25% 闪避"},bell:{n:"灵音领域",desc:"增伤 +10% + 持续回蓝"}};
+BEASTS.qilin={name:"圣光麒麟",ic:"🦄",hp:420,atk:42,def:16,spd:96,exp:320,gold:120,ringMin:5000,ringMax:9000,r:30,melee:1};
+BEASTS.salamander={name:"熔岩火蜥",ic:"🦎",hp:260,atk:38,def:10,spd:92,exp:240,gold:88,ringMin:2000,ringMax:6000,r:24,melee:1};
+const MOUNTS=[{id:"horse",n:"疾风马",ic:"🐴",gold:800,cores:0,spd:0.06,desc:"移速 +6%"},{id:"deer",n:"林间灵鹿",ic:"🦌",gold:0,cores:15,spd:0.09,desc:"移速 +9%"},{id:"crane",n:"云端仙鹤",ic:"🕊️",gold:0,cores:30,spd:0.12,desc:"移速 +12%"},{id:"dragon",n:"幼年苍龙",ic:"🐲",gold:0,cores:60,spd:0.15,desc:"移速 +15%"}];
+function mountSpdOf(){if(!S||!S.mounts||!S.mounts.cur)return 0;const m=MOUNTS.find(x=>x.id===S.mounts.cur);return m?m.spd:0}
+function derived(){const so=SOULS[S.soul];const d={maxHp:so.base.hp+(S.lv-1)*16,maxMp:so.base.mp+(S.lv-1)*4,atk:so.base.atk+(S.lv-1)*3.2,def:so.base.def+(S.lv-1)*1.1,crit:so.base.crit,critD:so.base.critD,spd:Math.round(so.base.spd*(1+mountSpdOf())),aspd:1,lifesteal:0,dodge:3};
+ for(const r of S.rings){const e=ringEff(r);d.maxHp+=e.hp;d.atk+=e.atk;d.def+=e.def;d.crit+=e.crit}
+ const eq=equipStats();d.maxHp+=eq.hp;d.atk+=eq.atk;d.def+=eq.def;d.crit+=eq.crit;
+ const bn=boneStats();d.maxHp+=bn.stats.hp;d.atk+=bn.stats.atk;d.def+=bn.stats.def;d.crit+=bn.stats.crit;d.spd+=bn.stats.spd;d.boneCnt=bn.cnt;
+ if(bn.cnt.flame>=6)d.flame6=true; if(bn.cnt.wind>=6)d.dodge+=5;
+ if(S.soul==="sword"){d.crit+=5;d.lifesteal+=2}if(S.soul==="dragon"){d.def+=4;d.lifesteal+=3}if(S.soul==="vine"){d.dodge+=4}if(S.soul==="hammer"){d.def+=6;d.maxHp*=1.08}if(S.soul==="bow"){d.crit+=8}if(S.soul==="bell"){d.maxMp*=1.25}
+ const advMul=(1+0.06*(S.adv||0))*(1+0.10*(S.evo||0))*(1+0.12*((S.god&&S.god.rank)||0));d.atk*=advMul;d.maxHp*=advMul;
+ const tl=S.talents||{atk:0,def:0,ctrl:0};d.atk*=1+0.03*tl.atk;d.def+=2*tl.def;d.maxHp+=30*tl.def;
+ d.atk*=1+0.02*S.rings.length;return d}
+function expNeed(lv){return Math.floor(80*Math.pow(lv,1.35))}
+function titleOf(lv){for(const t of TITLES)if(lv>=t[0])return t[1];return "魂士"}
+function ringTier(y){for(const t of RING_TIERS)if(y>=t.min)return t;return RING_TIERS[3]}
+</script>
+<script>
+"use strict";
+/* ===== 游戏世界 ===== */
+const cv=document.getElementById("cv"),ctx=cv.getContext("2d");
+let W=0,H=0,DPR=1;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);W=window.innerWidth;H=window.innerHeight;cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(DPR,0,0,DPR,0,0)}
+window.addEventListener("resize",resize);resize();
+/* 背景预渲染（规矩1：静态层只画一次） */
+const bg=document.createElement("canvas");bg.width=WORLD.w;bg.height=WORLD.h;
+REGIONS.sky={name:"天空遗迹",ic:"☁️",mul:3.2,beasts:["frost","shadow","fox","hawk"],need:()=>S.lv>=25&&S.evo>=1,needTx:"Lv.25 + 武魂进化1阶",desc:"浮空遗迹，可御空飞行（移速提升、承伤降低），雷霆鹰盘旋，2 个宝箱",fly:1};
+REGIONS.abyss={name:"深渊之地",ic:"🌋",mul:4.2,beasts:["shadow","golem","frost","voidbeast"],need:()=>S.lv>=35&&S.god&&S.god.rank>=1,needTx:"Lv.35 + 神位晋升半神",desc:"深渊魔气纵横，虚空兽出没，2 个宝箱"};
+THEMES.sky={g0:"#7db3e8",g1:"#4a7fb8",g2:"#2c4f78",tree:"#dfeefc",dark:"#5b83ad"};
+THEMES.abyss={g0:"#2a0f1e",g1:"#1c0a16",g2:"#12060e",tree:"#5e2438",dark:"#0d040a"};
+CHESTS.sky=[{id:"sk1",x:400,y:760},{id:"sk2",x:1700,y:1200}];
+CHESTS.abyss=[{id:"ab1",x:500,y:900},{id:"ab2",x:1600,y:600}];
+NODES.sky=[{id:"skn1",x:900,y:1000,ic:"☁️"}];
+NODES.abyss=[{id:"abn1",x:1000,y:1200,ic:"🔮"}];
+REGIONS.godrealm={name:"神域边境",ic:"✨",mul:5,beasts:["hawk","voidbeast","frost","qilin"],need:()=>S.god&&S.god.rank>=2,needTx:"神位晋升一级神",desc:"神域边缘，圣光麒麟栖息，2 个宝箱"};
+REGIONS.lava={name:"熔火炼狱",ic:"🔥",mul:4.5,beasts:["fox","voidbeast","spider","salamander"],need:()=>S.god&&S.god.rank>=1,needTx:"神位晋升半神",desc:"炼狱界入口，熔岩火蜥横行，2 个宝箱"};
+THEMES.godrealm={g0:"#3d348b",g1:"#2a2360",g2:"#1a1540",tree:"#8f86d8",dark:"#120e30"};
+THEMES.lava={g0:"#4a1408",g1:"#33100a",g2:"#200a06",tree:"#8a3b1e",dark:"#160503"};
+CHESTS.godrealm=[{id:"gr1",x:450,y:800},{id:"gr2",x:1650,y:1100}];
+CHESTS.lava=[{id:"lv1",x:600,y:700},{id:"lv2",x:1500,y:1300}];
+NODES.godrealm=[{id:"grn1",x:1000,y:1000,ic:"✨"}];
+NODES.lava=[{id:"lvn1",x:900,y:900,ic:"🌋"}];
+const WORLDS=[{id:"main",name:"🌏 魂灵大陆",regions:["academy","forest","ruins","secret","sky","abyss"]},{id:"god",name:"✨ 神域",regions:["godrealm"]},{id:"inferno",name:"🔥 炼狱界",regions:["lava"]}];
+function worldOf(k){const w=WORLDS.find(w=>w.regions.includes(k));return w?w.id:"main"}
+DUNGEONS.push({id:"d4",name:"⚖️ 神域试炼场",needLv:40,waves:[["hawk","hawk"],["voidbeast","frost"],["hawk","ELITE"],["voidbeast","voidbeast"],["boss"]],gold:400,cores:8,desc:"终局副本：神域守卫的试炼，末波首领"});
+let CUR_REGION="forest";
+function paintBg(){const TH=THEMES[CUR_REGION]||THEMES.forest;const b=bg.getContext("2d");const g=b.createLinearGradient(0,0,0,WORLD.h);g.addColorStop(0,TH.g0);g.addColorStop(.55,TH.g1);g.addColorStop(1,TH.g2);b.fillStyle=g;b.fillRect(0,0,WORLD.w,WORLD.h);
+ let seed=42;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+ for(let i=0;i<900;i++){b.fillStyle=`rgba(${20+rnd()*30|0},${70+rnd()*50|0},${30+rnd()*25|0},.25)`;b.beginPath();b.arc(rnd()*WORLD.w,rnd()*WORLD.h,2+rnd()*7,0,7);b.fill()}
+ b.fillStyle="#1d3a26";b.fillRect(880,120,440,300);b.strokeStyle="#3f6212";b.lineWidth=6;b.strokeRect(880,120,440,300);
+ b.font="bold 25px sans-serif";b.fillStyle="#cdeac0";b.fillText(CUR_REGION==="ruins"?"🏺 古代遗迹 · 王座广场":CUR_REGION==="secret"?"🌙 幻月秘境 · 月核祭坛":"🏫 魂师学院 · 站内回满状态",915,175);
+ b.font="bold 24px sans-serif";b.fillStyle="#ffd968";b.fillText(CUR_REGION==="secret"?"🌙 秘境核心":CUR_REGION==="ruins"?"🗿 傀儡王庭":"👹 犀王巢穴",905,600);
+ for(let i=0;i<130;i++){const x=rnd()*WORLD.w,y=rnd()*WORLD.h;if(x>850&&x<1350&&y<450)continue;b.fillStyle=TH.dark;b.beginPath();b.arc(x,y,16+rnd()*16,0,7);b.fill();b.fillStyle=TH.tree;b.beginPath();b.arc(x-5,y-7,11+rnd()*10,0,7);b.fill();b.fillStyle="#3a2a18";b.fillRect(x-2.5,y,5,16)}
+ for(let i=0;i<40;i++){const x=rnd()*WORLD.w,y=rnd()*WORLD.h;b.fillStyle="#5b6b5e";b.beginPath();b.arc(x,y,5+rnd()*9,0,7);b.fill()}
+ b.strokeStyle="rgba(255,217,104,.35)";b.lineWidth=3;b.setLineDash([14,12]);b.strokeRect(30,30,WORLD.w-60,WORLD.h-60);b.setLineDash([]);
+}
+paintBg();
+/* 实体 */
+const P={x:1100,y:300,hp:100,mp:50,face:1,angle:-Math.PI/2,atkCd:0,dodgeCd:0,iframe:0,castLock:0,alive:true,respawn:0,shield:0,poisT:0,stam:100,guarding:false,combo:0,comboT:0,lastLight:-9,t:0,hitT:0,state:"待机",domainT:0,domainCd:0,domainTick:0,fly:false};
+let enemies=[],projs=[],parts=[],floats=[],ringsOnGround=[],bossRef=null;
+const cam={x:0,y:0};
+let keys={},joyVec={x:0,y:0},started=false,lastTs=0,acc=0,fpsCnt=0,fpsT=0,fpsNow=60,lowQ=false;
+let chanTarget=null,chanProg=0,absorbHeld=false;
+let telegraphs=[],DUN=null,arenaRef=null;const nodeTimers={};
+let hitstopT=0,shakeT=0,shakeM=0,flashT=0,EVT=null,LOWQ=false;
+let companions=[];let netTestResult="";
+let WX={type:"晴",t:80,tick:0};let WB=null,wbDmg=0;
+function matPrice(k){const base={fang:12,hide:10,stone:14,crystal:30,fur:22,feather:26};const b=base[k]||10;const h=parseInt(h32(new Date().toDateString()+k),36)%50;return Math.max(3,Math.round(b*(0.75+h/100)))}
+function corePrice(){return 90+parseInt(h32(new Date().toDateString()+"core"),36)%40}
+const BONE_PRICE={"普通":40,"稀有":90,"史诗":200,"传说":450,"神级":900};
+const ACHV=[{id:"god1",n:"👑 登临半神",tx:"神位晋升至半神",cond:()=>S.god.rank>=1,rew:{cores:5}},{id:"god3",n:"👑 神王降临",tx:"神位晋升至神王",cond:()=>S.god.rank>=3,rew:{cores:15}},{id:"wb1",n:"🌋 屠龙者",tx:"击杀世界首领 1 次",cond:()=>S.wbossKills>=1,rew:{gold:300}},{id:"codex",n:"📖 图鉴全集",tx:"图鉴 10 种全部解锁",cond:()=>Object.keys(CODEX).every(k=>(S.codex[k]||0)>0),rew:{cores:10}},{id:"hard",n:"🌀 困难征服者",tx:"通关任意困难/噩梦副本",cond:()=>Object.keys(S.challenge.best).some(k=>k.includes("困难")||k.includes("噩梦")),rew:{gold:400}},{id:"mount3",n:"🐴 收藏家",tx:"收集 3 只坐骑",cond:()=>S.mounts.owned.length>=3,rew:{gold:300}}];
+function validateConfigs(){const errs=[];Object.entries(SOULS).forEach(([k,v])=>{const total=v.skills.length;if(total!==6)errs.push("武魂 "+k+" 技能数 "+total+" ≠ 6");if(!PASSIVES[k])errs.push("武魂 "+k+" 缺被动")});Object.entries(BEASTS).forEach(([k,v])=>{if(!(v.hp>0&&v.atk>0))errs.push("魂兽 "+k+" 数值非法")});Object.entries(REGIONS).forEach(([k,v])=>{v.beasts.forEach(bk=>{if(!BEASTS[bk])errs.push("区域 "+k+" 引用不存在的魂兽 "+bk)})});CHAPTERS.forEach((c,i)=>{if(!["kills","boss","regionKills","dungeon","evo","god","region"].includes(c.obj.type))errs.push("章节 "+(i+1)+" 目标类型非法 "+c.obj.type)});const tids=new Set();EQUIPS.forEach(e=>{if(tids.has(e.tid))errs.push("装备 tid 重复 "+e.tid);tids.add(e.tid)});DUNGEONS.forEach(d=>{d.waves.flat().forEach(wk=>{if(wk!=="boss"&&wk!=="ELITE"&&!BEASTS[wk])errs.push("副本 "+d.id+" 引用不存在的魂兽 "+wk)})});return errs}
+const cds=[0,0,0,0,0,0];
+function stats(){return derived()}
+function fullHeal(){const d=stats();P.hp=d.maxHp;P.mp=d.maxMp}
+function spawnEnemy(kind,x,y){const bt=BEASTS[kind];const isB=kind==="boss";const lvMul=isB?1:1+(S.lv-1)*0.16;const hpMul=isB?1+(S.lv-1)*0.18:lvMul;const atkMul=isB?1+(S.lv-1)*0.12:lvMul;const rm=(isB||kind==="mentor"||kind==="duelist")?1:(REGIONS[CUR_REGION]?REGIONS[CUR_REGION].mul:1);const e={kind,x,y,r:bt.r,hp:Math.floor(bt.hp*hpMul*rm),maxHp:0,atk:bt.atk*atkMul*rm,def:bt.def+(S.lv-1)*(isB?0.25:0.4),spd:bt.spd,atkCd:0,hitT:0,stun:0,slow:0,dots:[],phase:0,sumT:0,dead:false,name:bt.name,tB:Math.random()*6};e.maxHp=e.hp;if(!isB&&Math.random()<0.12){e.elite=true;e.hp=e.maxHp=Math.floor(e.hp*4);e.atk*=1.6;e.r=Math.round(e.r*1.3);e.name="精英·"+bt.name}enemies.push(e);return e}
+function spawnAmbient(){if(enemies.filter(e=>e.kind!=="boss").length>=LIMIT.enemy-2)return;let x,y,tries=0;do{x=80+Math.random()*(WORLD.w-160);y=520+Math.random()*(WORLD.h-580);tries++}while(Math.hypot(x-P.x,y-P.y)<300&&tries<9);
+ const KINDS=REGIONS[CUR_REGION].beasts;if(!KINDS.length)return;spawnEnemy(KINDS[Math.floor(Math.random()*KINDS.length)],x,y)}
+function burst(x,y,col,n,spd){if(LOWQ)n=Math.max(1,Math.ceil(n/2));for(let i=0;i<n;i++){if(parts.length>=LIMIT.particle)parts.shift();const a=Math.random()*6.283,v=(0.3+Math.random()*0.7)*(spd||90);parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:0.45+Math.random()*0.3,t:0,col,sz:2+Math.random()*3.5})}}
+function floatTx(x,y,tx,col,big){if(floats.length>=LIMIT.floater)floats.shift();floats.push({x,y,tx,col,t:0,big:!!big})}
+const CHAPTERS=[
+ {t:"第一章 · 觉醒之日",obj:{type:"kills",n:5,label:"击杀魂兽 5 只"},rew:{gold:100,cores:2},lines:[["导师云澜","孩子，把手放在觉醒石上——光芒越盛，武魂越不凡。"],["你","（光芒冲天而起）这就是……我的武魂！"],["导师云澜","好强的魂力波动。去魂森外围猎杀 5 只魂兽，让我看看你的实战。"]]},
+ {t:"第二章 · 犀王之怒",obj:{type:"boss",n:1,label:"击杀裂地犀王 1 次"},rew:{gold:200,cores:3},lines:[["猎人老陈","林子深处那头裂地犀王疯了，撞塌了三座猎棚！"],["导师云澜","犀王狂暴必有缘故。你若能制服它，学院记你一功。"],["你","交给我吧。"]]},
+ {t:"第三章 · 遗迹秘闻",obj:{type:"regionKills",region:"ruins",n:8,label:"在古代遗迹击杀 8 只魂兽"},rew:{gold:300,cores:4},lines:[["神秘老者","遗迹之下，埋着上古魂师的真身遗骸……"],["你","你是谁？为何引我来此？"],["神秘老者","去遗迹里走一遭，杀退守陵的魂兽，答案自会浮现。"]]},
+ {t:"第四章 · 宗门风云",obj:{type:"dungeon",n:1,label:"通关任意副本 1 次"},rew:{gold:400,cores:5},lines:[["师姐小舞影","各宗门都在抢遗迹出土的魂骨，暗流涌动。"],["导师云澜","去副本里把实力练扎实。风浪来时，实力才是船。"],["你","明白，我这就去历练。"]]},
+ {t:"第五章 · 真身之路",obj:{type:"evo",n:2,label:"武魂进化达到 2 阶（化境）"},rew:{gold:600,cores:8},lines:[["神秘老者","化境之后，方见真身。你已经走到了这一步。"],["你","进化到化境，我感觉力量在发生质变。"],["神秘老者","魂灵大陆的秘密，才刚刚向你打开一角……"]]}];
+const CODEX={wolf:{hab:"雾隐魂森",desc:"群居夜行，听觉敏锐，成群时攻击提升。",drop:"狼牙 · 十至百年魂环"},vine:{hab:"雾隐魂森",desc:"伪装成植物的远程魂兽，吐刺缠人。",drop:"藤芯 · 百年魂环"},spider:{hab:"魂森 / 遗迹",desc:"喷吐毒雾，残血会逃。",drop:"蛛丝 · 百年魂环"},bear:{hab:"魂森 / 遗迹",desc:"皮糙肉厚的坦克，白天常在林间休息。",drop:"熊掌 · 百年魂环"},bat:{hab:"魂森 / 遗迹",desc:"速度极快、走位飘忽，残血逃窜。",drop:"蝠翼 · 十年魂环"},golem:{hab:"古代遗迹",desc:"上古守陵傀儡，防御极高、行动迟缓。",drop:"高年份魂环 · 魂骨"},shadow:{hab:"幻月秘境",desc:"来去如影的刺客型魂兽，攻击凶狠。",drop:"高年份魂环 · 魂骨"},fox:{hab:"遗迹 / 秘境",desc:"火焰缠身的灵狐，速度快、攻势烈。",drop:"火绒 · 千年魂环"},frost:{hab:"幻月秘境",desc:"栖于秘境寒潭的霜鸟，远程吐息。",drop:"霜羽 · 千年魂环"},boss:{hab:"魂森深处",desc:"裂地犀王，领地之主，三阶段狂暴。",drop:"千年+魂环 · 魂骨"}};
+function storyProg(){const st=S.story;if(!st||st.ch>=CHAPTERS.length)return{cur:0,need:0,done:true};
+ if(!st.base)st.base={kills:S.kills,boss:S.bossKills,dun:Object.values(S.dungeons).reduce((a,x)=>a+(x.clears||0),0),reg:Object.assign({},S.explore)};
+ const o=CHAPTERS[st.ch].obj;let cur=0;
+ if(o.type==="kills")cur=S.kills-st.base.kills;else if(o.type==="boss")cur=S.bossKills-st.base.boss;else if(o.type==="dungeon")cur=Object.values(S.dungeons).reduce((a,x)=>a+(x.clears||0),0)-st.base.dun;else if(o.type==="regionKills")cur=(S.explore[o.region]||0)-(st.base.reg[o.region]||0);else if(o.type==="evo")cur=S.evo;else if(o.type==="god")cur=S.god?S.god.rank:0;else if(o.type==="region")cur=(S.visited||[]).includes(o.region)?1:0;
+ return{cur:Math.max(0,Math.min(cur,o.n)),need:o.n,done:cur>=o.n}}
+let storyLines=[],storyIdx=0;
+function playStory(lines){storyLines=lines;storyIdx=0;$("storyOvl").classList.add("show");showStoryLine()}
+function showStoryLine(){const L=storyLines[storyIdx];if(!L){const ch=CHAPTERS[S.story.ch];if(ch&&ch.choice&&!S.story.choiceDone){$("choiceQ").textContent=ch.choice.q;$("btnChoiceA").textContent=ch.choice.a.label;$("btnChoiceB").textContent=ch.choice.b.label;$("choiceBox").style.display="block";$("btnStoryNext").style.display="none";return}$("storyOvl").classList.remove("show");return}$("storySpeaker").textContent=L[0];$("storyText").textContent=L[1];$("btnStoryNext").textContent=storyIdx>=storyLines.length-1?"完成 ✔":"下一句 ▶"}
+CHAPTERS.push({t:"第七章 · 跨界之门",obj:{type:"region",region:"godrealm",n:1,label:"抵达神域边境"},rew:{gold:600,cores:8},lines:[["神域使者","跨界之门已经为你打开，神域边境就在门后。"],["你","神域边境……我来了。"]]});
+CHAPTERS.push({t:"第六章 · 神域来客",obj:{type:"god",n:1,label:"神位晋升至半神"},rew:{gold:500,cores:6},lines:[["神域使者","凡间的魂师，能走到这一步的，万中无一。"],["神域使者","神域的大门为你敞开——接受敕封，还是继续走自己的路？"],["你","（看完剧情后，将做出关键选择）"]],choice:{q:"神域使者的邀请，你的选择是？",a:{label:"接受敕封 · 加入神域",bonus:{cores:5},result:"你接受了神域敕封，获得兽核 +5。此选择已记录。"},b:{label:"婉拒敕封 · 独自修行",bonus:{gold:300},result:"你婉拒了敕封，选择靠自己修行，获得金币 +300。此选择已记录。"}}});
+function spawnWorldBoss(){if(CUR_REGION==="academy")return;const e=spawnEnemy("boss",400+Math.random()*1300,700+Math.random()*600);e.wboss=true;e.aggro=true;e.name="🌋 世界首领·深渊魔龙烬";e.hp=e.maxHp=Math.floor(e.maxHp*6*(1+S.lv*0.05));e.atk=Math.floor(e.atk*1.6);wbDmg=0;WB=e;toast("🌋 世界首领降临！","深渊魔龙·烬 现身于 "+REGIONS[CUR_REGION].name+"：参战有奖，贡献越高奖励越丰厚（单机事件）")}
+function startEvent(){const id=Date.now();
+ if(Math.random()<0.55){const x=400+Math.random()*1300,y=700+Math.random()*650;const kinds=REGIONS[CUR_REGION].beasts.length?REGIONS[CUR_REGION].beasts:["wolf","bear"];for(let i=0;i<6;i++){const e=spawnEnemy(kinds[Math.floor(Math.random()*kinds.length)],x+(Math.random()*160-80),y+(Math.random()*160-80));e.evt=true;e.aggro=true}EVT={type:"riot",left:6,t:300,id};toast("🌋 动态事件：魂兽暴动！","消灭 6 只暴动魂兽：奖励兽核+4 · 金币+150")}
+ else{const kinds=REGIONS[CUR_REGION].beasts.length?REGIONS[CUR_REGION].beasts:["wolf"];const e=spawnEnemy(Math.random()<0.5?"shadow":kinds[0],400+Math.random()*1300,700+Math.random()*650);e.rare=true;e.aggro=true;e.hp=e.maxHp=Math.floor(e.maxHp*3);e.atk*=1.4;e.name="✨稀有·"+e.name.replace(/^精英·/,"");EVT={type:"rare",ref:e,t:300,id};toast("✨ 稀有魂兽出现！","击杀必掉高年份魂环 + 魂骨")}}
+function addLog(t){if(!S)return;S.log=S.log||[];S.log.unshift(t);S.log=S.log.slice(0,8)}
+function todayStr(){return new Date().toDateString()}
+function toast(t1,t2){const a=document.getElementById("toast1"),b=document.getElementById("toast2");a.textContent=t1||"";b.textContent=t2||"";a.style.opacity=t1?1:0;b.style.opacity=t2?1:0;clearTimeout(toast._t);toast._t=setTimeout(()=>{a.style.opacity=0;b.style.opacity=0},2400)}
+/* ===== 伤害结算：攻击-防御、暴击、技能倍率、状态（属性大全分层） ===== */
+function dealDamage(e,mul,opts){opts=opts||{};const d=stats();let raw=d.atk*mul*(1+Math.min(0.5,(P.combo||0)*0.01))*(0.92+Math.random()*0.16)*(P.domainT>0&&S.soul==="sword"?1.2:1)*(P.domainT>0&&S.soul==="bell"?1.1:1);let crit=Math.random()*100<d.crit;if(crit)raw*=1+d.critD/100;let dmg=Math.max(1,raw-e.def*(opts.trueD?0:0.7));e.hp-=dmg;if(e.wboss)wbDmg+=dmg;e.hitT=0.12;if(crit)hitstopT=Math.max(hitstopT,0.045);if(d.flame6&&Math.random()<0.2)e.dots.push({type:"burn",t:3,dps:d.atk*0.2});
+ if(opts.status==="burn")e.dots.push({type:"burn",t:3,dps:d.atk*0.22});
+ if(opts.status==="poison")e.dots.push({type:"poison",t:3,dps:d.atk*0.18});
+ if(opts.status==="root"){const ten=(e.kind==="boss"||e.elite||e.dunBoss)?0.4:1;e.stun=Math.max(e.stun,1.4*(1+0.1*((S.talents&&S.talents.ctrl)||0))*ten)}
+ if(d.lifesteal>0)P.hp=Math.min(d.maxHp,P.hp+dmg*d.lifesteal/100);
+ floatTx(e.x+(Math.random()*24-12),e.y-e.r-6,Math.floor(dmg)+(crit?" 暴击!":""),crit?"#ffd968":"#fff",crit);
+ burst(e.x,e.y,crit?"#ffd968":"#b6f2b6",crit?7:4,80);
+ if(e.hp<=0&&!e.dead)killEnemy(e)}
+function hurtPlayer(dmg){if(P.iframe>0||!P.alive)return;const d=stats();if(Math.random()*100<d.dodge||(P.domainT>0&&S.soul==="bow"&&Math.random()<0.25)){floatTx(P.x,P.y-42,"闪避","#9be7ff");return}
+ if(P.guarding&&P.stam>0){dmg*=0.35;P.stam=Math.max(0,P.stam-10);floatTx(P.x,P.y-58,"🧱 格挡！减伤65%","#ffe9a8")}
+ if(P.domainT>0&&S.soul==="hammer")dmg*=0.6;if(P.fly)dmg*=0.85;
+ dmg=Math.max(1,dmg-d.def*0.6);if(P.shield>0){const ab=Math.min(P.shield,dmg);P.shield-=ab;dmg-=ab;floatTx(P.x,P.y-54,"🛡️护盾吸收"+Math.floor(ab),"#9be7ff")}P.iframe=0.25;if(dmg>0){P.hp-=dmg;P.hitT=0.25;floatTx(P.x,P.y-40,"-"+Math.floor(dmg),"#ff8a8a");burst(P.x,P.y,"#ff8a8a",6,80)}
+ if(P.hp<=0){S.challenge=S.challenge||{runs:0,deaths:0,best:{}};if(DUN)S.challenge.deaths++;P.alive=false;P.respawn=3;P.hp=0;toast("💀 你被击倒了","3 秒后在学院复活，魂环不丢失");chanTarget=null}}
+function killEnemy(e){if(e.dead)return;e.dead=true;const bt=BEASTS[e.kind];const elite=e.elite?1:0;const mul=elite?4:1;S.kills++;S.codex=S.codex||{};if(BEASTS[e.kind]&&e.kind!=="mentor"&&e.kind!=="duelist")S.codex[e.kind]=(S.codex[e.kind]||0)+1;burst(e.x,e.y,elite?"#ffd968":"#eaffea",16,130);
+ const rm2=REGIONS[CUR_REGION]?REGIONS[CUR_REGION].mul:1;const expG=Math.floor(bt.exp*mul*rm2*(S.devCfg?S.devCfg.exp:1)),goldG=Math.floor(bt.gold*mul*rm2*(S.devCfg?S.devCfg.gold:1));gainExp(expG);S.gold+=goldG;if(Math.random()<0.3)S.cores++;
+ S.explore[CUR_REGION]=(S.explore[CUR_REGION]||0)+1;{const td=new Date().toDateString();if(S.dayKills.d!==td)S.dayKills={d:td,n:0};S.dayKills.n++}
+ if(e.kind==="mentor"){S.mentorWins++;S.academyLv=Math.min(5,S.mentorWins);S.cores+=3;toast("🎓 导师挑战胜利！学院等级 "+S.academyLv,"奖励兽核 +3（已到账）");addLog("导师挑战胜利，学院Lv."+S.academyLv)}
+ if(e.kind==="duelist"){arenaRef=null;S.arena.wins++;S.arena.score+=25;const ag=80+Math.floor(S.arena.score/2);S.gold+=ag;toast("⚔️ 竞技胜利！排名分 "+S.arena.score,"奖励金币 +"+ag);addLog("竞技胜利，排名分 "+S.arena.score)}
+ floatTx(e.x,e.y-30,"+"+expG+" 经验 · +"+goldG+" 金币","#ffeeb0");
+ const matKey={wolf:"fang",vine:"vine",spider:"silk",bear:"paw",bat:"wing",fox:"fur",frost:"feather",golem:"vine",shadow:"silk"}[e.kind];
+ if(matKey){const n=elite?3:(Math.random()<0.7?1:2);S.mats[matKey]=(S.mats[matKey]||0)+n;S.matsTotal+=n;floatTx(e.x,e.y-54,"+"+n+" "+MAT_NAMES[matKey],"#b6f2b6")}
+ if(e.kind==="boss"){S.bossKills++;bossRef=null;document.getElementById("bossBar").style.display="none";toast("🏆 击杀裂地犀王！","魂环掉落了，站到光环边按住吸收")}
+ const eqC=(e.kind==="duelist")?0:(e.kind==="boss"?1:(elite?0.45:0.16));
+ if(Math.random()<eqC){const it=makeEquip(e.kind==="boss"||elite);S.bag.push(it);toast("🎒 获得装备："+it.name,it.rarity+" · 去属性面板装备");addLog("掉落装备 "+it.name+"（"+it.rarity+"）")}
+ /* 魂环掉落：普通 45%，藤妖 70%，精英/BOSS 必掉（精英年份×2.2） */
+ const dropC=(e.kind==="duelist"||e.kind==="mentor"&&false)?0:(e.kind==="boss"?1:(elite?1:(e.kind==="vine"?0.7:0.45)));
+ if(Math.random()<dropC&&ringsOnGround.length<12){const years=Math.floor((bt.ringMin+Math.random()*(bt.ringMax-bt.ringMin))*(elite?2.2:1));ringsOnGround.push({x:e.x,y:e.y,years,from:(elite?"精英·":"")+bt.name,t:0})}
+ if(e.teamBoss){S.gold+=300;S.cores+=4;companions=[];toast("👥 团队首领讨伐成功！","奖励金币+300 · 兽核+4（AI 队友陪打 · 单机）");addLog("团队首领挑战完成")}
+ if(e.trial){S.god.trialWon=true;toast("👑 神位试炼通过！","回属性面板点「晋升」完成晋升");addLog("神位试炼通过")}
+ if(e.wboss){const share=wbDmg/Math.max(1,e.maxHp);let msg="";if(share>=0.5){S.cores+=8;S.gold+=500;const bn=makeBone(null,null,"神级");S.bones.push(bn);msg="贡献 "+Math.round(share*100)+"%（主力）：兽核+8 · 金币+500 · 神级魂骨 "+bn.name}else if(share>=0.2){S.cores+=5;S.gold+=300;const bn=makeBone();S.bones.push(bn);msg="贡献 "+Math.round(share*100)+"%：兽核+5 · 金币+300 · 魂骨 "+bn.name}else{S.cores+=3;S.gold+=200;msg="参与奖励：兽核+3 · 金币+200"}S.wbossKills=(S.wbossKills||0)+1;WB=null;toast("🌋 世界首领已被击败！",msg);addLog("世界首领击杀第 "+S.wbossKills+" 次 · "+msg)}
+ const boneC=(e.kind==="boss"?0.6:(e.elite?0.25:0.05))*(S.devCfg?S.devCfg.drop:1);
+ if(e.kind!=="duelist"&&Math.random()<boneC){const bn=makeBone();S.bones.push(bn);toast("🦴 获得魂骨："+bn.name,bn.quality+" · 去属性面板装备");addLog("掉落魂骨 "+bn.name)}
+ if(e.evt&&EVT&&EVT.type==="riot"){EVT.left--;if(EVT.left<=0){S.cores+=4;S.gold+=150;toast("🌋 暴动平定！","奖励兽核+4 · 金币+150 已到账");addLog("动态事件暴动完成 兽核+4");EVT=null;const el=document.getElementById("eventTx");if(el)el.textContent=""}}
+ if(e.rare){const yrs=3000+Math.floor(Math.random()*6000);ringsOnGround.push({x:e.x,y:e.y,years:yrs,from:"稀有魂兽",t:0});const bn2=makeBone();S.bones.push(bn2);toast("✨ 稀有击杀！","掉落 "+yrs+" 年魂环 + 魂骨 "+bn2.name);if(EVT&&EVT.type==="rare"){EVT=null;const el=document.getElementById("eventTx");if(el)el.textContent=""}}
+ hitstopT=Math.max(hitstopT,0.03);
+ addLog("击杀 "+(e.name||bt.name)+" +"+expG+"经验 +"+goldG+"金币");
+ questCheck();saveSoon()}
+function gainExp(n){S.exp+=n;let need=expNeed(S.lv);while(S.exp>=need&&S.lv<99){S.exp-=need;S.lv++;need=expNeed(S.lv);const d=stats();P.hp=Math.min(d.maxHp,P.hp+d.maxHp*0.35);toast("⬆ 升级！魂力 Lv."+S.lv,titleOf(S.lv)+" · 属性全面提升");burst(P.x,P.y,"#ffd968",22,130)}}
+function questCheck(){const t=TASKS.find(x=>!S.claimed.includes(x.id));const el=document.getElementById("questTx");if(!el)return;
+ if(!t){el.textContent="任务全清 · 累计击杀 "+S.kills+" · 犀王 "+S.bossKills;return}
+ const done=taskProg(t)>=t.need;el.textContent="📜 "+t.name+"："+Math.min(taskProg(t),t.need)+"/"+t.need+(done?" · 已完成，去属性面板领取奖励":" · "+t.desc)}
+/* ===== 技能 ===== */
+function castSkill(i){if(!P.alive||cds[i]>0)return;const sk=SOULS[S.soul].skills[i];const d=stats();if(P.mp<sk.mp){floatTx(P.x,P.y-44,"魂力不足","#6ee7ff");return}
+ if(i===2&&S.rings.length<1){floatTx(P.x,P.y-44,"吸收 1 枚魂环后解锁绝技","#e9b0ff");return}
+ if(i===3&&S.rings.length<2){floatTx(P.x,P.y-44,"吸收 2 枚魂环后解锁第四魂技","#e9b0ff");return}
+ if(i===4&&S.lv<3){floatTx(P.x,P.y-44,"Lv.3 解锁魂力护盾","#9be7ff");return}
+ if(i===5&&S.evo<2){floatTx(P.x,P.y-44,"武魂进化 2 阶（化境）解锁融合技","#ffd968");return}
+ P.mp-=sk.mp;cds[i]=sk.cd*(1+(S.skillLv[i]-1)*0.02)*(1-0.02*((S.talents&&S.talents.ctrl)||0));const mul=sk.mul*(1+0.25*(S.skillLv[i]-1))*(1+0.12*(S.evo||0));
+ const fx=P.x+Math.cos(P.angle),fy=P.y+Math.sin(P.angle);
+ if(sk.type==="proj"||sk.type==="proj3"){const n=sk.type==="proj3"?3:1;for(let k=0;k<n;k++){if(projs.length>=LIMIT.proj)break;const a=P.angle+(k-(n-1)/2)*0.16;projs.push({x:P.x,y:P.y,vx:Math.cos(a)*430,vy:Math.sin(a)*430,friendly:true,mul,status:sk.status,col:SOULS[S.soul].col,r:7,life:0.9})}}
+ else if(sk.type==="aoe"||sk.type==="aoeBig"){const r=sk.type==="aoeBig"?190:(sk.r||130);burst(P.x,P.y,SOULS[S.soul].col,26,190);enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<r+e.r)dealDamage(e,mul,{status:sk.status})})}
+ else if(sk.type==="cone"||sk.type==="coneBig"){const r=sk.type==="coneBig"?170:120,half=sk.type==="coneBig"?0.95:0.75;burst(P.x+Math.cos(P.angle)*50,P.y+Math.sin(P.angle)*50,SOULS[S.soul].col,16,140);enemies.forEach(e=>{if(e.dead)return;const dd=Math.hypot(e.x-P.x,e.y-P.y);if(dd<r+e.r){let da=Math.atan2(e.y-P.y,e.x-P.x)-P.angle;while(da>Math.PI)da-=6.283;while(da<-Math.PI)da+=6.283;if(Math.abs(da)<half)dealDamage(e,mul,{status:sk.status})}})}
+ else if(sk.type==="beam"){burst(P.x,P.y,"#fff3b0",30,220);let best=null,bd=340;enemies.forEach(e=>{if(e.dead)return;const dd=Math.hypot(e.x-P.x,e.y-P.y);if(dd<bd){bd=dd;best=e}});if(best){dealDamage(best,mul,{});burst(best.x,best.y,"#ffd968",20,160)}enemies.forEach(e=>{if(!e.dead&&e!==best&&Math.hypot(e.x-P.x,e.y-P.y)<110)dealDamage(e,mul*0.5,{})})}
+ else if(sk.type==="healAoe"){P.hp=Math.min(d.maxHp,P.hp+d.maxHp*0.25);floatTx(P.x,P.y-48,"+回血 25%","#7be382",true);burst(P.x,P.y,"#7be382",24,150);enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<170+e.r)dealDamage(e,mul,{status:"poison"})})}
+ else if(sk.type==="dash"){burst(P.x,P.y,SOULS[S.soul].col,10,120);P.x=clamp(P.x+Math.cos(P.angle)*150,26,WORLD.w-26);P.y=clamp(P.y+Math.sin(P.angle)*150,26,WORLD.h-26);P.iframe=Math.max(P.iframe,0.3);enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<95+e.r)dealDamage(e,mul,{})})}
+ else if(sk.type==="aoeStun"){burst(P.x,P.y,SOULS[S.soul].col,24,170);enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<(sk.r||125)+e.r)dealDamage(e,mul,{status:"root"})})}
+ else if(sk.type==="seed"){if(projs.length<LIMIT.proj)projs.push({x:P.x,y:P.y,vx:Math.cos(P.angle)*400,vy:Math.sin(P.angle)*400,friendly:true,mul,status:"poison",col:"#a3e635",r:8,life:1})}
+ else if(sk.type==="shield"){P.shield=Math.floor(d.maxHp*0.35);floatTx(P.x,P.y-48,"🛡️ 护盾 "+P.shield,"#9be7ff",true);burst(P.x,P.y,"#9be7ff",18,120)}
+ else if(sk.type==="fusion"){hitstopT=0.12;shakeT=0.35;shakeM=7;flashT=0.3;burst(P.x,P.y,SOULS[S.soul].col,40,240);
+  if(S.soul==="sword"){enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<300+e.r)dealDamage(e,mul,{})})}
+  else if(S.soul==="dragon"){enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<260+e.r)dealDamage(e,mul,{status:"burn"})})}
+  else if(S.soul==="vine"){enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<260+e.r)dealDamage(e,mul,{status:"root"})});P.hp=Math.min(d.maxHp,P.hp+d.maxHp*0.2);floatTx(P.x,P.y-52,"🌳 世界树回血 20%","#7be382",true)}
+  else{enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<280+e.r)dealDamage(e,mul,{status:S.soul==="hammer"?"root":"burn"})})}}
+}
+function basicAtk(){if(!P.alive||P.atkCd>0)return;P.atkCd=0.38;P.combo++;P.comboT=3;P.lastLight=P.t;let best=null,bd=86;enemies.forEach(e=>{if(e.dead)return;const dd=Math.hypot(e.x-P.x,e.y-P.y);if(dd<bd+e.r){bd=dd;best=e}});if(best)dealDamage(best,1.0,{});else burst(P.x+Math.cos(P.angle)*30,P.y+Math.sin(P.angle)*30,"#ffffff",3,60)}
+function heavyAtk(){if(!P.alive||P.atkCd>0)return;if(P.stam<30){floatTx(P.x,P.y-44,"体力不足（重击需30）","#ffe9a8");return}P.stam-=30;P.atkCd=0.8;P.combo++;P.comboT=3;
+ const chained=P.t-P.lastLight<0.7;const mul=1.8*(chained?1.3:1);let best=null,bd=104;enemies.forEach(e=>{if(e.dead)return;const dd=Math.hypot(e.x-P.x,e.y-P.y);if(dd<bd+e.r){bd=dd;best=e}});
+ if(best){dealDamage(best,mul,{});if(chained)floatTx(best.x,best.y-52,"连招！重击+30%","#ffd968",true);shakeT=Math.max(shakeT,0.12);shakeM=4}else burst(P.x+Math.cos(P.angle)*36,P.y+Math.sin(P.angle)*36,"#ffd968",5,70)}
+function doDodge(){if(!P.alive||P.dodgeCd>0)return;if(P.stam<15){floatTx(P.x,P.y-44,"体力不足（闪避需15）","#ffe9a8");return}P.stam-=15;P.dodgeCd=1.6;P.iframe=Math.max(P.iframe,0.45);const d=stats();const mx=(joyVec.x||Math.cos(P.angle)),my=(joyVec.y||Math.sin(P.angle));P.x=clamp(P.x+mx*110,30,WORLD.w-30);P.y=clamp(P.y+my*110,30,WORLD.h-30);burst(P.x,P.y,"#9be7ff",8,90)}
+function clamp(v,a,b){return v<a?a:v>b?b:v}
+/* ===== 魂环吸收：站近+按住2秒，受击中断 ===== */
+function tryAbsorbTick(dt){const btn=document.getElementById("absorbBtn");let near=null,nd=1e9;ringsOnGround.forEach(r=>{const dd=Math.hypot(r.x-P.x,r.y-P.y);if(dd<nd){nd=dd;near=r}});
+ if(near&&nd<95&&P.alive){btn.style.display="block"}else{btn.style.display="none";if(chanTarget){chanTarget=null;chanProg=0}}
+ document.getElementById("chanWrap").style.display=chanTarget?"block":"none";
+ if(absorbHeld&&near&&nd<95&&P.alive){if(chanTarget!==near){chanTarget=near;chanProg=0}chanProg+=dt;document.getElementById("chanF").style.width=Math.min(100,chanProg/2*100)+"%";
+  if(chanProg>=2){absorbRing(near);chanTarget=null;chanProg=0;absorbHeld=false}}else if(chanTarget&&!absorbHeld){chanProg=Math.max(0,chanProg-dt*2.2);if(chanProg<=0)chanTarget=null;document.getElementById("chanF").style.width=chanProg/2*100+"%"}}
+function absorbRing(r){const y=r.years;
+ if(y>=10000&&S.lv<30){toast("🔒 万年魂环需要 Lv.30","当前 Lv."+S.lv+"，魂环保留在地上，先升级再来");return}
+ if(y>=1000&&S.lv<10){toast("🔒 千年魂环需要 Lv.10","当前 Lv."+S.lv+"，魂环保留在地上，先升级再来");return}
+ ringsOnGround=ringsOnGround.filter(x=>x!==r);
+ const nr={id:"r"+Date.now()+Math.floor(Math.random()*999),years:y,from:r.from,name:r.from+"魂环",quality:qualityOf(y),enh:0,atk:Math.round(2+y*0.012),hp:Math.round(10+y*0.05),def:Math.round(y*0.004),crit:y>=1000?3:(y>=100?1:0)};
+ S.ringsAbsorbed++;
+ const si=Math.floor(Math.random()*3);S.skillLv[si]++;
+ if(S.rings.length<9){S.rings.push(nr);S.rings.sort((a,b)=>b.years-a.years);
+  toast("🌀 吸收成功："+nr.quality+" · "+ringTier(y).name+"魂环（"+y+"年）",SOULS[S.soul].skills[si].n+" 升至 Lv."+S.skillLv[si]+" · 攻+"+nr.atk+" 血+"+nr.hp)}
+ else{S.ringBag.push(nr);toast("🗄 魂环位已满，存入仓库",nr.name+"（"+y+"年）· 属性面板里可替换装备")}
+ addLog("吸收魂环 "+nr.name+" "+y+"年（"+nr.quality+"）");
+ burst(P.x,P.y,ringTier(y).glow,30,180);renderRingsBar();questCheck();save()}
+/* ===== 更新：固定步长 1/60 + dt钳制（规矩4） ===== */
+function step(dt){if(!started||!S||!S.soul)return;S.playSec+=dt;
+ if(!P.alive){P.respawn-=dt;if(P.respawn<=0){P.alive=true;P.x=1100;P.y=270;fullHeal();
+   if(DUN){DUN=null;toast("🌀 副本挑战失败","已退出副本，可再次挑战")}
+   else if(arenaRef){arenaRef.dead=true;enemies=enemies.filter(x=>x!==arenaRef);arenaRef=null;S.arena.losses++;S.arena.score=Math.max(0,S.arena.score-10);toast("⚔️ 竞技落败","排名分 -10，胜 "+S.arena.wins+" 负 "+S.arena.losses)}
+   else toast("🏫 已在学院复活","")}return}
+ const d=stats();
+ /* 移动 */
+ let mx=joyVec.x,my=joyVec.y;
+ if(keys["arrowleft"]||keys["a"])mx-=1;if(keys["arrowright"]||keys["d"])mx+=1;if(keys["arrowup"]||keys["w"])my-=1;if(keys["arrowdown"]||keys["s"])my+=1;
+ const ml=Math.hypot(mx,my);if(ml>0.12){mx/=Math.max(1,ml);my/=Math.max(1,ml);P.x=clamp(P.x+mx*d.spd*dt,26,WORLD.w-26);P.y=clamp(P.y+my*d.spd*dt,26,WORLD.h-26);P.angle=Math.atan2(my,mx)}
+ /* 学院回血区 */
+ if(CUR_REGION==="academy"||(P.x>880&&P.x<1320&&P.y>120&&P.y<420)){P.hp=Math.min(d.maxHp,P.hp+d.maxHp*0.25*dt);P.mp=Math.min(d.maxMp,P.mp+d.maxMp*0.25*dt)}
+ P.mp=Math.min(d.maxMp,P.mp+(S.soul==="vine"?4.4:2.2)*dt);
+ if(P.poisT>0){P.poisT-=dt;P.hp-=3.5*dt;if(Math.random()<dt*2)floatTx(P.x,P.y-46,"☠ 中毒","#a3e635");if(P.hp<=0&&P.alive){P.alive=false;P.respawn=3;P.hp=0;toast("☠️ 中毒倒下","3 秒后在学院复活");chanTarget=null}}
+ P.atkCd-=dt;P.dodgeCd-=dt;P.iframe-=dt;for(let i=0;i<cds.length;i++)cds[i]-=dt;
+ P.t+=dt;P.hitT-=dt;if(shakeT>0)shakeT-=dt;if(flashT>0)flashT-=dt;
+ P.stam=clamp(P.stam+(P.guarding?-14:20)*dt,0,100);if(P.guarding&&P.stam<=0)P.guarding=false;
+ if(P.comboT>0){P.comboT-=dt;if(P.comboT<=0)P.combo=0}
+ P.state=P.guarding?"格挡":(P.hitT>0?"受击":(P.iframe>0.2?"闪避":(Math.hypot(joyVec.x,joyVec.y)>0.12||keys["w"]||keys["a"]||keys["s"]||keys["d"]?"移动":"待机")));
+ P.domainCd-=dt;if(P.domainT>0){P.domainT-=dt;
+  if(S.soul==="vine")P.hp=Math.min(stats().maxHp,P.hp+stats().maxHp*0.015*dt);
+  if(S.soul==="bell")P.mp=Math.min(stats().maxMp,P.mp+10*dt);
+  if(S.soul==="bow")P.atkCd-=dt*0.6;
+  if(S.soul==="dragon"){P.domainTick+=dt;if(P.domainTick>=1){P.domainTick=0;enemies.forEach(e=>{if(!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<215){e.hp-=Math.floor(stats().atk*0.35);e.hitT=0.12;floatTx(e.x,e.y-e.r-6,"🔥 领域灼烧","#ffb37a");if(e.hp<=0&&!e.dead)killEnemy(e)}})}}}
+ P.fly=CUR_REGION==="sky";
+ WX.t-=dt;if(WX.t<=0){WX.type=["晴","雨","雾","雷暴","晴"][Math.floor(Math.random()*5)];WX.t=90;toast("🌦️ 天气变化："+WX.type,WX.type==="雷暴"?"雷暴会随机劈落天雷助战":WX.type==="雾"?"浓雾降低魂兽警戒范围":WX.type==="雨"?"雨水使魂兽移速略降":"万里晴空")}
+ if(WX.type==="雷暴"){WX.tick+=dt;if(WX.tick>=6){WX.tick=0;const alive=enemies.filter(e=>!e.dead);if(alive.length){const v=alive[Math.floor(Math.random()*alive.length)];v.hp-=Math.floor(stats().atk*1.2);v.hitT=0.15;flashT=Math.max(flashT,0.12);floatTx(v.x,v.y-v.r-10,"⚡ 天雷！","#ffe95d",true);if(v.hp<=0)killEnemy(v)}}}
+ S.wbT=(S.wbT||0)+dt;if(!WB&&S.wbT>360&&CUR_REGION!=="academy"){S.wbT=0;spawnWorldBoss()}
+ if(DUN&&DUN.diffMul&&DUN.diffMul!==1)enemies.forEach(e=>{if(!e._dscaled){e._dscaled=1;e.hp=e.maxHp=Math.floor(e.maxHp*DUN.diffMul);e.atk=Math.floor(e.atk*Math.sqrt(DUN.diffMul))}});
+ S.eventT=(S.eventT||0)+dt;
+ if(!EVT&&S.eventT>200){S.eventT=0;startEvent()}
+ if(EVT){EVT.t-=dt;const evEl=document.getElementById("eventTx");if(evEl)evEl.textContent=EVT.type==="riot"?("🌋 魂兽暴动：剩余 "+EVT.left+" 只 · "+Math.ceil(EVT.t)+"s"):("✨ 稀有魂兽出现！击杀必掉好环+魂骨 · "+Math.ceil(EVT.t)+"s");
+  if(EVT.t<=0){if(EVT.ref&&!EVT.ref.dead){EVT.ref.dead=true;enemies=enemies.filter(x=>x!==EVT.ref)}EVT=null;if(evEl)evEl.textContent="";toast("⌛ 动态事件结束","未完成，无奖励")}}
+ /* 敌人 */
+ if(!DUN&&Math.random()<dt*0.7)spawnAmbient();
+ for(const e of enemies){if(e.dead)continue;e.atkCd-=dt;e.hitT-=dt;
+  for(const dot of e.dots){dot.t-=dt;e.hp-=dot.dps*dt;if(e.hp<=0&&!e.dead)killEnemy(e)}
+  e.dots=e.dots.filter(x=>x.t>0);if(e.dead)continue;
+  if(e.stun>0){e.stun-=dt;continue}
+  const dd=Math.hypot(P.x-e.x,P.y-e.y);const sp=e.spd*(e.slow>0?0.55:1)*(WX.type==="雨"||WX.type==="雷暴"?0.9:1)*(P.domainT>0&&S.soul==="vine"&&Math.hypot(P.x-e.x,P.y-e.y)<215?0.6:1);e.slow-=dt;
+  if(e.kind!=="boss"&&e.kind!=="mentor"&&e.kind!=="duelist"&&!e.dunBoss){
+   if((e.kind==="bat"||e.kind==="spider")&&e.hp<e.maxHp*0.25&&dd>1){e.x-=(P.x-e.x)/dd*sp*1.15*dt;e.y-=(P.y-e.y)/dd*sp*1.15*dt;continue}
+   if(!e.aggro){if(dd<(e.kind==="bear"?230:380)*(WX.type==="雾"?0.7:1)){e.aggro=true}else{e.patT=(e.patT||0)-dt;if(e.patT<=0){e.patT=2+Math.random()*2;e.patA=Math.random()*6.283}
+    if(e.kind!=="bear"){e.x=clamp(e.x+Math.cos(e.patA)*sp*0.3*dt,30,WORLD.w-30);e.y=clamp(e.y+Math.sin(e.patA)*sp*0.3*dt,540,WORLD.h-30)}
+    continue}}}
+
+  if(e.kind==="duelist"){e.skillT=(e.skillT||5)-dt;if(e.skillT<=0){e.skillT=7;if(dd<130){hurtPlayer(e.atk*1.5);floatTx(P.x,P.y-56,"AI魂师释放魂技!","#e9b0ff");burst(P.x,P.y,"#c084fc",10,110)}}}
+  if(e.kind==="boss"||e.dunBoss){e.teleT=(e.teleT===undefined?4:e.teleT)-dt;if(e.teleT<=0){e.teleT=5.5;telegraphs.push({x:P.x,y:P.y,r:95,t:1.2,dmg:e.atk*1.6});floatTx(e.x,e.y-e.r-34,"⚠️ 预警：范围技能","#ff8a8a",true)}}
+  if(e.kind==="boss"){ /* BOSS三阶段：66%冲锋 / 33%召唤 / 30%狂暴 */
+   if(e.phase===0&&e.hp<e.maxHp*0.66){e.phase=1;toast("👹 犀王狂怒冲锋！","小心它的直线冲撞")}
+   if(e.phase===1&&e.hp<e.maxHp*0.33){e.phase=2;toast("👹 犀王召唤狼群！","")}
+   if(e.phase===2)e.sumT-=dt;if(e.phase===2&&e.sumT<=0){e.sumT=6;for(let k=0;k<2;k++)spawnEnemy("wolf",e.x+60-k*120,e.y+50)}
+   const enr=e.hp<e.maxHp*0.3?1.45:1;
+   if(dd>e.r+30){e.x+=(P.x-e.x)/dd*sp*enr*dt;e.y+=(P.y-e.y)/dd*sp*enr*dt}
+   else if(e.atkCd<=0){e.atkCd=1.1;hurtPlayer(e.atk*enr)}
+  }else if(BEASTS[e.kind].ranged){ if(dd>230){e.x+=(P.x-e.x)/dd*sp*dt;e.y+=(P.y-e.y)/dd*sp*dt}else if(e.atkCd<=0){e.atkCd=1.8;if(projs.length<LIMIT.proj)projs.push({x:e.x,y:e.y,vx:(P.x-e.x)/dd*260,vy:(P.y-e.y)/dd*260,friendly:false,mul:1,dmg:e.atk,poison:BEASTS[e.kind].poison?1:0,col:BEASTS[e.kind].poison?"#a3e635":"#c084fc",r:6,life:1.6})}}
+  else{ if(dd>e.r+22){e.x+=(P.x-e.x)/dd*sp*dt;e.y+=(P.y-e.y)/dd*sp*dt;e.tB+=dt;if(e.kind==="bat"&&dd>1){const wob=Math.sin(e.tB*6)*52;e.x+=(-(P.y-e.y)/dd)*wob*dt;e.y+=((P.x-e.x)/dd)*wob*dt}}else if(e.atkCd<=0){e.atkCd=0.9;hurtPlayer(e.atk*(e.kind==="wolf"&&enemies.some(o=>o!==e&&o.kind==="wolf"&&!o.dead&&Math.hypot(o.x-e.x,o.y-e.y)<130)?1.25:1))} }
+ }
+ enemies=enemies.filter(e=>!e.dead);
+ /* 投射物 */
+ for(const pr of projs){pr.x+=pr.vx*dt;pr.y+=pr.vy*dt;pr.life-=dt;
+  if(pr.friendly){for(const e of enemies){if(!e.dead&&Math.hypot(e.x-pr.x,e.y-pr.y)<e.r+pr.r){dealDamage(e,pr.mul,{status:pr.status});pr.life=0;break}}}
+  else if(Math.hypot(P.x-pr.x,P.y-pr.y)<22){hurtPlayer(pr.dmg);if(pr.poison)P.poisT=3;pr.life=0}}
+ projs=projs.filter(p=>p.life>0&&p.x>0&&p.y>0&&p.x<WORLD.w&&p.y<WORLD.h);
+ for(const pt of parts){pt.t+=dt;pt.x+=pt.vx*dt;pt.y+=pt.vy*dt;pt.vx*=0.92;pt.vy*=0.92}
+ parts=parts.filter(p=>p.t<p.life);
+ for(const f of floats){f.t+=dt;f.y-=34*dt}
+ floats=floats.filter(f=>f.t<0.95);
+ for(const r of ringsOnGround)r.t+=dt;
+ for(const tg of telegraphs){tg.t-=dt;if(tg.t<=0){shakeT=Math.max(shakeT,0.25);shakeM=6;burst(tg.x,tg.y,"#ff5d5d",18,170);if(Math.hypot(P.x-tg.x,P.y-tg.y)<tg.r)hurtPlayer(tg.dmg)}}
+ // AI 队友
+ if(companions.length){companions.forEach((c,ci)=>{c.cd-=dt;let tgt=null,td=340;enemies.forEach(e=>{if(e.dead)return;const dd=Math.hypot(e.x-c.x,e.y-c.y);if(dd<td){td=dd;tgt=e}});
+  const gx=P.x+(ci===0?-48:48),gy=P.y+36;
+  if(tgt){if(td>58){c.x+=(tgt.x-c.x)/td*175*dt;c.y+=(tgt.y-c.y)/td*175*dt}
+   if(c.cd<=0&&td<74){c.cd=0.8;const dmg=Math.max(1,Math.floor(stats().atk*0.45*(0.9+Math.random()*0.2)-tgt.def*0.5));tgt.hp-=dmg;tgt.hitT=0.12;floatTx(tgt.x,tgt.y-tgt.r-8,"-"+dmg,"#a8e063");burst(tgt.x,tgt.y,"#a8e063",3,60);if(tgt.hp<=0&&!tgt.dead)killEnemy(tgt)}}
+  else{c.x+=(gx-c.x)*Math.min(1,dt*3);c.y+=(gy-c.y)*Math.min(1,dt*3)}})}
+ telegraphs=telegraphs.filter(t=>t.t>0);
+ for(const c of (CHESTS[CUR_REGION]||[])){if(S.chests.includes(c.id))continue;if(Math.hypot(P.x-c.x,P.y-c.y)<48){S.chests.push(c.id);const rm3=REGIONS[CUR_REGION].mul;const g=Math.floor(80*rm3);S.gold+=g;const mk=["fang","vine","silk","paw","wing"][Math.floor(Math.random()*5)];S.mats[mk]=(S.mats[mk]||0)+3;S.matsTotal+=3;let extra="材料 "+MAT_NAMES[mk]+"×3";if(Math.random()<0.3){const it=makeEquip(false);S.bag.push(it);extra+=" · 装备 "+it.name}toast("📦 探索宝箱！金币 +"+g,extra);addLog("开启宝箱 "+c.id+" 金币+"+g);save()}}
+ for(const nd of (NODES[CUR_REGION]||[])){nodeTimers[nd.id]=Math.max(0,(nodeTimers[nd.id]||0)-dt);if(nodeTimers[nd.id]<=0&&Math.hypot(P.x-nd.x,P.y-nd.y)<44){nodeTimers[nd.id]=60;const mk=["fang","vine","silk","paw","wing"][Math.floor(Math.random()*5)];S.mats[mk]=(S.mats[mk]||0)+2;S.matsTotal+=2;floatTx(nd.x,nd.y-24,"采集 +2 "+MAT_NAMES[mk],"#b6f2b6");burst(nd.x,nd.y,"#7be382",8,80)}}
+ if(DUN){if(!enemies.some(x=>!x.dead)){nextDungeonWave()}}
+ tryAbsorbTick(dt);
+ /* BOSS血条 */
+ if(bossRef&&!bossRef.dead){document.getElementById("bossBar").style.display="block";document.getElementById("bossF").style.width=Math.max(0,bossRef.hp/bossRef.maxHp*100)+"%"}
+ cam.x=P.x-W/2;cam.y=P.y-H/2;
+ saveTimer-=dt;if(saveTimer<=0){saveTimer=5;save()}
+ updateHud(d)}
+/* ===== 渲染 ===== */
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle=(THEMES[CUR_REGION]||THEMES.forest).g2;ctx.fillRect(0,0,W,H);const shx=shakeT>0?(Math.random()*2-1)*shakeM:0,shy=shakeT>0?(Math.random()*2-1)*shakeM:0;ctx.drawImage(bg,-cam.x+shx,-cam.y+shy);
+ ctx.save();ctx.translate(-cam.x+shx,-cam.y+shy);
+ /* 魂环掉落 */
+ for(const r of ringsOnGround){const t=ringTier(r.years);const pu=1+Math.sin(r.t*4)*0.12;ctx.strokeStyle=t.col;ctx.lineWidth=5;ctx.globalAlpha=0.92;ctx.beginPath();ctx.arc(r.x,r.y,26*pu,0,7);ctx.stroke();ctx.globalAlpha=0.3;ctx.beginPath();ctx.arc(r.x,r.y,36*pu,0,7);ctx.stroke();ctx.globalAlpha=1;ctx.font="bold 12px sans-serif";ctx.textAlign="center";ctx.fillStyle="#fff";ctx.fillText(r.years+"年 · "+r.from,r.x,r.y-46)}
+ /* 敌人 */
+ for(const e of enemies){const bt=BEASTS[e.kind];ctx.font=(e.r*1.7)+"px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
+  if(e.hitT>0){ctx.globalAlpha=0.65}ctx.fillText(bt.ic,e.x,e.y);ctx.globalAlpha=1;
+  if(e.dots.some(x=>x.type==="burn"))ctx.fillText("🔥",e.x+e.r,e.y-e.r);
+  if(e.stun>0)ctx.fillText("💫",e.x,e.y-e.r-14);
+  ctx.fillStyle="#00000088";ctx.fillRect(e.x-26,e.y-e.r-16,52,6);ctx.fillStyle=e.kind==="boss"?"#ff5d5d":"#ff9a5d";ctx.fillRect(e.x-26,e.y-e.r-16,52*Math.max(0,e.hp/e.maxHp),6);
+  ctx.font="bold 11px sans-serif";ctx.fillStyle=(e.elite||e.rare)?"#ffd968":"#fff";ctx.fillText(e.name||bt.name,e.x,e.y-e.r-24)}
+ /* 玩家 */
+ if(P.alive){const so=SOULS[S.soul];/* 已吸收魂环绕身 */
+  for(let i=0;i<S.rings.length;i++){const t=ringTier(S.rings[i].years);const a=performance.now()/900+i*(6.283/Math.max(1,S.rings.length));ctx.strokeStyle=t.col;ctx.lineWidth=3;ctx.globalAlpha=0.75;ctx.beginPath();ctx.ellipse(P.x,P.y+16,30+i*3.4,9+i*1.2,a*0.15,0,7);ctx.stroke();ctx.globalAlpha=1}
+  companions.forEach(c=>{ctx.font="30px sans-serif";ctx.textAlign="center";ctx.fillText(c.ic,c.x,c.y);ctx.font="10px sans-serif";ctx.fillStyle="#a8e063";ctx.fillText(c.name+"（队友）",c.x,c.y-26)});
+  if(P.domainT>0){ctx.fillStyle=SOULS[S.soul].col+"2e";ctx.beginPath();ctx.arc(P.x,P.y,215,0,7);ctx.fill();ctx.strokeStyle=SOULS[S.soul].col;ctx.globalAlpha=0.5;ctx.stroke();ctx.globalAlpha=1}
+  if(P.fly){ctx.font="24px sans-serif";ctx.fillText("🪽",P.x-32,P.y-12);ctx.fillText("🪽",P.x+32,P.y-12)}
+  if(S.mounts&&S.mounts.cur){const mm=MOUNTS.find(x=>x.id===S.mounts.cur);if(mm){ctx.font="24px sans-serif";ctx.fillText(mm.ic,P.x-36,P.y+24)}}
+  ctx.strokeStyle=(S.appear&&S.appear.aura)||"#ffd968";ctx.lineWidth=2.5;ctx.globalAlpha=0.8;ctx.beginPath();ctx.arc(P.x,P.y,40,0,7);ctx.stroke();ctx.globalAlpha=1;
+  ctx.font="40px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("🧍",P.x,P.y);
+  ctx.font="24px sans-serif";ctx.fillText(so.ic,P.x+Math.cos(P.angle)*26,P.y+Math.sin(P.angle)*26-4);
+  if(P.iframe>0&&Math.floor(performance.now()/70)%2===0){ctx.globalAlpha=0.4;ctx.fillText("🛡️",P.x,P.y-30);ctx.globalAlpha=1}
+  if(P.shield>0){ctx.strokeStyle="#6ee7ff";ctx.lineWidth=2;ctx.globalAlpha=0.75;ctx.beginPath();ctx.arc(P.x,P.y,34,0,7);ctx.stroke();ctx.globalAlpha=1}
+  ctx.font="bold 12px sans-serif";ctx.fillStyle="#ffeeb0";ctx.fillText(so.name+" · Lv."+S.lv+(S.evo>0?" · 进化"+S.evo+"阶":""),P.x,P.y-40)}
+ for(const c of (CHESTS[CUR_REGION]||[])){if(S.chests.includes(c.id))continue;ctx.font="30px sans-serif";ctx.textAlign="center";ctx.fillText("📦",c.x,c.y);ctx.font="bold 11px sans-serif";ctx.fillStyle="#ffd968";ctx.fillText("探索宝箱",c.x,c.y-24)}
+ for(const nd of (NODES[CUR_REGION]||[])){if((nodeTimers[nd.id]||0)>0)continue;ctx.font="24px sans-serif";ctx.textAlign="center";ctx.fillText(nd.ic,nd.x,nd.y)}
+ for(const tg of telegraphs){ctx.strokeStyle="#ff5d5d";ctx.lineWidth=3;ctx.globalAlpha=0.85;ctx.beginPath();ctx.arc(tg.x,tg.y,tg.r,0,7);ctx.stroke();ctx.globalAlpha=0.25;ctx.fillStyle="#ff5d5d";ctx.beginPath();ctx.arc(tg.x,tg.y,tg.r*(1.2-tg.t/1.2),0,7);ctx.fill();ctx.globalAlpha=1}
+ /* 投射物/粒子/飘字 */
+ for(const pr of projs){ctx.fillStyle=pr.col;ctx.beginPath();ctx.arc(pr.x,pr.y,pr.r,0,7);ctx.fill()}
+ for(const pt of parts){ctx.globalAlpha=1-pt.t/pt.life;ctx.fillStyle=pt.col;ctx.beginPath();ctx.arc(pt.x,pt.y,pt.sz,0,7);ctx.fill();ctx.globalAlpha=1}
+ ctx.textAlign="center";for(const f of floats){ctx.globalAlpha=1-f.t;ctx.font=(f.big?"bold 19px":"bold 14px")+" sans-serif";ctx.fillStyle=f.col;ctx.fillText(f.tx,f.x,f.y);ctx.globalAlpha=1}
+ ctx.restore();
+ if(flashT>0){ctx.fillStyle="rgba(255,255,240,"+(flashT*0.9)+")";ctx.fillRect(0,0,W,H)}
+ if(WX.type==="雨"&&!LOWQ){ctx.strokeStyle="rgba(160,200,255,0.35)";ctx.beginPath();const tt=performance.now()/8;for(let i=0;i<36;i++){const rx=(i*97+tt*3)%W,ry=(i*61+tt*7)%H;ctx.moveTo(rx,ry);ctx.lineTo(rx-3,ry+11)}ctx.stroke()}
+ if(WX.type==="雾"){ctx.fillStyle="rgba(205,215,225,0.20)";ctx.fillRect(0,0,W,H)}
+ if(WX.type==="雷暴"){ctx.fillStyle="rgba(20,20,50,0.10)";ctx.fillRect(0,0,W,H)}
+ if(lowQ){/* 低画质提示角标 */}
+}
+function loop(ts){requestAnimationFrame(loop);if(!lastTs)lastTs=ts;let dt=(ts-lastTs)/1000;lastTs=ts;if(dt>0.05)dt=0.05;acc+=dt;
+ fpsCnt++;fpsT+=dt;if(fpsT>=1){fpsNow=fpsCnt;fpsCnt=0;fpsT=0;lowQ=fpsNow<45}
+ if(hitstopT>0){hitstopT-=dt;acc=0;if(started)draw();return}
+ while(acc>=1/60){step(1/60);acc-=1/60}
+ if(started)draw()}
+requestAnimationFrame(loop);
+/* ===== HUD ===== */
+const $=id=>document.getElementById(id);
+function updateHud(d){d=d||stats();$("hpF").style.width=clamp(P.hp/d.maxHp*100,0,100)+"%";$("mpF").style.width=clamp(P.mp/d.maxMp*100,0,100)+"%";$("xpF").style.width=clamp(S.exp/expNeed(S.lv)*100,0,100)+"%";
+ $("lvTx").textContent="Lv."+S.lv+" "+titleOf(S.lv);$("goldTx").textContent=S.gold;$("coreTx").textContent=S.cores;$("hpTx").textContent="❤️"+Math.ceil(P.hp)+"/"+Math.floor(d.maxHp)+" 💧"+Math.floor(P.mp)+"/"+Math.floor(d.maxMp)+" ⚡"+Math.floor(P.stam)+" · "+P.state+(P.combo>2?" · 连招×"+P.combo:"");
+ const _sp=storyProg();const _wx=document.getElementById("wxTx");if(_wx)_wx.textContent="🌦️ 天气："+WX.type+(CUR_REGION==="sky"?" · ☁️ 御空飞行中":"");
+ const _db=document.getElementById("btnDomain");if(_db)_db.textContent=(!S.god||S.god.rank<1)?"🌐 领域🔒":(P.domainT>0?"🌐 领域 "+Math.ceil(P.domainT)+"s":(P.domainCd>0?"🌐 领域("+Math.ceil(P.domainCd)+")":"🌐 领域"));
+ const _stEl=document.getElementById("storyTx");if(_stEl)_stEl.textContent=(S.story&&S.story.ch<CHAPTERS.length)?("📖 "+CHAPTERS[S.story.ch].t+"｜"+CHAPTERS[S.story.ch].obj.label+" "+_sp.cur+"/"+_sp.need+(_sp.done?" ✅ 世界面板领奖":"")):"📖 主线五章已全部完成";
+ /* 技能CD遮罩 */
+ document.querySelectorAll("[data-skill]").forEach(b=>{const i=+b.dataset.skill;if(isNaN(i))return;const ov=b.querySelector(".cdov");if(!ov)return;const lockTx=i===2&&S.rings.length<1?"🔒":(i===3&&S.rings.length<2?"🔒2环":(i===4&&S.lv<3?"🔒Lv3":(i===5&&S.evo<2?"🔒进化2阶":"")));if(lockTx){ov.style.display="flex";ov.textContent=lockTx;b.classList.add("lock")}else if(cds[i]>0){ov.style.display="flex";ov.textContent=cds[i].toFixed(1);b.classList.remove("lock")}else{ov.style.display="none";b.classList.remove("lock")}});
+ const ao=document.querySelector('[data-act="atk"] .cdov');if(ao)ao.style.display=P.atkCd>0?"flex":"none"}
+function renderRingsBar(){const bar=$("ringsBar");bar.innerHTML="";for(let i=0;i<9;i++){const div=document.createElement("div");div.className="ringDot";if(S.rings[i]){const t=ringTier(S.rings[i].years);div.style.borderColor=t.col;div.style.boxShadow="0 0 8px "+t.glow}bar.appendChild(div)}}
+/* ===== 输入：摇杆+按钮+键盘（禁用原生弹窗，规矩） ===== */
+const joy=$("joy"),knob=$("joyKnob");let joyId=null;
+function joyMove(e){const r=joy.getBoundingClientRect();let dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);const m=Math.hypot(dx,dy),max=40;if(m>max){dx*=max/m;dy*=max/m}knob.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;joyVec.x=dx/max;joyVec.y=dy/max}
+joy.addEventListener("pointerdown",e=>{joyId=e.pointerId;joy.setPointerCapture(joyId);joyMove(e)});
+joy.addEventListener("pointermove",e=>{if(e.pointerId===joyId)joyMove(e)});
+const joyEnd=e=>{if(e.pointerId===joyId){joyId=null;joyVec.x=0;joyVec.y=0;knob.style.transform="translate(-50%,-50%)"}};
+joy.addEventListener("pointerup",joyEnd);joy.addEventListener("pointercancel",joyEnd);
+document.querySelectorAll("[data-skill]").forEach(b=>{b.addEventListener("pointerdown",e=>{e.preventDefault();const i=+b.dataset.skill;if(!isNaN(i))castSkill(i)})});
+document.querySelector('[data-act="atk"]').addEventListener("pointerdown",e=>{e.preventDefault();basicAtk()});
+document.querySelector('[data-act="heavy"]').addEventListener("pointerdown",e=>{e.preventDefault();heavyAtk()});
+const gBtn=document.querySelector('[data-act="guard"]');
+gBtn.addEventListener("pointerdown",e=>{e.preventDefault();P.guarding=true});
+["pointerup","pointerleave","pointercancel"].forEach(ev=>gBtn.addEventListener(ev,()=>{P.guarding=false}));
+document.querySelector('[data-act="dodge"]').addEventListener("pointerdown",e=>{e.preventDefault();doDodge()});
+const ab=$("absorbBtn");
+ab.addEventListener("pointerdown",e=>{e.preventDefault();absorbHeld=true});
+["pointerup","pointerleave","pointercancel"].forEach(ev=>ab.addEventListener(ev,()=>{absorbHeld=false}));
+window.addEventListener("keydown",e=>{keys[e.key.toLowerCase()]=true;if(e.key==="1")castSkill(0);if(e.key==="2")castSkill(1);if(e.key==="3")castSkill(2);if(e.key==="4")castSkill(3);if(e.key==="5")castSkill(4);if(e.key==="6")castSkill(5);if(e.key==="j")basicAtk();if(e.key==="k")heavyAtk();if(e.key==="l")P.guarding=true;if(e.key===" "){e.preventDefault();doDodge()}if(e.key==="f")absorbHeld=true});
+window.addEventListener("keyup",e=>{keys[e.key.toLowerCase()]=false;if(e.key==="f")absorbHeld=false;if(e.key==="l")P.guarding=false});
+/* ===== 面板与按钮 ===== */
+$("btnBoss").addEventListener("click",()=>{if(bossRef&&!bossRef.dead){toast("👹 犀王就在巢穴","地图中上方金字处");P.x=bossRef.x;return}if(S.lv<5){toast("🔒 Lv.5 后可挑战犀王","先猎杀魂兽升级，当前 Lv."+S.lv);return}bossRef=spawnEnemy("boss",1180,760);toast("👹 裂地犀王出现！","击杀必掉千年以上魂环")});
+$("btnHeal").addEventListener("click",()=>{P.x=1100;P.y=270;toast("🏫 回到学院","站在学院范围内自动回满状态")});
+const SLOT_NAMES={weapon:"武器",armor:"防具",trinket:"饰品"};
+function fmtItem(it){return it.ic+" "+it.name+"（"+it.rarity+(it.enh?" +"+it.enh:"")+"）攻+"+it.atk+" 血+"+it.hp+" 防+"+it.def+(it.crit?" 暴+"+it.crit+"%":"")}
+function ringRowHtml(r,mode){const t=ringTier(r.years);const e=ringEff(r);const btns=mode==="eq"
+ ?`<button class="mini" data-act2="ringEnh" data-v="${r.id}">强化+${(r.enh||0)+1}（核1+金30）</button><button class="mini gh" data-act2="ringOff" data-v="${r.id}">卸下</button>`
+ :`<button class="mini" data-act2="ringOn" data-v="${r.id}">装备</button><button class="mini gh" data-act2="ringSell" data-v="${r.id}">出售</button>`;
+ return `<div class="ringRow"><div class="rd" style="background:${t.col};box-shadow:0 0 8px ${t.glow}"></div><div style="flex:1"><b>${r.years}年</b> ${r.quality} · ${r.name||r.from}${r.enh?" · 强化+"+r.enh:""}<br><span style="color:#a9c8a9">攻+${e.atk} 血+${e.hp} 防+${e.def}${e.crit?" 暴击+"+e.crit+"%":""} · 来源 ${r.from}</span></div><div>${btns}</div></div>`}
+function renderPanel(){if(!S||!S.soul)return;const d=stats();const eq=equipStats();
+ const rows=[["武魂",SOULS[S.soul].name+"（"+SOULS[S.soul].tag+"）· 进阶 "+S.adv+" 阶"],["被动",PASSIVES[S.soul].n+"："+PASSIVES[S.soul].desc],["等级 / 称号","Lv."+S.lv+" · "+titleOf(S.lv)],["生命",Math.floor(d.maxHp)+(P.shield>0?"（护盾 "+Math.floor(P.shield)+"）":"")],["魂力",Math.floor(d.maxMp)],["攻击",Math.floor(d.atk)],["防御",Math.floor(d.def)],["装备加成","攻+"+eq.atk+" 血+"+eq.hp+" 防+"+eq.def+" 暴+"+eq.crit+"%"],["暴击率",d.crit.toFixed(0)+"%（无上限）"],["暴击伤害","+"+d.critD+"%"],["吸血",d.lifesteal+"%"],["移速",Math.floor(d.spd)],["闪避",d.dodge+"%"],["魂技等级",SOULS[S.soul].skills.map((s,i)=>s.n+" Lv."+(S.skillLv[i]||1)).join(" · ")],["击杀 / 犀王",S.kills+" / "+S.bossKills],["兽核 💠",S.cores],["游戏时长",Math.floor(S.playSec/60)+" 分钟"]];
+ $("attrGrid").innerHTML=rows.map(r=>`<span>${r[0]}</span><b>${r[1]}</b>`).join("");
+ $("advTx").textContent=S.adv;
+ $("advBox").innerHTML=S.adv>=5?"<p style='font-size:12.5px;color:#a9c8a9'>已达最高 5 阶，全属性 +30%。</p>":`<p style="font-size:12.5px;color:#c4dcc4">下一阶全属性 +6% · 消耗兽核 ${2+S.adv*2}（现有 ${S.cores}）<button class="mini" data-act2="adv" ${S.cores<2+S.adv*2?"disabled":""}>⬆ 进阶</button></p>`;
+ $("equipBox").innerHTML=["weapon","armor","trinket"].map(k=>{const it=S.equip[k];return `<div class="ringRow"><div style="flex:1"><b>${SLOT_NAMES[k]}</b>：${it?fmtItem(it):"<span style='color:#a9c8a9'>未装备</span>"}</div>${it?`<div><button class="mini" data-act2="eqEnhE" data-v="${k}">强化</button><button class="mini gh" data-act2="eqOff" data-v="${k}">卸下</button></div>`:""}</div>`}).join("");
+ $("bagBox").innerHTML=S.bag.length?S.bag.map((it,i)=>`<div class="ringRow"><div style="flex:1">${fmtItem(it)}</div><div><button class="mini" data-act2="eqOn" data-v="${i}">装备</button><button class="mini gh" data-act2="eqEnh" data-v="${i}">强化</button><button class="mini gh" data-act2="eqSell" data-v="${i}">出售</button></div></div>`).join(""):"<p style='font-size:12.5px;color:#a9c8a9'>背包是空的。打怪有概率掉装备，精英/BOSS 掉得更好。</p>";
+ const mats=Object.entries(S.mats).filter(x=>x[1]>0);
+ $("matBox").innerHTML=(mats.length?mats.map(x=>MAT_NAMES[x[0]]+" ×"+x[1]).join(" · "):"暂无材料")+"<span style='color:#a9c8a9'>（累计 "+S.matsTotal+"）</span>";
+ $("ringCnt").textContent=S.rings.length;
+ $("ringList").innerHTML=S.rings.length?S.rings.map(r=>ringRowHtml(r,"eq")).join(""):"<p style='font-size:12.5px;color:#a9c8a9'>还没有魂环。击杀魂兽掉环，走到光环边按住「吸收魂环」2 秒（千年环需 Lv.10、万年环需 Lv.30）。</p>";
+ $("ringBagBox").innerHTML=S.ringBag.length?S.ringBag.map(r=>ringRowHtml(r,"bag")).join(""):"<p style='font-size:12.5px;color:#a9c8a9'>仓库空。魂环位满时新环自动存这里，也可手动卸下存放。</p>";
+ $("taskBox").innerHTML=TASKS.map(t=>{const p=Math.min(taskProg(t),t.need);const got=S.claimed.includes(t.id);return `<div class="ringRow"><div style="flex:1"><b>${t.name}</b> · ${t.desc}<br><span style="color:#a9c8a9">进度 ${p}/${t.need} · 奖励 ${t.rew.gold?"金币+"+t.rew.gold+" ":""}${t.rew.cores?"兽核+"+t.rew.cores:""}</span></div><div>${got?"✅ 已领取":(p>=t.need?`<button class="mini" data-act2="task" data-v="${t.id}">领取</button>`:"进行中")}</div></div>`}).join("");
+ $("logBox").innerHTML=(S.log&&S.log.length)?S.log.map(x=>"· "+x).join("<br>"):"暂无记录";
+ /* V8 坐骑 */
+ $("mountBox").innerHTML=MOUNTS.map(m=>{const owned=S.mounts.owned.includes(m.id),cur=S.mounts.cur===m.id;return `<div class="ringRow"><div style="flex:1"><b>${m.ic} ${m.n}</b> · ${m.desc}<br><span style="color:#a9c8a9">${owned?"已收藏":("价格："+(m.gold?"金币"+m.gold:"")+(m.cores?"兽核"+m.cores:""))}</span></div><div>${cur?"骑乘中":(owned?`<button class="mini" data-act2="mountRide" data-v="${m.id}">骑乘</button>`:`<button class="mini" data-act2="mountBuy" data-v="${m.id}">购买</button>`)}</div></div>`}).join("")+(S.mounts.cur?'<p style="margin-top:4px"><button class="mini gh" data-act2="mountOff">卸下坐骑</button></p>':"");
+ /* V7 神位 */
+ const gr=S.god.rank,nxR=GOD_REQ[gr+1];const dunClears=Object.values(S.dungeons).reduce((a,x)=>a+(x.clears||0),0);
+ $("godBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">当前神位：<b>${GOD_RANKS[gr]}</b>（全属性 +${gr*12}%）· 世界首领击杀 ${S.wbossKills||0} 次<br>领域：${gr>=1?DOMAINS[S.soul].n+"（"+DOMAINS[S.soul].desc+"）· 点顶部「🌐 领域」展开，耗魂力 40":"🔒 晋升半神后解锁"}</p>`
+ +(nxR?`<p style="font-size:12.5px;color:#c4dcc4;margin-top:4px">晋升「${GOD_RANKS[gr+1]}」：Lv.${nxR.lv}（${S.lv>=nxR.lv?"✅":"❌ "+S.lv}）· 进化 ${nxR.evo} 阶（${S.evo>=nxR.evo?"✅":"❌ "+S.evo}）${nxR.boss?` · 犀王×${nxR.boss}（${S.bossKills>=nxR.boss?"✅":"❌ "+S.bossKills}）`:""}${nxR.rings?` · 累计吸收环×${nxR.rings}（${S.ringsAbsorbed>=nxR.rings?"✅":"❌ "+S.ringsAbsorbed}）`:""}${nxR.dun?` · 副本通关×${nxR.dun}（${dunClears>=nxR.dun?"✅":"❌ "+dunClears}）`:""} · 兽核 ${nxR.cores}（${S.cores>=nxR.cores?"✅":"❌ "+S.cores}）· 试炼 ${S.god.trialWon?"✅ 已通过":"❌ 未通过"}<br><button class="mini" data-act2="godTrial">⚔️ 挑战神位试炼</button> <button class="mini" data-act2="godUp">👑 晋升</button></p>`:'<p style="font-size:12.5px;color:#ffd968">已达神王之境。</p>');
+ /* V6 图鉴 */
+ $("codexBox").innerHTML=Object.keys(CODEX).map(k=>{const b=BEASTS[k];if(!b)return "";const n=(S.codex&&S.codex[k])||0;const c=CODEX[k];return n>0?`<div class="ringRow"><div style="flex:1">${b.ic} <b>${b.name}</b> · 已击杀 ${n}<br><span style="color:#a9c8a9;font-size:12px">栖息：${c.hab}｜${c.desc}<br>掉落：${c.drop}</span></div></div>`:`<div class="ringRow"><div style="flex:1">❔ <b>未遭遇的魂兽</b><br><span style="color:#a9c8a9;font-size:12px">栖息：${c.hab}（击杀后解锁图鉴）</span></div></div>`}).join("");
+ /* V4 魂骨/进化/外观 */
+ const fmtBone=b=>BONE_SETS[b.set].ic+" "+b.name+"（"+b.quality+(b.enh?" +"+b.enh:"")+"）攻+"+b.atk+" 血+"+b.hp+" 防+"+b.def+" 暴+"+b.crit+"% 速+"+b.spd;
+ const cnt=d.boneCnt||{};
+ $("boneBox").innerHTML="<p style='font-size:12px;color:#a9c8a9'>套装：🌪️疾风 "+(cnt.wind||0)+"/6 · 🪨磐石 "+(cnt.rock||0)+"/6 · 🔥烈焰 "+(cnt.flame||0)+"/6（同套 2件/4件/6件 逐档激活，6件有专属效果）</p>"+BONE_SLOTS.map(k=>{const b=S.boneEquip[k];return `<div class="ringRow"><div style="flex:1"><b>${BONE_SLOT_NAMES[k]}骨</b>：${b?fmtBone(b):"<span style='color:#a9c8a9'>未装备</span>"}</div>${b?`<div><button class="mini" data-act2="boneEnhE" data-v="${k}">强化</button><button class="mini gh" data-act2="boneOff" data-v="${k}">卸下</button></div>`:""}</div>`}).join("");
+ $("boneBagBox").innerHTML=S.bones.length?S.bones.map((b,i)=>`<div class="ringRow"><div style="flex:1">${fmtBone(b)}</div><div><button class="mini" data-act2="boneOn" data-v="${i}">装备</button><button class="mini gh" data-act2="boneEnh" data-v="${i}">强化</button><button class="mini gh" data-act2="boneDis" data-v="${i}">分解</button></div></div>`).join(""):"<p style='font-size:12.5px;color:#a9c8a9'>暂无魂骨。BOSS 60%、精英 25%、普通怪 5% 掉落，稀有魂兽必掉。</p>";
+ const nx=EVO_REQ[S.evo+1];
+ $("evoBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">当前 <b>${S.evo} 阶 · ${EVO_STAGES[S.evo]}</b>：全属性 +${S.evo*10}% · 技能 +${S.evo*12}%${S.evo>=2?" · 🌟 融合技已解锁":""}</p>`+(nx?`<p style="font-size:12.5px;color:#c4dcc4;margin-top:4px">下一阶 ${EVO_STAGES[S.evo+1]}：需 Lv.${nx.lv}（${S.lv>=nx.lv?"✅":"❌ "+S.lv}）· 材料 ${nx.mats}（现有 ${Object.values(S.mats).reduce((a,b)=>a+b,0)} ${Object.values(S.mats).reduce((a,b)=>a+b,0)>=nx.mats?"✅":"❌"}）${nx.cores?` · 兽核 ${nx.cores}（${S.cores>=nx.cores?"✅":"❌ "+S.cores}）`:""}${nx.rings?` · 累计吸收魂环 ${nx.rings}（${S.ringsAbsorbed>=nx.rings?"✅":"❌ "+S.ringsAbsorbed}）`:""}${nx.boss?` · 犀王击杀 ${nx.boss}（${S.bossKills>=nx.boss?"✅":"❌ "+S.bossKills}）`:""} <button class="mini" data-act2="evo">🌟 进化</button></p>`:"<p style='font-size:12.5px;color:#ffd968'>已达真身最高阶。</p>");
+ $("appearBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">角色光环配色：${["#ffd968","#c084fc","#6ee7ff","#f0abfc"].map(c=>`<button class="mini" data-act2="aura" data-v="${c}" style="background:${c}">&nbsp;</button>`).join(" ")} · 特效画质：<button class="mini" data-act2="qual">${S.quality==="low"?"低（省电）":"高"}</button><span style="color:#a9c8a9">（低画质粒子减半）</span></p>`;
+ $("panelOvl").classList.add("show")}
+$("btnStoryNext").addEventListener("click",()=>{storyIdx++;showStoryLine()});
+function doChoice(which){const ch=CHAPTERS[S.story.ch];if(!ch||!ch.choice)return;const c=which==="a"?ch.choice.a:ch.choice.b;if(c.bonus.cores)S.cores+=c.bonus.cores;if(c.bonus.gold)S.gold+=c.bonus.gold;S.choices.push(ch.t+"："+c.label);S.story.choiceDone=true;$("choiceBox").style.display="none";$("btnStoryNext").style.display="";$("storyOvl").classList.remove("show");toast("📖 你的选择："+c.label,c.result);addLog("剧情选择 "+c.label);save()}
+$("btnChoiceA").addEventListener("click",()=>doChoice("a"));$("btnChoiceB").addEventListener("click",()=>doChoice("b"));
+$("btnPanel").addEventListener("click",renderPanel);
+$("panelOvl").addEventListener("click",e=>{const b=e.target.closest("[data-act2]");if(!b||b.disabled||!S)return;const a=b.dataset.act2,v=b.dataset.v;
+ if(a==="adv"){const cost=2+S.adv*2;if(S.cores>=cost&&S.adv<5){S.cores-=cost;S.adv++;toast("⬆ 武魂进阶 "+S.adv+" 阶","全属性 +6% 已生效");addLog("武魂进阶至 "+S.adv+" 阶")}}
+ else if(a==="ringEnh"){const r=S.rings.find(x=>x.id===v);if(r&&(r.enh||0)<10&&S.cores>=1&&S.gold>=30){S.cores--;S.gold-=30;r.enh=(r.enh||0)+1;addLog("魂环强化 +"+r.enh+"："+r.name)}else toast("⚠️ 强化不了","需要兽核×1 + 金币30，最高 +10")}
+ else if(a==="ringOff"){const i=S.rings.findIndex(x=>x.id===v);if(i>=0){S.ringBag.push(S.rings.splice(i,1)[0]);renderRingsBar()}}
+ else if(a==="ringOn"){const i=S.ringBag.findIndex(x=>x.id===v);if(i>=0){if(S.rings.length>=9){toast("🔒 魂环位已满 9","先卸下一枚再装备");save();renderPanel();return}S.rings.push(S.ringBag.splice(i,1)[0]);S.rings.sort((x,y)=>y.years-x.years);renderRingsBar()}}
+ else if(a==="ringSell"){const i=S.ringBag.findIndex(x=>x.id===v);if(i>=0){const r=S.ringBag.splice(i,1)[0];const g=15+Math.floor(r.years/50);S.gold+=g;addLog("出售魂环 "+r.name+" +"+g+"金币")}}
+ else if(a==="eqOn"){const it=S.bag[+v];if(it){const old=S.equip[it.slot];S.equip[it.slot]=it;S.bag.splice(+v,1);if(old)S.bag.push(old);addLog("装备 "+it.name)}}
+ else if(a==="eqOff"){const it=S.equip[v];if(it){S.equip[v]=null;S.bag.push(it)}}
+ else if(a==="eqEnh"||a==="eqEnhE"){const it=a==="eqEnh"?S.bag[+v]:S.equip[v];if(it){const cost=40+(it.enh||0)*30;if(S.gold>=cost){S.gold-=cost;it.enh=(it.enh||0)+1;addLog("装备强化 +"+it.enh+"："+it.name)}else toast("⚠️ 金币不足","强化需要 "+cost+" 金币")}}
+ else if(a==="eqSell"){const it=S.bag[+v];if(it){S.bag.splice(+v,1);const g=20+({"普通":0,"稀有":30,"史诗":70,"传说":130}[it.rarity]||0)+(it.enh||0)*10;S.gold+=g;addLog("出售装备 "+it.name+" +"+g+"金币")}}
+ else if(a==="task"){const t=TASKS.find(x=>x.id===v);if(t&&!S.claimed.includes(t.id)&&taskProg(t)>=t.need){S.claimed.push(t.id);if(t.rew.gold)S.gold+=t.rew.gold;if(t.rew.cores)S.cores+=t.rew.cores;toast("📜 奖励已领取："+t.name,(t.rew.gold?"金币+"+t.rew.gold+" ":"")+(t.rew.cores?"兽核+"+t.rew.cores:""));addLog("领取任务奖励 "+t.name);questCheck()}}
+ /* V8 坐骑动作 */
+ if(a==="mountBuy"){const m=MOUNTS.find(x=>x.id===v);if(m&&!S.mounts.owned.includes(m.id)){if(m.gold&&S.gold<m.gold)toast("⚠️ 金币不足","购买 "+m.n+" 需要金币 "+m.gold);else if(m.cores&&S.cores<m.cores)toast("⚠️ 兽核不足","购买 "+m.n+" 需要兽核 "+m.cores);else{if(m.gold)S.gold-=m.gold;if(m.cores)S.cores-=m.cores;S.mounts.owned.push(m.id);if(!S.mounts.cur)S.mounts.cur=m.id;toast("🐴 收藏坐骑："+m.n,m.desc+" · 已自动骑乘");addLog("购买坐骑 "+m.n)}}}
+ else if(a==="mountRide"){S.mounts.cur=v;toast("🐴 已骑乘","移速加成生效")}
+ else if(a==="mountOff"){S.mounts.cur=null}
+ /* V7 神位动作 */
+ if(a==="godTrial"){if(!enemies.some(e=>e.trial)){const tr=spawnEnemy("boss",P.x+260,P.y);tr.trial=true;tr.aggro=true;tr.name="👑 神位试炼守卫";tr.hp=tr.maxHp=Math.floor(tr.maxHp*(1+S.god.rank*0.8));toast("⚔️ 神位试炼开始","击败试炼守卫即可获得晋升资格")}}
+ else if(a==="godUp"){const nxR2=GOD_REQ[S.god.rank+1];if(nxR2){const dunC=Object.values(S.dungeons).reduce((x,y)=>x+(y.clears||0),0);const ok=S.lv>=nxR2.lv&&S.evo>=nxR2.evo&&S.bossKills>=(nxR2.boss||0)&&S.ringsAbsorbed>=(nxR2.rings||0)&&dunC>=(nxR2.dun||0)&&S.cores>=nxR2.cores&&S.god.trialWon;
+  if(ok){S.cores-=nxR2.cores;S.god.rank++;S.god.trialWon=false;toast("👑 神位晋升："+GOD_RANKS[S.god.rank],"全属性 +12%"+(S.god.rank===1?" · 🌐 领域技能已解锁！":""));addLog("神位晋升 "+GOD_RANKS[S.god.rank])}else toast("⚠️ 晋升条件未满足","看神位栏的 ❌ 项与试炼状态")}}
+ /* V4 动作 */
+ if(a==="boneOn"){const b=S.bones[+v];if(b){const old=S.boneEquip[b.slot];S.boneEquip[b.slot]=b;S.bones.splice(+v,1);if(old)S.bones.push(old);addLog("装备魂骨 "+b.name)}}
+ else if(a==="boneOff"){const b=S.boneEquip[v];if(b){S.boneEquip[v]=null;S.bones.push(b)}}
+ else if(a==="boneEnh"||a==="boneEnhE"){const b=a==="boneEnh"?S.bones[+v]:S.boneEquip[v];if(b){const cost=40+(b.enh||0)*25;if(S.cores>=1&&S.gold>=cost){S.cores--;S.gold-=cost;b.enh=(b.enh||0)+1;addLog("魂骨强化 +"+b.enh+"："+b.name)}else toast("⚠️ 强化需要兽核×1 + 金币"+cost,"")}}
+ else if(a==="boneDis"){const b=S.bones[+v];if(b){S.bones.splice(+v,1);const g={"普通":1,"稀有":2,"史诗":3,"传说":5}[b.quality]||1;S.cores+=g;addLog("分解魂骨 "+b.name+" 兽核+"+g)}}
+ else if(a==="evo"){const nx=EVO_REQ[S.evo+1];if(nx){const mt=Object.values(S.mats).reduce((x,y)=>x+y,0);if(S.lv>=nx.lv&&mt>=nx.mats&&S.cores>=nx.cores&&S.bossKills>=nx.boss&&S.ringsAbsorbed>=nx.rings){let need=nx.mats;for(const k of Object.keys(S.mats)){while(S.mats[k]>0&&need>0){S.mats[k]--;need--}if(!need)break}S.cores-=nx.cores;S.evo++;toast("🌟 武魂进化 "+S.evo+" 阶 · "+EVO_STAGES[S.evo],"全属性 +10% · 技能 +12%"+(S.evo>=2?" · 🌟 融合技已解锁！":""));addLog("武魂进化至 "+S.evo+" 阶 "+EVO_STAGES[S.evo])}else toast("⚠️ 进化条件未满足","看进化栏的 ❌ 项")}}
+ else if(a==="aura"){S.appear.aura=v}
+ else if(a==="qual"){S.quality=S.quality==="low"?"high":"low";LOWQ=S.quality==="low"}
+ save();renderPanel()});
+$("btnCraft").addEventListener("click",()=>{if(!S)return;const tot=Object.values(S.mats).reduce((x,y)=>x+y,0);if(tot<5){toast("⚠️ 材料不足 5 个","打怪掉落材料，当前共 "+tot+" 个");return}let need=5;for(const k of Object.keys(S.mats)){while(S.mats[k]>0&&need>0){S.mats[k]--;need--}if(!need)break}const it=makeEquip(false);S.bag.push(it);toast("🔨 合成成功："+it.name,it.rarity+" · 去背包装备它");addLog("材料合成装备 "+it.name);save();renderPanel()});
+/* ===== V3 世界：区域/学院/宗门/副本/竞技/天赋 ===== */
+function enterRegion(key){const rg=REGIONS[key];if(!rg||!rg.need())return;CUR_REGION=key;S.region=key;S.visited=S.visited||[];if(!S.visited.includes(key))S.visited.push(key);paintBg();enemies=[];projs=[];telegraphs=[];bossRef=null;document.getElementById("bossBar").style.display="none";DUN=null;
+ P.x=1100;P.y=(key==="academy"||key==="forest")?270:800;for(let i=0;i<4;i++)spawnAmbient();
+ toast(rg.ic+" 进入 "+rg.name,rg.desc);addLog("进入区域 "+rg.name);save();$("worldOvl").classList.remove("show")}
+function startDungeon(id){const cfg=DUNGEONS.find(d=>d.id===id);if(!cfg||S.lv<cfg.needLv||DUN)return;const DF={"普通":{m:1,r:1},"困难":{m:1.8,r:2},"噩梦":{m:2.6,r:3.5}}[S.dunDiffSel||"普通"];DUN={cfg,wave:-1,t0:S.playSec,diff:S.dunDiffSel||"普通",diffMul:DF.m,rMul:DF.r};S.challenge.runs++;enemies=[];projs=[];telegraphs=[];P.x=1100;P.y=800;toast("🌀 进入副本："+cfg.name,"共 "+cfg.waves.length+" 波 · 终局首领有预警范围技");$("worldOvl").classList.remove("show");nextDungeonWave()}
+function nextDungeonWave(){if(!DUN)return;DUN.wave++;
+ if(DUN.wave>=DUN.cfg.waves.length){finishDungeon();return}
+ const w=DUN.cfg.waves[DUN.wave];toast("🌊 副本第 "+(DUN.wave+1)+"/"+DUN.cfg.waves.length+" 波","消灭全部敌人推进");
+ w.forEach((k,i)=>{if(k==="boss"){bossRef=spawnEnemy("boss",1100,600)}
+  else if(k==="ELITE"){const pool=REGIONS[CUR_REGION].beasts.length?REGIONS[CUR_REGION].beasts:["bear","golem"];const e=spawnEnemy(pool[Math.floor(Math.random()*pool.length)],1030+i*90,640);e.elite=true;e.hp=e.maxHp=Math.floor(e.maxHp*3);e.atk*=1.5;e.dunBoss=true;e.name="副本首领·"+e.name.replace(/^精英·/,"")}
+  else spawnEnemy(k,950+i*85,630+(i%2)*100)})}
+function finishDungeon(){const cfg=DUN.cfg;const secs=Math.max(1,Math.round(S.playSec-DUN.t0));const rating=secs<90?"S":secs<160?"A":"B";const RORD={S:3,A:2,B:1};
+ const rec=S.dungeons[cfg.id]||{clears:0,best:"",first:false};rec.clears++;if(!rec.best||RORD[rating]>RORD[rec.best])rec.best=rating;
+ let bonus="";if(!rec.first){rec.first=true;S.cores+=3;const it=makeEquip(true);S.bag.push(it);bonus="首通：兽核+3 · 史诗装备 "+it.name}
+ S.dungeons[cfg.id]=rec;const gR=Math.round(cfg.gold*(DUN.rMul||1)),cR=Math.round(cfg.cores*(DUN.rMul||1));S.gold+=gR;S.cores+=cR;const bk=cfg.id+"|"+(DUN.diff||"普通");if(!S.challenge.best[bk]||secs<S.challenge.best[bk])S.challenge.best[bk]=secs;
+ toast("🏆 副本通关！评级 "+rating+"（"+secs+" 秒）","金币+"+gR+" 兽核+"+cR+(bonus?" · "+bonus:" · 重刷奖励已到账"));
+ addLog("副本 "+cfg.name+" 通关 评级"+rating);DUN=null;save()}
+function talentAvail(){const spent=(S.talents.atk||0)+(S.talents.def||0)+(S.talents.ctrl||0);return Math.floor(S.lv/5)+(S.adv||0)-spent}
+function renderWorld(){if(!S||!S.soul)return;const td=new Date().toDateString();
+ $("regionBox").innerHTML=WORLDS.map(w=>`<button class="mini" data-act3="world" data-v="${w.id}">${w.id===(S.worldTab||worldOf(CUR_REGION))?"📍":""}${w.name}</button>`).join(" ")+'<div style="height:6px"></div>'+Object.entries(REGIONS).filter(([k])=>worldOf(k)===(S.worldTab||worldOf(CUR_REGION))).map(([k,r])=>{const un=r.need();const ch=(CHESTS[k]||[]).filter(c=>S.chests.includes(c.id)).length,ct=(CHESTS[k]||[]).length;
+  return `<div class="ringRow"><div style="flex:1"><b>${r.ic} ${r.name}</b>${CUR_REGION===k?" · 当前":""}<br><span style="color:#a9c8a9">${r.desc}<br>探索击杀 ${S.explore[k]||0} · 宝箱 ${ch}/${ct} · 强度×${r.mul}${un?"":" · 🔒 "+r.needTx}</span></div><div>${CUR_REGION===k?"📍 在此":`<button class="mini" data-act3="region" data-v="${k}" ${un?"":"disabled"}>进入</button>`}</div></div>`}).join("");
+ const trained=S.trainDay.d===td?S.trainDay.n:0;
+ $("academyBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">学院等级 <b>Lv.${S.academyLv}</b> · 导师挑战胜利 ${S.mentorWins} 次（每次 +兽核3，学院等级=胜利数，最高5）</p>
+ <p style="margin-top:6px"><button class="mini" data-act3="train" ${S.gold<30||trained>=5?"disabled":""}>📚 训练 +45经验（金币30 · 今日 ${trained}/5）</button>
+ <button class="mini gh" data-act3="mentor">🧙 挑战导师分身</button></p>`;
+ if(!S.sect){$("sectBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">尚未加入宗门（单机模拟）：</p><p style="margin-top:6px">${SECTS.map(n=>`<button class="mini" data-act3="joinSect" data-v="${n}">加入 ${n}</button>`).join(" ")}</p>`}
+ else{const slv=Math.floor(S.contrib/100)+1;const dk=S.dayKills.d===td?S.dayKills.n:0;
+  $("sectBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4"><b>${S.sect}</b> · 宗门等级 Lv.${slv} · 我的贡献 ${S.contrib}</p>
+  <p style="margin-top:6px"><button class="mini" data-act3="donGold" ${S.gold<100?"disabled":""}>捐赠金币100（贡献+10）</button>
+  <button class="mini gh" data-act3="donMat">捐赠材料5（贡献+15）</button>
+  <button class="mini gh" data-act3="sectTask" ${dk<10||S.sectDay===td?"disabled":""}>每日任务：今日击杀 ${dk}/10（贡献+20 金币+50）</button></p>
+  <p style="margin-top:6px;font-size:12.5px;color:#a9c8a9">宗门商店（花贡献兑换）：</p>
+  <p style="margin-top:4px"><button class="mini" data-act3="shopCores" ${S.contrib<30?"disabled":""}>兽核×2（30）</button>
+  <button class="mini" data-act3="shopEquip" ${S.contrib<80?"disabled":""}>史诗装备（80）</button>
+  <button class="mini" data-act3="shopRing" ${S.contrib<50?"disabled":""}>随机魂环强化+1（50）</button></p>`}
+ $("dungeonBox").innerHTML='<p style="font-size:12px;color:#c4dcc4">难度：'+["普通","困难","噩梦"].map(d=>'<button class="mini" data-act3="dunDiff" data-v="'+d+'">'+(d===(S.dunDiffSel||"普通")?"📍":"")+d+'</button>').join(" ")+'（困难 敌×1.8 奖励×2 · 噩梦 敌×2.6 奖励×3.5）<br>📜 挑战记录：出战 '+S.challenge.runs+' 次 · 副本阵亡 '+S.challenge.deaths+' 次'+Object.entries(S.challenge.best).map(([k,v])=>' · '+k+' 最快 '+v+' 秒').join('')+'</p>'+DUNGEONS.map(d=>{const rec=S.dungeons[d.id];return `<div class="ringRow"><div style="flex:1"><b>${d.name}</b><br><span style="color:#a9c8a9">${d.waves.length} 波 · 奖励 金币${d.gold}+兽核${d.cores}${rec?` · 已通关 ${rec.clears} 次 · 最佳 ${rec.best}`:" · 未通关（首通另有史诗装备）"}</span></div><div><button class="mini" data-act3="dungeon" data-v="${d.id}" ${S.lv<d.needLv||DUN?"disabled":""}>${S.lv<d.needLv?"🔒 Lv."+d.needLv:"进入"}</button></div></div>`}).join("")+(DUN?`<p style="font-size:12px;color:#ffb3b3">副本进行中：${DUN.cfg.name} 第 ${DUN.wave+1} 波（死亡即失败退出）</p>`:"");
+ $("arenaBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">战绩 胜 ${S.arena.wins} · 负 ${S.arena.losses} · 排名分 <b>${S.arena.score}</b>（单机 AI 对手，非真实玩家对战；胜 +25 分与金币，负 -10 分）</p><p style="margin-top:6px"><button class="mini" data-act3="arena" ${arenaRef?"disabled":""}>⚔️ 挑战 AI 魂师</button></p>`;
+ const av=talentAvail();
+ $("talentBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">可用天赋点 <b>${av}</b>（每 5 级 +1、武魂每进阶 +1）</p>
+ ${[["atk","输出流：攻击 +3%/点"],["def","坦克流：防御 +2、生命 +30/点"],["ctrl","控制流：冷却 -2%、定身延长/点"]].map(x=>`<div class="ringRow"><div style="flex:1">${x[1]} · 已点 <b>${S.talents[x[0]]||0}</b></div><div><button class="mini" data-act3="tal" data-v="${x[0]}" ${av<=0?"disabled":""}>+1 点</button></div></div>`).join("")}
+ <p style="margin-top:6px"><button class="mini gh" data-act3="respec" ${S.gold<100?"disabled":""}>洗点（金币100，返还全部天赋点）</button></p>`;
+ /* V6 剧情 */
+ const sp2=storyProg();
+ $("storyBox").innerHTML=CHAPTERS.map((c,i)=>{const st=i<S.story.ch?"✅ 已完成":(i===S.story.ch?"▶ 进行中 "+sp2.cur+"/"+sp2.need:"🔒 未解锁");return `<div class="ringRow"><div style="flex:1"><b>${c.t}</b> · ${c.obj.label}<br><span style="color:#a9c8a9;font-size:12px">${st} · 奖励 金币${c.rew.gold} · 兽核${c.rew.cores}</span></div>${i===S.story.ch?`<div>${S.story.seen!==i?`<button class="mini" data-act3="storyPlay">▶ 剧情</button>`:""}${sp2.done?`<button class="mini" data-act3="storyClaim">🎁 领奖</button>`:""}</div>`:""}</div>`}).join("")+(S.story.ch>=CHAPTERS.length?'<p style="font-size:12.5px;color:#ffd968">主线五章已全部完成，自由探索继续。</p>':"");
+ /* V5 分区 */
+ checkSeason();
+ const sTasks=[
+  {k:"d:"+todayStr(),label:"每日狩猎：今日击杀 20 只魂兽",prog:S.dayKills.d===todayStr()?S.dayKills.n:0,need:20,pts:20},
+  {k:"w:"+S.seasonSid,label:"赛季副本：任意副本通关 1 次",prog:Object.values(S.dungeons).reduce((a,x)=>a+(x.clears||0),0),need:1,pts:30},
+  {k:"s:"+S.seasonSid,label:"赛季狩猎：累计击杀犀王 1 次",prog:S.bossKills,need:1,pts:50}];
+ const claimed=k=>S.seasonClaimed.includes(k);
+ /* V8 商会与成就 */
+ const eqBoneIds=new Set(Object.values(S.boneEq||{}));
+ const sellBones=S.bones.filter(b=>!eqBoneIds.has(b.id)).slice(0,5);
+ $("marketBox").innerHTML='<p style="font-size:12px;color:#ffd968">本地商会模拟：与 NPC 交易（非玩家市场），价格每日浮动，成交时校验资产、单次成交不可重复。</p>'
+ +Object.keys(MAT_NAMES).filter(k=>(S.mats[k]||0)>0).map(k=>'<div class="ringRow"><div style="flex:1"><b>'+MAT_NAMES[k]+'</b> ×'+S.mats[k]+'<br><span style="color:#a9c8a9">今日价 '+matPrice(k)+' 金币/个</span></div><div><button class="mini" data-act3="sellMat1" data-v="'+k+'">卖 1 个</button> <button class="mini" data-act3="sellMatAll" data-v="'+k+'">全卖</button></div></div>').join("")
+ +(Object.keys(MAT_NAMES).every(k=>!(S.mats[k]>0))?'<p style="font-size:12px;color:#a9c8a9">暂无可卖材料（打怪掉落）</p>':"")
+ +'<div class="ringRow"><div style="flex:1"><b>兽核兑换</b><br><span style="color:#a9c8a9">今日价 '+corePrice()+' 金币 / 颗</span></div><div><button class="mini" data-act3="buyCore">买 1 颗</button></div></div>'
+ +sellBones.map(b=>'<div class="ringRow"><div style="flex:1"><b>'+b.name+'</b><br><span style="color:#a9c8a9">未装备魂骨 · 商会价 '+(BONE_PRICE[b.quality]||40)+' 金币</span></div><div><button class="mini" data-act3="sellBone" data-v="'+b.id+'">卖出</button></div></div>').join("");
+ $("achvBox").innerHTML=ACHV.map(a=>{const done=a.cond(),got=S.achvClaimed.includes(a.id);return '<div class="ringRow"><div style="flex:1"><b>'+a.n+'</b><br><span style="color:#a9c8a9">'+a.tx+' · 奖励 '+(a.rew.gold?"金币"+a.rew.gold:"")+(a.rew.cores?"兽核"+a.rew.cores:"")+'</span></div><div>'+(got?"✅ 已领":(done?'<button class="mini" data-act3="achvClaim" data-v="'+a.id+'">领取</button>':"未达成"))+'</div></div>'}).join("");
+ $("seasonBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">第 <b>${S.seasonSid}</b> 赛季（本地）· 还剩 ${seasonDaysLeft()} 天 · 赛季积分 <b>${S.seasonPts}</b>${S.seasonHistory.length?` · 上赛季 ${S.seasonHistory[S.seasonHistory.length-1].pts} 分已归档`:""}</p>`
+  +sTasks.map(t=>`<div class="ringRow"><div style="flex:1">${t.label}（${Math.min(t.prog,t.need)}/${t.need}）· +${t.pts} 分</div>${claimed(t.k)?"<span style='color:#8fce8f'>已领取</span>":`<button class="mini" data-act3="season" data-v="${t.k}" ${t.prog>=t.need?"":"disabled"}>领取</button>`}</div>`).join("")
+  +[{k:"tier100",need:100,label:"积分 100：史诗装备 ×1"},{k:"tier250",need:250,label:"积分 250：兽核 +6"},{k:"tier500",need:500,label:"积分 500：随机魂环强化 +1"}].map(t=>`<div class="ringRow"><div style="flex:1">🎁 ${t.label}</div>${claimed(t.k)?"<span style='color:#8fce8f'>已领取</span>":`<button class="mini" data-act3="season" data-v="${t.k}" ${S.seasonPts>=t.need?"":"disabled"}>领取</button>`}</div>`).join("")
+  +(()=>{const ai=[["云澈",0],["唐小舞影",1],["霍小浩",2],["宁小荣",3],["戴小白",4]].map(([n,seed])=>({n,p:300+((S.seasonSid*97+seed*131)%700)}));ai.push({n:"你（"+titleOf(S.lv)+")",p:S.seasonPts});ai.sort((a,b)=>b.p-a.p);return `<p style="font-size:12px;color:#a9c8a9;margin-top:6px">本地赛季榜（AI 为本地模拟数据，非真实玩家）：<br>${ai.map((x,i)=>`${i+1}. ${x.n} · ${x.p} 分`).join("<br>")}</p>`})();
+ $("teamBox").innerHTML=S.teamDay===todayStr()?'<p style="font-size:12.5px;color:#c4dcc4">今日已挑战（每日 1 次，明天再来）。</p>':`<p style="font-size:12.5px;color:#c4dcc4">带上 2 名 AI 队友（🐰小舞影 · 🦊云澈）讨伐强化犀王，奖励金币+300 · 兽核+4，每日 1 次。</p><button class="mini" data-act3="teamStart">👥 开始团队挑战</button>`;
+ $("netBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">🔴 <b>未部署服务器：真实联机未实现。</b>当前为单机版 + 联机接口规范（房间 create/join/sync 协议已预留，关键结算需服务端校验）。宗门/竞技/赛季榜均为本地模拟，界面已逐项标注，不冒充真人。</p><button class="mini" data-act3="netTest">🔍 运行本地自检</button>${netTestResult?`<p style="font-size:12px;color:#a9c8a9;margin-top:4px">${netTestResult}</p>`:""}`;
+ $("devBox").innerHTML=`<p style="font-size:12.5px;color:#c4dcc4">账号 <b>${S.account.id}</b>（建号 ${S.account.created||"-"}）· 存档带签名校验+自动备份<br>倍率配置（本地工具，即时生效）：经验 <button class="mini" data-act3="devExp">×${S.devCfg.exp}</button> 金币 <button class="mini" data-act3="devGold2">×${S.devCfg.gold}</button> 魂骨掉率 <button class="mini" data-act3="devDrop">×${S.devCfg.drop}</button><br>
+ <button class="mini" data-act3="devGrantGold">💰 发金币 +1000（两步确认）</button> <button class="mini" data-act3="devGrantCore">💠 发兽核 +10（两步确认）</button><br>
+ <button class="mini gh" data-act3="devBak">🗄️ 手动备份存档</button> <button class="mini gh" data-act3="devRestore">♻️ 从手动备份恢复（两步确认）</button><br>
+ <span style="color:#a9c8a9;font-size:12px">变更日志：V1 原型 → V2 养成 → V3 大世界 → V4 战斗革新 → V5 运营基础。回滚 = 恢复备份或打开旧版文件（存档互通）。</span></p>`
+  +(S.audit.length?`<p style="font-size:12px;color:#a9c8a9;margin-top:4px">审计日志（最近）:<br>${S.audit.slice(0,5).map(a=>"· "+a.t+" "+a.act).join("<br>")}</p>`:"");
+ $("ledgerBox").innerHTML=S.ledger.length?S.ledger.slice(0,10).map(l=>`<div class="ringRow"><div style="flex:1">${l.t}</div><div>金币 ${l.g>=0?"+":""}${l.g} · 兽核 ${l.c>=0?"+":""}${l.c}（余额 金${l.gold}/核${l.cores}）</div></div>`).join(""):'<p style="font-size:12.5px;color:#a9c8a9">暂无流水（金币/兽核发生变化并存档后自动记录）。</p>';
+ $("worldOvl").classList.add("show")}
+$("btnDomain").addEventListener("click",()=>{if(!started)return;if(!S.god||S.god.rank<1){toast("🔒 领域未解锁","神位晋升至「半神」后解锁领域技能");return}if(P.domainT>0||P.domainCd>0)return;if(P.mp<40){toast("⚠️ 展开领域需要魂力 40","");return}P.mp-=40;P.domainT=12;P.domainCd=30;toast("🌐 "+DOMAINS[S.soul].n+" 展开！",DOMAINS[S.soul].desc+" · 持续 12 秒");burst(P.x,P.y,SOULS[S.soul].col,30,210)});
+const _vcBtn=document.querySelector('[data-act4="validateCfg"]');if(_vcBtn)_vcBtn.addEventListener("click",()=>{const errs=validateConfigs();const rp=document.getElementById("cfgReport");if(rp)rp.textContent=errs.length?("❌ 配置校验未通过：\n"+errs.join("\n")):"✅ 全部配置校验通过（武魂技能数/被动、魂兽数值、区域引用、章节目标类型、装备ID唯一、副本引用）\n📋 内容模板（改配置即可扩展，不动核心代码）：\n新魂兽 BEASTS.新id={name,ic,hp,atk,def,spd,exp,gold,ringMin,ringMax,r}\n新区域 REGIONS.新id={name,ic,mul,beasts:[魂兽id],need,needTx,desc}\n新副本 DUNGEONS.push({id,name,needLv,waves:[[魂兽id]],gold,cores,desc})";toast("🧪 配置校验完成",errs.length?errs.length+" 处问题，看开发者区报告":"全部通过")});
+const _stBtn=document.querySelector('[data-act4="spawnTest"]');if(_stBtn)_stBtn.addEventListener("click",()=>{const t=spawnEnemy("wolf",P.x+160,P.y);t.name="🧫 配置测试兽";t.aggro=true;toast("🧫 已召唤配置测试兽","由配置驱动生成的测试敌人")});
+$("btnWorld").addEventListener("click",renderWorld);
+$("btnCloseWorld").addEventListener("click",()=>$("worldOvl").classList.remove("show"));
+$("worldOvl").addEventListener("click",e=>{const b=e.target.closest("[data-act3]");if(!b||b.disabled||!S)return;const a=b.dataset.act3,v=b.dataset.v;const td=new Date().toDateString();
+  if(a==="world"){S.worldTab=v;renderWorld();save();return}
+  else if(a==="dunDiff"){S.dunDiffSel=v;renderWorld();save();return}
+  else if(a==="sellMat1"||a==="sellMatAll"){const n=a==="sellMatAll"?(S.mats[v]||0):1;if(n>0&&(S.mats[v]||0)>=n){S.mats[v]-=n;const g=matPrice(v)*n;S.gold+=g;addLog("商会卖出 "+MAT_NAMES[v]+"×"+n+" 金币+"+g)}else toast("⚠️ 材料不足","");renderWorld();save();return}
+  else if(a==="buyCore"){const p=corePrice();if(S.gold>=p){S.gold-=p;S.cores++;addLog("商会买入兽核 金币-"+p)}else toast("⚠️ 金币不足","买 1 颗兽核需要 "+p+" 金币");renderWorld();save();return}
+  else if(a==="sellBone"){const bi=S.bones.findIndex(b=>b.id===v);const eqIds2=new Set(Object.values(S.boneEq||{}));if(bi>=0&&!eqIds2.has(v)){const b=S.bones[bi];S.bones.splice(bi,1);const g=BONE_PRICE[b.quality]||40;S.gold+=g;addLog("商会卖出魂骨 "+b.name+" 金币+"+g)}renderWorld();save();return}
+  else if(a==="achvClaim"){const ac=ACHV.find(x=>x.id===v);if(ac&&ac.cond()&&!S.achvClaimed.includes(v)){S.achvClaimed.push(v);if(ac.rew.gold)S.gold+=ac.rew.gold;if(ac.rew.cores)S.cores+=ac.rew.cores;toast("🏅 成就达成："+ac.n,"奖励已到账");addLog("成就领取 "+ac.n)}renderWorld();save();return}
+ if(a==="region"){enterRegion(v);return}
+ else if(a==="train"){if(S.trainDay.d!==td)S.trainDay={d:td,n:0};if(S.gold>=30&&S.trainDay.n<5){S.gold-=30;S.trainDay.n++;gainExp(45);addLog("学院训练 +45经验（今日"+S.trainDay.n+"/5）")}}
+ else if(a==="mentor"){if(enemies.some(x=>x.kind==="mentor")){toast("🧙 导师分身就在附近","先打赢它再来");return}const m=spawnEnemy("mentor",P.x+120,P.y+40);m.hp=m.maxHp=Math.floor(m.maxHp*(1+S.academyLv*0.35));m.atk*=1+S.academyLv*0.15;toast("🧙 导师分身出现！","战胜奖励：兽核+3 · 学院等级提升");$("worldOvl").classList.remove("show");save();return}
+ else if(a==="joinSect"){S.sect=v;S.contrib=0;toast("🏯 已加入 "+v,"单机宗门：捐赠攒贡献，商店兑换奖励");addLog("加入宗门 "+v)}
+ else if(a==="donGold"){if(S.gold>=100){S.gold-=100;S.contrib+=10;addLog("宗门捐赠金币 贡献+10")}}
+ else if(a==="donMat"){let tot=Object.values(S.mats).reduce((x,y)=>x+y,0);if(tot>=5){let need=5;for(const k of Object.keys(S.mats)){while(S.mats[k]>0&&need>0){S.mats[k]--;need--}if(!need)break}S.contrib+=15;addLog("宗门捐赠材料 贡献+15")}else toast("⚠️ 材料不足 5 个","")}
+ else if(a==="sectTask"){const dk=S.dayKills.d===td?S.dayKills.n:0;if(dk>=10&&S.sectDay!==td){S.sectDay=td;S.contrib+=20;S.gold+=50;toast("🏯 宗门每日任务完成","贡献+20 · 金币+50");addLog("宗门每日任务 贡献+20")}}
+ else if(a==="shopCores"){if(S.contrib>=30){S.contrib-=30;S.cores+=2;addLog("宗门商店兑换 兽核×2")}}
+ else if(a==="shopEquip"){if(S.contrib>=80){S.contrib-=80;const it=makeEquip(true);S.bag.push(it);toast("🏯 兑换成功："+it.name,"已放进背包");addLog("宗门商店兑换装备 "+it.name)}}
+ else if(a==="shopRing"){if(S.contrib>=50){const cand=S.rings.filter(r=>(r.enh||0)<10);if(!cand.length){toast("⚠️ 没有可强化的魂环","先吸收魂环，或已全部 +10");return}S.contrib-=50;const r=cand[Math.floor(Math.random()*cand.length)];r.enh=(r.enh||0)+1;addLog("宗门商店强化魂环 "+r.name+" +"+r.enh)}}
+ else if(a==="dungeon"){startDungeon(v);return}
+ else if(a==="arena"){if(arenaRef)return;arenaRef=spawnEnemy("duelist",P.x+160,P.y);toast("⚔️ AI 魂师入场","它会远程放技、近身释放魂技，小心走位");$("worldOvl").classList.remove("show");save();return}
+ else if(a==="tal"){if(talentAvail()>0){S.talents[v]=(S.talents[v]||0)+1;addLog("天赋加点 "+v+" → "+S.talents[v])}}
+ else if(a==="respec"){if(S.gold>=100){S.gold-=100;S.talents={atk:0,def:0,ctrl:0};addLog("天赋洗点，点数已返还")}}
+ /* V6 剧情动作 */
+ if(a==="storyPlay"){const c=CHAPTERS[S.story.ch];S.story.seen=S.story.ch;$("worldOvl").classList.remove("show");playStory(c.lines);save();return}
+ else if(a==="storyClaim"){const sp3=storyProg();if(sp3.done&&S.story.ch<CHAPTERS.length){const c=CHAPTERS[S.story.ch];S.gold+=c.rew.gold;S.cores+=c.rew.cores;S.story.ch++;S.story.base=null;toast("📖 章节完成："+c.t,"奖励金币+"+c.rew.gold+" · 兽核+"+c.rew.cores);addLog("主线完成 "+c.t);save();renderWorld();return}}
+ /* V5 动作 */
+ if(a==="season"){const k=v;if(!S.seasonClaimed.includes(k)){if(k.startsWith("d:")){S.seasonPts+=20} 
+   else if(k.startsWith("w:")){S.seasonPts+=30}
+   else if(k.startsWith("s:")){S.seasonPts+=50}
+   else if(k==="tier100"){const nm=["破晓剑·改","炎鳞甲","青藤戒","龙牙坠"];const slot=["weapon","armor","trinket","trinket"][Math.floor(Math.random()*4)];S.bag.push({id:"e"+Date.now(),tpl:nm[Math.floor(Math.random()*nm.length)],slot,rarity:"史诗",atk:slot==="weapon"?16:4,hp:slot==="armor"?70:15,def:slot==="armor"?7:2,crit:3,enh:0});addLog("赛季奖励：史诗装备进背包")}
+   else if(k==="tier250"){S.cores+=6;addLog("赛季奖励：兽核+6")}
+   else if(k==="tier500"){if(S.rings.length){const r=S.rings[Math.floor(Math.random()*S.rings.length)];r.enh=(r.enh||0)+1;addLog("赛季奖励：魂环 "+r.name+" 强化+1")}else{toast("⚠️ 先吸收一个魂环再领此奖励","");save();renderWorld();return}}
+   S.seasonClaimed.push(k);toast("🏆 赛季奖励已领取","防重复领取已记录")}}
+ else if(a==="teamStart"){if(S.teamDay!==todayStr()){S.teamDay=todayStr();const tb=spawnEnemy("boss",P.x+280,P.y);tb.teamBoss=true;tb.aggro=true;tb.hp=tb.maxHp=Math.floor(tb.maxHp*2.2);tb.name="团队首领·裂地犀王";companions=[{name:"小舞影",ic:"🐰",x:P.x-48,y:P.y+36,cd:0},{name:"云澈",ic:"🦊",x:P.x+48,y:P.y+36,cd:0}];toast("👥 团队挑战开始！","关掉面板，带队友讨伐强化犀王（有红圈预警技）");addLog("团队首领挑战开始")}}
+ else if(a==="netTest"){const raw=localStorage.getItem(SAVE_KEY);const sig=localStorage.getItem(SAVE_KEY+".sig");netTestResult=`自检：存档签名 ${raw&&sig&&h32(raw)===sig?"✅ 一致":"⚠️ 无签名（旧档，保存后生成）"} · 存档版本 v${S?1:0} · 本地赛季时钟 ✅ 第 ${seasonIdNow()} 赛季 · 真实联机 ❌ 无服务器未实现 · 队友/宗门/赛季均为本地模拟`;renderWorld();return}
+ else if(a==="validateCfg"){const errs=validateConfigs();const rp=document.getElementById("cfgReport");if(rp)rp.textContent=errs.length?("❌ 配置校验未通过：\n"+errs.join("\n")):"✅ 全部配置校验通过（武魂技能数/被动、魂兽数值、区域引用、章节目标类型、装备ID唯一、副本引用）\n📋 内容模板（改配置即可扩展，不动核心代码）：\n新魂兽 BEASTS.新id={name,ic,hp,atk,def,spd,exp,gold,ringMin,ringMax,r}\n新区域 REGIONS.新id={name,ic,mul,beasts:[魂兽id],need,needTx,desc}\n新副本 DUNGEONS.push({id,name,needLv,waves:[[魂兽id]],gold,cores,desc})";toast("🧪 配置校验完成",errs.length?errs.length+" 处问题，看开发者区报告":"全部通过")}
+ else if(a==="spawnTest"){const t=spawnEnemy("wolf",P.x+160,P.y);t.name="🧫 配置测试兽";t.aggro=true;toast("🧫 已召唤配置测试兽","由配置驱动生成的测试敌人")}
+ if(a==="devExp"){S.devCfg.exp=S.devCfg.exp>=5?1:S.devCfg.exp*2;audit("开发者配置：经验倍率 ×"+S.devCfg.exp)}
+ else if(a==="devGold2"){S.devCfg.gold=S.devCfg.gold>=5?1:S.devCfg.gold*2;audit("开发者配置：金币倍率 ×"+S.devCfg.gold)}
+ else if(a==="devDrop"){S.devCfg.drop=S.devCfg.drop>=5?1:S.devCfg.drop*2;audit("开发者配置：魂骨掉率 ×"+S.devCfg.drop)}
+ else if(a==="devGrantGold"){if(b.dataset.arm){S.gold+=1000;audit("开发者发放：金币 +1000");b.dataset.arm="";toast("💰 已发放金币 +1000","操作已写入审计日志")}else{b.dataset.arm="1";b.textContent="⚠️ 再点一次确认发放 +1000";return}}
+ else if(a==="devGrantCore"){if(b.dataset.arm){S.cores+=10;audit("开发者发放：兽核 +10");b.dataset.arm="";toast("💠 已发放兽核 +10","操作已写入审计日志")}else{b.dataset.arm="1";b.textContent="⚠️ 再点一次确认发放 +10";return}}
+ else if(a==="devBak"){try{localStorage.setItem(SAVE_KEY+".manbak",localStorage.getItem(SAVE_KEY)||"");audit("开发者：手动备份存档");toast("🗄️ 已备份","恢复入口在开发者后台")}catch(e){}}
+ else if(a==="devRestore"){if(b.dataset.arm){const mb=localStorage.getItem(SAVE_KEY+".manbak");if(mb){try{const o=JSON.parse(mb);localStorage.setItem(SAVE_KEY,mb);localStorage.setItem(SAVE_KEY+".sig",h32(mb));audit("开发者：从手动备份恢复存档（恢复前账号）");toast("♻️ 已恢复，正在重载","");setTimeout(()=>location.reload(),400)}catch(e){toast("⚠️ 备份损坏","")}}}else{b.dataset.arm="1";b.textContent="⚠️ 再点一次确认恢复（当前进度将被备份覆盖）";return}}
+ save();renderWorld()});
+$("btnClosePanel").addEventListener("click",()=>$("panelOvl").classList.remove("show"));
+$("btnExport").addEventListener("click",()=>{$("ioBox").value=btoa(unescape(encodeURIComponent(JSON.stringify(S))));$("ioBox").select();toast("📋 存档码已生成","复制保存好，换设备粘贴导入")});
+$("btnImport").addEventListener("click",()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob($("ioBox").value.trim()))));if(!o||!SOULS[o.soul])throw 0;if(o.lv<(S?S.lv:0)){toast("🛡 已拒绝旧档覆盖","导入档等级低于当前进度，防降级");return}S=migrate(Object.assign(defSave(),o));fullHeal();renderRingsBar();questCheck();save();toast("📥 导入成功","Lv."+S.lv+" · 魂环 "+S.rings.length+" 枚")}catch(e){toast("⚠️ 存档码无效","检查是否复制完整")}});
+$("btnWipe").addEventListener("click",()=>{if($("btnWipe").dataset.arm){localStorage.removeItem(SAVE_KEY);location.reload()}else{$("btnWipe").dataset.arm="1";$("btnWipe").textContent="⚠️ 再点一次确认清除重开"}});
+/* ===== 开局：选武魂/继续 ===== */
+const prev=loadSave();
+if(prev&&prev.soul){$("hasSaveTx").innerHTML="检测到存档："+SOULS[prev.soul].name+" · Lv."+prev.lv+" · 魂环 "+prev.rings.length+" 枚";$("btnContinue").style.display="block"}
+$("soulList").innerHTML=Object.entries(SOULS).map(([k,v])=>`<div class="soul" data-soul="${k}"><div class="sic">${v.ic}</div><div><b style="color:${v.col}">${v.name}</b><span class="tag">${v.tag}</span><p>${v.desc}</p><p>魂技：${v.skills.map(s=>s.n).join(" / ")}</p></div></div>`).join("");
+document.querySelectorAll(".soul").forEach(el=>el.addEventListener("click",()=>{startGame(el.dataset.soul,true)}));
+$("btnContinue").addEventListener("click",()=>{S=prev;beginPlay(false)});
+function startGame(soulId,fresh){S=defSave();S.soul=soulId;save();$("awIc").textContent=SOULS[soulId].ic;$("awTitle").textContent="武魂觉醒 · "+SOULS[soulId].name;
+ $("awTx").innerHTML=SOULS[soulId].desc+"<br>魂技："+SOULS[soulId].skills.map((s,i)=>(i===2?"绝技【":"【")+s.n+(i===2?"】（吸收1枚魂环解锁）":"】"+s.desc)).join("<br>")+"<br><br>🎯 玩法：左摇杆移动，右下普攻/魂技打魂兽；掉魂环后站近按住吸收；Lv.5 后点右上挑战犀王。";
+ $("startOvl").classList.remove("show");$("awake").classList.add("show")}
+$("btnAwOk").addEventListener("click",()=>{$("awake").classList.remove("show");beginPlay(true)});
+function beginPlay(fresh){checkSeason();if(window.__saveRestored)setTimeout(()=>toast("🛡️ 存档签名校验失败","已自动从备份恢复，进度完好"),600);$("startOvl").classList.remove("show");$("avIc").textContent=SOULS[S.soul].ic;$("pName").firstChild.textContent=SOULS[S.soul].name+" ";
+ document.querySelectorAll("[data-skill]").forEach(b=>{const i=+b.dataset.skill;const sn=b.querySelector(".sn"),ic=b.querySelector(".ic");if(!isNaN(i)&&SOULS[S.soul].skills[i]&&sn&&ic){sn.textContent=SOULS[S.soul].skills[i].n;ic.textContent=SOULS[S.soul].skills[i].ic}});
+ P.x=1100;P.y=270;fullHeal();if(!fresh){/* 续档按存档等级回满 */}
+ CUR_REGION=(S.region&&REGIONS[S.region])?S.region:"forest";paintBg();LOWQ=S.quality==="low";
+ started=true;for(let i=0;i<5;i++)spawnAmbient();renderRingsBar();questCheck();updateHud();
+ toast(fresh?"🌲 进入雾隐魂森":"👋 欢迎回来",fresh?"猎杀魂兽，吸收你的第一枚魂环吧":"Lv."+S.lv+" · 魂环 "+S.rings.length+" 枚")}
+</script>
+</body></html>
