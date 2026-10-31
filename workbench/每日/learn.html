@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>每日学习成果 · 小坏蛋</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    background: linear-gradient(180deg, #c3d0df 0%, #aebfd3 100%);
+    background-attachment: scroll;
+    color: #07182b;
+    padding: 14px 12px 30px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .topbar {
+    position: sticky; top:0; z-index:50;
+    margin:0 -12px; padding:10px 12px;
+    background:#ffffff; border-bottom:2px solid #1447c8;
+    display:flex; gap:10px; align-items:stretch;
+    box-shadow:0 2px 10px rgba(7,24,43,.18);
+  }
+  .topbar button {
+    flex:1; min-height:52px; border:none; border-radius:12px;
+    font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  #btnCopy { background:#1447c8; }
+  #btnCopy:active { background:#0d3396; }
+  #btnListen { background:#065f46; }
+  #btnListen:active { background:#04402f; }
+  #btnStop { flex:0 0 64px; background:#b91c1c; display:none; }
+  .hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#243b55; }
+  .card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(7,24,43,.12);
+  }
+  .hero h1 { font-size: 24px; font-weight: 800; letter-spacing: .5px; }
+  .hero .sub { margin-top: 6px; font-size: 14px; font-weight: 700; color: #243b55; line-height: 1.6; }
+  .datebar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 12px; padding-top: 12px; border-top: 2px solid #dbe4ee;
+  }
+  .datebar .d { font-size: 15px; font-weight: 800; color: #0d47a1; }
+  .datebar .r { font-size: 13px; font-weight: 700; color: #243b55; }
+  h2.sec { font-size: 18px; font-weight: 800; margin: 18px 2px 10px; }
+  h2.sec .tag { font-size: 12px; font-weight: 800; color:#ffffff; background:#0d47a1; border-radius: 8px; padding: 2px 8px; margin-left: 6px; vertical-align: 2px; }
+  .round-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #e3ebf3; }
+  .round-row:last-child { border-bottom: none; }
+  .round-row .n { width: 26px; height: 26px; border-radius: 50%; background: #0d47a1; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .round-row .n.next { background: #7d93ad; }
+  .round-row .t { flex: 1; }
+  .round-row .t b { font-size: 15px; font-weight: 800; display: block; }
+  .round-row .t span { font-size: 13px; font-weight: 700; color: #243b55; }
+  .round-row .st { font-size: 13px; font-weight: 800; color: #1b5e20; white-space: nowrap; }
+  .round-row .st.wait { color: #5a718c; }
+  .item { border-left: 5px solid #0d47a1; }
+  .item.vid { border-left-color: #5e35b1; }
+  .item.web { border-left-color: #00695c; }
+  .item.fin { border-left-color: #bf360c; }
+  .item h3 { font-size: 17px; font-weight: 800; line-height: 1.4; }
+  .item h3 .no { color: #0d47a1; margin-right: 4px; }
+  .item .intro { margin-top: 6px; font-size: 14.5px; font-weight: 600; line-height: 1.65; color: #10283f; }
+  .item .func { margin-top: 8px; font-size: 14px; font-weight: 700; line-height: 1.7; color: #243b55; }
+  .item .func li { margin-left: 18px; margin-bottom: 3px; }
+  .item .use { margin-top: 8px; font-size: 14px; font-weight: 700; line-height: 1.6; color: #243b55; background: #eef4fa; border-radius: 10px; padding: 8px 10px; }
+  .item .use b { color: #0d47a1; }
+  .item .meta { margin-top: 8px; font-size: 13px; font-weight: 700; color: #41597a; line-height: 1.6; }
+  .item .meta a { color: #0d47a1; font-weight: 800; text-decoration: none; word-break: break-all; }
+  .sum li { font-size: 14.5px; font-weight: 700; line-height: 1.7; margin-left: 18px; margin-bottom: 4px; }
+  .sum li b { color: #c62828; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: #ffffff; border-radius: 14px; padding: 14px 12px; box-shadow: 0 2px 8px rgba(7,24,43,.12); }
+  .stat .num { font-size: 24px; font-weight: 800; color: #0d47a1; }
+  .stat .lab { margin-top: 2px; font-size: 13.5px; font-weight: 800; line-height: 1.5; }
+  .stat .det { font-size: 12.5px; font-weight: 700; color: #41597a; line-height: 1.5; margin-top: 2px; }
+  .foot { text-align: center; font-size: 12.5px; font-weight: 700; color: #33475e; margin-top: 16px; line-height: 1.7; }
+  .red { color: #c62828; font-weight: 800; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <button id="btnCopy" type="button">📋 复制全文</button>
+    <button id="btnListen" type="button">🔊 收听</button>
+    <button id="btnStop" type="button">⏹</button>
+  </div>
+  <p class="hint">👆 以后我发的信息，顶部都有这两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
+
+  <div class="card hero">
+    <h1>📚 每日学习成果</h1>
+    <p class="sub">小坏蛋每天早上 06:50 自动学习，三个方向轮着学；学完不是存着好看，做事时直接从知识库取材套用。这一页就是学习成果的展示窗。</p>
+    <div class="datebar">
+      <span class="d">2026年10月31日 · 周六</span>
+      <span class="r">今日主题：GitHub 新星项目</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="round-row">
+      <div class="n">1</div>
+      <div class="t"><b>AI 工具</b><span>新发布的工具、模型重大更新</span></div>
+      <div class="st">✅ 10月30日已学 10 条</div>
+    </div>
+    <div class="round-row">
+      <div class="n">2</div>
+      <div class="t"><b>GitHub 新星项目</b><span>近 30 天新建、star 涨得快的新仓库</span></div>
+      <div class="st">✅ 今日已学 10 条</div>
+    </div>
+    <div class="round-row">
+      <div class="n next">3</div>
+      <div class="t"><b>投资财经</b><span>重点跟踪：存储芯片 · 半导体设备</span></div>
+      <div class="st wait">明天 11月1日</div>
+    </div>
+  </div>
+
+  <h2 class="sec">今日成果 · 视频创作<span class="tag">漫剧/口播/预告片</span></h2>
+
+  <div class="card item vid">
+    <h3><span class="no">1.</span>digital-human-koubo（1549⭐，10 月 26 日建仓）</h3>
+    <p class="intro">一个标准 Agent Skill：输入一张照片加一句话，AI 全自动产出带真人对口型数字人、统一配音、字幕与包装动效的口播/带货/讲解视频。</p>
+    <ul class="func">
+      <li>「成本门」：生成前先报价（片段数、秒数、点数、余额），你点头才批量跑，防 AI 视频烧钱跑飞；</li>
+      <li>质量闭环：每段用 whisper 回听对台词，逐段抽 4 帧检查字幕有没有被烧进画面，有问题只重拍那一段；</li>
+      <li>声音统一：多段拼接做频谱匹配＋去齿音＋统一混响＋响度归一，30 个片段听感像一次录的。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧管线的 QA 可以直接抄它：每段抽帧验烧字、生成前先报价确认；以后反推提示词包的宣传口播视频就用这类 skill 做。</p>
+    <p class="meta">收费：skill 开源免费；视频生成走 Renoise 按量付费（先报价后生成）<br>来源：<a href="https://github.com/andyhuo520/digital-human-koubo">github.com/andyhuo520/digital-human-koubo</a></p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">2.</span>free247editor（153⭐，10 月 15 日）</h3>
+    <p class="intro">跑在 AI 编程 agent 里的免费开源个人剪辑师：扔一段原片、说一句"edit this"，拿回带剪辑、字幕、动效和音效的成片；你的修改意见会被存成规则，越用越顺手。</p>
+    <ul class="func">
+      <li>全链路免费：转写用 Groq 免费 key 或本机 faster-whisper，剪辑引擎（HyperFrames＋GSAP）全开源；</li>
+      <li>my-rules.md 习惯沉淀：你说一次"下次别这样"，就变成永久规则——和咱们"犯错一次就钉死"的管理法一模一样；</li>
+      <li>导出可编辑工程，不只是 MP4：后续还能手工精修，不是黑盒出片。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧预告片/样片剪辑可以扔给它：把《都市夜行者》第 1 集 v2 扔进去出一条 15 秒竖屏预告，真机验证后决定是否正式并入漫剧管线。</p>
+    <p class="meta">收费：软件 0 成本，只花你 agent 套餐的额度<br>来源：<a href="https://github.com/riecodes/free247editor">github.com/riecodes/free247editor</a></p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">3.</span>frameweaver（110⭐，10 月 14 日）</h3>
+    <p class="intro">本地 AI 视频工作台：React 仪表盘＋Python 后端＋Chrome 扩展三件套，场景规划、角色参考复用、生视频、配音字幕时间轴剪辑一条龙。</p>
+    <ul class="func">
+      <li>角色一致性资产管理：先统一生成角色/场景参考图，再套用到所有镜头——正是咱们"角色四视图参考板"的做法；</li>
+      <li>Chrome 扩展借用你自己登录的 Google Flow 会话发请求，不存你的密码；</li>
+      <li>拖拽时间轴、SRT 编辑、配音脚本、音频压低（ducking）、撤销重做自动保存。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>它的"角色参考图先行"做成漫剧 SOP 检查项：第 2 集起新角色先出四视图参考板再进分镜；它的功能清单可当以后做"漫剧剪辑台"的需求对照表。</p>
+    <p class="meta">收费：开源；生成花你自己的 Google Flow 额度<br>来源：<a href="https://github.com/phucnguyentvp1/frameweaver">github.com/phucnguyentvp1/frameweaver</a></p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">4.</span>heditor（105⭐，10 月 13 日）</h3>
+    <p class="intro">给 AI agent 用的竖屏剪辑 skill 包：42 种命名视觉风格（电影/预告/游戏风…）＋创意模式＋长视频模式，把口播原片剪成带动态字幕的 Reels/Shorts。</p>
+    <ul class="func">
+      <li>42 种风格是"视觉语言"不是模板：每种风格有独立设计文档，agent 按新台词重建场景；</li>
+      <li>长视频工程化：5 分钟分块转写（断点续传）、先审 EDL 剪辑提案再应用、分段渲染无损拼接；</li>
+      <li>质检门极严：lint、视觉抽查、安全边距、响度/真峰值、终混 ASR 回听、40 帧接触表。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>把它的"终混回听＋响度门"抄进漫剧交付质检（咱们的语音统一 -9 LUFS 正好对上）；42 种风格的写法是漫剧风格规范的现成范本。</p>
+    <p class="meta">收费：开源免费，本地渲染<br>来源：<a href="https://github.com/pycodebr/heditor">github.com/pycodebr/heditor</a></p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">5.</span>motion-pack（10⭐，10 月 13 日）</h3>
+    <p class="intro">给 AI agent 的"代码化视频"零件库＋6 个 skill：1163 个可浏览组件（转场/动效字/合成音效/音乐床/运镜），一句 prompt 出带音乐字幕的成片 MP4。</p>
+    <ul class="func">
+      <li>"每帧是时间的纯函数"：可乱序渲染、单帧重渲，多机并行结果一致；</li>
+      <li>mp lint 338 条分级质检规则：钩子、安全区、对比度、阅读时长、响度全自动检查；</li>
+      <li>全部 CC0/MIT 协议：合成音效音乐、渲染产物商用无版权顾虑。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>今天就用它给"AI反推提示词包"渲染一条 15 秒竖屏宣传片，直接挂闲鱼商品页；它的 lint 门可以部分替代人工交付检查。</p>
+    <p class="meta">收费：开源免费，本地渲染 0 成本<br>来源：<a href="https://github.com/ANVEAI/motion-pack">github.com/ANVEAI/motion-pack</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 生图<span class="tag">分镜/封面/建模参考</span></h2>
+
+  <div class="card item vid">
+    <h3><span class="no">6.</span>qiaomu-codex-imagegen（136⭐，10 月 4 日）</h3>
+    <p class="intro">把 Codex 内置的生图能力接出来给任何 agent 用的中文 skill：先给至少 4 种风格方向、你选定后再出图，内置 24 类场景模板＋20 位 Mondo 海报设计师风格。</p>
+    <ul class="func">
+      <li>"先给方案再出图"：选定方向→展开提示词→对着验收条件逐条验图，不合格只改对应一句再生成，告别抽卡；</li>
+      <li>24 类模板×48 预设的构图"机制"库：提炼的是构图方法不是复刻原图；</li>
+      <li>防编造规则：肖像先保身份、图内文字逐字给文案并放大检查。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧分镜提示词改成它的"风格锁＋验收条件"写法；魂灵纪元建模参考图、小说封面走这套流程，出图不再靠运气。</p>
+    <p class="meta">收费：skill 开源免费；生图花 Codex 套餐额度<br>来源：<a href="https://github.com/joeseesun/qiaomu-codex-imagegen">github.com/joeseesun/qiaomu-codex-imagegen</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 手机与 App<span class="tag">安卓自动化</span></h2>
+
+  <div class="card item web">
+    <h3><span class="no">7.</span>Mika（1166⭐，10 月 29 日）</h3>
+    <p class="intro">装在安卓手机上的中文私人 AI 助理：在一块看不见的后台屏上替你操作 App、上网办事，你照常刷自己的手机；遇到花钱的步骤先问你。</p>
+    <ul class="func">
+      <li>后台屏操作：App 在独立后台屏上被操作，主屏照常打字；遇到登录/验证码弹通知请你接管；</li>
+      <li>询问/自主双模式：定时任务遇到花钱步骤自动跳过并如实告诉你；</li>
+      <li>无服务器隐私架构：只连你自己配的模型商，API Key 用安卓密钥库加密存本机。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>河马翻译的"实时翻译条"、收藏夹 APP 可以学它的后台屏交互；以后给云电脑配手机自动化，先研究它的无线配对＋后台屏实现。</p>
+    <p class="meta">收费：开源免费；模型费用走你自己配的 API<br>来源：<a href="https://github.com/wangzan101/Mika">github.com/wangzan101/Mika</a></p>
+  </div>
+
+  <div class="card item web">
+    <h3><span class="no">8.</span>Droidline（428⭐，10 月 7 日）</h3>
+    <p class="intro">用 Python/Node/命令行/HTTP/MCP 从代码直接操控真安卓手机做自动化：手机上装一个 App、扫码配对，不用 ADB、不用数据线、不用 root。</p>
+    <ul class="func">
+      <li>同一命令五种形态：Python、Node.js、命令行、HTTP、MCP 里同名调用；</li>
+      <li>按屏幕元素定位（文字/编号），不怕换手机、换分辨率；</li>
+      <li>手机主动向电脑建连＋端到端加密，多台手机可并行各跑各的。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>APK 交付的真机验证写成一键脚本：自动装包、点开、截图、抓提示文案——把现在的手工验证变成一条命令。</p>
+    <p class="meta">收费：开源免费<br>来源：<a href="https://github.com/KnifeLemon/Droidline">github.com/KnifeLemon/Droidline</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 建站与效率<span class="tag">一次录入到处用</span></h2>
+
+  <div class="card item">
+    <h3><span class="no">9.</span>context-hub（10⭐，10 月 13 日）<span class="tag" style="background:#1b5e20;">今日已落地</span></h3>
+    <p class="intro">AI agent 的 skills、MCP、插件、提示词、环境变量的统一本地中枢：一次录入，分发到 Claude Code、Codex 等各 agent 自己的目录；桌面 App、独立命令行、本地网页三形态，纯本地无云端。</p>
+    <ul class="func">
+      <li>"声明一次，到处使用"：MCP 和提示词写一份，分发到每个 agent 的自有配置，可按客户端单独开关；</li>
+      <li>上游追踪：从来源导入的 skill 包跟踪上游更新，桌面 App 自己从 GitHub 更新；</li>
+      <li>纯本地：资产实际落在各 agent 自己的目录里，私人数据不离本机。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>今天已经装进云电脑并跑通：自动发现了 4 个现有 skill，导入了咱们真实的 skill 并分发到了工作区。以后 121 条提示词库升级成可加载的 skills，就归它统一管，终结 skill 散落多处的现状。</p>
+    <p class="meta">收费：开源免费（MIT）<br>来源：<a href="https://github.com/bb-boy680/context-hub">github.com/bb-boy680/context-hub</a></p>
+  </div>
+
+  <div class="card item">
+    <h3><span class="no">10.</span>8b-agent-plugin（2⭐，10 月 2 日）</h3>
+    <p class="intro">免费 AI 建站 MCP 插件：跟 agent 说一句话，就用 8B 的设计库生成带动画的单页网站；无账号、无 key、无额度，拿到可下载的单文件 HTML。</p>
+    <ul class="func">
+      <li>零门槛：一条 MCP 地址（https://mcp.8b.com/mcp），无需认证，3 个工具，5 分钟接好；</li>
+      <li>产出即单文件 HTML：可商用、可编辑，和咱们的交付标准天然对齐；</li>
+      <li>能力边界写得清楚：单页、固定版块、无后端，不会期望落空。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>给熟食店做线上价目单页＋二维码（18 项真实价格已经备好），这是第一个纯线上的熟食店周边；以后单页站需求先走它，5 分钟出初稿。</p>
+    <p class="meta">收费：完全免费，无额度<br>来源：<a href="https://github.com/8bsite/8b-agent-plugin">github.com/8bsite/8b-agent-plugin</a></p>
+  </div>
+
+  <div class="card sum">
+    <h2 style="font-size:17px;font-weight:800;margin-bottom:8px;">本轮小结：学完马上能用的</h2>
+    <ul>
+      <li><b>Agent Skills 是 10 月新仓库的默认交付形态</b>（10 个里 7 个）：121 条提示词库下一步从"文档"升级为"可被 agent 直接加载的 skills"，context-hub 负责统一管理。</li>
+      <li><b>视频是这批 star 的绝对重心</b>：别人的 QA（抽帧验烧字、终混回听、lint 门）比咱们现在的"转写核对"更完整，下次《时纹》交付时补上。</li>
+      <li><b>"先报价再烧钱"是共识</b>：即梦/可灵积分也立一条同样的规矩——agent 生成前先报"几个镜头×多少积分"，你点头才跑。</li>
+      <li><b>今日落地已跑通</b>：context-hub v0.2.0 装进云电脑，自动发现 4 个 skill、导入真实 skill、symlink 分发到工作区，三条流程全部真机验证通过。</li>
+    </ul>
+  </div>
+
+  <h2 class="sec">知识库家底（此前已学完的）</h2>
+  <div class="stats">
+    <div class="stat"><div class="num">110</div><div class="lab">条每日自动学习笔记</div><div class="det">AI 工具 40 条 ＋ GitHub 新星项目 40 条 ＋ 投资财经 30 条</div></div>
+    <div class="stat"><div class="num">70</div><div class="lab">个 GitHub 项目学透</div><div class="det">创作/网页/App 三线 36 个 ＋ Trending 与高收藏 24 个 ＋ 每日新星 10 个</div></div>
+    <div class="stat"><div class="num">100</div><div class="lab">本书第一遍学完</div><div class="det">第二遍深学进行中：每晚 10 本，只写补漏与新联系</div></div>
+    <div class="stat"><div class="num">111</div><div class="lab">个收藏夹网站学完</div><div class="det">每个站一篇笔记，做东西时先查库取材</div></div>
+    <div class="stat"><div class="num">121</div><div class="lab">条提示词入库</div><div class="det">13 个分类，含 AI 工作台新分类 33 条</div></div>
+    <div class="stat"><div class="num">36</div><div class="lab">条漫剧老李应用清单</div><div class="det">台词工程＋机检质检，做漫剧前逐条对照</div></div>
+  </div>
+
+  <p class="foot">每日学习成果 · v20261031-1<br>每天 06:50 学完新的一轮，这一页会出新版发你；<span class="red">旧文件可删，看页脚版本号认新版</span>。</p>
+
+</div>
+<script>
+var PLAIN = [
+"每日学习成果",
+"2026年10月31日 星期六 · 今日主题：GitHub 新星项目",
+"",
+"轮换进度：AI 工具 10月30日已学 10 条；GitHub 新星项目今日已学 10 条；投资财经明天 11月1日。",
+"",
+"1. digital-human-koubo（1549星，10月26日）：Agent Skill，一张照片加一句话全自动产出带对口型数字人的口播视频。亮点：生成前先报价防烧钱、每段抽帧验字幕烧录、多段声音统一。漫剧 QA 直接抄它。skill 免费，生成按量付费。",
+"2. free247editor（153星）：跑在 AI 编程 agent 里的免费开源剪辑师，扔原片说 edit this 拿回成片，修改意见存成规则越用越顺手。全链路免费。漫剧预告片可以扔给它试。",
+"3. frameweaver（110星）：本地 AI 视频工作台，场景规划、角色参考复用、借你自己的 Google Flow 生视频、配音字幕时间轴剪辑。角色参考图先行的思路做成漫剧 SOP 检查项。",
+"4. heditor（105星）：给 AI agent 的竖屏剪辑 skill 包，42 种视觉风格加长视频模式，质检门极严。终混回听加响度门抄进漫剧交付质检。",
+"5. motion-pack（10星）：代码化视频零件库加 6 个 skill，1163 个组件一句 prompt 出成片，全部 CC0/MIT 商用无忧。今天就用它给反推提示词包渲染 15 秒宣传片挂闲鱼。",
+"6. qiaomu-codex-imagegen（136星）：中文生图 skill，先给 4 种风格方向你选定再出图，24 类场景模板。漫剧分镜提示词改成它的风格锁加验收条件写法。",
+"7. Mika（1166星，10月29日）：装在安卓手机上的中文私人 AI 助理，后台屏替你操作 App，花钱的步骤先问你。河马翻译和收藏夹 APP 可以学它的后台屏交互。",
+"8. Droidline（428星）：用代码直接操控真安卓手机，装一个 App 扫码配对，不用 ADB 和数据线。APK 真机验证写成一键脚本。",
+"9. context-hub（10星）：AI agent 的 skills/MCP/提示词统一本地中枢，一次录入分发到各处。今天已装进云电脑并跑通：自动发现 4 个 skill、导入真实 skill、分发到工作区。121 条提示词库以后归它管。开源免费。",
+"10. 8b-agent-plugin（2星）：免费 AI 建站 MCP 插件，一句话生成带动画单页站，无账号无 key 无额度。给熟食店做线上价目单页加二维码，18 项真实价格已备好。",
+"",
+"本轮小结：Agent Skills 是 10 月新仓库默认交付形态（7/10），提示词库下一步升级为可加载 skills；视频 QA（抽帧验烧字、终混回听、lint 门）下次《时纹》交付补上；即梦/可灵积分立先报价再烧钱的规矩；今日落地 context-hub v0.2.0 装机跑通。",
+"",
+"知识库家底：每日自动学习笔记 110 条；GitHub 项目 70 个；书 100 本第一遍学完；收藏夹网站 111 个；提示词 121 条；漫剧老李清单 36 条。",
+"",
+"每日学习成果 v20261031-1"
+].join("\n");
+
+/* ---------- 复制全文 ---------- */
+var btnCopy = document.getElementById('btnCopy');
+function copyDone(){
+var old = btnCopy.textContent;
+btnCopy.textContent = '✅ 已复制';
+setTimeout(function(){ btnCopy.textContent = old;}, 1600);
+}
+btnCopy.addEventListener('click', function(){
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy();});
+} else { fallbackCopy();}
+});
+function fallbackCopy(){
+var ta = document.createElement('textarea');
+ta.value = PLAIN;
+ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand('copy'); copyDone();} catch(e) {}
+document.body.removeChild(ta);
+}
+
+/* ---------- 收听朗读 ---------- */
+var btnListen = document.getElementById('btnListen');
+var btnStop = document.getElementById('btnStop');
+var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
+
+function pickVoice(){
+try {
+var vs = window.speechSynthesis.getVoices();
+for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break;}}
+} catch(e) {}
+}
+if ('speechSynthesis' in window) {
+pickVoice();
+window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function splitChunks(text){
+var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+var out = [];
+for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t);}
+return out;
+}
+function resetListenUI(){
+speaking = false; paused = false;
+btnListen.textContent = '🔊 收听';
+btnStop.style.display = 'none';
+}
+function speakNext(){
+if (ci >= chunks.length) { resetListenUI(); return;}
+var u = new SpeechSynthesisUtterance(chunks[ci]);
+u.lang = 'zh-CN';
+if (zhVoice) u.voice = zhVoice;
+u.rate = 1.02;
+u.onend = function(){ ci++; speakNext();};
+u.onerror = function(){ ci++; speakNext();};
+window.speechSynthesis.speak(u);
+}
+btnListen.addEventListener('click', function(){
+if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
+var ss = window.speechSynthesis;
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+ss.cancel();
+chunks = splitChunks(PLAIN);
+ci = 0;
+speaking = true; paused = false;
+btnListen.textContent = '⏸ 暂停';
+btnStop.style.display = 'flex';
+speakNext();
+});
+btnStop.addEventListener('click', function(){
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+resetListenUI();
+});
+/* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
+setInterval(function(){
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+window.speechSynthesis.resume();
+}
+}, 10000);
+</script>
+<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a>
+<!-- hema-audio-fix -->
+<script>
+(function(){
+  var KEY = "learn";
+  var URLS = [
+    "https://cdn.jsdelivr.net/gh/pubgswl2005-svg/AI-wealth-assistant@main/daily/audio/" + KEY + ".b64",
+    "https://raw.githubusercontent.com/pubgswl2005-svg/AI-wealth-assistant/main/daily/audio/" + KEY + ".b64"
+  ];
+  var audio = null, state = "idle";
+  function btn(){ return document.getElementById("btnSpeak"); }
+  function stopBtn(){ return document.getElementById("btnStop"); }
+  function label(t){ var b = btn(); if (b) b.textContent = t; }
+  function showStop(v){ var s = stopBtn(); if (s) s.style.display = v ? "block" : "none"; }
+  function toast(msg){ var d = document.createElement("div"); d.textContent = msg; d.style.cssText = "position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(7,24,43,.92);color:#fff;font-size:14px;font-weight:700;padding:10px 16px;border-radius:999px;z-index:99999;max-width:86vw;text-align:center"; document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 2600); }
+  function decode(b64){
+    var bin = atob(b64.replace(/\s+/g, ""));
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return URL.createObjectURL(new Blob([arr], {type: "audio/mpeg"}));
+  }
+  function fetchAudio(idx){
+    return fetch(URLS[idx]).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(decode)
+      .catch(function(e){ if (idx + 1 < URLS.length) return fetchAudio(idx + 1); throw e; });
+  }
+  function play(){
+    if (state === "playing"){ audio.pause(); return; }
+    if (state === "paused"){ audio.play(); return; }
+    if (state === "loading") return;
+    state = "loading"; label("⏳ 加载语音");
+    fetchAudio(0).then(function(u){
+      audio = new Audio(u);
+      audio.onplay = function(){ state = "playing"; label("⏸ 暂停"); showStop(true); };
+      audio.onpause = function(){ if (state === "playing"){ state = "paused"; label("▶️ 继续"); } };
+      audio.onended = function(){ state = "idle"; label("🔊 收听"); showStop(false); };
+      audio.onerror = function(){ state = "idle"; label("🔊 收听"); showStop(false); toast("语音加载失败，请检查网络后重试"); };
+      var p = audio.play(); if (p && p.catch) p.catch(function(){ state = "idle"; label("🔊 收听"); toast("语音播放失败，请再点一次"); });
+    }).catch(function(){ state = "idle"; label("🔊 收听"); toast("语音还在生成中或网络不通，请稍后再试"); });
+  }
+  function stopAll(){
+    if (audio){ try{ audio.pause(); audio.currentTime = 0; }catch(e){} }
+    if (window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
+    state = "idle"; label("🔊 收听"); showStop(false);
+  }
+  window.speakAll = play;
+  window.stopSpeak = stopAll;
+  function rebind(){
+    var b = btn(); if (b) b.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } play(); };
+    var s = stopBtn(); if (s) s.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } stopAll(); };
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rebind); else rebind();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>熟食成本计算器</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  background: linear-gradient(180deg, #c3d0df 0%, #aebfd3 100%);
+  background-attachment: scroll;
+  color:#07182b; min-height:100vh; padding:0 12px 28px;
+}
+/* ===== 顶部功能栏：复制 + 收听 ===== */
+.topbar {
+  position: sticky; top:0; z-index:50;
+  margin:0 -12px; padding:10px 12px;
+  background:#ffffff; border-bottom:2px solid #1447c8;
+  display:flex; gap:10px; align-items:stretch;
+  box-shadow:0 2px 10px rgba(7,24,43,.18);
+}
+.topbar button {
+  flex:1; min-height:52px; border:none; border-radius:12px;
+  font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+#btnCopy { background:#1447c8; }
+#btnCopy:active { background:#0d3396; }
+#btnListen { background:#065f46; }
+#btnListen:active { background:#04402f; }
+#btnStop { flex:0 0 64px; background:#b91c1c; display:none; }
+.hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#243b55; }
+/* ===== 卡片与表单 ===== */
+.card {
+  background:#ffffff; border-radius:16px; margin-top:12px;
+  padding:18px 16px; box-shadow:0 2px 8px rgba(7,24,43,.12);
+}
+h1 { font-size:21px; font-weight:900; line-height:1.35; }
+h2 { font-size:17px; font-weight:900; margin:2px 0 12px; color:#1447c8; }
+.sub { font-size:14px; font-weight:700; color:#243b55; margin-top:4px; }
+label.lab { display:block; font-size:15px; font-weight:800; color:#243b55; margin:14px 0 6px; }
+label.lab:first-of-type { margin-top:4px; }
+input[type="text"], input[type="number"], textarea {
+  width:100%; font-size:17px; font-weight:700; color:#07182b;
+  padding:12px; border:2px solid #9db4cc; border-radius:10px;
+  background:#ffffff; outline:none;
+}
+input:focus, textarea:focus { border-color:#1447c8; }
+textarea { min-height:76px; resize:vertical; font-size:14px; font-weight:600; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.grid2 > div label.lab { margin-top:14px; }
+/* 原料行 */
+.irow { border:2px solid #d7e2ee; border-radius:12px; padding:12px; margin-bottom:12px; background:#f7fafd; }
+.irow .r1 { display:flex; gap:8px; align-items:center; }
+.irow .r1 input { flex:1; }
+.irow .r2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+.irow .mini { font-size:13px; font-weight:800; color:#243b55; margin-bottom:4px; display:block; }
+.delbtn {
+  flex:0 0 46px; height:46px; border:none; border-radius:10px;
+  background:#b91c1c; color:#fff; font-size:18px; font-weight:900; cursor:pointer;
+}
+.rowcost { margin-top:8px; font-size:15px; font-weight:800; color:#07182b; }
+.rowcost b { color:#1447c8; font-size:17px; }
+/* 按钮 */
+.bigbtn {
+  width:100%; min-height:52px; border:none; border-radius:12px;
+  font-size:17px; font-weight:800; color:#ffffff; cursor:pointer; margin-top:12px;
+  background:#1447c8;
+}
+.bigbtn:active { background:#0d3396; }
+.bigbtn.green { background:#065f46; }
+.bigbtn.green:active { background:#04402f; }
+.bigbtn.gray { background:#48617d; }
+.bigbtn.gray:active { background:#354a61; }
+/* 结果区 */
+.result .line {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:10px 0; border-bottom:1px dashed #c9d6e4;
+}
+.result .line:last-of-type { border-bottom:none; }
+.result .k { font-size:16px; font-weight:800; color:#243b55; }
+.result .v { font-size:24px; font-weight:900; color:#07182b; }
+.result .v.blue { color:#1447c8; }
+.result .v.red { color:#d40000; }
+.note { margin-top:12px; font-size:14px; font-weight:800; color:#b91c1c; line-height:1.6; }
+/* 已保存列表 */
+.saved-item {
+  display:flex; align-items:center; gap:8px;
+  border:2px solid #d7e2ee; border-radius:12px; padding:10px 12px; margin-bottom:10px; background:#f7fafd;
+}
+.saved-item .nm { flex:1; font-size:16px; font-weight:800; color:#07182b; word-break:break-all; }
+.saved-item button {
+  min-height:44px; padding:0 14px; border:none; border-radius:10px;
+  font-size:15px; font-weight:800; color:#fff; cursor:pointer;
+}
+.saved-item .load { background:#1447c8; }
+.saved-item .del { background:#b91c1c; }
+.empty { font-size:15px; font-weight:700; color:#243b55; padding:6px 0; }
+.msg { margin-top:10px; font-size:14px; font-weight:800; color:#065f46; min-height:20px; }
+.msg.err { color:#b91c1c; }
+.foot { margin-top:16px; font-size:12px; font-weight:700; color:#5a6b80; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button id="btnCopy" type="button">📋 复制全文</button>
+  <button id="btnListen" type="button">🔊 收听</button>
+  <button id="btnStop" type="button">⏹</button>
+</div>
+<p class="hint">👆 顶部可复制、收听当前配方的计算结果。配方只存在这台手机里，不上传。</p>
+
+<div class="card">
+  <h1>熟食成本计算器</h1>
+  <p class="sub">录入配方，自动算出每斤成本、建议售价和毛利率。</p>
+
+  <label class="lab" for="fName">配方名</label>
+  <input type="text" id="fName" placeholder="例如：五香鸭头">
+
+  <div class="grid2">
+    <div>
+      <label class="lab" for="fWeight">成品重量（斤/锅）</label>
+      <input type="number" id="fWeight" inputmode="decimal" placeholder="例如：3">
+    </div>
+    <div>
+      <label class="lab" for="fOther">其他成本（元/锅）</label>
+      <input type="number" id="fOther" inputmode="decimal" placeholder="调料+燃气+包装">
+    </div>
+    <div>
+      <label class="lab" for="fMargin">目标毛利率（%）</label>
+      <input type="number" id="fMargin" inputmode="decimal" placeholder="例如：40">
+    </div>
+    <div>
+      <label class="lab" for="fActual">实际售价（元/斤，可空）</label>
+      <input type="number" id="fActual" inputmode="decimal" placeholder="填了算实际毛利">
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>原料（一锅用量）</h2>
+  <div id="rowsWrap"></div>
+  <button class="bigbtn green" id="btnAddRow" type="button">＋ 添加原料</button>
+</div>
+
+<div class="card result">
+  <h2>计算结果</h2>
+  <div class="line"><span class="k">原料成本（每锅）</span><span class="v" id="rIng">—</span></div>
+  <div class="line"><span class="k">每锅总成本</span><span class="v" id="rTotal">—</span></div>
+  <div class="line"><span class="k">每斤成本</span><span class="v blue" id="rPerJin">—</span></div>
+  <div class="line"><span class="k">建议售价（元/斤）</span><span class="v red" id="rSuggest">—</span></div>
+  <div class="line"><span class="k">实际毛利率</span><span class="v" id="rActMargin">—</span></div>
+  <p class="note">数字为按录入进价的估算，非财务/税务建议。</p>
+</div>
+
+<div class="card">
+  <h2>保存的配方</h2>
+  <div id="savedList"></div>
+  <button class="bigbtn" id="btnSave" type="button">💾 保存当前配方</button>
+  <p class="msg" id="saveMsg"></p>
+</div>
+
+<div class="card">
+  <h2>备份与恢复</h2>
+  <p class="sub">把全部配方打包成一段备份文本，换手机或误删时可粘贴恢复。</p>
+  <button class="bigbtn gray" id="btnExport" type="button">📤 导出备份（一键复制）</button>
+  <label class="lab" for="backupText">备份文本（导出会填到这里，导入请粘贴到这里）</label>
+  <textarea id="backupText" placeholder="备份文本会生成在这里；恢复时把备份文本粘贴到这里，再点下面的导入按钮"></textarea>
+  <button class="bigbtn gray" id="btnImport" type="button">📥 导入恢复</button>
+  <p class="msg" id="backupMsg"></p>
+  <p class="foot">熟食成本计算器 v20261022-1</p>
+</div>
+
+<script>
+var LS_KEY = 'hema-recipe-cost-v1';
+var SUMMARY = '还没有计算结果。请先录入配方。';
+
+/* ---------- 工具 ---------- */
+function num(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
+function fmt(n){ return isFinite(n) ? n.toFixed(2) : '—'; }
+function el(id){ return document.getElementById(id); }
+
+/* ---------- 原料行 ---------- */
+function addRow(data){
+  data = data || {};
+  var wrap = el('rowsWrap');
+  var row = document.createElement('div');
+  row.className = 'irow';
+  row.innerHTML =
+    '<div class="r1">' +
+      '<input type="text" class="in-name" placeholder="原料名，例如：鸭头">' +
+      '<button type="button" class="delbtn" title="删除这行">✕</button>' +
+    '</div>' +
+    '<div class="r2">' +
+      '<div><span class="mini">用量（克）</span><input type="number" class="in-grams" inputmode="decimal" placeholder="例如：1000"></div>' +
+      '<div><span class="mini">进价（元/斤）</span><input type="number" class="in-price" inputmode="decimal" placeholder="例如：20"></div>' +
+    '</div>' +
+    '<div class="rowcost">本行成本：<b class="rc">0.00</b> 元</div>';
+  wrap.appendChild(row);
+  row.querySelector('.in-name').value = data.name || '';
+  row.querySelector('.in-grams').value = (data.grams == null ? '' : data.grams);
+  row.querySelector('.in-price').value = (data.price == null ? '' : data.price);
+  row.querySelector('.delbtn').addEventListener('click', function(){
+    row.parentNode.removeChild(row);
+    calc();
+  });
+  return row;
+}
+function readRows(){
+  var out = [];
+  var rows = document.querySelectorAll('#rowsWrap .irow');
+  for (var i = 0; i < rows.length; i++){
+    out.push({
+      name: rows[i].querySelector('.in-name').value.trim(),
+      grams: rows[i].querySelector('.in-grams').value,
+      price: rows[i].querySelector('.in-price').value
+    });
+  }
+  return out;
+}
+function readForm(){
+  return {
+    name: el('fName').value.trim(),
+    weight: el('fWeight').value,
+    other: el('fOther').value,
+    margin: el('fMargin').value,
+    actual: el('fActual').value,
+    rows: readRows()
+  };
+}
+function fillForm(r){
+  el('fName').value = r.name || '';
+  el('fWeight').value = (r.weight == null ? '' : r.weight);
+  el('fOther').value = (r.other == null ? '' : r.other);
+  el('fMargin').value = (r.margin == null ? '' : r.margin);
+  el('fActual').value = (r.actual == null ? '' : r.actual);
+  el('rowsWrap').innerHTML = '';
+  var rows = (r.rows && r.rows.length) ? r.rows : [{}];
+  for (var i = 0; i < rows.length; i++) addRow(rows[i]);
+  calc();
+}
+
+/* ---------- 计算 ---------- */
+function calc(){
+  var f = readForm();
+  var ingTotal = 0;
+  var rows = document.querySelectorAll('#rowsWrap .irow');
+  for (var i = 0; i < rows.length; i++){
+    var g = num(rows[i].querySelector('.in-grams').value);
+    var p = num(rows[i].querySelector('.in-price').value);
+    var c = g / 500 * p;
+    ingTotal += c;
+    rows[i].querySelector('.rc').textContent = fmt(c);
+  }
+  var other = num(f.other);
+  var total = ingTotal + other;
+  var weight = num(f.weight);
+  var marginPct = num(f.margin);
+  var actual = num(f.actual);
+
+  el('rIng').textContent = fmt(ingTotal) + ' 元';
+
+  var perJin = null, suggest = null, actMargin = null;
+  if (weight > 0){
+    el('rTotal').textContent = fmt(total) + ' 元';
+    perJin = total / weight;
+    el('rPerJin').textContent = fmt(perJin) + ' 元';
+    if (marginPct > 0 && marginPct < 100){
+      suggest = perJin / (1 - marginPct / 100);
+      el('rSuggest').textContent = fmt(suggest) + ' 元';
+    } else {
+      el('rSuggest').textContent = '—';
+    }
+    if (actual > 0){
+      actMargin = (actual - perJin) / actual * 100;
+      el('rActMargin').textContent = fmt(actMargin) + '%';
+    } else {
+      el('rActMargin').textContent = '—';
+    }
+  } else {
+    el('rTotal').textContent = fmt(total) + ' 元';
+    el('rPerJin').textContent = '—';
+    el('rSuggest').textContent = '—';
+    el('rActMargin').textContent = '—';
+  }
+
+  /* 顶栏复制/朗读用的摘要，随计算实时更新 */
+  var lines = [];
+  lines.push('熟食成本计算结果');
+  lines.push('配方：' + (f.name || '未命名配方'));
+  lines.push('每锅总成本：' + fmt(total) + ' 元');
+  lines.push('每斤成本：' + (perJin == null ? '未算出（请填成品重量）' : fmt(perJin) + ' 元'));
+  if (suggest != null) lines.push('建议售价：' + fmt(suggest) + ' 元每斤（目标毛利率 ' + marginPct + '%）');
+  if (actMargin != null) lines.push('实际售价：' + fmt(actual) + ' 元每斤，实际毛利率：' + fmt(actMargin) + '%');
+  lines.push('数字为按录入进价的估算，非财务或税务建议。');
+  SUMMARY = lines.join('\n');
+}
+document.addEventListener('input', function(){ calc(); });
+el('btnAddRow').addEventListener('click', function(){ addRow({}); calc(); });
+
+/* ---------- 存储 ---------- */
+function loadStore(){
+  try {
+    var s = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+    if (s && Object.prototype.toString.call(s.recipes) === '[object Array]') return s;
+  } catch(e) {}
+  return { recipes: [] };
+}
+function saveStore(s){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch(e) {}
+}
+function renderSaved(){
+  var store = loadStore();
+  var box = el('savedList');
+  box.innerHTML = '';
+  if (!store.recipes.length){
+    box.innerHTML = '<p class="empty">还没有保存的配方。在上面填好配方，点「保存当前配方」就会出现在这里。</p>';
+    return;
+  }
+  store.recipes.forEach(function(r, idx){
+    var div = document.createElement('div');
+    div.className = 'saved-item';
+    var nm = document.createElement('span');
+    nm.className = 'nm';
+    nm.textContent = r.name || '未命名配方';
+    var bLoad = document.createElement('button');
+    bLoad.type = 'button'; bLoad.className = 'load'; bLoad.textContent = '调用';
+    bLoad.addEventListener('click', function(){
+      fillForm(loadStore().recipes[idx]);
+      window.scrollTo(0, 0);
+    });
+    var bDel = document.createElement('button');
+    bDel.type = 'button'; bDel.className = 'del'; bDel.textContent = '删除';
+    bDel.addEventListener('click', function(){
+      var s = loadStore();
+      s.recipes.splice(idx, 1);
+      saveStore(s);
+      renderSaved();
+    });
+    div.appendChild(nm); div.appendChild(bLoad); div.appendChild(bDel);
+    box.appendChild(div);
+  });
+}
+el('btnSave').addEventListener('click', function(){
+  var f = readForm();
+  var msg = el('saveMsg');
+  if (!f.name){
+    msg.textContent = '请先在最上面填配方名，再保存。';
+    msg.className = 'msg err';
+    el('fName').focus();
+    return;
+  }
+  var s = loadStore();
+  var found = -1;
+  for (var i = 0; i < s.recipes.length; i++){ if (s.recipes[i].name === f.name) { found = i; break; } }
+  if (found >= 0) s.recipes[found] = f; else s.recipes.push(f);
+  saveStore(s);
+  renderSaved();
+  msg.textContent = (found >= 0 ? '已更新配方「' : '已保存配方「') + f.name + '」。';
+  msg.className = 'msg';
+});
+
+/* ---------- 备份导出/导入 ---------- */
+function encodeBackup(obj){
+  return 'HEMA-RECIPE-V1:' + btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+}
+function decodeBackup(text){
+  text = (text || '').trim();
+  if (text.indexOf('HEMA-RECIPE-V1:') === 0) text = text.slice('HEMA-RECIPE-V1:'.length);
+  var obj = JSON.parse(decodeURIComponent(escape(atob(text))));
+  if (!obj || Object.prototype.toString.call(obj.recipes) !== '[object Array]') throw new Error('bad');
+  return obj;
+}
+function copyText(text, btn, doneText){
+  function done(){
+    var old = btn.textContent;
+    btn.textContent = doneText;
+    setTimeout(function(){ btn.textContent = old; }, 1600);
+  }
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else { fallback(); }
+}
+el('btnExport').addEventListener('click', function(){
+  var s = loadStore();
+  var msg = el('backupMsg');
+  if (!s.recipes.length){
+    msg.textContent = '还没有保存的配方，先保存至少一个配方再导出。';
+    msg.className = 'msg err';
+    return;
+  }
+  var text = encodeBackup(s);
+  el('backupText').value = text;
+  copyText(text, el('btnExport'), '✅ 已复制');
+  msg.textContent = '备份已生成并复制好，共 ' + s.recipes.length + ' 个配方。把这段文本存好，换手机时粘贴回来导入即可。';
+  msg.className = 'msg';
+});
+el('btnImport').addEventListener('click', function(){
+  var msg = el('backupMsg');
+  try {
+    var obj = decodeBackup(el('backupText').value);
+    saveStore(obj);
+    renderSaved();
+    msg.textContent = '导入成功，共恢复 ' + obj.recipes.length + ' 个配方。';
+    msg.className = 'msg';
+  } catch(e) {
+    msg.textContent = '导入失败：备份文本不正确，请粘贴完整的备份文本。';
+    msg.className = 'msg err';
+  }
+});
+
+/* ---------- 顶栏：复制全文（内容=当前计算结果摘要） ---------- */
+var btnCopy = el('btnCopy');
+btnCopy.addEventListener('click', function(){
+  copyText(SUMMARY, btnCopy, '✅ 已复制');
+});
+
+/* ---------- 顶栏：收听朗读 ---------- */
+var btnListen = el('btnListen');
+var btnStop = el('btnStop');
+var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
+function pickVoice(){
+  try {
+    var vs = window.speechSynthesis.getVoices();
+    for (var i = 0; i < vs.length; i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break; } }
+  } catch(e) {}
+}
+if ('speechSynthesis' in window) {
+  pickVoice();
+  window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function splitChunks(text){
+  var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+  var out = [];
+  for (var i = 0; i < parts.length; i++){ var t = parts[i].trim(); if (t) out.push(t); }
+  return out;
+}
+function resetListenUI(){
+  speaking = false; paused = false;
+  btnListen.textContent = '🔊 收听';
+  btnStop.style.display = 'none';
+}
+function speakNext(){
+  if (ci >= chunks.length) { resetListenUI(); return; }
+  var u = new SpeechSynthesisUtterance(chunks[ci]);
+  u.lang = 'zh-CN';
+  if (zhVoice) u.voice = zhVoice;
+  u.rate = 1.02;
+  u.onend = function(){ ci++; speakNext(); };
+  u.onerror = function(){ ci++; speakNext(); };
+  window.speechSynthesis.speak(u);
+}
+btnListen.addEventListener('click', function(){
+  if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return; }
+  var ss = window.speechSynthesis;
+  if (speaking && !paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return; }
+  if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return; }
+  ss.cancel();
+  chunks = splitChunks(SUMMARY);
+  ci = 0;
+  speaking = true; paused = false;
+  btnListen.textContent = '⏸ 暂停';
+  btnStop.style.display = 'flex';
+  speakNext();
+});
+btnStop.addEventListener('click', function(){
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  resetListenUI();
+});
+setInterval(function(){
+  if (speaking && !paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+    window.speechSynthesis.resume();
+  }
+}, 10000);
+
+/* ---------- 初始化：空白表单，不预置任何配方 ---------- */
+addRow({});
+renderSaved();
+calc();
+</script>
+</body>
+</html>

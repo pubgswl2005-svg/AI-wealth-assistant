@@ -1,0 +1,206 @@
+<!-- hema-workbench-v1 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>河马工作台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#e2ecf7 0%,#cddbec 45%,#bccde6 100%);color:#07182b;min-height:100vh}
+a,button{touch-action:manipulation}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px 300px at 85% -5%,rgba(120,180,255,.45),transparent 70%),radial-gradient(380px 280px at -10% 30%,rgba(190,140,255,.30),transparent 70%),radial-gradient(500px 340px at 50% 110%,rgba(110,220,255,.35),transparent 70%)}
+body>*{position:relative;z-index:1}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(13,33,55,.62);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.35);color:#fff;padding:10px 12px 8px}
+.topbar h1{font-size:19px;font-weight:800;letter-spacing:1px}
+.topbar .sub{font-size:12px;color:#bcd2ea;margin-top:2px;font-weight:600}
+.topbar .row{display:flex;gap:8px;margin-top:8px}
+.topbar .row button{flex:1;border:none;border-radius:8px;padding:8px 0;font-size:14px;font-weight:800;cursor:pointer}
+#btnCopy{background:rgba(255,255,255,.88);color:#0f2a4a}
+#btnListen{background:#e02424;color:#fff}
+.search{width:100%;margin-top:8px;border:1px solid rgba(255,255,255,.7);border-radius:10px;padding:9px 10px;font-size:14px;color:#07182b;outline:none;background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.hint{font-size:11.5px;color:#243b55;font-weight:700;padding:8px 12px;line-height:1.5;margin:8px 10px 0;border-radius:10px;background:rgba(255,255,255,.45);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.hint b{color:#c00}
+.shell{display:flex;align-items:flex-start;margin-top:6px;padding:0 8px 20px;gap:8px}
+.nav{position:sticky;top:118px;width:112px;flex:none;display:flex;flex-direction:column;gap:7px}
+.nav button{border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#07182b;border-radius:12px;padding:10px 4px;font-size:14px;font-weight:800;cursor:pointer;text-align:center;line-height:1.3;box-shadow:0 4px 14px rgba(7,24,43,.08)}
+.nav button small{display:block;font-size:11px;color:#243b55;font-weight:700;margin-top:2px}
+.nav button.on{background:rgba(15,42,74,.88);color:#fff;border-color:rgba(255,255,255,.5)}
+.nav button.on small{color:#bcd2ea}
+.main{flex:1;min-width:0}
+.sec{display:none}
+.sec.on{display:block}
+.sec h2{font-size:16px;font-weight:800;margin:4px 2px 8px}
+.sec h2 span{font-size:12px;color:#243b55;font-weight:700}
+.card{display:block;background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,255,255,.58));-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.85);border-radius:18px;padding:12px;margin-bottom:10px;text-decoration:none;color:#07182b;box-shadow:0 10px 28px rgba(7,24,43,.12),inset 0 1px 0 rgba(255,255,255,.9)}
+.card:active{transform:scale(.985)}
+.card .t{font-size:15px;font-weight:800;line-height:1.35}
+.card .d{font-size:12.5px;color:#243b55;font-weight:700;line-height:1.5;margin-top:4px}
+.card .meta{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:800;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,.65);color:#243b55;border:1px solid rgba(255,255,255,.7)}
+.tag.web{background:#dcebfb;color:#0f4c9c}
+.tag.apk{background:#d9f2e2;color:#0a6b2e}
+.tag.video{background:#fde8d9;color:#9a4a00}
+.tag.doc{background:#efe6fb;color:#5b2ea6}
+.tag.auto{background:#ffe1e1;color:#c00}
+.tag.new{background:#e02424;color:#fff}
+.card.note{border-left:5px solid #c00}
+.card.note .t{color:#c00}
+.inapp .only-web{display:none!important}
+.footer{text-align:center;font-size:11.5px;color:#243b55;font-weight:700;padding:14px 10px 22px;line-height:1.6}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(7,24,43,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:13px;font-weight:700;padding:9px 16px;border-radius:20px;display:none;z-index:99;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>🦛 河马工作台</h1>
+  <div class="sub">你真正用得上的东西，全在这一个台子上 · 每天自动同步</div>
+  <div class="row">
+    <button id="btnCopy">📋 一键复制清单</button>
+    <button id="btnListen">🔊 收听</button>
+  </div>
+  <input class="search" id="search" type="search" placeholder="搜名字，比如：英雄世界、翻译、复利台…">
+</div>
+<div class="hint">用法：点左边分类，右边就换内容；点卡片打开。<b>网页版：把这个页面和你的文件放在同一个文件夹里用浏览器打开。APP版：每天打开自动同步最新内容。</b></div>
+<div class="shell">
+  <div class="nav" id="nav">
+    <button data-cat="all" class="on">全部<small>35项</small></button>
+    <button data-cat="game">🎮 游戏<small>8项</small></button>
+    <button data-cat="daily">📰 每日更新<small>5项</small></button>
+    <button data-cat="book">📚 读书<small>3项</small></button>
+    <button data-cat="invest">💰 投资<small>4项</small></button>
+    <button data-cat="tool">🛠️ 工具<small>5项</small></button>
+    <button data-cat="drama">🎬 漫剧短片<small>4项</small></button>
+    <button data-cat="money">💼 生意<small>5项</small></button>
+    <button data-cat="novel">📖 小说<small>1项</small></button>
+  </div>
+  <div class="main" id="main">
+    <div class="sec on" data-sec="game">
+      <h2>🎮 游戏 <span>8项 · APP里点卡片直接打开已安装的游戏</span></h2>
+      <a class="card" href="pkg:com.hema.heroworld" data-web="英雄世界-游戏.html"><div class="t">英雄世界</div><div class="d">Q版横版爬塔复刻，10000关，倍速1~10000，离线收益封顶8小时</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag">v20261023-22</span></div></a>
+      <a class="card" href="pkg:com.hema.mengshi" data-web="萌尸大作战.apk"><div class="t">萌尸大作战</div><div class="d">原创塔防，地图英雄持续加，打开自动同步新版</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag new">新增</span></div></a>
+      <a class="card" href="登山赛车-游戏.html"><div class="t">登山赛车 · 河马版</div><div class="d">倒头自动回正，加速器0~10000倍自调，界面已缩小</div><div class="meta"><span class="tag web">网页</span><span class="tag">v20261022-4</span></div></a>
+      <a class="card" href="魂灵纪元-游戏-v20261022-8.html"><div class="t">魂灵纪元 · 网页版</div><div class="d">斗罗类原创，6武魂×6技能，7章主线，神位晋升四阶</div><div class="meta"><span class="tag web">网页</span><span class="tag">V8</span></div></a>
+      <a class="card" href="pkg:com.hema.hunling" data-web="魂灵纪元-Godot版/魂灵纪元-同步版.apk"><div class="t">魂灵纪元 · 3D版</div><div class="d">Godot 4重制，3D低模Q版，存档可从网页版导入</div><div class="meta"><span class="tag apk">一点即开</span></div></a>
+      <a class="card" href="葫芦娃-复刻版-v20261021-5.html"><div class="t">葫芦娃 · 复刻版</div><div class="d">1:1复刻，按25张实机截图对界面细节，人物神兽代码手绘</div><div class="meta"><span class="tag web">网页</span><span class="tag">v5</span></div></a>
+      <a class="card" href="pkg:com.hema.gamehub" data-web="河马游戏工作台.apk"><div class="t">河马游戏工作台</div><div class="d">11个棋牌休闲游戏，跟小坏蛋对决，三档难度，全部支持悔棋</div><div class="meta"><span class="tag apk">一点即开</span></div></a>
+      <a class="card" href="pkg:com.hema.gomoku" data-web="河马五子棋-无限版.apk"><div class="t">河马五子棋 · 无限版</div><div class="d">无限棋盘，两边都是不败引擎，悔棋+五连红线高亮</div><div class="meta"><span class="tag apk">一点即开</span></div></a>
+    </div>
+    <div class="sec" data-sec="daily">
+      <h2>📰 每日更新 <span>5项 · 每天上午自动同步最新版</span></h2>
+      <a class="card" href="每日/news.html"><div class="t">全球新闻</div><div class="d">每天07:50生成，8~10条，深空液态玻璃风格，顶部可复制可收听</div><div class="meta"><span class="tag auto">自动同步</span></div></a>
+      <a class="card" href="每日/panqian.html"><div class="t">盘前预判</div><div class="d">交易日08:00，旗舰版V2.1：板块预测+大盘+主线+操作策略+持仓跟踪</div><div class="meta"><span class="tag auto">自动同步</span><span class="tag">交易日</span></div></a>
+      <a class="card" href="每日/hotlist.html"><div class="t">每日两榜</div><div class="d">24小时热榜10条+本周机会5条，带原文链接</div><div class="meta"><span class="tag auto">自动同步</span></div></a>
+      <a class="card" href="每日/learn.html"><div class="t">每日学习成果</div><div class="d">每天三轮学习的落地成果：工具/项目/财经各一件</div><div class="meta"><span class="tag auto">自动同步</span></div></a>
+      <a class="card" href="每日/gmail.html"><div class="t">Gmail安全汇总</div><div class="d">每天08:50，过去24小时账号安全提醒，一句话结论</div><div class="meta"><span class="tag auto">自动同步</span></div></a>
+    </div>
+    <div class="sec" data-sec="book">
+      <h2>📚 读书 <span>3项 · 每天发书聊</span></h2>
+      <a class="card" href="pkg:com.hema.books100" data-web="每日一书.apk"><div class="t">每日一书</div><div class="d">人生必读100本，每天教一本，300字内+语音版，自动同步</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag">21:50推送</span></div></a>
+      <div class="card note"><div class="t">财富与商业思维30讲</div><div class="d">每天12:50发旁聊「书籍学习·每日讲书」，一本讲透，落到定投和熟食店，附语音版</div><div class="meta"><span class="tag auto">自动推送</span></div></div>
+      <div class="card note"><div class="t">每日英语</div><div class="d">每天20:50发英语旁聊，5句实用口语，带中文意思和发音提示</div><div class="meta"><span class="tag auto">自动推送</span></div></div>
+    </div>
+    <div class="sec" data-sec="invest">
+      <h2>💰 投资 <span>4项 · 只记事实，不给买卖建议</span></h2>
+      <a class="card" href="长钱-定投复利台-v20261020-4.html"><div class="t">长钱 · 定投复利台</div><div class="d">每月2000定投复利模拟，金额年数年化可调，三档情景，20年明细表</div><div class="meta"><span class="tag web">网页</span><span class="tag">v20261020-4</span></div></a>
+      <a class="card" href="持仓事件跟踪表-v20261027-3.html"><div class="t">持仓事件跟踪表</div><div class="d">存储芯片+半导体设备，事件带日期和出处，只记事实</div><div class="meta"><span class="tag web">网页</span><span class="tag new">10-27新版</span></div></a>
+      <a class="card" href="8000月薪10年20年规划.txt"><div class="t">8000月薪 · 10年20年规划</div><div class="d">存4000、定投2000、生活2000，10年20年模拟数</div><div class="meta"><span class="tag doc">文档</span></div></a>
+      <div class="card note"><div class="t">持仓每日回报</div><div class="d">交易日20:30发旁聊「资本家概念讨论」，两只基当日涨跌+累计浮盈亏</div><div class="meta"><span class="tag auto">自动推送</span></div></div>
+    </div>
+    <div class="sec" data-sec="tool">
+      <h2>🛠️ 工具 <span>5项 · 手机上直接用</span></h2>
+      <a class="card" href="河马.html"><div class="t">河马收藏夹 · 网页版</div><div class="d">112条收藏，17个分类，iOS玻璃拟态，星标+访问统计</div><div class="meta"><span class="tag web">网页</span><span class="tag">v20261026-1</span></div></a>
+      <a class="card" href="pkg:com.hema.favorites" data-web="河马收藏夹.apk"><div class="t">河马收藏夹 · 安装包</div><div class="d">同款收藏夹装手机上，点卡片直接开链接，自动同步新版</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag">v1.1</span></div></a>
+      <a class="card" href="河马IP检测.html"><div class="t">河马IP检测</div><div class="d">多源定位对比，VPN/机房/住宅判定，纯净度评分，任意IP查询</div><div class="meta"><span class="tag web">网页</span><span class="tag">v1.1</span></div></a>
+      <a class="card" href="pkg:com.hema.translator" data-web="hema-translator.apk"><div class="t">河马翻译</div><div class="d">右侧蓝色悬浮球，点哪译哪，英文原地盖中文，不弹面板</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag">v1.5</span></div></a>
+      <a class="card" href="pkg:com.hema.mydata" data-web="hema-mydata.apk"><div class="t">河马资料管家</div><div class="d">相册短信通讯录本地查看，一键生成单独网页，数据不上云</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag">v1.1</span></div></a>
+    </div>
+    <div class="sec only-web" data-sec="drama">
+      <h2>🎬 漫剧短片 <span>4部 · 竖屏成片（网页版里看）</span></h2>
+      <a class="card" href="漫剧/凌晨三点/凌晨三点-成片.mp4"><div class="t">凌晨三点，AI给我发了一条消息</div><div class="d">84秒竖屏成片，字幕与镜头切点按实测配音停顿对齐</div><div class="meta"><span class="tag video">视频</span><span class="tag">v2</span></div></a>
+      <a class="card" href="漫剧/星尘逆命/第01集-星陨.mp4"><div class="t">星尘逆命 · 第1集 星陨</div><div class="d">修仙逆袭百集漫剧第1集，68秒，整幕连贯配音+全程烧录字幕</div><div class="meta"><span class="tag video">视频</span><span class="tag">68秒</span></div></a>
+      <a class="card" href="漫剧/都市夜行者/第01集-午夜三分钟-v2.mp4"><div class="t">都市夜行者 · 第1集 午夜三分钟</div><div class="d">外卖小哥午夜回溯三分钟，88秒，真动态片段+大陆口音配音</div><div class="meta"><span class="tag video">视频</span><span class="tag">v2</span></div></a>
+      <a class="card" href="漫剧/末班车/末班车-成片.mp4"><div class="t">末班车</div><div class="d">60秒竖屏短片成片</div><div class="meta"><span class="tag video">视频</span><span class="tag">60秒</span></div></a>
+    </div>
+    <div class="sec" data-sec="money">
+      <h2>💼 生意 <span>5项 · 线上收钱+店里用</span></h2>
+      <a class="card" href="反推提示词包/AI反推提示词包.html"><div class="t">AI反推提示词包</div><div class="d">9组反推提示词，闲鱼19.9元在售，拍下自动发文件</div><div class="meta"><span class="tag web">网页</span><span class="tag">v1.0</span></div></a>
+      <a class="card" href="星集商城/星集单品小店-demo-v1.html"><div class="t">星集商城 · 演示版</div><div class="d">单品小店样子，演示订单不真收钱，先看样式</div><div class="meta"><span class="tag web">网页</span><span class="tag new">新增</span></div></a>
+      <a class="card" href="https://xingji-ai-store.pubgswl2005.workers.dev"><div class="t">星集商城 · 云端站</div><div class="d">已上线公测，商品目录待接数据库</div><div class="meta"><span class="tag web">在线</span><span class="tag new">新增</span></div></a>
+      <a class="card" href="店面价格对照-v20261022-1.html"><div class="t">店面价格对照</div><div class="d">自家店18项价目对照卡，价格牌+柜台实拍逐项对过</div><div class="meta"><span class="tag web">网页</span></div></a>
+      <a class="card" href="熟食成本计算器-v20261022-1.html"><div class="t">熟食成本计算器</div><div class="d">店里算每道菜成本用</div><div class="meta"><span class="tag web">网页</span><span class="tag new">新增</span></div></a>
+    </div>
+    <div class="sec" data-sec="novel">
+      <h2>📖 小说 <span>1项 · 打开自动同步最新章节</span></h2>
+      <a class="card" href="pkg:com.hema.blank" data-web="河马小说.apk"><div class="t">河马小说</div><div class="d">《浑源之外：万界归墟》800多章连载中，每半小时写15章</div><div class="meta"><span class="tag apk">一点即开</span><span class="tag new">新增</span></div></a>
+    </div>
+  </div>
+</div>
+<div class="footer">河马工作台 · v20261031-1 · 2026-10-31<br>删掉的：加密行情、AI会员比价、GDevelop、审计计划卡、信息卡样卡、自检台、代做接单页（文件都在，只是不占台子了）</div>
+<div class="toast" id="toast"></div>
+<script>
+var inApp = /; wv/.test(navigator.userAgent);
+if (inApp) document.body.classList.add('inapp');
+/* 网页版：pkg: 链接换成 data-web 的真实地址；APP版：原生拦截 pkg: 直接打开应用 */
+if (!inApp) {
+  var links = document.querySelectorAll('a[data-web]');
+  for (var i = 0; i < links.length; i++) links[i].setAttribute('href', links[i].getAttribute('data-web'));
+}
+var nav=document.getElementById('nav');
+var secs=document.querySelectorAll('.sec');
+var toastEl=document.getElementById('toast');
+function toast(msg){toastEl.textContent=msg;toastEl.style.display='block';setTimeout(function(){toastEl.style.display='none';},1800);}
+function show(cat,noscroll){
+  var btns=nav.querySelectorAll('button');
+  for(var i=0;i<btns.length;i++){btns[i].classList.toggle('on',btns[i].getAttribute('data-cat')===cat);}
+  for(var j=0;j<secs.length;j++){
+    var s=secs[j];
+    s.classList.toggle('on',cat==='all'||s.getAttribute('data-sec')===cat);
+  }
+  document.getElementById('search').value='';
+  filter('');
+  if(!noscroll){window.scrollTo(0,0);}
+}
+nav.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;show(b.getAttribute('data-cat'));
+});
+function filter(q){
+  q=(q||'').trim();
+  var cards=document.querySelectorAll('.card');
+  for(var i=0;i<cards.length;i++){
+    var c=cards[i];
+    c.style.display=(!q||c.textContent.indexOf(q)>-1)?'':'none';
+  }
+}
+document.getElementById('search').addEventListener('input',function(e){
+  var q=e.target.value.trim();
+  if(q){show('all',true);}
+  filter(q);
+});
+document.getElementById('btnCopy').addEventListener('click',function(){
+  var lines=['河马工作台 · 8类35项'];
+  var cards=document.querySelectorAll('.card .t');
+  for(var i=0;i<cards.length;i++){lines.push((i+1)+'、'+cards[i].textContent);}
+  var txt=lines.join('\n');
+  function done(){toast('清单已复制');}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){fallback();});}
+  else{fallback();}
+  function fallback(){
+    var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');done();}catch(e){toast('复制失败，长按手动复制');}
+    document.body.removeChild(ta);
+  }
+});
+document.getElementById('btnListen').addEventListener('click',function(){
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance('河马工作台，一共八类三十五项：游戏八项，每日更新五项，读书三项，投资四项，工具五项，漫剧短片四部，生意五项，小说一项。点左边分类，右边就换内容。');
+    u.lang='zh-CN';u.rate=1;
+    window.speechSynthesis.speak(u);
+    toast('正在朗读');
+  }catch(e){toast('这台设备不支持朗读');}
+});
+show('all',true);
+</script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>每日两榜 · 2026-10-31</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent;}body {
+font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+background: linear-gradient(180deg, #c3d0df 0%, #aebfd3 100%);
+background-attachment: scroll;
+color:#07182b; min-height:100vh; padding:0 12px 28px;
+}
+.topbar {
+position: sticky; top:0; z-index:50;
+margin:0 -12px; padding:10px 12px;
+background:#ffffff; border-bottom:2px solid #1447c8;
+display:flex; gap:10px; align-items:stretch;
+box-shadow:0 2px 10px rgba(7,24,43,.18);
+}
+.topbar button {
+flex:1; min-height:52px; border:none; border-radius:12px;
+font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+display:flex; align-items:center; justify-content:center; gap:6px;
+}
+#btnCopy { background:#1447c8;}
+#btnCopy:active { background:#0d3396;}
+#btnListen { background:#065f46;}
+#btnListen:active { background:#04402f;}
+#btnStop { flex:0 0 64px; background:#b91c1c; display:none;}
+.hint { margin:10px 2px 0; font-size:14px; font-weight:700; color:#243b55;}
+.card {
+background:#ffffff; border-radius:16px; margin-top:12px;
+padding:18px 16px; box-shadow:0 2px 8px rgba(7,24,43,.12);
+}
+h1 { font-size:21px; font-weight:900; line-height:1.35;}
+.date { margin-top:4px; font-size:14px; font-weight:700; color:#243b55;}
+h2 { font-size:17px; font-weight:900; margin:16px 0 4px; color:#1447c8;}
+h2.green { color:#065f46;}
+.item { border-top:1px solid #d7e0ec; padding:12px 0;}
+.item:first-of-type { border-top:none;}
+.t { font-size:16px; font-weight:900; line-height:1.5; color:#07182b;}
+.n { display:inline-block; min-width:26px; height:26px; line-height:26px; text-align:center;
+background:#1447c8; color:#ffffff; border-radius:8px; font-size:14px; font-weight:900; margin-right:8px;}
+.n.green { background:#065f46;}
+.s { margin-top:6px; font-size:15px; font-weight:600; line-height:1.65; color:#07182b;}
+.op { margin-top:6px; font-size:15px; font-weight:700; line-height:1.65; color:#065f46;}
+.l { margin-top:6px; font-size:13px; font-weight:700;}
+.l a { color:#1447c8; word-break:break-all;}
+.foot { margin-top:16px; font-size:12px; font-weight:700; color:#5a6b80; text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<button id="btnCopy" type="button">📋 复制全文</button>
+<button id="btnListen" type="button">🔊 收听</button>
+<button id="btnStop" type="button">⏹</button>
+</div>
+<p class="hint">👆 左边一键复制全文，右边点开朗读给你听。</p>
+
+<div class="card">
+<h1>每日两榜</h1>
+<p class="date">' + DATE_CN + ' · 数据窗口 ' + WINDOW + '（北京时间）</p>
+
+<h2>24小时热榜</h2>
+<div class="item">
+<div class="t"><span class="n">1</span>AI资本开支恐慌引爆全球科技股抛售，纳指100单日蒸发超万亿美元</div>
+<p class="s">Alphabet周四创纪录暴跌12.6%、市值蒸发约5000亿美元后，抛售10月30日蔓延：英特尔暴跌近30%创史上最大单日跌幅、亚马逊Q3不及预期且连续两季自由现金流为负，纳指100盘中蒸发超1万亿美元；微软因现金流为正逆势上涨。</p>
+<p class="l"><a href="https://clashreport.com/world/articles/tech-stocks-face-1-trillion-wipeout-as-ai-spending-fears-hammer-wall-street-2t8jz05dyjy">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">2</span>币安遭63亿美元盗窃，创加密史上最大劫案，FBI介入调查</div>
+<p class="s">币安10月30日确认黑客约20分钟内从多条链钱包盗走约63亿美元；TRM Labs与Chainalysis将攻击归因于朝鲜黑客组织TraderTraitor，起因是一名工程师的笔记本被入侵；约30亿美元已冻结，币安承诺全额赔付用户损失。</p>
+<p class="l"><a href="https://www.cybersecuritydive.com/news/binance-hack-north-korea-cryptocurrency-theft/873304/">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">3</span>DeepSeek二轮融资细节曝光：募资1055亿元，投后估值6155亿元</div>
+<p class="s">据21世纪经济报道，DeepSeek第二轮融资吸引近30家投资者、募资1055亿元人民币，投后估值6155亿元；腾讯、宁德时代仍是两大产业出资方，长鑫存储、中芯国际参投，国有资本占比达27%；公司拟聘中信证券筹备科创板IPO。</p>
+<p class="l"><a href="https://finance.sina.cn/2026-10-30/detail-iniwzazt8136287.d.html">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">4</span>Reddit财报后暴跌29.2%，CEO炮轰谷歌AI搜索抢流量</div>
+<p class="s">Reddit周五暴跌29.22%、创2024年上市以来最大单日跌幅；Q3营收虽增53%至8.95亿美元，但Q4指引不及预期；CEO Huffman称谷歌AI Overviews十月每周让Reddit损失超100万次搜索导流，&quot;AI Mode不给任何人导流&quot;；公司将在海外市场测试强制登录。</p>
+<p class="l"><a href="https://aiweekly.co/alerts/reddit-plunges-29-as-google-ai-overviews-gut-referrals">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">5</span>FT：Anthropic IPO后恐被评为高等级&quot;垃圾债&quot;，黑石改口</div>
+<p class="s">据《金融时报》报道，曾主导Anthropic 630亿美元芯片融资的黑石告诉投资人，预计Anthropic上市后将获双B级评级（投机级中最高一档），此前曾预测其2027年前能拿投资级；评级下调将让这家烧钱买算力的大模型公司未来融资更贵。</p>
+<p class="l"><a href="https://techcrunch.com/2026/10/30/anthropic-expected-to-receive-high-junk-rating-from-credit-agencies-following-ipo-report-says/">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">6</span>Cohere E轮目标70亿加元，加拿大政府拟16亿加元入股</div>
+<p class="s">Cohere 10月29日宣布E轮首关、目标最高70亿加元，德国Schwarz集团领投、英伟达等参投，估值357亿加元；总理卡尼宣布政府将分阶段商业入股至多16亿加元，换取2030年前1000个本土技术岗和17亿加元算力基建投入。</p>
+<p class="l"><a href="https://www.okaynews.com/cohere-series-e-canada-ai-funding-october-2026/">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">7</span>长鑫科技Q3：营收1187亿元增6倍，净利544亿元扭亏</div>
+<p class="s">长鑫科技Q3营收约1187.14亿元、同比增长613.18%，归母净利润约544.35亿元扭亏，毛利率89.53%；全球DRAM供不应求、量价齐升；LPDDR6已全球首发量产并搭载小米18 Fold；公司已成上证综指第一大权重股。</p>
+<p class="l"><a href="https://finance.sina.cn/2026-10-30/detail-iniwziiq2203028.d.html">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">8</span>CrowdStrike披露：VAPOR PANDA用DeepSeek驱动AI智能体11天攻击200多家机构</div>
+<p class="s">CrowdStrike 10月29日报告称，中国关联组织VAPOR PANDA用开源智能体框架ARTEX（主要跑在DeepSeek上），11天内对14国200多家机构发动入侵，9家被植入BLOODALCHEMY后门；目标含多国外交部、一欧洲国家总统府总理府及19家美国药企、半导体、国防企业，单次入侵消耗约14亿token。</p>
+<p class="l"><a href="https://www.unite.ai/china-nexus-vapor-panda-breached-nine-of-200-plus-targets-with-ai-agents/">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">9</span>智元创新日：发布GO-3 Preview等全栈成果，提出&quot;Worken&quot;度量衡</div>
+<p class="s">智元创新日发布GO-3 Preview具身基座大模型（先预测后动作、登顶三大评测榜）、WITA-OMNI交互大模型、AGILE运动框架、AHA3硬件架构及业内首个具身智能原生操作系统灵渠OS 1.0（年底开源）；上半年机器人营收接近20亿元、累计下线20000台，并提出Worken（有效智能工时）衡量机器人生产力。</p>
+<p class="l"><a href="https://finance.sina.cn/stock/jdts/2026-10-30/detail-iniwyncw5590337.d.html">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n">10</span>谷歌太空数据中心卫星上线，Gemma 4在轨写下首首俳句</div>
+<p class="s">Project Suncatcher原型卫星（搭载4颗TPU、发电1kW）在轨调试三周后正式工作，地面工程师上行的第一条指令是让Gemma 4写一首太空主题俳句；下一步测试芯片在辐射与热应力下的表现，2027年再发射两颗互联卫星。</p>
+<p class="l"><a href="https://techcrunch.com/2026/10/30/googles-first-data-center-satellite-is-online-and-writing-poetry/">原文链接</a></p>
+</div>
+
+<h2 class="green">本周机会</h2>
+<div class="item">
+<div class="t"><span class="n green">1</span>AI资本开支恐慌下的情绪错杀：优质云厂商基本面依然强劲</div>
+<p class="op">机会点：市场在为&quot;烧钱换增长&quot;定价，但AWS仍增39%、Google Cloud营收翻倍、在手云合同均超5000亿美元——情绪与基本面错杀时，长期定投者可把优质云厂商与算力链的回调当作观察窗口；创业者则可借token降价潮低成本做AI应用。</p>
+<p class="l"><a href="https://clashreport.com/world/articles/tech-stocks-face-1-trillion-wipeout-as-ai-spending-fears-hammer-wall-street-2t8jz05dyjy">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n green">2</span>存储芯片超级周期：DRAM涨价或延续至2027年</div>
+<p class="op">机会点：长鑫Q3净利544亿元、毛利率89.53%，Counterpoint与TrendForce预计DRAM涨价延续至2027年；跟踪存储芯片、半导体设备的投资者可把&quot;国产存储+先进封装设备&quot;当作主线，关注设备与材料环节的订单传导。</p>
+<p class="l"><a href="https://finance.sina.cn/2026-10-30/detail-iniwziiq2203028.d.html">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n green">3</span>AI+网络安全：智能体攻防两端都在爆发</div>
+<p class="op">机会点：VAPOR PANDA用DeepSeek驱动智能体11天攻击200多家机构——AI红队与渗透测试、安全agent、代码审计需求爆发；懂安全的开发者可做安全agent工具或SaaS，企业应把AI代码审计与密钥轮换接进研发流程。</p>
+<p class="l"><a href="https://www.unite.ai/china-nexus-vapor-panda-breached-nine-of-200-plus-targets-with-ai-agents/">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n green">4</span>具身智能进入&quot;部署态&quot;：机器人产业链订单放量</div>
+<p class="op">机会点：智元上半年营收接近20亿元、累计下线20000台，灵渠OS年底开源约2亿行代码——机器人从&quot;会打拳&quot;转向&quot;能干活&quot;；投资者可沿&quot;具身智能算力→本体→应用&quot;链条布局，开发者可基于开源OS与模型做行业场景应用。</p>
+<p class="l"><a href="https://finance.sina.cn/stock/jdts/2026-10-30/detail-iniwyncw5590337.d.html">原文链接</a></p>
+</div>
+<div class="item">
+<div class="t"><span class="n green">5</span>主权AI与受监管行业垂直AI成资本新宠</div>
+<p class="op">机会点：加拿大政府16亿加元入股Cohere，资金明确投向&quot;受监管行业垂直AI&quot;——金融、医疗、政务等合规场景的AI agent落地迎来窗口期；做企业服务的创业者可盯&quot;主权AI/合规AI&quot;赛道，投资者可关注垂直模型与算力基建标的。</p>
+<p class="l"><a href="https://www.okaynews.com/cohere-series-e-canada-ai-funding-october-2026/">原文链接</a></p>
+</div>
+
+<p class="foot">每日两榜 v20261031 · 数据窗口 10-30 08:00 → 10-31 08:00（北京时间）</p>
+</div>
+<script>
+var PLAIN = [
+"每日两榜（10月31日）",
+"数据窗口：10月30日08:00到10月31日08:00，北京时间。",
+"",
+"24小时热榜：",
+"",
+"1. AI资本开支恐慌引爆全球科技股抛售，纳指100单日蒸发超万亿美元。",
+"Alphabet周四创纪录暴跌12.6%、市值蒸发约5000亿美元后，抛售10月30日蔓延：英特尔暴跌近30%创史上最大单日跌幅、亚马逊Q3不及预期且连续两季自由现金流为负，纳指100盘中蒸发超1万亿美元；微软因现金流为正逆势上涨。",
+"原文：https://clashreport.com/world/articles/tech-stocks-face-1-trillion-wipeout-as-ai-spending-fears-hammer-wall-street-2t8jz05dyjy",
+"",
+"2. 币安遭63亿美元盗窃，创加密史上最大劫案，FBI介入调查。",
+"币安10月30日确认黑客约20分钟内从多条链钱包盗走约63亿美元；TRM Labs与Chainalysis将攻击归因于朝鲜黑客组织TraderTraitor，起因是一名工程师的笔记本被入侵；约30亿美元已冻结，币安承诺全额赔付用户损失。",
+"原文：https://www.cybersecuritydive.com/news/binance-hack-north-korea-cryptocurrency-theft/873304/",
+"",
+"3. DeepSeek二轮融资细节曝光：募资1055亿元，投后估值6155亿元。",
+"据21世纪经济报道，DeepSeek第二轮融资吸引近30家投资者、募资1055亿元人民币，投后估值6155亿元；腾讯、宁德时代仍是两大产业出资方，长鑫存储、中芯国际参投，国有资本占比达27%；公司拟聘中信证券筹备科创板IPO。",
+"原文：https://finance.sina.cn/2026-10-30/detail-iniwzazt8136287.d.html",
+"",
+"4. Reddit财报后暴跌29.2%，CEO炮轰谷歌AI搜索抢流量。",
+"Reddit周五暴跌29.22%、创2024年上市以来最大单日跌幅；Q3营收虽增53%至8.95亿美元，但Q4指引不及预期；CEO Huffman称谷歌AI Overviews十月每周让Reddit损失超100万次搜索导流，\"AI Mode不给任何人导流\"；公司将在海外市场测试强制登录。",
+"原文：https://aiweekly.co/alerts/reddit-plunges-29-as-google-ai-overviews-gut-referrals",
+"",
+"5. FT：Anthropic IPO后恐被评为高等级\"垃圾债\"，黑石改口。",
+"据《金融时报》报道，曾主导Anthropic 630亿美元芯片融资的黑石告诉投资人，预计Anthropic上市后将获双B级评级（投机级中最高一档），此前曾预测其2027年前能拿投资级；评级下调将让这家烧钱买算力的大模型公司未来融资更贵。",
+"原文：https://techcrunch.com/2026/10/30/anthropic-expected-to-receive-high-junk-rating-from-credit-agencies-following-ipo-report-says/",
+"",
+"6. Cohere E轮目标70亿加元，加拿大政府拟16亿加元入股。",
+"Cohere 10月29日宣布E轮首关、目标最高70亿加元，德国Schwarz集团领投、英伟达等参投，估值357亿加元；总理卡尼宣布政府将分阶段商业入股至多16亿加元，换取2030年前1000个本土技术岗和17亿加元算力基建投入。",
+"原文：https://www.okaynews.com/cohere-series-e-canada-ai-funding-october-2026/",
+"",
+"7. 长鑫科技Q3：营收1187亿元增6倍，净利544亿元扭亏。",
+"长鑫科技Q3营收约1187.14亿元、同比增长613.18%，归母净利润约544.35亿元扭亏，毛利率89.53%；全球DRAM供不应求、量价齐升；LPDDR6已全球首发量产并搭载小米18 Fold；公司已成上证综指第一大权重股。",
+"原文：https://finance.sina.cn/2026-10-30/detail-iniwziiq2203028.d.html",
+"",
+"8. CrowdStrike披露：VAPOR PANDA用DeepSeek驱动AI智能体11天攻击200多家机构。",
+"CrowdStrike 10月29日报告称，中国关联组织VAPOR PANDA用开源智能体框架ARTEX（主要跑在DeepSeek上），11天内对14国200多家机构发动入侵，9家被植入BLOODALCHEMY后门；目标含多国外交部、一欧洲国家总统府总理府及19家美国药企、半导体、国防企业，单次入侵消耗约14亿token。",
+"原文：https://www.unite.ai/china-nexus-vapor-panda-breached-nine-of-200-plus-targets-with-ai-agents/",
+"",
+"9. 智元创新日：发布GO-3 Preview等全栈成果，提出\"Worken\"度量衡。",
+"智元创新日发布GO-3 Preview具身基座大模型（先预测后动作、登顶三大评测榜）、WITA-OMNI交互大模型、AGILE运动框架、AHA3硬件架构及业内首个具身智能原生操作系统灵渠OS 1.0（年底开源）；上半年机器人营收接近20亿元、累计下线20000台，并提出Worken（有效智能工时）衡量机器人生产力。",
+"原文：https://finance.sina.cn/stock/jdts/2026-10-30/detail-iniwyncw5590337.d.html",
+"",
+"10. 谷歌太空数据中心卫星上线，Gemma 4在轨写下首首俳句。",
+"Project Suncatcher原型卫星（搭载4颗TPU、发电1kW）在轨调试三周后正式工作，地面工程师上行的第一条指令是让Gemma 4写一首太空主题俳句；下一步测试芯片在辐射与热应力下的表现，2027年再发射两颗互联卫星。",
+"原文：https://techcrunch.com/2026/10/30/googles-first-data-center-satellite-is-online-and-writing-poetry/",
+"",
+"",
+"本周机会：",
+"",
+"1. AI资本开支恐慌下的情绪错杀：优质云厂商基本面依然强劲。",
+"机会点：市场在为\"烧钱换增长\"定价，但AWS仍增39%、Google Cloud营收翻倍、在手云合同均超5000亿美元——情绪与基本面错杀时，长期定投者可把优质云厂商与算力链的回调当作观察窗口；创业者则可借token降价潮低成本做AI应用。",
+"原文：https://clashreport.com/world/articles/tech-stocks-face-1-trillion-wipeout-as-ai-spending-fears-hammer-wall-street-2t8jz05dyjy",
+"",
+"2. 存储芯片超级周期：DRAM涨价或延续至2027年。",
+"机会点：长鑫Q3净利544亿元、毛利率89.53%，Counterpoint与TrendForce预计DRAM涨价延续至2027年；跟踪存储芯片、半导体设备的投资者可把\"国产存储+先进封装设备\"当作主线，关注设备与材料环节的订单传导。",
+"原文：https://finance.sina.cn/2026-10-30/detail-iniwziiq2203028.d.html",
+"",
+"3. AI+网络安全：智能体攻防两端都在爆发。",
+"机会点：VAPOR PANDA用DeepSeek驱动智能体11天攻击200多家机构——AI红队与渗透测试、安全agent、代码审计需求爆发；懂安全的开发者可做安全agent工具或SaaS，企业应把AI代码审计与密钥轮换接进研发流程。",
+"原文：https://www.unite.ai/china-nexus-vapor-panda-breached-nine-of-200-plus-targets-with-ai-agents/",
+"",
+"4. 具身智能进入\"部署态\"：机器人产业链订单放量。",
+"机会点：智元上半年营收接近20亿元、累计下线20000台，灵渠OS年底开源约2亿行代码——机器人从\"会打拳\"转向\"能干活\"；投资者可沿\"具身智能算力→本体→应用\"链条布局，开发者可基于开源OS与模型做行业场景应用。",
+"原文：https://finance.sina.cn/stock/jdts/2026-10-30/detail-iniwyncw5590337.d.html",
+"",
+"5. 主权AI与受监管行业垂直AI成资本新宠。",
+"机会点：加拿大政府16亿加元入股Cohere，资金明确投向\"受监管行业垂直AI\"——金融、医疗、政务等合规场景的AI agent落地迎来窗口期；做企业服务的创业者可盯\"主权AI/合规AI\"赛道，投资者可关注垂直模型与算力基建标的。",
+"原文：https://www.okaynews.com/cohere-series-e-canada-ai-funding-october-2026/",
+""
+].join("\n");
+
+var btnCopy = document.getElementById('btnCopy');
+function copyDone(){
+var old = btnCopy.textContent;
+btnCopy.textContent = '✅ 已复制';
+setTimeout(function(){ btnCopy.textContent = old;}, 1600);
+}
+btnCopy.addEventListener('click', function(){
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy();});
+} else { fallbackCopy();}
+});
+function fallbackCopy(){
+var ta = document.createElement('textarea');
+ta.value = PLAIN;
+ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand('copy'); copyDone();} catch(e) {}
+document.body.removeChild(ta);
+}
+
+var btnListen = document.getElementById('btnListen');
+var btnStop = document.getElementById('btnStop');
+var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
+
+function pickVoice(){
+try {
+var vs = window.speechSynthesis.getVoices();
+for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break;}}
+} catch(e) {}
+}
+if ('speechSynthesis' in window) {
+pickVoice();
+window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function splitChunks(text){
+var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+var out = [];
+for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t);}
+return out;
+}
+function resetListenUI(){
+speaking = false; paused = false;
+btnListen.textContent = '🔊 收听';
+btnStop.style.display = 'none';
+}
+function speakNext(){
+if (ci >= chunks.length) { resetListenUI(); return;}
+var u = new SpeechSynthesisUtterance(chunks[ci]);
+u.lang = 'zh-CN';
+if (zhVoice) u.voice = zhVoice;
+u.rate = 1.02;
+u.onend = function(){ ci++; speakNext();};
+u.onerror = function(){ ci++; speakNext();};
+window.speechSynthesis.speak(u);
+}
+btnListen.addEventListener('click', function(){
+if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
+var ss = window.speechSynthesis;
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+ss.cancel();
+chunks = splitChunks(PLAIN);
+ci = 0;
+speaking = true; paused = false;
+btnListen.textContent = '⏸ 暂停';
+btnStop.style.display = 'flex';
+speakNext();
+});
+btnStop.addEventListener('click', function(){
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+resetListenUI();
+});
+setInterval(function(){
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+window.speechSynthesis.resume();
+}
+}, 10000);
+</script>
+<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a>
+<!-- hema-audio-fix -->
+<script>
+(function(){
+  var KEY = "hotlist";
+  var URLS = [
+    "https://cdn.jsdelivr.net/gh/pubgswl2005-svg/AI-wealth-assistant@main/daily/audio/" + KEY + ".b64",
+    "https://raw.githubusercontent.com/pubgswl2005-svg/AI-wealth-assistant/main/daily/audio/" + KEY + ".b64"
+  ];
+  var audio = null, state = "idle";
+  function btn(){ return document.getElementById("btnSpeak"); }
+  function stopBtn(){ return document.getElementById("btnStop"); }
+  function label(t){ var b = btn(); if (b) b.textContent = t; }
+  function showStop(v){ var s = stopBtn(); if (s) s.style.display = v ? "block" : "none"; }
+  function toast(msg){ var d = document.createElement("div"); d.textContent = msg; d.style.cssText = "position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(7,24,43,.92);color:#fff;font-size:14px;font-weight:700;padding:10px 16px;border-radius:999px;z-index:99999;max-width:86vw;text-align:center"; document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 2600); }
+  function decode(b64){
+    var bin = atob(b64.replace(/\s+/g, ""));
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return URL.createObjectURL(new Blob([arr], {type: "audio/mpeg"}));
+  }
+  function fetchAudio(idx){
+    return fetch(URLS[idx]).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(decode)
+      .catch(function(e){ if (idx + 1 < URLS.length) return fetchAudio(idx + 1); throw e; });
+  }
+  function play(){
+    if (state === "playing"){ audio.pause(); return; }
+    if (state === "paused"){ audio.play(); return; }
+    if (state === "loading") return;
+    state = "loading"; label("⏳ 加载语音");
+    fetchAudio(0).then(function(u){
+      audio = new Audio(u);
+      audio.onplay = function(){ state = "playing"; label("⏸ 暂停"); showStop(true); };
+      audio.onpause = function(){ if (state === "playing"){ state = "paused"; label("▶️ 继续"); } };
+      audio.onended = function(){ state = "idle"; label("🔊 收听"); showStop(false); };
+      audio.onerror = function(){ state = "idle"; label("🔊 收听"); showStop(false); toast("语音加载失败，请检查网络后重试"); };
+      var p = audio.play(); if (p && p.catch) p.catch(function(){ state = "idle"; label("🔊 收听"); toast("语音播放失败，请再点一次"); });
+    }).catch(function(){ state = "idle"; label("🔊 收听"); toast("语音还在生成中或网络不通，请稍后再试"); });
+  }
+  function stopAll(){
+    if (audio){ try{ audio.pause(); audio.currentTime = 0; }catch(e){} }
+    if (window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
+    state = "idle"; label("🔊 收听"); showStop(false);
+  }
+  window.speakAll = play;
+  window.stopSpeak = stopAll;
+  function rebind(){
+    var b = btn(); if (b) b.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } play(); };
+    var s = stopBtn(); if (s) s.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } stopAll(); };
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rebind); else rebind();
+})();
+</script>
+
+</body>
+</html>

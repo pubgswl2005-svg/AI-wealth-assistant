@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>全球新闻速览 · 10月31日</title>
+<style>
+:root{
+  --bg:#080B12; --bg2:#0D121C; --card:#121824;
+  --glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
+  --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
+  --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.6;
+  background-image:
+    radial-gradient(600px 300px at 15% 0%, rgba(114,213,255,.07), transparent 70%),
+    radial-gradient(500px 260px at 90% 12%, rgba(167,139,250,.06), transparent 70%),
+    radial-gradient(700px 400px at 50% 100%, rgba(102,240,208,.04), transparent 70%);
+  background-attachment:fixed;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom));
+}
+/* ===== 顶部功能栏：复制 + 收听 ===== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  padding:10px 16px;
+  background:rgba(8,11,18,.92);
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--stroke);
+  display:flex; gap:10px; align-items:stretch;
+}
+.topbar button{
+  flex:1; min-height:56px; border:none; border-radius:14px;
+  font-size:19px; font-weight:900; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  letter-spacing:.04em;
+}
+#btnCopy{background:linear-gradient(120deg,var(--cyan),var(--teal)); color:#0A0E16;}
+#btnCopy:active{opacity:.85;}
+#btnListen{background:linear-gradient(120deg,#3DD598,#22B8CF); color:#0A0E16;}
+#btnListen:active{opacity:.85;}
+#btnStop{flex:0 0 68px; background:#B3261E; color:#fff; display:none; font-size:20px;}
+.hint{margin:10px 16px 0; font-size:12.5px; font-weight:700; color:var(--dim);}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header.top{padding:28px 0 6px}
+.date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
+h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
+.sub{font-size:13px;color:var(--dim)}
+.hero{
+  margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
+  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
+  border:1px solid var(--stroke);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  padding:22px 20px;
+}
+.hero::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;
+  padding:3px 10px;border-radius:999px;margin-bottom:10px;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
+.tag.hot{color:#0A0E16;background:linear-gradient(120deg,var(--cyan),var(--teal));border:none}
+.hero h2{font-size:21px;font-weight:800;line-height:1.45;margin-bottom:8px}
+.hero p{font-size:14px;color:#C9D3E4}
+.meta{margin-top:12px;font-size:11px;color:var(--dim);letter-spacing:.06em}
+.sec{margin:26px 0 4px}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.dot{width:8px;height:8px;border-radius:50%}
+.sec-head h3{font-size:15px;font-weight:700;letter-spacing:.08em}
+.sec-head .line{flex:1;height:1px;background:linear-gradient(90deg,var(--stroke),transparent)}
+.card{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
+  padding:15px 16px;margin-bottom:10px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  position:relative;
+}
+.card::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
+.card h4{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
+.card h4 .t{color:var(--cyan);font-weight:600;font-size:12px;margin-right:8px;letter-spacing:.04em}
+.card p{font-size:13.5px;color:#B9C3D6}
+.card .src{margin-top:8px;font-size:11px;color:var(--dim)}
+footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);letter-spacing:.08em}
+.c-pol{color:var(--cyan)} .c-war{color:var(--red)} .c-eco{color:var(--teal)} .c-bra{color:var(--amber)}
+.d-pol{background:var(--cyan)} .d-war{background:var(--red)} .d-eco{background:var(--teal)} .d-bra{background:var(--amber)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<button id="btnCopy" type="button">📋 复制全文</button>
+<button id="btnListen" type="button">🔊 收听</button>
+<button id="btnStop" type="button">⏹</button>
+</div>
+<p class="hint">👆 以后我发的信息，顶部都有这两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="date">2026 · 10 · 31 &nbsp;星期六</div>
+  <h1>全球新闻速览</h1>
+  <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
+</header>
+
+<div class="hero">
+  <span class="tag hot">头 条</span>
+  <h2>币安遭黑客盗取约 63 亿美元资产，创历史最大加密货币盗窃案</h2>
+  <p>全球最大加密货币交易所币安10月30日表示，黑客从其钱包盗走约63亿美元资产，为迄今规模最大的加密资产被盗案。币安承诺全额弥补用户损失。市场剧烈震荡，部分稳定币发行商已冻结涉案资金。部分外媒称攻击或与朝鲜有关，币安称发现了安全漏洞，正在调查。</p>
+  <div class="meta">BBC · 南华早报 · 今日要闻 · 10月30日</div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-29</span>以色列大选初步计票全部完成，内塔尼亚胡阵营与反对派均未过半</h4>
+    <p>以色列中央选举委员会完成全部初步计票：内塔尼亚胡领导的右翼执政联盟获53席，埃森科特领导的反对党阵营获48席，阿拉伯政党以19席创纪录，成为关键少数。组阁谈判预计将艰难展开。</p>
+    <div class="src">央视新闻 · 南华早报</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-29</span>欧洲央行行长拉加德宣布提前卸任，比原定任期提前约 9 个月</h4>
+    <p>拉加德表示"我认为自己无法继续保持中立"，将于2027年2月7日提前卸任。分析认为此举与法国及全球政治局势有关，接班人将面临欧元区高利率与增长乏力的双重挑战。</p>
+    <div class="src">新浪新闻 · 南华早报</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-30</span>教皇利奥十四世邮寄投票美国中期选举，开创历史首例</h4>
+    <p>梵蒂冈确认，出生于芝加哥的利奥十四世已通过邮寄选票参加美国中期选举，成为历史上首位在政治选举中投票的在任教皇。美国中期选举将于11月3日举行。</p>
+    <div class="src">今日要闻 · BBC · 南华早报</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-29</span>俄美乌计划 11 月举行三方会谈，欧洲被排除在外；基辅深夜遭导弹袭击</h4>
+    <p>普京表示支持俄方与欧盟恢复关系的任何步骤，挪威、芬兰领导人主动与普京通话却遭北欧邻国批评；俄方明确11月的俄美乌三方谈判不包括欧盟。谈判前夕，基辅29日深夜遭弹道导弹袭击，乌克兰表示愿与俄方磋商领土等核心敏感议题。</p>
+    <div class="src">新浪新闻 · 腾讯新闻</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-29</span>美军中央司令部司令向特朗普汇报对伊朗军事选项；胡塞导弹射向利雅得被拦截</h4>
+    <p>美军中央司令部司令布拉德·库珀29日在白宫向特朗普汇报了针对伊朗的军事行动选项，国防部长赫格塞思亦参加。据外媒报道，美方已向海湾国家发出信号，要求为中期选举后可能展开的一场短期、高强度军事行动做好准备。同日，多国联军证实拦截了两枚射向沙特首都利雅得的导弹。</p>
+    <div class="src">新浪新闻 · 腾讯新闻</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-30</span>华尔街遭遇 6 月以来最惨一天，科技股因 AI 支出担忧重挫</h4>
+    <p>美国科技股大幅下挫，市场担忧 AI 领域数千亿美元的资本开支能否产生足够回报。雪佛龙、埃克森美孚等能源巨头则因炼油利润率高企，季度利润创纪录并预警柴油短缺风险。</p>
+    <div class="src">南华早报 · 今日要闻</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-29</span>加拿大与欧盟蒙特利尔峰会启动"未来同盟"，深化战略经济合作</h4>
+    <p>加欧双方在蒙特利尔峰会上宣布启动"未来同盟"，加强关键供应链与战略经济合作。同时，欧盟正考虑将加拿大列为"准成员"；中国则批评欧盟酝酿的新贸易保障措施可能违反 WTO 规则。</p>
+    <div class="src">news500global · 南华早报</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">10-29</span>西班牙托莱多两列高铁相撞，至少 69 人死亡，全国哀悼 3 天</h4>
+    <p>西班牙托莱多省发生两列高速列车相撞事故，造成至少69人死亡、多人受伤，为西班牙今年第二起致命铁路事故，全国开始为期3天的哀悼。交通大臣拒绝为事故辞职。</p>
+    <div class="src">南华早报 · BBC · alltop</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-30</span>刚果（金）埃博拉疫情死亡人数超过 5000 人</h4>
+    <p>刚果民主共和国的埃博拉疫情死亡人数已超过5000人，成为该国有史以来最致命的一次。由于针对 Bundibugyo 毒株缺乏获批疫苗和疗法，遏制工作面临困难。</p>
+    <div class="src">Free Malaysia Today</div>
+  </div>
+</div>
+
+<footer>小坏蛋 · 全球新闻速览 · 每日早上推送</footer>
+
+</div>
+
+<script>
+var PLAIN = [
+"全球新闻速览",
+"2026年10月31日 星期六 · 过去 24 小时 · 全球重要事件 10 条",
+"",
+"头条：币安遭黑客盗取约 63 亿美元资产，创历史最大加密货币盗窃案。",
+"全球最大加密货币交易所币安10月30日表示，黑客从其钱包盗走约63亿美元资产，为迄今规模最大的加密资产被盗案。币安承诺全额弥补用户损失。市场剧烈震荡，部分稳定币发行商已冻结涉案资金。部分外媒称攻击或与朝鲜有关。",
+"",
+"国际政治",
+"",
+"10月29日 以色列大选初步计票全部完成，内塔尼亚胡阵营与反对派均未过半。右翼执政联盟获53席，反对党阵营获48席，阿拉伯政党以19席创纪录，成为关键少数，组阁谈判预计艰难展开。",
+"10月29日 欧洲央行行长拉加德宣布提前卸任，比原定任期提前约9个月，将于2027年2月7日卸任。接班人将面临欧元区高利率与增长乏力的双重挑战。",
+"10月30日 教皇利奥十四世邮寄投票美国中期选举，开创历史首例，成为历史上首位在政治选举中投票的在任教皇。美国中期选举将于11月3日举行。",
+"",
+"地区冲突",
+"",
+"10月29日 俄美乌计划11月举行三方会谈，欧洲被排除在外。普京表示支持与欧盟恢复关系的任何步骤；谈判前夕，基辅29日深夜遭弹道导弹袭击，乌克兰表示愿与俄方磋商领土等核心敏感议题。",
+"10月29日 美军中央司令部司令向特朗普汇报对伊朗军事选项。据外媒报道，美方已向海湾国家发出信号，要求为中期选举后可能展开的一场短期、高强度军事行动做好准备。同日，多国联军证实拦截了两枚射向沙特首都利雅得的导弹。",
+"",
+"全球经济",
+"",
+"10月30日 华尔街遭遇6月以来最惨一天，科技股因AI支出担忧重挫。市场担忧AI领域数千亿美元的资本开支能否产生足够回报。雪佛龙、埃克森美孚等能源巨头则因炼油利润率高企，季度利润创纪录。",
+"10月29日 加拿大与欧盟蒙特利尔峰会启动“未来同盟”，深化战略经济合作。同时，欧盟正考虑将加拿大列为“准成员”。",
+"",
+"突发灾难",
+"",
+"10月29日 西班牙托莱多两列高铁相撞，至少69人死亡，全国哀悼3天，为西班牙今年第二起致命铁路事故。",
+"10月30日 刚果（金）埃博拉疫情死亡人数超过5000人，成为该国有史以来最致命的一次。",
+"",
+"小坏蛋 · 全球新闻速览 · 每日早上推送"
+].join("\n");
+
+/* ---------- 复制全文 ---------- */
+var btnCopy = document.getElementById('btnCopy');
+function copyDone(){
+var old = btnCopy.textContent;
+btnCopy.textContent = '✅ 已复制';
+setTimeout(function(){ btnCopy.textContent = old;}, 1600);
+}
+btnCopy.addEventListener('click', function(){
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(PLAIN).then(copyDone).catch(function(){ fallbackCopy();});
+} else { fallbackCopy();}
+});
+function fallbackCopy(){
+var ta = document.createElement('textarea');
+ta.value = PLAIN;
+ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand('copy'); copyDone();} catch(e) {}
+document.body.removeChild(ta);
+}
+
+/* ---------- 收听朗读 ---------- */
+var btnListen = document.getElementById('btnListen');
+var btnStop = document.getElementById('btnStop');
+var speaking = false, paused = false, chunks = [], ci = 0, zhVoice = null;
+
+function pickVoice(){
+try {
+var vs = window.speechSynthesis.getVoices();
+for (var i=0;i<vs.length;i++){ if (/^zh/i.test(vs[i].lang)) { zhVoice = vs[i]; break;}}
+} catch(e) {}
+}
+if ('speechSynthesis' in window) {
+pickVoice();
+window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+function splitChunks(text){
+var parts = text.replace(/\n+/g, '。').split(/(?<=[。！？；])/);
+var out = [];
+for (var i=0;i<parts.length;i++){ var t = parts[i].trim(); if (t) out.push(t);}
+return out;
+}
+function resetListenUI(){
+speaking = false; paused = false;
+btnListen.textContent = '🔊 收听';
+btnStop.style.display = 'none';
+}
+function speakNext(){
+if (ci >= chunks.length) { resetListenUI(); return;}
+var u = new SpeechSynthesisUtterance(chunks[ci]);
+u.lang = 'zh-CN';
+if (zhVoice) u.voice = zhVoice;
+u.rate = 1.02;
+u.onend = function(){ ci++; speakNext();};
+u.onerror = function(){ ci++; speakNext();};
+window.speechSynthesis.speak(u);
+}
+btnListen.addEventListener('click', function(){
+if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
+var ss = window.speechSynthesis;
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+ss.cancel();
+chunks = splitChunks(PLAIN);
+ci = 0;
+speaking = true; paused = false;
+btnListen.textContent = '⏸ 暂停';
+btnStop.style.display = 'flex';
+speakNext();
+});
+btnStop.addEventListener('click', function(){
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+resetListenUI();
+});
+/* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
+setInterval(function(){
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+window.speechSynthesis.resume();
+}
+}, 10000);
+</script>
+<!-- hema-daily-info --><a href="index.html" style="position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:9999;background:#0d2b52;color:#fff;font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.35)">← 首页</a>
+<!-- hema-audio-fix -->
+<script>
+(function(){
+  var KEY = "news";
+  var URLS = [
+    "https://cdn.jsdelivr.net/gh/pubgswl2005-svg/AI-wealth-assistant@main/daily/audio/" + KEY + ".b64",
+    "https://raw.githubusercontent.com/pubgswl2005-svg/AI-wealth-assistant/main/daily/audio/" + KEY + ".b64"
+  ];
+  var audio = null, state = "idle";
+  function btn(){ return document.getElementById("btnSpeak"); }
+  function stopBtn(){ return document.getElementById("btnStop"); }
+  function label(t){ var b = btn(); if (b) b.textContent = t; }
+  function showStop(v){ var s = stopBtn(); if (s) s.style.display = v ? "block" : "none"; }
+  function toast(msg){ var d = document.createElement("div"); d.textContent = msg; d.style.cssText = "position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(7,24,43,.92);color:#fff;font-size:14px;font-weight:700;padding:10px 16px;border-radius:999px;z-index:99999;max-width:86vw;text-align:center"; document.body.appendChild(d); setTimeout(function(){ d.remove(); }, 2600); }
+  function decode(b64){
+    var bin = atob(b64.replace(/\s+/g, ""));
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return URL.createObjectURL(new Blob([arr], {type: "audio/mpeg"}));
+  }
+  function fetchAudio(idx){
+    return fetch(URLS[idx]).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(decode)
+      .catch(function(e){ if (idx + 1 < URLS.length) return fetchAudio(idx + 1); throw e; });
+  }
+  function play(){
+    if (state === "playing"){ audio.pause(); return; }
+    if (state === "paused"){ audio.play(); return; }
+    if (state === "loading") return;
+    state = "loading"; label("⏳ 加载语音");
+    fetchAudio(0).then(function(u){
+      audio = new Audio(u);
+      audio.onplay = function(){ state = "playing"; label("⏸ 暂停"); showStop(true); };
+      audio.onpause = function(){ if (state === "playing"){ state = "paused"; label("▶️ 继续"); } };
+      audio.onended = function(){ state = "idle"; label("🔊 收听"); showStop(false); };
+      audio.onerror = function(){ state = "idle"; label("🔊 收听"); showStop(false); toast("语音加载失败，请检查网络后重试"); };
+      var p = audio.play(); if (p && p.catch) p.catch(function(){ state = "idle"; label("🔊 收听"); toast("语音播放失败，请再点一次"); });
+    }).catch(function(){ state = "idle"; label("🔊 收听"); toast("语音还在生成中或网络不通，请稍后再试"); });
+  }
+  function stopAll(){
+    if (audio){ try{ audio.pause(); audio.currentTime = 0; }catch(e){} }
+    if (window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){}
+    state = "idle"; label("🔊 收听"); showStop(false);
+  }
+  window.speakAll = play;
+  window.stopSpeak = stopAll;
+  function rebind(){
+    var b = btn(); if (b) b.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } play(); };
+    var s = stopBtn(); if (s) s.onclick = function(ev){ if (ev){ ev.preventDefault(); ev.stopPropagation(); } stopAll(); };
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rebind); else rebind();
+})();
+</script>
+
+</body>
+</html>
