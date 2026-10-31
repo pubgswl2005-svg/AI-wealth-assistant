@@ -65,6 +65,11 @@ details summary{font-size:16px;font-weight:900;cursor:pointer}
 details p,.rl{font-size:15px;font-weight:700;color:#243b55;line-height:1.9;margin-top:8px}
 footer{text-align:center;font-size:13px;font-weight:700;color:#243b55;padding:12px 0 18px}
 .hint{font-size:12px;font-weight:700;color:#243b55;line-height:1.6;text-align:center;margin-top:6px}
+#ttsBar{position:fixed;left:12px;right:12px;bottom:14px;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:18px;box-shadow:0 8px 28px rgba(7,24,43,.28);padding:10px 12px;display:none;align-items:center;gap:10px}
+#ttsBar.on{display:flex}
+#ttsBar button{border:2px solid #07182b;background:#fff;color:#07182b;border-radius:99px;min-width:46px;height:42px;font-size:18px;font-weight:900;cursor:pointer;flex:none}
+#ttsBar .st{flex:1;font-size:14px;font-weight:800;color:#07182b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#pageText p.reading-now{background:#fff3c4;border-radius:8px;box-shadow:inset 4px 0 0 #f5a623}
 </style>
 </head>
 <body>
@@ -115,6 +120,7 @@ footer{text-align:center;font-size:13px;font-weight:700;color:#243b55;padding:12
       <button class="sec" id="btnPrev">◀ 上一页</button>
       <button id="btnNext">下一页 ▶</button>
     </div>
+    <button class="bigbtn sec" id="btnRead" style="margin-top:10px">🔊 朗读本章</button>
     <div class="fontrow" id="fontRow">
       <button data-fs="small">小</button>
       <button data-fs="medium" class="on">中</button>
@@ -158,8 +164,9 @@ footer{text-align:center;font-size:13px;font-weight:700;color:#243b55;padding:12
   </section>
 </main>
 <div id="toast"></div>
+<div id="ttsBar"><button id="ttsToggle">⏸</button><button id="ttsStopBtn">⏹</button><span class="st" id="ttsStatus">正在朗读…</span></div>
 <div id="measurer" aria-hidden="true"></div>
-<footer>《浑源之外：万界归墟》 · 第 1–1365 章 · 版本 v20261031-17</footer>
+<footer>《浑源之外：万界归墟》 · 第 1–1365 章 · 版本 v20261031-18</footer>
 <script src="data/chunk-1.js"></script>
 <script src="data/chunk-2.js"></script>
 <script src="data/chunk-3.js"></script>
@@ -323,6 +330,7 @@ function showToast(msg){
   clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.style.display = 'none'; }, 2200);
 }
 function showView(id){
+  try{ if(id!=='viewReader'&&typeof ttsPlaying!=='undefined'&&ttsPlaying) stopReading(); }catch(e){}
   document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('on'); });
   document.getElementById(id).classList.add('on');
   document.body.classList.toggle('reading', id === 'viewReader');
@@ -357,6 +365,7 @@ function renderPage(){
   }
 }
 function goChapter(chIdx, pg){
+  try{ if(typeof ttsPlaying!=='undefined'&&ttsPlaying) stopReading(); }catch(e){}
   curCh = chIdx; curPage = pg || 0;
   showView('viewReader'); renderPage();
 }
@@ -422,6 +431,102 @@ document.getElementById('btnPrev').addEventListener('click', prevPage);
 document.querySelectorAll('#fontRow button').forEach(function(b){
   b.addEventListener('click', function(){ setFont(b.getAttribute('data-fs')); });
 });
+/* ===== 🔊 朗读功能：APP 内走原生 TTS（多角色不同音色），浏览器走 speechSynthesis 兜底 ===== */
+var ttsSegs=[], ttsIdx=-1, ttsPlaying=false, ttsPaused=false, ttsLastSpeaker='旁白';
+function ttsHash(s){ var h=0; for(var i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))|0; } return Math.abs(h); }
+function ttsDetect(p){
+  var m=p.match(/^([^："「]{1,10}?)(道|说道|问道|笑道|冷笑道|叹道|喝道|低声道|轻声道|喃喃道|应道|答道|反问道|追问道|喊道|叫道|骂道|哭道|苦笑道|摇头道|点头道|沉声道|缓缓道|淡淡道|柔声道|哑声道|说)[：:]?\s*[“"「]([\s\S]*)[”"」]\s*$/);
+  if(m) return {sp:m[1], tx:(m[3]||'').trim()||p};
+  var m2=p.match(/^[“"「]([\s\S]*)[”"」]\s*[，,。]?\s*([^："「]{1,10}?)(道|说道|问道|笑道|说)\s*[。.]?$/);
+  if(m2) return {sp:m2[2], tx:(m2[1]||'').trim()};
+  var m3=p.match(/^[“"「]([\s\S]*)[”"」]\s*$/);
+  if(m3) return {sp:null, tx:(m3[1]||'').trim()};
+  return {sp:null, tx:p, narr:true};
+}
+function buildTtsSegs(){
+  var paras=CHAPTERS[curCh].paras, out=[];
+  ttsLastSpeaker='旁白';
+  for(var i=0;i<paras.length;i++){
+    var p=(paras[i]||'').replace(/^【[^】]*】/, '').trim();
+    if(!p||p.charAt(0)==='【') continue;
+    var d=ttsDetect(p);
+    if(d.narr){ out.push({text:d.tx, role:'旁白', para:i}); }
+    else{ var sp=d.sp||ttsLastSpeaker; if(d.sp) ttsLastSpeaker=d.sp; if(d.tx) out.push({text:d.tx, role:sp, para:i}); }
+  }
+  return out;
+}
+function ttsShowBar(on){
+  document.getElementById('ttsBar').classList.toggle('on', !!on);
+  document.getElementById('btnRead').textContent = on ? '⏹ 停止朗读' : '🔊 朗读本章';
+}
+function ttsStatus(s){ document.getElementById('ttsStatus').textContent=s; }
+function ttsClearHi(){ document.querySelectorAll('#pageText p.reading-now').forEach(function(x){ x.classList.remove('reading-now'); }); }
+function startReading(){
+  if(ttsPlaying){ stopReading(); return; }
+  ttsSegs=buildTtsSegs();
+  if(!ttsSegs.length){ showToast('本章没有可朗读的内容'); return; }
+  ttsIdx=0; ttsPlaying=true; ttsPaused=false;
+  document.getElementById('ttsToggle').textContent='⏸';
+  ttsShowBar(true); ttsStatus('正在朗读：旁白');
+  if(window.HemaApp&&window.HemaApp.ttsSpeak){ window.HemaApp.ttsSpeak(JSON.stringify(ttsSegs)); }
+  else if('speechSynthesis' in window){ try{ window.speechSynthesis.cancel(); }catch(e){} browserSpeak(0); }
+  else { showToast('当前环境不支持朗读'); ttsPlaying=false; ttsShowBar(false); }
+}
+function stopReading(){
+  if(!ttsPlaying) return;
+  ttsPlaying=false; ttsPaused=false; ttsIdx=-1;
+  try{ if(window.HemaApp&&window.HemaApp.ttsStop) window.HemaApp.ttsStop(); }catch(e){}
+  try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){}
+  ttsClearHi(); ttsShowBar(false);
+}
+function toggleTts(){
+  if(!ttsPlaying) return;
+  if(ttsPaused){
+    ttsPaused=false; document.getElementById('ttsToggle').textContent='⏸';
+    if(window.HemaApp&&window.HemaApp.ttsResume){ window.HemaApp.ttsResume(); }
+    else { try{ window.speechSynthesis.resume(); }catch(e){} }
+  }else{
+    ttsPaused=true; document.getElementById('ttsToggle').textContent='▶';
+    if(window.HemaApp&&window.HemaApp.ttsPause){ window.HemaApp.ttsPause(); }
+    else { try{ window.speechSynthesis.pause(); }catch(e){} }
+  }
+}
+window.onTtsProgress=function(i, role){
+  ttsIdx=i;
+  var seg=ttsSegs[i]; if(!seg) return;
+  try{
+    var tp=findPageForPara(curCh, seg.para);
+    if(tp!==curPage){ curPage=tp; renderPage(); }
+  }catch(e){}
+  ttsClearHi();
+  try{
+    var start=pageStartPara(curCh, curPage);
+    var ps=document.getElementById('pageText').querySelectorAll('p');
+    var el=ps[seg.para-start];
+    if(el){ el.classList.add('reading-now'); }
+  }catch(e){}
+  ttsStatus('正在朗读：'+(role||seg.role));
+};
+window.onTtsDone=function(){ var was=ttsPlaying; ttsPlaying=false; ttsPaused=false; ttsIdx=-1; ttsClearHi(); ttsShowBar(false); if(was) showToast('本章朗读完毕'); };
+window.onTtsError=function(msg){ ttsPlaying=false; ttsPaused=false; ttsIdx=-1; ttsClearHi(); ttsShowBar(false); showToast(msg||'朗读出错'); };
+var _bv=null;
+function browserSpeak(i){
+  if(!ttsPlaying||ttsPaused) return;
+  if(i>=ttsSegs.length){ window.onTtsDone(); return; }
+  var seg=ttsSegs[i];
+  window.onTtsProgress(i, seg.role);
+  try{
+    var u=new SpeechSynthesisUtterance(seg.text);
+    u.lang='zh-CN'; u.rate=0.95;
+    u.pitch = seg.role==='旁白' ? 1.0 : (0.85+(ttsHash(seg.role)%40)/100);
+    u.onend=function(){ if(ttsPlaying&&!ttsPaused) browserSpeak(i+1); };
+    u.onerror=function(){ if(ttsPlaying&&!ttsPaused) browserSpeak(i+1); };
+    _bv=u; window.speechSynthesis.speak(u);
+  }catch(e){ if(ttsPlaying&&!ttsPaused) browserSpeak(i+1); }
+}
+document.getElementById('btnRead').addEventListener('click', startReading);
+document.getElementById('ttsToggle').addEventListener('click', toggleTts);
+document.getElementById('ttsStopBtn').addEventListener('click', stopReading);
 /* 点左右半屏翻页 */
 document.getElementById('pageCard').addEventListener('click', function(e){
   if (e.target.closest('button') || e.target.closest('a')) return;
