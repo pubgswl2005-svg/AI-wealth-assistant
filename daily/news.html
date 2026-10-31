@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 10月30日</title>
+<title>全球新闻速览 · 10月31日</title>
 <style>
 :root{
   --bg:#080B12; --bg2:#0D121C; --card:#121824;
@@ -12,7 +12,7 @@
   --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
   --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   background:var(--bg); color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -27,33 +27,33 @@ body{
 /* ===== 顶部功能栏：复制 + 收听 ===== */
 .topbar{
   position:sticky; top:0; z-index:50;
-  margin:0; padding:10px 16px;
-  background:rgba(8,11,18,.94);
-  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-  border-bottom:2px solid var(--cyan);
+  padding:10px 16px;
+  background:rgba(8,11,18,.92);
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--stroke);
   display:flex; gap:10px; align-items:stretch;
-  box-shadow:0 2px 12px rgba(0,0,0,.45);
 }
 .topbar button{
-  flex:1; min-height:54px; border:none; border-radius:12px;
-  font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
+  flex:1; min-height:56px; border:none; border-radius:14px;
+  font-size:19px; font-weight:900; cursor:pointer;
   display:flex; align-items:center; justify-content:center; gap:6px;
+  letter-spacing:.04em;
 }
-#btnCopy{ background:#1447c8;}
-#btnCopy:active{ background:#0d3396;}
-#btnListen{ background:#065f46;}
-#btnListen:active{ background:#04402f;}
-#btnStop{ flex:0 0 64px; background:#b91c1c; display:none;}
-.hint{ max-width:640px; margin:10px auto 0; padding:0 18px; font-size:12px; font-weight:600; color:var(--dim);}
+#btnCopy{background:linear-gradient(120deg,var(--cyan),var(--teal)); color:#0A0E16;}
+#btnCopy:active{opacity:.85;}
+#btnListen{background:linear-gradient(120deg,#3DD598,#22B8CF); color:#0A0E16;}
+#btnListen:active{opacity:.85;}
+#btnStop{flex:0 0 68px; background:#B3261E; color:#fff; display:none; font-size:20px;}
+.hint{margin:10px 16px 0; font-size:12.5px; font-weight:700; color:var(--dim);}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
-header.top{padding:26px 0 6px}
+header.top{padding:28px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
   margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
-  border:1px solid var(--stroke);
   background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
+  border:1px solid var(--stroke);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   padding:22px 20px;
 }
@@ -95,81 +95,81 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 <button id="btnListen" type="button">🔊 收听</button>
 <button id="btnStop" type="button">⏹</button>
 </div>
-<p class="hint">👆 顶部有两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
+<p class="hint">👆 以后我发的信息，顶部都有这两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
 <div class="wrap">
 
 <header class="top">
-  <div class="date">2026 · 10 · 30 &nbsp;星期五</div>
+  <div class="date">2026 · 10 · 31 &nbsp;星期六</div>
   <h1>全球新闻速览</h1>
   <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
   <span class="tag hot">头 条</span>
-  <h2>西班牙高铁相撞致至少69死，西班牙进入三天全国哀悼</h2>
-  <p>10月29日上午，一列从马德里开往塞维利亚的AVE高铁在托莱多附近，与停在同一轨道上的另一列高铁相撞，至少69人死亡、100多人受伤。曝光的调度录音显示，控制人员曾指示AVE司机恢复正常速度行驶，而非低速通过停稳的前车，西班牙交通大臣称这一指令"难以解释"。这是西班牙今年内第二起致命铁路事故，1月同线路脱轨事故已造成至少43人死亡。</p>
-  <div class="meta">BBC · world.news.today · 京报网 · 10月29日</div>
+  <h2>币安遭黑客盗取约 63 亿美元资产，创历史最大加密货币盗窃案</h2>
+  <p>全球最大加密货币交易所币安10月30日表示，黑客从其钱包盗走约63亿美元资产，为迄今规模最大的加密资产被盗案。币安承诺全额弥补用户损失。市场剧烈震荡，部分稳定币发行商已冻结涉案资金。部分外媒称攻击或与朝鲜有关，币安称发现了安全漏洞，正在调查。</p>
+  <div class="meta">BBC · 南华早报 · 今日要闻 · 10月30日</div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>以色列议会选举：内塔尼亚胡右翼阵营领先但未过半</h4>
-    <p>以色列中央选举委员会28日公布初步计票，99%选票已清点，内塔尼亚胡领导的利库德集团及右翼盟友预计获53席，未达议会120席多数。利库德指称阿拉伯裔政党舞弊并指外国干预，反对派则指责内塔尼亚胡试图破坏选举合法性。</p>
-    <div class="src">BBC · 光华日报</div>
+    <h4><span class="t">10-29</span>以色列大选初步计票全部完成，内塔尼亚胡阵营与反对派均未过半</h4>
+    <p>以色列中央选举委员会完成全部初步计票：内塔尼亚胡领导的右翼执政联盟获53席，埃森科特领导的反对党阵营获48席，阿拉伯政党以19席创纪录，成为关键少数。组阁谈判预计将艰难展开。</p>
+    <div class="src">央视新闻 · 南华早报</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-29</span>巴西大选落败者弗拉维奥赴美，自称"巴西领导人"</h4>
-    <p>巴西大选落败的博索纳罗之子弗拉维奥28日经阿根廷秘密转机飞抵美国佛罗里达，发表公开信自称"巴西领导人"，称将在海外组织反对卢拉政府的活动，其说法在巴西国内引发嘲讽与愤怒。</p>
-    <div class="src">南华早报 · 光华日报</div>
+    <h4><span class="t">10-29</span>欧洲央行行长拉加德宣布提前卸任，比原定任期提前约 9 个月</h4>
+    <p>拉加德表示"我认为自己无法继续保持中立"，将于2027年2月7日提前卸任。分析认为此举与法国及全球政治局势有关，接班人将面临欧元区高利率与增长乏力的双重挑战。</p>
+    <div class="src">新浪新闻 · 南华早报</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-28</span>联大压倒性通过决议，再次敦促美国终止对古巴经济封锁</h4>
-    <p>联合国大会28日以压倒性多数通过决议，再次敦促美国终止对古巴的经济、商业和金融封锁。这是联大连续多年通过的同类决议。</p>
-    <div class="src">on.cc东网</div>
+    <h4><span class="t">10-30</span>教皇利奥十四世邮寄投票美国中期选举，开创历史首例</h4>
+    <p>梵蒂冈确认，出生于芝加哥的利奥十四世已通过邮寄选票参加美国中期选举，成为历史上首位在政治选举中投票的在任教皇。美国中期选举将于11月3日举行。</p>
+    <div class="src">今日要闻 · BBC · 南华早报</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>俄无人机袭击第聂伯火车站至少14死；赫尔松迎来临时停火</h4>
-    <p>俄罗斯无人机袭击乌克兰中部第聂伯一处火车站，造成至少14人死亡、10多人受伤，包括一名11岁男孩。与此同时，赫尔松市迎来临时停火，居民罕见地过上平静的一天，但担忧战火随时恢复。泽连斯基称，美俄乌三方最快11月10日在阿联酋阿布扎比举行会谈。</p>
-    <div class="src">BBC · on.cc东网</div>
+    <h4><span class="t">10-29</span>俄美乌计划 11 月举行三方会谈，欧洲被排除在外；基辅深夜遭导弹袭击</h4>
+    <p>普京表示支持俄方与欧盟恢复关系的任何步骤，挪威、芬兰领导人主动与普京通话却遭北欧邻国批评；俄方明确11月的俄美乌三方谈判不包括欧盟。谈判前夕，基辅29日深夜遭弹道导弹袭击，乌克兰表示愿与俄方磋商领土等核心敏感议题。</p>
+    <div class="src">新浪新闻 · 腾讯新闻</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-29</span>英国宣布追加100亿英镑对乌克兰援助</h4>
-    <p>英国财政大臣希利28日在下议院公布新政府首份财政预算案时宣布，英国将向乌克兰追加100亿英镑的经济和军事援助。</p>
-    <div class="src">光华日报</div>
+    <h4><span class="t">10-29</span>美军中央司令部司令向特朗普汇报对伊朗军事选项；胡塞导弹射向利雅得被拦截</h4>
+    <p>美军中央司令部司令布拉德·库珀29日在白宫向特朗普汇报了针对伊朗的军事行动选项，国防部长赫格塞思亦参加。据外媒报道，美方已向海湾国家发出信号，要求为中期选举后可能展开的一场短期、高强度军事行动做好准备。同日，多国联军证实拦截了两枚射向沙特首都利雅得的导弹。</p>
+    <div class="src">新浪新闻 · 腾讯新闻</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>欧洲央行维持三大关键利率不变；拉加德将提前离任</h4>
-    <p>欧洲央行29日宣布维持欧元区三大关键利率不变，称通胀与增长双重压力下将继续观望。另据报道，行长拉加德将提前离任，以便就其祖国法国及全球事务发表政治立场，引发市场关注。</p>
-    <div class="src">京报网 · 南华早报</div>
+    <h4><span class="t">10-30</span>华尔街遭遇 6 月以来最惨一天，科技股因 AI 支出担忧重挫</h4>
+    <p>美国科技股大幅下挫，市场担忧 AI 领域数千亿美元的资本开支能否产生足够回报。雪佛龙、埃克森美孚等能源巨头则因炼油利润率高企，季度利润创纪录并预警柴油短缺风险。</p>
+    <div class="src">南华早报 · 今日要闻</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-28</span>美国将华大系三企业列入涉疆实体清单，禁止产品进口</h4>
-    <p>美国国土安全部28日将华大基因、华大智造等三家中国基因组学企业列入《防止强迫劳动法》实体清单，指其涉嫌协助监控，禁止其产品进口美国。中国商务部、外交部表示坚决反对，称中方将采取必要措施维护自身利益。</p>
-    <div class="src">Now新闻</div>
+    <h4><span class="t">10-29</span>加拿大与欧盟蒙特利尔峰会启动"未来同盟"，深化战略经济合作</h4>
+    <p>加欧双方在蒙特利尔峰会上宣布启动"未来同盟"，加强关键供应链与战略经济合作。同时，欧盟正考虑将加拿大列为"准成员"；中国则批评欧盟酝酿的新贸易保障措施可能违反 WTO 规则。</p>
+    <div class="src">news500global · 南华早报</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>香港宏福苑大火168死：调查报告公布，房屋局局长请辞</h4>
-    <p>香港大埔宏福苑大火造成168人死亡，独立调查委员会提交报告后，房屋局局长何永贤承担政治责任提出辞职，特首李家超已接受辞呈并公开道歉，表示将依报告追责改革。</p>
-    <div class="src">光华日报 · 简闻</div>
+    <h4><span class="t">10-29</span>西班牙托莱多两列高铁相撞，至少 69 人死亡，全国哀悼 3 天</h4>
+    <p>西班牙托莱多省发生两列高速列车相撞事故，造成至少69人死亡、多人受伤，为西班牙今年第二起致命铁路事故，全国开始为期3天的哀悼。交通大臣拒绝为事故辞职。</p>
+    <div class="src">南华早报 · BBC · alltop</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-29</span>泰国普吉持续强降雨，防灾厅发布泥石流撤离警告</h4>
-    <p>泰国普吉府卡伦镇持续强降雨，防灾减灾厅发出紧急撤离警告，称部分山坡可能发生泥石流，要求帕塔克一带民众撤离住所，前往安全区域或救助中心。</p>
-    <div class="src">光华日报</div>
+    <h4><span class="t">10-30</span>刚果（金）埃博拉疫情死亡人数超过 5000 人</h4>
+    <p>刚果民主共和国的埃博拉疫情死亡人数已超过5000人，成为该国有史以来最致命的一次。由于针对 Bundibugyo 毒株缺乏获批疫苗和疗法，遏制工作面临困难。</p>
+    <div class="src">Free Malaysia Today</div>
   </div>
 </div>
 
@@ -180,37 +180,33 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 <script>
 var PLAIN = [
 "全球新闻速览",
-"2026年10月30日 星期五 · 过去24小时全球重要新闻10条",
+"2026年10月31日 星期六 · 过去 24 小时 · 全球重要事件 10 条",
 "",
-"头条：西班牙高铁相撞致至少69死，西班牙进入三天全国哀悼。",
-"10月29日上午，一列从马德里开往塞维利亚的AVE高铁在托莱多附近，与停在同一轨道上的另一列高铁相撞，至少69人死亡、100多人受伤。曝光的调度录音显示，控制人员曾指示AVE司机恢复正常速度行驶，而非低速通过停稳的前车，西班牙交通大臣称这一指令难以解释。这是西班牙今年内第二起致命铁路事故。",
+"头条：币安遭黑客盗取约 63 亿美元资产，创历史最大加密货币盗窃案。",
+"全球最大加密货币交易所币安10月30日表示，黑客从其钱包盗走约63亿美元资产，为迄今规模最大的加密资产被盗案。币安承诺全额弥补用户损失。市场剧烈震荡，部分稳定币发行商已冻结涉案资金。部分外媒称攻击或与朝鲜有关。",
 "",
-"国际政治第一条：以色列议会选举，内塔尼亚胡右翼阵营领先但未过半。",
-"以色列中央选举委员会28日公布初步计票，99%选票已清点，内塔尼亚胡领导的利库德集团及右翼盟友预计获53席，未达议会120席多数。利库德指称阿拉伯裔政党舞弊并指外国干预，反对派则指责内塔尼亚胡试图破坏选举合法性。",
+"国际政治",
 "",
-"国际政治第二条：巴西大选落败者弗拉维奥赴美，自称巴西领导人。",
-"巴西大选落败的博索纳罗之子弗拉维奥28日经阿根廷秘密转机飞抵美国佛罗里达，发表公开信自称巴西领导人，称将在海外组织反对卢拉政府的活动，其说法在巴西国内引发嘲讽与愤怒。",
+"10月29日 以色列大选初步计票全部完成，内塔尼亚胡阵营与反对派均未过半。右翼执政联盟获53席，反对党阵营获48席，阿拉伯政党以19席创纪录，成为关键少数，组阁谈判预计艰难展开。",
+"10月29日 欧洲央行行长拉加德宣布提前卸任，比原定任期提前约9个月，将于2027年2月7日卸任。接班人将面临欧元区高利率与增长乏力的双重挑战。",
+"10月30日 教皇利奥十四世邮寄投票美国中期选举，开创历史首例，成为历史上首位在政治选举中投票的在任教皇。美国中期选举将于11月3日举行。",
 "",
-"国际政治第三条：联大压倒性通过决议，再次敦促美国终止对古巴经济封锁。",
-"联合国大会28日以压倒性多数通过决议，再次敦促美国终止对古巴的经济、商业和金融封锁。这是联大连续多年通过的同类决议。",
+"地区冲突",
 "",
-"地区冲突第一条：俄无人机袭击第聂伯火车站至少14死，赫尔松迎来临时停火。",
-"俄罗斯无人机袭击乌克兰中部第聂伯一处火车站，造成至少14人死亡、10多人受伤，包括一名11岁男孩。与此同时，赫尔松市迎来临时停火，居民罕见地过上平静的一天，但担忧战火随时恢复。泽连斯基称，美俄乌三方最快11月10日在阿联酋阿布扎比举行会谈。",
+"10月29日 俄美乌计划11月举行三方会谈，欧洲被排除在外。普京表示支持与欧盟恢复关系的任何步骤；谈判前夕，基辅29日深夜遭弹道导弹袭击，乌克兰表示愿与俄方磋商领土等核心敏感议题。",
+"10月29日 美军中央司令部司令向特朗普汇报对伊朗军事选项。据外媒报道，美方已向海湾国家发出信号，要求为中期选举后可能展开的一场短期、高强度军事行动做好准备。同日，多国联军证实拦截了两枚射向沙特首都利雅得的导弹。",
 "",
-"地区冲突第二条：英国宣布追加100亿英镑对乌克兰援助。",
-"英国财政大臣希利28日在下议院公布新政府首份财政预算案时宣布，英国将向乌克兰追加100亿英镑的经济和军事援助。",
+"全球经济",
 "",
-"全球经济第一条：欧洲央行维持三大关键利率不变，拉加德将提前离任。",
-"欧洲央行29日宣布维持欧元区三大关键利率不变，称通胀与增长双重压力下将继续观望。另据报道，行长拉加德将提前离任，以便就其祖国法国及全球事务发表政治立场，引发市场关注。",
+"10月30日 华尔街遭遇6月以来最惨一天，科技股因AI支出担忧重挫。市场担忧AI领域数千亿美元的资本开支能否产生足够回报。雪佛龙、埃克森美孚等能源巨头则因炼油利润率高企，季度利润创纪录。",
+"10月29日 加拿大与欧盟蒙特利尔峰会启动“未来同盟”，深化战略经济合作。同时，欧盟正考虑将加拿大列为“准成员”。",
 "",
-"全球经济第二条：美国将华大系三企业列入涉疆实体清单，禁止产品进口。",
-"美国国土安全部28日将华大基因、华大智造等三家中国基因组学企业列入防止强迫劳动法实体清单，指其涉嫌协助监控，禁止其产品进口美国。中国商务部、外交部表示坚决反对，称中方将采取必要措施维护自身利益。",
+"突发灾难",
 "",
-"突发灾难第一条：香港宏福苑大火168死，调查报告公布，房屋局局长请辞。",
-"香港大埔宏福苑大火造成168人死亡，独立调查委员会提交报告后，房屋局局长何永贤承担政治责任提出辞职，特首李家超已接受辞呈并公开道歉，表示将依报告追责改革。",
+"10月29日 西班牙托莱多两列高铁相撞，至少69人死亡，全国哀悼3天，为西班牙今年第二起致命铁路事故。",
+"10月30日 刚果（金）埃博拉疫情死亡人数超过5000人，成为该国有史以来最致命的一次。",
 "",
-"突发灾难第二条：泰国普吉持续强降雨，防灾厅发布泥石流撤离警告。",
-"泰国普吉府卡伦镇持续强降雨，防灾减灾厅发出紧急撤离警告，称部分山坡可能发生泥石流，要求帕塔克一带民众撤离住所，前往安全区域或救助中心。"
+"小坏蛋 · 全球新闻速览 · 每日早上推送"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
@@ -274,7 +270,7 @@ window.speechSynthesis.speak(u);
 btnListen.addEventListener('click', function(){
 if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
 var ss = window.speechSynthesis;
-if (speaking && !paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
 if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
 ss.cancel();
 chunks = splitChunks(PLAIN);
@@ -290,7 +286,7 @@ resetListenUI();
 });
 /* 安卓 Chrome 长朗读防卡：朗读中定时 resume 一下 */
 setInterval(function(){
-if (speaking && !paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+if (speaking &&!paused && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
 window.speechSynthesis.resume();
 }
 }, 10000);

@@ -14,7 +14,6 @@
     padding: 14px 12px 30px;
   }
   .wrap { max-width: 640px; margin: 0 auto; }
-  /* ===== 顶部功能栏：复制 + 收听 ===== */
   .topbar {
     position: sticky; top:0; z-index:50;
     margin:0 -12px; padding:10px 12px;
@@ -97,8 +96,8 @@
     <h1>📚 每日学习成果</h1>
     <p class="sub">小坏蛋每天早上 06:50 自动学习，三个方向轮着学；学完不是存着好看，做事时直接从知识库取材套用。这一页就是学习成果的展示窗。</p>
     <div class="datebar">
-      <span class="d">2026年10月30日 · 周五</span>
-      <span class="r">今日主题：AI 工具</span>
+      <span class="d">2026年10月31日 · 周六</span>
+      <span class="r">今日主题：GitHub 新星项目</span>
     </div>
   </div>
 
@@ -106,194 +105,194 @@
     <div class="round-row">
       <div class="n">1</div>
       <div class="t"><b>AI 工具</b><span>新发布的工具、模型重大更新</span></div>
-      <div class="st">✅ 今日已学 10 条</div>
+      <div class="st">✅ 10月30日已学 10 条</div>
     </div>
     <div class="round-row">
-      <div class="n next">2</div>
-      <div class="t"><b>GitHub 新星项目</b><span>Trending 与高收藏的新项目</span></div>
-      <div class="st wait">明天 10月31日</div>
+      <div class="n">2</div>
+      <div class="t"><b>GitHub 新星项目</b><span>近 30 天新建、star 涨得快的新仓库</span></div>
+      <div class="st">✅ 今日已学 10 条</div>
     </div>
     <div class="round-row">
       <div class="n next">3</div>
       <div class="t"><b>投资财经</b><span>重点跟踪：存储芯片 · 半导体设备</span></div>
-      <div class="st wait">11月1日</div>
+      <div class="st wait">明天 11月1日</div>
     </div>
   </div>
 
-  <h2 class="sec">今日成果 · 图像生成<span class="tag">漫剧/海报用</span></h2>
+  <h2 class="sec">今日成果 · 视频创作<span class="tag">漫剧/口播/预告片</span></h2>
 
   <div class="card item vid">
-    <h3><span class="no">1.</span>Canva Craft（Canva 首个自研图像模型）</h3>
-    <p class="intro">10 月 22 日上线：Canva 自己的图像生成模型，不拿照片训练、拿数百万张人类设计模板训练，天生懂版式、层级和排字；DesignArena 首秀空降全球第 4，人像、风景类目第 1。</p>
+    <h3><span class="no">1.</span>digital-human-koubo（1549⭐，10 月 26 日建仓）</h3>
+    <p class="intro">一个标准 Agent Skill：输入一张照片加一句话，AI 全自动产出带真人对口型数字人、统一配音、字幕与包装动效的口播/带货/讲解视频。</p>
     <ul class="func">
-      <li>两阶段生成：先按提示词"规划版式"（元素位置、大小、视觉层级、文字），再渲染成图，文字渲染更准、局部可改不改全局；</li>
-      <li>最高 2K 分辨率、30 多种画幅比例，直接出社交媒体/海报/菜单/演示文稿规格；</li>
-      <li>全平台用户即日起在 Dream Lab 可用，API 和 MCP 接入在路上。</li>
+      <li>「成本门」：生成前先报价（片段数、秒数、点数、余额），你点头才批量跑，防 AI 视频烧钱跑飞；</li>
+      <li>质量闭环：每段用 whisper 回听对台词，逐段抽 4 帧检查字幕有没有被烧进画面，有问题只重拍那一段；</li>
+      <li>声音统一：多段拼接做频谱匹配＋去齿音＋统一混响＋响度归一，30 个片段听感像一次录的。</li>
     </ul>
-    <p class="use">🎯 <b>对你的用处：</b>漫剧海报、小说章节封面、反推提示词包宣传图、店铺活动海报——文字准确＋版式天生，直接出成品不用再手动拼字；以后还能让助手通过 Canva MCP 直接生成可编辑设计稿。</p>
-    <p class="meta">收费：随 Canva 会员体系，未公布独立定价；低成本版 Craft-fast / Craft-ultrafast 开发中<br>来源：<a href="https://petapixel.com/2026/10/23/canva-releases-ai-image-generator-that-wasnt-trained-on-photographs/">petapixel.com</a>（2026-10-23）</p>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧管线的 QA 可以直接抄它：每段抽帧验烧字、生成前先报价确认；以后反推提示词包的宣传口播视频就用这类 skill 做。</p>
+    <p class="meta">收费：skill 开源免费；视频生成走 Renoise 按量付费（先报价后生成）<br>来源：<a href="https://github.com/andyhuo520/digital-human-koubo">github.com/andyhuo520/digital-human-koubo</a></p>
   </div>
 
   <div class="card item vid">
-    <h3><span class="no">2.</span>Nano Banana 2.1（Google，10 月 6 日正式版）</h3>
-    <p class="intro">Google 新一代图像生成/编辑模型，基于 Gemini 3.6 Flash；价格砍到上一代约一半，老版 Nano Banana 2 已于 10 月 29 日关停。</p>
+    <h3><span class="no">2.</span>free247editor（153⭐，10 月 15 日）</h3>
+    <p class="intro">跑在 AI 编程 agent 里的免费开源个人剪辑师：扔一段原片、说一句"edit this"，拿回带剪辑、字幕、动效和音效的成片；你的修改意见会被存成规则，越用越顺手。</p>
     <ul class="func">
-      <li>文生图＋图生图编辑同一模型搞定，延续 Nano Banana 系的强编辑能力；</li>
-      <li>1K 图片约 0.0336 美元、2K 约 0.0504 美元（标准档），走 batch 再半价；</li>
-      <li>注意：512px 便宜缩略图档取消，以前拿它出草图的路子没了。</li>
+      <li>全链路免费：转写用 Groq 免费 key 或本机 faster-whisper，剪辑引擎（HyperFrames＋GSAP）全开源；</li>
+      <li>my-rules.md 习惯沉淀：你说一次"下次别这样"，就变成永久规则——和咱们"犯错一次就钉死"的管理法一模一样；</li>
+      <li>导出可编辑工程，不只是 MP4：后续还能手工精修，不是黑盒出片。</li>
     </ul>
-    <p class="use">🎯 <b>对你的用处：</b>魂灵纪元建模参考图、漫剧分镜草图的"出图引擎"可以从 2.0 切到 2.1，成本直接减半；AI Studio 里免费用它批量出参考图。</p>
-    <p class="meta">收费：按张计费，1K 约 0.0336 美元；免费额度走 Gemini App / AI Studio<br>来源：<a href="https://tech-insider.org/ai-image-generator-arena-blind-elo-cost-per-usable-image-2026/">tech-insider.org</a>（2026-10-29 实测文）</p>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧预告片/样片剪辑可以扔给它：把《都市夜行者》第 1 集 v2 扔进去出一条 15 秒竖屏预告，真机验证后决定是否正式并入漫剧管线。</p>
+    <p class="meta">收费：软件 0 成本，只花你 agent 套餐的额度<br>来源：<a href="https://github.com/riecodes/free247editor">github.com/riecodes/free247editor</a></p>
   </div>
 
-  <h2 class="sec">今日成果 · 大模型<span class="tag">写代码/做分析/跑Agent</span></h2>
+  <div class="card item vid">
+    <h3><span class="no">3.</span>frameweaver（110⭐，10 月 14 日）</h3>
+    <p class="intro">本地 AI 视频工作台：React 仪表盘＋Python 后端＋Chrome 扩展三件套，场景规划、角色参考复用、生视频、配音字幕时间轴剪辑一条龙。</p>
+    <ul class="func">
+      <li>角色一致性资产管理：先统一生成角色/场景参考图，再套用到所有镜头——正是咱们"角色四视图参考板"的做法；</li>
+      <li>Chrome 扩展借用你自己登录的 Google Flow 会话发请求，不存你的密码；</li>
+      <li>拖拽时间轴、SRT 编辑、配音脚本、音频压低（ducking）、撤销重做自动保存。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>它的"角色参考图先行"做成漫剧 SOP 检查项：第 2 集起新角色先出四视图参考板再进分镜；它的功能清单可当以后做"漫剧剪辑台"的需求对照表。</p>
+    <p class="meta">收费：开源；生成花你自己的 Google Flow 额度<br>来源：<a href="https://github.com/phucnguyentvp1/frameweaver">github.com/phucnguyentvp1/frameweaver</a></p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">4.</span>heditor（105⭐，10 月 13 日）</h3>
+    <p class="intro">给 AI agent 用的竖屏剪辑 skill 包：42 种命名视觉风格（电影/预告/游戏风…）＋创意模式＋长视频模式，把口播原片剪成带动态字幕的 Reels/Shorts。</p>
+    <ul class="func">
+      <li>42 种风格是"视觉语言"不是模板：每种风格有独立设计文档，agent 按新台词重建场景；</li>
+      <li>长视频工程化：5 分钟分块转写（断点续传）、先审 EDL 剪辑提案再应用、分段渲染无损拼接；</li>
+      <li>质检门极严：lint、视觉抽查、安全边距、响度/真峰值、终混 ASR 回听、40 帧接触表。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>把它的"终混回听＋响度门"抄进漫剧交付质检（咱们的语音统一 -9 LUFS 正好对上）；42 种风格的写法是漫剧风格规范的现成范本。</p>
+    <p class="meta">收费：开源免费，本地渲染<br>来源：<a href="https://github.com/pycodebr/heditor">github.com/pycodebr/heditor</a></p>
+  </div>
+
+  <div class="card item vid">
+    <h3><span class="no">5.</span>motion-pack（10⭐，10 月 13 日）</h3>
+    <p class="intro">给 AI agent 的"代码化视频"零件库＋6 个 skill：1163 个可浏览组件（转场/动效字/合成音效/音乐床/运镜），一句 prompt 出带音乐字幕的成片 MP4。</p>
+    <ul class="func">
+      <li>"每帧是时间的纯函数"：可乱序渲染、单帧重渲，多机并行结果一致；</li>
+      <li>mp lint 338 条分级质检规则：钩子、安全区、对比度、阅读时长、响度全自动检查；</li>
+      <li>全部 CC0/MIT 协议：合成音效音乐、渲染产物商用无版权顾虑。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>今天就用它给"AI反推提示词包"渲染一条 15 秒竖屏宣传片，直接挂闲鱼商品页；它的 lint 门可以部分替代人工交付检查。</p>
+    <p class="meta">收费：开源免费，本地渲染 0 成本<br>来源：<a href="https://github.com/ANVEAI/motion-pack">github.com/ANVEAI/motion-pack</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 生图<span class="tag">分镜/封面/建模参考</span></h2>
+
+  <div class="card item vid">
+    <h3><span class="no">6.</span>qiaomu-codex-imagegen（136⭐，10 月 4 日）</h3>
+    <p class="intro">把 Codex 内置的生图能力接出来给任何 agent 用的中文 skill：先给至少 4 种风格方向、你选定后再出图，内置 24 类场景模板＋20 位 Mondo 海报设计师风格。</p>
+    <ul class="func">
+      <li>"先给方案再出图"：选定方向→展开提示词→对着验收条件逐条验图，不合格只改对应一句再生成，告别抽卡；</li>
+      <li>24 类模板×48 预设的构图"机制"库：提炼的是构图方法不是复刻原图；</li>
+      <li>防编造规则：肖像先保身份、图内文字逐字给文案并放大检查。</li>
+    </ul>
+    <p class="use">🎯 <b>对你的用处：</b>漫剧分镜提示词改成它的"风格锁＋验收条件"写法；魂灵纪元建模参考图、小说封面走这套流程，出图不再靠运气。</p>
+    <p class="meta">收费：skill 开源免费；生图花 Codex 套餐额度<br>来源：<a href="https://github.com/joeseesun/qiaomu-codex-imagegen">github.com/joeseesun/qiaomu-codex-imagegen</a></p>
+  </div>
+
+  <h2 class="sec">今日成果 · 手机与 App<span class="tag">安卓自动化</span></h2>
 
   <div class="card item web">
-    <h3><span class="no">3.</span>GPT-6.1 Terra（OpenAI，10 月 26 日）</h3>
-    <p class="intro">OpenAI 新"中坚工作马"：办公、电脑操作、视觉推理、写作任务上对标旗舰 GPT-6 Astra，token 价格只有十分之一；已进 GitHub Copilot 做 agentic coding。</p>
+    <h3><span class="no">7.</span>Mika（1166⭐，10 月 29 日）</h3>
+    <p class="intro">装在安卓手机上的中文私人 AI 助理：在一块看不见的后台屏上替你操作 App、上网办事，你照常刷自己的手机；遇到花钱的步骤先问你。</p>
     <ul class="func">
-      <li>为多步骤 Agent 工作流优化：代码、填表、终端自动化，错误诱发提示的出错率从 53.6% 降到 16.7%；</li>
-      <li>105 万 token 上下文、12.8 万输出上限；</li>
-      <li>可用在 API、ChatGPT Work、Codex 和 GitHub Copilot。</li>
+      <li>后台屏操作：App 在独立后台屏上被操作，主屏照常打字；遇到登录/验证码弹通知请你接管；</li>
+      <li>询问/自主双模式：定时任务遇到花钱步骤自动跳过并如实告诉你；</li>
+      <li>无服务器隐私架构：只连你自己配的模型商，API Key 用安卓密钥库加密存本机。</li>
     </ul>
-    <p class="use">🎯 <b>对你的用处：</b>以后跑自动化任务（定时抓数、批量改网页）的模型成本能砍一大半；云电脑上跑 Agent 活儿优先选这类"便宜快"的中坚模型，不用事事上旗舰。</p>
-    <p class="meta">收费：$1 / $5 每百万输入/输出 token（前代一半）；缓存输入 $0.05<br>来源：<a href="https://asumetech.com/2026/10/27/gpt-6-1-terra-debuts-with-3x-faster-speeds-and-critical-cybersecurity-rating/">asumetech.com</a>、<a href="https://local-ai-zone.github.io/blog/October_2026_AI_Model_Updates.html">local-ai-zone.github.io</a></p>
+    <p class="use">🎯 <b>对你的用处：</b>河马翻译的"实时翻译条"、收藏夹 APP 可以学它的后台屏交互；以后给云电脑配手机自动化，先研究它的无线配对＋后台屏实现。</p>
+    <p class="meta">收费：开源免费；模型费用走你自己配的 API<br>来源：<a href="https://github.com/wangzan101/Mika">github.com/wangzan101/Mika</a></p>
   </div>
 
   <div class="card item web">
-    <h3><span class="no">4.</span>Nvidia Nemotron 3.5 Super VL（英伟达，10 月 15 日，开源）</h3>
-    <p class="intro">120B 参数（每 token 只激活 12B）的开源多模态 MoE，号称同类开源模型里 Agent 任务完成速度快 5 倍；权重 Day 0 就上了 Hugging Face。</p>
+    <h3><span class="no">8.</span>Droidline（428⭐，10 月 7 日）</h3>
+    <p class="intro">用 Python/Node/命令行/HTTP/MCP 从代码直接操控真安卓手机做自动化：手机上装一个 App、扫码配对，不用 ADB、不用数据线、不用 root。</p>
     <ul class="func">
-      <li>文/图/文档/视频一个模型全吃，100 万 token 上下文，不用来回切模型传上下文；</li>
-      <li>Agent 任务输出超 600 token/秒，Agent 评测里反超自家旗舰 Nemotron 3 Ultra；</li>
-      <li>开源 OpenMDW 协议，可用 NeMo 在自己数据上继续训练（官方演示：医疗理赔任务微调后反超 Claude Opus 5）。</li>
+      <li>同一命令五种形态：Python、Node.js、命令行、HTTP、MCP 里同名调用；</li>
+      <li>按屏幕元素定位（文字/编号），不怕换手机、换分辨率；</li>
+      <li>手机主动向电脑建连＋端到端加密，多台手机可并行各跑各的。</li>
     </ul>
-    <p class="use">🎯 <b>对你的用处：</b>云电脑 dsh 免费池的"不敏感活儿"多了一个强力备选——开源意味着 prompt 不经过商业 API，隐私顾虑更小；以后自建的 Agent 工具链可以考虑它当执行引擎。</p>
-    <p class="meta">收费：权重免费下载，自己部署只花算力；配套有 Bolt 74B（24GB 显存本地跑）和 Bolt E4B（4GB，手机级对话 Agent）<br>来源：<a href="https://www.aitrove.ai/blog/nvidia-nemotron-3-5-super-vl-open-agentic-models-2026">aitrove.ai</a></p>
+    <p class="use">🎯 <b>对你的用处：</b>APK 交付的真机验证写成一键脚本：自动装包、点开、截图、抓提示文案——把现在的手工验证变成一条命令。</p>
+    <p class="meta">收费：开源免费<br>来源：<a href="https://github.com/KnifeLemon/Droidline">github.com/KnifeLemon/Droidline</a></p>
   </div>
 
-  <div class="card item web">
-    <h3><span class="no">5.</span>Mistral Large 4「Le Chonk」（10 月 29 日刚开源权重）</h3>
-    <p class="intro">法国 Mistral 的万亿参数（每 token 激活 52B）多模态 MoE，10 月 6 日预览、10 月 29 日放出开源权重，改良 MIT 协议。</p>
-    <ul class="func">
-      <li>文本＋图像输入、100 万 token 上下文；</li>
-      <li>权重开源可本地部署、自己微调；</li>
-      <li>欧洲开源旗舰，独立评测 Intelligence Index 38 分（中等偏上，非顶级）。</li>
-    </ul>
-    <p class="use">🎯 <b>对你的用处：</b>dsh 免费池/OpenCode 车道的又一个"不花钱或少花钱"的大模型选项；本地化部署后，知识库问答、提示词库检索这类活儿可以不走云端 API。</p>
-    <p class="meta">收费：预览 API $1.36 / $4.18 每百万 token；权重免费下载（注意商用条款）<br>来源：<a href="https://pasqualepillitteri.it/en/news/21196/mistral-large-4-launches-open-weights-late-october">pasqualepillitteri.it</a>、<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a></p>
-  </div>
-
-  <div class="card item web">
-    <h3><span class="no">6.</span>Gemini 4 Carbon（Google，10 月 28 日预览）</h3>
-    <p class="intro">Google 当前最强模型，为网络安全和超长任务打造；独立评测 Intelligence Index 59 分登顶（52 个模型第 1，比 Claude Opus 5.5 高 1 分）。</p>
-    <ul class="func">
-      <li>网络安全专项能力＋超长任务续航；</li>
-      <li>分阶段开放：先给网络安全防御者，再给可信伙伴，暂无公开 App/API；</li>
-      <li>首发价 $2 / $10，12 月 1 日后涨到 $4 / $20。</li>
-    </ul>
-    <p class="use">🎯 <b>对你的用处：</b>暂时用不上，但它是"下一代 Gemini 进 Gemini App/Workspace"的预告——等它下放到消费端，盘前预判、研报总结这类长文档活儿可以直接换更强底座；选型时留好升级路径。</p>
-    <p class="meta">收费：目前不公开售卖；首发 $2 / $10 每百万 token<br>来源：<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a>（AI 模型发布追踪）</p>
-  </div>
-
-  <h2 class="sec">今日成果 · Agent 与开发平台<span class="tag">自动化用</span></h2>
-
-  <div class="card item fin">
-    <h3><span class="no">7.</span>Gemini Agent（Google Cloud，10 月 8 日发布、私测中）</h3>
-    <p class="intro">Google 的"通用智能体"：一个入口搞定聊天问答、多步骤自主任务、内容创作、写代码；原生接 Gmail/Docs/Drive/Sheets/Calendar，还能连 Slack 和 Microsoft 365。</p>
-    <ul class="func">
-      <li>给目标不给指令：规划→调用工具→协调子智能体并行干活，可连续跑几小时甚至几天，跨会话不断记忆；</li>
-      <li>每个 Agent 有独立身份、日历和存储，能当"团队成员"长期在线；</li>
-      <li>10 月 21 日更新：多模型自动路由、实时项目花费上限（到上限自动暂停）。</li>
-    </ul>
-    <p class="use">🎯 <b>对你的用处：</b>这就是"云端小坏蛋"的官方版形态——定时抓盘前数据、整理 Gmail、更新知识库，未来可能直接在 Google 生态里配一个长期在线的 Agent 干；现在私测，公测后第一时间试用。</p>
-    <p class="meta">收费：Google 未公布；第三方称约 $30/用户/月（未证实）<br>来源：<a href="https://tech-insider.org/google-gemini-agent-launch-workplace-ai-2026/">tech-insider.org</a></p>
-  </div>
-
-  <div class="card item fin">
-    <h3><span class="no">8.</span>前 GitHub CEO Thomas Dohmke 新平台（10 月 26 日上线）</h3>
-    <p class="intro">GitHub 前 CEO 另起炉灶做的"AI 原生"代码协作平台：AI Agent 不是插件，是和人类平级的协作者；限量开放＋候补名单，2027 年初正式版。</p>
-    <ul class="func">
-      <li>Agent-first 架构：Agent 有独立工作区、持久记忆，和人类用同一套版本控制原语；</li>
-      <li>兼容标准 Git 协议，另加 Agent 专用操作（批量重构、自动依赖更新）；</li>
-      <li>多模态代码评审＋针对 AI 高频提交优化的实时冲突解决；按 Agent 用量计费、不按人头。</li>
-    </ul>
-    <p class="use">🎯 <b>对你的用处：</b>AI-wealth-assistant 仓库和商城项目以后可能迁到这类平台——Agent 直接当协作者提交代码、修 bug，不用再人肉搬运；现在先候补名单占位，2027 年初正式版再评估。</p>
-    <p class="meta">收费：未公布，按 Agent 用量计费；云端＋自托管两版<br>来源：<a href="https://emergent.sh/news/former-github-ceo-launches-ai-native-coding">emergent.sh</a></p>
-  </div>
-
-  <h2 class="sec">今日成果 · 语音与世界模型<span class="tag">配音/游戏用</span></h2>
+  <h2 class="sec">今日成果 · 建站与效率<span class="tag">一次录入到处用</span></h2>
 
   <div class="card item">
-    <h3><span class="no">9.</span>Nemotron 3.5 Transcribe（英伟达，10 月 28 日，开源）</h3>
-    <p class="intro">开源语音转文字模型：40 种语言转写、31 种语言↔英语互译、最多区分 8 个说话人，商用免费，可本地部署。</p>
+    <h3><span class="no">9.</span>context-hub（10⭐，10 月 13 日）<span class="tag" style="background:#1b5e20;">今日已落地</span></h3>
+    <p class="intro">AI agent 的 skills、MCP、插件、提示词、环境变量的统一本地中枢：一次录入，分发到 Claude Code、Codex 等各 agent 自己的目录；桌面 App、独立命令行、本地网页三形态，纯本地无云端。</p>
     <ul class="func">
-      <li>录音转文字 40 语言（含中文），31 种语言与英语互译；</li>
-      <li>说话人分离（最多 8 人）——会议/多人配音转写直接分段到人；</li>
-      <li>OpenMDW-1.1 协议，商用免费。</li>
+      <li>"声明一次，到处使用"：MCP 和提示词写一份，分发到每个 agent 的自有配置，可按客户端单独开关；</li>
+      <li>上游追踪：从来源导入的 skill 包跟踪上游更新，桌面 App 自己从 GitHub 更新；</li>
+      <li>纯本地：资产实际落在各 agent 自己的目录里，私人数据不离本机。</li>
     </ul>
-    <p class="use">🎯 <b>对你的用处：</b>配音质检的转写环节（现在用 faster-whisper）多了一个开源备选；每日英语课、讲书语音的字幕生成也可以走它；本地部署后长音频转写不花钱、不用传云端。</p>
-    <p class="meta">收费：权重免费下载，商用免费；自己部署只花算力<br>来源：<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a>（AI 模型发布追踪）</p>
+    <p class="use">🎯 <b>对你的用处：</b>今天已经装进云电脑并跑通：自动发现了 4 个现有 skill，导入了咱们真实的 skill 并分发到了工作区。以后 121 条提示词库升级成可加载的 skills，就归它统一管，终结 skill 散落多处的现状。</p>
+    <p class="meta">收费：开源免费（MIT）<br>来源：<a href="https://github.com/bb-boy680/context-hub">github.com/bb-boy680/context-hub</a></p>
   </div>
 
   <div class="card item">
-    <h3><span class="no">10.</span>Genie 4（Google DeepMind，10 月 27 日预览）</h3>
-    <p class="intro">DeepMind 新一代"世界模型"：一句话实时画出可交互场景，带声音、带会说话的角色；受信测试者研究预览中。</p>
+    <h3><span class="no">10.</span>8b-agent-plugin（2⭐，10 月 2 日）</h3>
+    <p class="intro">免费 AI 建站 MCP 插件：跟 agent 说一句话，就用 8B 的设计库生成带动画的单页网站；无账号、无 key、无额度，拿到可下载的单文件 HTML。</p>
     <ul class="func">
-      <li>文本提示实时生成可交互 3D 场景，角色能对话、有环境音；</li>
-      <li>场景可"驾驶"：边生成边改，适合快速验证玩法和镜头；</li>
-      <li>Google AI Ultra 订阅者和 Gemini API 伙伴随后开放。</li>
+      <li>零门槛：一条 MCP 地址（https://mcp.8b.com/mcp），无需认证，3 个工具，5 分钟接好；</li>
+      <li>产出即单文件 HTML：可商用、可编辑，和咱们的交付标准天然对齐；</li>
+      <li>能力边界写得清楚：单页、固定版块、无后端，不会期望落空。</li>
     </ul>
-    <p class="use">🎯 <b>对你的用处：</b>游戏（魂灵纪元/英雄世界）的新玩法、新地图可以先让 Genie 4 生成可玩原型验证手感，再决定投不投入建模；漫剧分镜也可以先"走"一遍场景看机位；开放后第一时间申请测试。</p>
-    <p class="meta">收费：未公布<br>来源：<a href="https://siliconainews.com/tracker/ai-model-releases">siliconainews.com</a>（AI 模型发布追踪）</p>
+    <p class="use">🎯 <b>对你的用处：</b>给熟食店做线上价目单页＋二维码（18 项真实价格已经备好），这是第一个纯线上的熟食店周边；以后单页站需求先走它，5 分钟出初稿。</p>
+    <p class="meta">收费：完全免费，无额度<br>来源：<a href="https://github.com/8bsite/8b-agent-plugin">github.com/8bsite/8b-agent-plugin</a></p>
   </div>
 
   <div class="card sum">
     <h2 style="font-size:17px;font-weight:800;margin-bottom:8px;">本轮小结：学完马上能用的</h2>
     <ul>
-      <li><b>出图组合更新：</b>草图走 Nano Banana 2.1（降价一半），海报成品走 Canva Craft（文字准、版式天生）——漫剧分镜和建模参考图的成本直接砍半。</li>
-      <li><b>免费模型池加三员：</b>GPT-6.1 Terra、Nemotron 3.5 Super VL、Mistral Large 4——云电脑 dsh 和 OpenCode 车道的"不敏感活儿"备选一次多了三个，番外还有 DeepSeek V4.1-Flash-1017（10 月 17 日，benchmark 全涨、输出更短、价格不变，552B MIT 权重已上 Hugging Face）。</li>
-      <li><b>手机端 Agent 种子：</b>Liquid AI LFM3（10 月 27 日，六个 2B 级开源小模型，4-bit 约 1GB 显存、256K 上下文）——手机上跑本地 Agent 头一回有了像样的底座。</li>
-      <li><b>长期在线的官方答案：</b>Gemini Agent 私测中、Dohmke 新平台 2027 年初正式版——"有个 Agent 替我长期干活"这件事，2027 年初是评估窗口。</li>
+      <li><b>Agent Skills 是 10 月新仓库的默认交付形态</b>（10 个里 7 个）：121 条提示词库下一步从"文档"升级为"可被 agent 直接加载的 skills"，context-hub 负责统一管理。</li>
+      <li><b>视频是这批 star 的绝对重心</b>：别人的 QA（抽帧验烧字、终混回听、lint 门）比咱们现在的"转写核对"更完整，下次《时纹》交付时补上。</li>
+      <li><b>"先报价再烧钱"是共识</b>：即梦/可灵积分也立一条同样的规矩——agent 生成前先报"几个镜头×多少积分"，你点头才跑。</li>
+      <li><b>今日落地已跑通</b>：context-hub v0.2.0 装进云电脑，自动发现 4 个 skill、导入真实 skill、symlink 分发到工作区，三条流程全部真机验证通过。</li>
     </ul>
   </div>
 
   <h2 class="sec">知识库家底（此前已学完的）</h2>
   <div class="stats">
-    <div class="stat"><div class="num">100</div><div class="lab">条每日自动学习笔记</div><div class="det">AI 工具 40 条 ＋ GitHub 新星项目 30 条 ＋ 投资财经 30 条</div></div>
-    <div class="stat"><div class="num">60</div><div class="lab">个 GitHub 项目学透</div><div class="det">创作/网页/App 三线 36 个 ＋ Trending 与高收藏 24 个</div></div>
+    <div class="stat"><div class="num">110</div><div class="lab">条每日自动学习笔记</div><div class="det">AI 工具 40 条 ＋ GitHub 新星项目 40 条 ＋ 投资财经 30 条</div></div>
+    <div class="stat"><div class="num">70</div><div class="lab">个 GitHub 项目学透</div><div class="det">创作/网页/App 三线 36 个 ＋ Trending 与高收藏 24 个 ＋ 每日新星 10 个</div></div>
     <div class="stat"><div class="num">100</div><div class="lab">本书第一遍学完</div><div class="det">第二遍深学进行中：每晚 10 本，只写补漏与新联系</div></div>
     <div class="stat"><div class="num">111</div><div class="lab">个收藏夹网站学完</div><div class="det">每个站一篇笔记，做东西时先查库取材</div></div>
     <div class="stat"><div class="num">121</div><div class="lab">条提示词入库</div><div class="det">13 个分类，含 AI 工作台新分类 33 条</div></div>
     <div class="stat"><div class="num">36</div><div class="lab">条漫剧老李应用清单</div><div class="det">台词工程＋机检质检，做漫剧前逐条对照</div></div>
   </div>
 
-  <p class="foot">每日学习成果 · v20261030-1<br>每天 06:50 学完新的一轮，这一页会出新版发你；<span class="red">旧文件可删，看页脚版本号认新版</span>。</p>
+  <p class="foot">每日学习成果 · v20261031-1<br>每天 06:50 学完新的一轮，这一页会出新版发你；<span class="red">旧文件可删，看页脚版本号认新版</span>。</p>
 
 </div>
 <script>
 var PLAIN = [
 "每日学习成果",
-"2026年10月30日 星期五 · 今日主题：AI 工具",
+"2026年10月31日 星期六 · 今日主题：GitHub 新星项目",
 "",
-"轮换进度：AI 工具今日已学 10 条；GitHub 新星项目明天 10月31日；投资财经 11月1日。",
+"轮换进度：AI 工具 10月30日已学 10 条；GitHub 新星项目今日已学 10 条；投资财经明天 11月1日。",
 "",
-"1. Canva Craft（Canva 首个自研图像模型，10月22日）：不拿照片训练、拿数百万张人类设计模板训练，天生懂版式排字；2K、30多种画幅；DesignArena 首秀全球第4。漫剧海报、小说封面、宣传图直接出成品。收费随 Canva 会员，未公布独立定价。",
-"2. Nano Banana 2.1（Google，10月6日）：图像生成/编辑，基于 Gemini 3.6 Flash；价格砍到上一代约一半，1K 约 0.0336 美元；老版 10月29日关停。分镜草图、建模参考图出图成本减半。",
-"3. GPT-6.1 Terra（OpenAI，10月26日）：办公/电脑操作对标旗舰 Astra，token 价十分之一；多步骤 Agent 出错率大降；105万上下文。自动化任务成本砍大半。收费 1 美元/5 美元每百万 token。",
-"4. Nvidia Nemotron 3.5 Super VL（10月15日，开源）：120B 参数多模态 MoE，Agent 任务快 5 倍，100万上下文，可本地微调。云电脑免费池强力备选，prompt 不经过商业 API。权重免费。",
-"5. Mistral Large 4 Le Chonk（10月29日开源权重）：万亿参数多模态 MoE，100万上下文，改良 MIT 协议。免费池/OpenCode 车道又一备选。权重免费下载。",
-"6. Gemini 4 Carbon（Google，10月28日预览）：当前最强模型，独立评测 59 分登顶；先给网络安全防御者。暂时用不上，等下放到消费端再换底座。目前不公开售卖。",
-"7. Gemini Agent（Google Cloud，10月8日发布、私测）：通用智能体，给目标不给指令，原生接 Gmail/Docs/Drive/日历，可连续跑几天；有花费上限自动暂停。云端小坏蛋的官方版形态，公测后试用。",
-"8. 前 GitHub CEO Thomas Dohmke 新平台（10月26日）：AI 原生代码协作平台，Agent 是平级协作者；兼容 Git；2027年初正式版。仓库项目以后可评估迁移，先候补占位。",
-"9. Nemotron 3.5 Transcribe（英伟达，10月28日，开源）：40 语言转写、31 语言互译、8 人说话人分离，商用免费。配音转写质检、字幕生成多了一个不花钱的本地选项。",
-"10. Genie 4（Google DeepMind，10月27日预览）：世界模型，一句话实时生成可交互场景，带声音和会说话的角色。游戏新玩法先做可玩原型验证手感，开放后申请测试。",
+"1. digital-human-koubo（1549星，10月26日）：Agent Skill，一张照片加一句话全自动产出带对口型数字人的口播视频。亮点：生成前先报价防烧钱、每段抽帧验字幕烧录、多段声音统一。漫剧 QA 直接抄它。skill 免费，生成按量付费。",
+"2. free247editor（153星）：跑在 AI 编程 agent 里的免费开源剪辑师，扔原片说 edit this 拿回成片，修改意见存成规则越用越顺手。全链路免费。漫剧预告片可以扔给它试。",
+"3. frameweaver（110星）：本地 AI 视频工作台，场景规划、角色参考复用、借你自己的 Google Flow 生视频、配音字幕时间轴剪辑。角色参考图先行的思路做成漫剧 SOP 检查项。",
+"4. heditor（105星）：给 AI agent 的竖屏剪辑 skill 包，42 种视觉风格加长视频模式，质检门极严。终混回听加响度门抄进漫剧交付质检。",
+"5. motion-pack（10星）：代码化视频零件库加 6 个 skill，1163 个组件一句 prompt 出成片，全部 CC0/MIT 商用无忧。今天就用它给反推提示词包渲染 15 秒宣传片挂闲鱼。",
+"6. qiaomu-codex-imagegen（136星）：中文生图 skill，先给 4 种风格方向你选定再出图，24 类场景模板。漫剧分镜提示词改成它的风格锁加验收条件写法。",
+"7. Mika（1166星，10月29日）：装在安卓手机上的中文私人 AI 助理，后台屏替你操作 App，花钱的步骤先问你。河马翻译和收藏夹 APP 可以学它的后台屏交互。",
+"8. Droidline（428星）：用代码直接操控真安卓手机，装一个 App 扫码配对，不用 ADB 和数据线。APK 真机验证写成一键脚本。",
+"9. context-hub（10星）：AI agent 的 skills/MCP/提示词统一本地中枢，一次录入分发到各处。今天已装进云电脑并跑通：自动发现 4 个 skill、导入真实 skill、分发到工作区。121 条提示词库以后归它管。开源免费。",
+"10. 8b-agent-plugin（2星）：免费 AI 建站 MCP 插件，一句话生成带动画单页站，无账号无 key 无额度。给熟食店做线上价目单页加二维码，18 项真实价格已备好。",
 "",
-"本轮小结：出图组合更新（草图 Nano Banana 2.1、海报 Canva Craft）；免费模型池加三员（Terra、Super VL、Large 4，番外 DeepSeek V4.1-Flash-1017）；手机端 Agent 种子 Liquid AI LFM3（约1GB 显存可跑）；Gemini Agent 和 Dohmke 平台 2027年初评估。",
+"本轮小结：Agent Skills 是 10 月新仓库默认交付形态（7/10），提示词库下一步升级为可加载 skills；视频 QA（抽帧验烧字、终混回听、lint 门）下次《时纹》交付补上；即梦/可灵积分立先报价再烧钱的规矩；今日落地 context-hub v0.2.0 装机跑通。",
 "",
-"知识库家底：每日自动学习笔记 100 条；GitHub 项目 60 个；书 100 本第一遍学完；收藏夹网站 111 个；提示词 121 条；漫剧老李清单 36 条。",
+"知识库家底：每日自动学习笔记 110 条；GitHub 项目 70 个；书 100 本第一遍学完；收藏夹网站 111 个；提示词 121 条；漫剧老李清单 36 条。",
 "",
-"每日学习成果 v20261030-1"
+"每日学习成果 v20261031-1"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
