@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 10月31日</title>
+<title>全球新闻速览 · 11月1日</title>
 <style>
 :root{
   --bg:#080B12; --bg2:#0D121C; --card:#121824;
@@ -27,34 +27,33 @@ body{
 /* ===== 顶部功能栏：复制 + 收听 ===== */
 .topbar{
   position:sticky; top:0; z-index:50;
-  padding:10px 16px;
+  padding:10px 12px;
   background:rgba(8,11,18,.92);
   -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
   border-bottom:1px solid var(--stroke);
   display:flex; gap:10px; align-items:stretch;
+  box-shadow:0 2px 14px rgba(0,0,0,.45);
 }
 .topbar button{
-  flex:1; min-height:56px; border:none; border-radius:14px;
-  font-size:19px; font-weight:900; cursor:pointer;
+  flex:1; min-height:54px; border:none; border-radius:12px;
+  font-size:18px; font-weight:800; color:#ffffff; cursor:pointer;
   display:flex; align-items:center; justify-content:center; gap:6px;
-  letter-spacing:.04em;
 }
-#btnCopy{background:linear-gradient(120deg,var(--cyan),var(--teal)); color:#0A0E16;}
-#btnCopy:active{opacity:.85;}
-#btnListen{background:linear-gradient(120deg,#3DD598,#22B8CF); color:#0A0E16;}
-#btnListen:active{opacity:.85;}
-#btnStop{flex:0 0 68px; background:#B3261E; color:#fff; display:none; font-size:20px;}
-.hint{margin:10px 16px 0; font-size:12.5px; font-weight:700; color:var(--dim);}
+#btnCopy{ background:#1447c8;}
+#btnCopy:active{ background:#0d3396;}
+#btnListen{ background:#065f46;}
+#btnListen:active{ background:#04402f;}
+#btnStop{ flex:0 0 66px; background:#b91c1c; display:none;}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
-header.top{padding:28px 0 6px}
+header.top{padding:34px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
   margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
-  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
   border:1px solid var(--stroke);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
   padding:22px 20px;
 }
 .hero::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;
@@ -74,7 +73,7 @@ h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .card{
   background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
   padding:15px 16px;margin-bottom:10px;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
   position:relative;
 }
 .card::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;
@@ -95,118 +94,109 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 <button id="btnListen" type="button">🔊 收听</button>
 <button id="btnStop" type="button">⏹</button>
 </div>
-<p class="hint">👆 以后我发的信息，顶部都有这两个按钮：左边一键复制全文，右边点开朗读给你听。</p>
 
 <div class="wrap">
 
 <header class="top">
-  <div class="date">2026 · 10 · 31 &nbsp;星期六</div>
+  <div class="date">2026 · 11 · 01 &nbsp;星期日</div>
   <h1>全球新闻速览</h1>
   <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
   <span class="tag hot">头 条</span>
-  <h2>币安遭黑客盗取约 63 亿美元资产，创历史最大加密货币盗窃案</h2>
-  <p>全球最大加密货币交易所币安10月30日表示，黑客从其钱包盗走约63亿美元资产，为迄今规模最大的加密资产被盗案。币安承诺全额弥补用户损失。市场剧烈震荡，部分稳定币发行商已冻结涉案资金。部分外媒称攻击或与朝鲜有关，币安称发现了安全漏洞，正在调查。</p>
-  <div class="meta">BBC · 南华早报 · 今日要闻 · 10月30日</div>
+  <h2>刚果（金）埃博拉疫情死亡破5000，为该国有记录以来最严重</h2>
+  <p>卫生部数据显示，死亡5026人、感染10351人，病死率近50%。据外媒报道，疫情已蔓延至尼日利亚等多国，世卫组织警告疫情"复杂而危险"，刚果（金）已启动关键疫苗试验。</p>
+  <div class="meta">BBC · 世卫组织 · 10月31日</div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>以色列大选初步计票全部完成，内塔尼亚胡阵营与反对派均未过半</h4>
-    <p>以色列中央选举委员会完成全部初步计票：内塔尼亚胡领导的右翼执政联盟获53席，埃森科特领导的反对党阵营获48席，阿拉伯政党以19席创纪录，成为关键少数。组阁谈判预计将艰难展开。</p>
-    <div class="src">央视新闻 · 南华早报</div>
+    <h4><span class="t">10-31</span>G20外长会在美国亚特兰大闭幕，未在关键议题上达成共识</h4>
+    <p>会议暴露深层分歧：俄方立场强硬，鲁比奥与俄方接触引发关注。场边美日韩外长会谈，重申维护台海和平稳定、支持朝鲜完全去核。</p>
+    <div class="src">南华早报 · 10月31日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-29</span>欧洲央行行长拉加德宣布提前卸任，比原定任期提前约 9 个月</h4>
-    <p>拉加德表示"我认为自己无法继续保持中立"，将于2027年2月7日提前卸任。分析认为此举与法国及全球政治局势有关，接班人将面临欧元区高利率与增长乏力的双重挑战。</p>
-    <div class="src">新浪新闻 · 南华早报</div>
+    <h4><span class="t">10-31</span>以色列大选尘埃落定却无赢家，两大阵营组阁陷僵局</h4>
+    <p>议会选举初步计票完成，无一阵营达到组阁所需的议会多数。内塔尼亚胡阵营未过半却声称选举"被窃取"，组阁面临多重障碍，或由其继续担任看守总理。</p>
+    <div class="src">央视新闻 · 10月30-31日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-30</span>教皇利奥十四世邮寄投票美国中期选举，开创历史首例</h4>
-    <p>梵蒂冈确认，出生于芝加哥的利奥十四世已通过邮寄选票参加美国中期选举，成为历史上首位在政治选举中投票的在任教皇。美国中期选举将于11月3日举行。</p>
-    <div class="src">今日要闻 · BBC · 南华早报</div>
+    <h4><span class="t">10-31</span>欧洲抗议潮蔓延：法、意、德接连爆发冲突</h4>
+    <p>法国万圣节抗议爆发冲突，意大利都灵抗议中警方动用高压水炮，德国警方对"Z世代"抗议者发射水炮。欧洲多地示威矛头指向生活成本上升与增军费。</p>
+    <div class="src">央视新闻 · 南华早报 · 10月30-31日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>俄美乌计划 11 月举行三方会谈，欧洲被排除在外；基辅深夜遭导弹袭击</h4>
-    <p>普京表示支持俄方与欧盟恢复关系的任何步骤，挪威、芬兰领导人主动与普京通话却遭北欧邻国批评；俄方明确11月的俄美乌三方谈判不包括欧盟。谈判前夕，基辅29日深夜遭弹道导弹袭击，乌克兰表示愿与俄方磋商领土等核心敏感议题。</p>
-    <div class="src">新浪新闻 · 腾讯新闻</div>
+    <h4><span class="t">10-31</span>俄美乌三方会谈筹备中，美批准向乌出售21亿美元"爱国者"</h4>
+    <p>俄总统助理乌沙科夫称，俄美已开始磋商在阿联酋阿布扎比举行三方会谈的具体日期；佩斯科夫强调筹备会谈不代表俄承诺限制军事行动。美方同日批准向乌克兰出售500枚爱国者导弹及相关设备，总值21亿美元。</p>
+    <div class="src">央视新闻 · 10月30-31日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-29</span>美军中央司令部司令向特朗普汇报对伊朗军事选项；胡塞导弹射向利雅得被拦截</h4>
-    <p>美军中央司令部司令布拉德·库珀29日在白宫向特朗普汇报了针对伊朗的军事行动选项，国防部长赫格塞思亦参加。据外媒报道，美方已向海湾国家发出信号，要求为中期选举后可能展开的一场短期、高强度军事行动做好准备。同日，多国联军证实拦截了两枚射向沙特首都利雅得的导弹。</p>
-    <div class="src">新浪新闻 · 腾讯新闻</div>
+    <h4><span class="t">10-30</span>伊朗称击落美军无人机、第四艘油轮触雷爆炸，美方否认</h4>
+    <p>伊朗革命卫队称在南部格什姆岛上空击落一架美国MQM-170无人机，并称第四艘在霍尔木兹海峡违规航行的油轮触雷爆炸起火。美军中央司令部否认无人艇被摧毁的说法。伊朗最高领袖警告美以勿发动战争。</p>
+    <div class="src">央视新闻 · 10月30-31日</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">10-30</span>胡塞威胁打击沙特在也门军事指挥网络，美要求非紧急人员撤离</h4>
+    <p>胡塞武装宣布将打击沙特在也门政府军控制区内的军事指挥网络，并称沙特24小时内发动93次袭击。美国驻沙特使馆称，国务院已下令非紧急岗位工作人员及家属离开沙特，该命令自10月23日起生效。</p>
+    <div class="src">央视新闻 · 10月30-31日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-30</span>华尔街遭遇 6 月以来最惨一天，科技股因 AI 支出担忧重挫</h4>
-    <p>美国科技股大幅下挫，市场担忧 AI 领域数千亿美元的资本开支能否产生足够回报。雪佛龙、埃克森美孚等能源巨头则因炼油利润率高企，季度利润创纪录并预警柴油短缺风险。</p>
-    <div class="src">南华早报 · 今日要闻</div>
+    <h4><span class="t">10-31</span>纳指100逼近技术性回调，美联储主席暗示仍可能收紧</h4>
+    <p>AI支出担忧再起，科技股持续遭抛售，纳斯达克100逼近技术性回调；美联储10月决议维持利率在3.75%-4.00%，两名官员投票支持加息，市场押注12月加息概率逾八成。受伊朗局势影响，布伦特原油一度升至118美元/桶。</p>
+    <div class="src">新浪财经 · 10月31日</div>
   </div>
   <div class="card">
-    <h4><span class="t">10-29</span>加拿大与欧盟蒙特利尔峰会启动"未来同盟"，深化战略经济合作</h4>
-    <p>加欧双方在蒙特利尔峰会上宣布启动"未来同盟"，加强关键供应链与战略经济合作。同时，欧盟正考虑将加拿大列为"准成员"；中国则批评欧盟酝酿的新贸易保障措施可能违反 WTO 规则。</p>
-    <div class="src">news500global · 南华早报</div>
+    <h4><span class="t">10-30</span>加拿大与欧盟启动"未来联盟"计划</h4>
+    <p>第21届加欧峰会在蒙特利尔闭幕，双方发布联合声明启动"未来联盟"计划。加拿大总理卡尼称，联盟致力于增强双方在人工智能、能源等领域的自主性与韧性。</p>
+    <div class="src">央视新闻 · 10月30日</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
   <div class="card">
-    <h4><span class="t">10-29</span>西班牙托莱多两列高铁相撞，至少 69 人死亡，全国哀悼 3 天</h4>
-    <p>西班牙托莱多省发生两列高速列车相撞事故，造成至少69人死亡、多人受伤，为西班牙今年第二起致命铁路事故，全国开始为期3天的哀悼。交通大臣拒绝为事故辞职。</p>
-    <div class="src">南华早报 · BBC · alltop</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">10-30</span>刚果（金）埃博拉疫情死亡人数超过 5000 人</h4>
-    <p>刚果民主共和国的埃博拉疫情死亡人数已超过5000人，成为该国有史以来最致命的一次。由于针对 Bundibugyo 毒株缺乏获批疫苗和疗法，遏制工作面临困难。</p>
-    <div class="src">Free Malaysia Today</div>
+    <h4><span class="t">10-30</span>菲律宾马荣火山喷发，警戒级别上调至3级</h4>
+    <p>马荣火山30日喷发，火山灰柱高达3000米。菲律宾火山地震研究所已将警戒级别由2级上调至3级，建议火山附近人员撤离。</p>
+    <div class="src">央视新闻 · 10月30日</div>
   </div>
 </div>
 
-<footer>小坏蛋 · 全球新闻速览 · 每日早上推送</footer>
+<footer>Little Rascal · 全球新闻速览 · 每日早上推送</footer>
 
 </div>
 
 <script>
 var PLAIN = [
-"全球新闻速览",
-"2026年10月31日 星期六 · 过去 24 小时 · 全球重要事件 10 条",
+"全球新闻速览，2026年11月1日，过去24小时10条。",
 "",
-"头条：币安遭黑客盗取约 63 亿美元资产，创历史最大加密货币盗窃案。",
-"全球最大加密货币交易所币安10月30日表示，黑客从其钱包盗走约63亿美元资产，为迄今规模最大的加密资产被盗案。币安承诺全额弥补用户损失。市场剧烈震荡，部分稳定币发行商已冻结涉案资金。部分外媒称攻击或与朝鲜有关。",
+"头条：刚果（金）埃博拉疫情死亡破5000，为该国有记录以来最严重。卫生部数据显示，死亡5026人、感染10351人，病死率近50%。据外媒报道，疫情已蔓延至尼日利亚等多国，世卫组织警告疫情复杂而危险，刚果（金）已启动关键疫苗试验。",
 "",
-"国际政治",
+"国际政治。",
+"10月31日，G20外长会在美国亚特兰大闭幕，未在关键议题上达成共识。会议暴露深层分歧：俄方立场强硬，鲁比奥与俄方接触引发关注。场边美日韩外长会谈，重申维护台海和平稳定、支持朝鲜完全去核。",
+"10月31日，以色列大选尘埃落定却无赢家，两大阵营组阁陷僵局。议会选举初步计票完成，无一阵营达到组阁所需的议会多数。内塔尼亚胡阵营未过半却声称选举被窃取，组阁面临多重障碍，或由其继续担任看守总理。",
+"10月31日，欧洲抗议潮蔓延：法、意、德接连爆发冲突。法国万圣节抗议爆发冲突，意大利都灵抗议中警方动用高压水炮，德国警方对Z世代抗议者发射水炮。欧洲多地示威矛头指向生活成本上升与增军费。",
 "",
-"10月29日 以色列大选初步计票全部完成，内塔尼亚胡阵营与反对派均未过半。右翼执政联盟获53席，反对党阵营获48席，阿拉伯政党以19席创纪录，成为关键少数，组阁谈判预计艰难展开。",
-"10月29日 欧洲央行行长拉加德宣布提前卸任，比原定任期提前约9个月，将于2027年2月7日卸任。接班人将面临欧元区高利率与增长乏力的双重挑战。",
-"10月30日 教皇利奥十四世邮寄投票美国中期选举，开创历史首例，成为历史上首位在政治选举中投票的在任教皇。美国中期选举将于11月3日举行。",
+"地区冲突。",
+"10月31日，俄美乌三方会谈筹备中，美批准向乌出售21亿美元爱国者。俄总统助理乌沙科夫称，俄美已开始磋商在阿联酋阿布扎比举行三方会谈的具体日期；佩斯科夫强调筹备会谈不代表俄承诺限制军事行动。美方同日批准向乌克兰出售500枚爱国者导弹及相关设备，总值21亿美元。",
+"10月30日，伊朗称击落美军无人机、第四艘油轮触雷爆炸，美方否认。伊朗革命卫队称在南部格什姆岛上空击落一架美国MQM-170无人机，并称第四艘在霍尔木兹海峡违规航行的油轮触雷爆炸起火。美军中央司令部否认无人艇被摧毁的说法。伊朗最高领袖警告美以勿发动战争。",
+"10月30日，胡塞威胁打击沙特在也门军事指挥网络，美要求非紧急人员撤离。胡塞武装宣布将打击沙特在也门政府军控制区内的军事指挥网络，并称沙特24小时内发动93次袭击。美国驻沙特使馆称，国务院已下令非紧急岗位工作人员及家属离开沙特，该命令自10月23日起生效。",
 "",
-"地区冲突",
+"全球经济。",
+"10月31日，纳指100逼近技术性回调，美联储主席暗示仍可能收紧。AI支出担忧再起，科技股持续遭抛售，纳斯达克100逼近技术性回调；美联储10月决议维持利率在3.75%到4.00%，两名官员投票支持加息，市场押注12月加息概率逾八成。受伊朗局势影响，布伦特原油一度升至118美元每桶。",
+"10月30日，加拿大与欧盟启动未来联盟计划。第21届加欧峰会在蒙特利尔闭幕，双方发布联合声明启动未来联盟计划。加拿大总理卡尼称，联盟致力于增强双方在人工智能、能源等领域的自主性与韧性。",
 "",
-"10月29日 俄美乌计划11月举行三方会谈，欧洲被排除在外。普京表示支持与欧盟恢复关系的任何步骤；谈判前夕，基辅29日深夜遭弹道导弹袭击，乌克兰表示愿与俄方磋商领土等核心敏感议题。",
-"10月29日 美军中央司令部司令向特朗普汇报对伊朗军事选项。据外媒报道，美方已向海湾国家发出信号，要求为中期选举后可能展开的一场短期、高强度军事行动做好准备。同日，多国联军证实拦截了两枚射向沙特首都利雅得的导弹。",
-"",
-"全球经济",
-"",
-"10月30日 华尔街遭遇6月以来最惨一天，科技股因AI支出担忧重挫。市场担忧AI领域数千亿美元的资本开支能否产生足够回报。雪佛龙、埃克森美孚等能源巨头则因炼油利润率高企，季度利润创纪录。",
-"10月29日 加拿大与欧盟蒙特利尔峰会启动“未来同盟”，深化战略经济合作。同时，欧盟正考虑将加拿大列为“准成员”。",
-"",
-"突发灾难",
-"",
-"10月29日 西班牙托莱多两列高铁相撞，至少69人死亡，全国哀悼3天，为西班牙今年第二起致命铁路事故。",
-"10月30日 刚果（金）埃博拉疫情死亡人数超过5000人，成为该国有史以来最致命的一次。",
-"",
-"小坏蛋 · 全球新闻速览 · 每日早上推送"
+"突发灾难。",
+"10月30日，菲律宾马荣火山喷发，警戒级别上调至3级。马荣火山30日喷发，火山灰柱高达3000米。菲律宾火山地震研究所已将警戒级别由2级上调至3级，建议火山附近人员撤离。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
