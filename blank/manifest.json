@@ -1,5 +1,5 @@
 {
- "version": "20261102-29",
+ "version": "20261102-26",
  "chunks": [
   "data/chunk-1.js",
   "data/chunk-2.js",
@@ -151,10 +151,7 @@
   "data/chunk-148.js",
   "data/chunk-149.js",
   "data/chunk-150.js",
-  "data/chunk-151.js",
-  "data/chunk-152.js",
-  "data/chunk-153.js",
-  "data/chunk-154.js"
+  "data/chunk-151.js"
  ],
  "marker": "hema-blank-v1"
 }
