@@ -4,63 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 11月2日</title>
+<title>全球新闻速览 · 11月3日</title>
 <style>
 :root{
-  --bg:#080B12; --bg2:#0D121C; --card:#121824;
-  --glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
-  --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
-  --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
+--bg:#080B12; --bg2:#0D121C; --card:#121824;
+--glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
+--text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
+--red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-  background:var(--bg); color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  -webkit-font-smoothing:antialiased; line-height:1.6;
-  background-image:
-    radial-gradient(600px 300px at 15% 0%, rgba(114,213,255,.07), transparent 70%),
-    radial-gradient(500px 260px at 90% 12%, rgba(167,139,250,.06), transparent 70%),
-    radial-gradient(700px 400px at 50% 100%, rgba(102,240,208,.04), transparent 70%);
-  background-attachment:fixed;
-  padding-bottom:calc(28px + env(safe-area-inset-bottom));
+background:var(--bg); color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+-webkit-font-smoothing:antialiased; line-height:1.6;
+background-image:
+radial-gradient(600px 300px at 15% 0%, rgba(114,213,255,.07), transparent 70%),
+radial-gradient(500px 260px at 90% 12%, rgba(167,139,250,.06), transparent 70%),
+radial-gradient(700px 400px at 50% 100%, rgba(102,240,208,.04), transparent 70%);
+background-attachment:fixed;
+padding-bottom:calc(28px + env(safe-area-inset-bottom));
 }
 /* ===== 顶部功能栏：复制 + 收听 ===== */
 .topbar{
-  position:sticky; top:0; z-index:50;
-  padding:10px 16px;
-  background:rgba(8,11,18,.92);
-  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--stroke);
-  display:flex; gap:10px; align-items:stretch;
-  box-shadow:0 4px 16px rgba(0,0,0,.45);
+position:sticky; top:0; z-index:50;
+display:flex; gap:10px; align-items:stretch;
+padding:10px 12px;
+background:rgba(8,11,18,.88);
+-webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+border-bottom:1px solid var(--stroke);
 }
 .topbar button{
-  flex:1; min-height:54px; border:none; border-radius:12px;
-  font-size:18px; font-weight:800; color:#fff; cursor:pointer;
-  display:flex; align-items:center; justify-content:center; gap:6px;
+flex:1; min-height:54px; border:none; border-radius:12px;
+font-size:19px; font-weight:800; color:#081018; cursor:pointer;
+display:flex; align-items:center; justify-content:center; gap:6px;
+-webkit-tap-highlight-color:transparent;
 }
-#btnCopy{ background:#2E86FF; }
-#btnCopy:active{ background:#1c63c7; }
-#btnListen{ background:#0E9F6E; }
-#btnListen:active{ background:#0b7a54; }
-#btnStop{ flex:0 0 64px; background:#D64545; display:none; }
+#btnCopy{ background:linear-gradient(120deg,var(--cyan),#4FB3EE);}
+#btnCopy:active{ opacity:.75;}
+#btnListen{ background:linear-gradient(120deg,var(--teal),#3FD8A8);}
+#btnListen:active{ opacity:.75;}
+#btnStop{ flex:0 0 64px; background:#E05252; color:#fff; font-size:22px; display:none;}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
-header.top{padding:26px 0 6px}
+header.top{padding:30px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
-  margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
-  border:1px solid var(--stroke);
-  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  padding:22px 20px;
+margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
+border:1px solid var(--stroke);
+background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
+backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+padding:22px 20px;
 }
 .hero::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
 .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;
-  padding:3px 10px;border-radius:999px;margin-bottom:10px;
-  border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
+padding:3px 10px;border-radius:999px;margin-bottom:10px;
+border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
 .tag.hot{color:#0A0E16;background:linear-gradient(120deg,var(--cyan),var(--teal));border:none}
 .hero h2{font-size:21px;font-weight:800;line-height:1.45;margin-bottom:8px}
 .hero p{font-size:14px;color:#C9D3E4}
@@ -69,22 +69,22 @@ h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sec-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .dot{width:8px;height:8px;border-radius:50%}
 .sec-head h3{font-size:15px;font-weight:700;letter-spacing:.08em}
-.sec-head .line{flex:1;height:1px;background:linear-gradient(90deg,var(--stroke),transparent)}
+.sec-head.line{flex:1;height:1px;background:linear-gradient(90deg,var(--stroke),transparent)}
 .card{
-  background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
-  padding:15px 16px;margin-bottom:10px;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  position:relative;
+background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
+padding:15px 16px;margin-bottom:10px;
+backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+position:relative;
 }
 .card::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
 .card h4{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
-.card h4 .t{color:var(--cyan);font-weight:600;font-size:12px;margin-right:8px;letter-spacing:.04em}
+.card h4.t{color:var(--cyan);font-weight:600;font-size:12px;margin-right:8px;letter-spacing:.04em}
 .card p{font-size:13.5px;color:#B9C3D6}
-.card .src{margin-top:8px;font-size:11px;color:var(--dim)}
+.card.src{margin-top:8px;font-size:11px;color:var(--dim)}
 footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);letter-spacing:.08em}
-.c-pol{color:var(--cyan)} .c-war{color:var(--red)} .c-eco{color:var(--teal)} .c-bra{color:var(--amber)}
-.d-pol{background:var(--cyan)} .d-war{background:var(--red)} .d-eco{background:var(--teal)} .d-bra{background:var(--amber)}
+.c-pol{color:var(--cyan)}.c-war{color:var(--red)}.c-eco{color:var(--teal)}.c-bra{color:var(--amber)}
+.d-pol{background:var(--cyan)}.d-war{background:var(--red)}.d-eco{background:var(--teal)}.d-bra{background:var(--amber)}
 </style>
 </head>
 <body>
@@ -98,77 +98,77 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 <div class="wrap">
 
 <header class="top">
-  <div class="date">2026 · 11 · 02 &nbsp;星期一</div>
-  <h1>全球新闻速览</h1>
-  <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
+<div class="date">2026 · 11 · 03 &nbsp;星期二</div>
+<h1>全球新闻速览</h1>
+<div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
-  <span class="tag hot">头 条</span>
-  <h2>币安63亿美元加密资产遭朝鲜黑客窃取，FBI锁定"TraderTraitor"组织</h2>
-  <p>当地时间10月29日，全球最大加密货币交易所币安遭遇史上最大规模黑客攻击，约63亿美元加密资产被盗。美国FBI及区块链情报机构指认朝鲜黑客组织"TraderTraitor"为幕后黑手。币安宣布已覆盖约90%的用户损失，客户提现预计周日恢复。</p>
-  <div class="meta">据外媒报道 · 11月1-2日</div>
+<span class="tag hot">头 条</span>
+<h2>西班牙高速列车相撞，至少69人死亡，为近年欧洲最严重铁路事故</h2>
+<p>据外媒报道，11月2日西班牙乌尔达（Urda）附近发生高速列车相撞事故，造成至少69人死亡。这是近年来欧洲最严重的铁路灾难之一，事故原因仍在调查中。</p>
+<div class="meta">CLSTR 全球媒体聚合 · 11月2-3日</div>
 </div>
 
 <div class="sec">
-  <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
-  <div class="card">
-    <h4><span class="t">10-31</span>美国中期选举周二投票，提前投票与总支出双破纪录</h4>
-    <p>距离11月3日中期选举仅剩三天，提前投票人数已超5100万，总支出预计119亿美元，双双创下中期选举历史纪录。国会两院控制权竞争进入最后冲刺，多州选情胶着。</p>
-    <div class="src">新浪国际热点 · 据外媒报道</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">11-01</span>保加利亚约托娃赢得总统决选，将成首位当选女性总统</h4>
-    <p>出口民调显示，代总统伊利亚娜·约托娃以50.7%至52.5%的得票率击败亲西方对手安德烈·久罗夫。她主张与俄罗斯对话、反对对乌克兰军事援助，当选引发欧洲关注。</p>
-    <div class="src">据外媒报道</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">11-01</span>G20外长会议在亚特兰大落幕，安全议题未达共识</h4>
-    <p>为期两天的G20外长会议未能就俄乌战争、伊朗战事等关键安全议题达成共识，会后未发布联合公报，仅由美国以主席声明总结。美方称会议聚焦能源安全、供应链韧性等全球经济挑战。</p>
-    <div class="src">联合新闻网 · 美联社</div>
-  </div>
+<div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
+<div class="card">
+<h4><span class="t">11-03</span>美国中期选举今日投票，民调显示民主党在七个战场州领先</h4>
+<p>《纽约时报》与锡耶纳学院最新民调显示，民主党在得州、堪萨斯等多个共和党议席的参议院战场建立领先优势；特朗普支持率约32%，处于历史低位区间。</p>
+<div class="src">纽约时报 · 南华早报</div>
+</div>
+<div class="card">
+<h4><span class="t">11-02</span>内塔尼亚胡施压特朗普在中期选举后空袭伊朗，伊朗警告战争将更持久</h4>
+<p>据官员透露，内塔尼亚胡正与美方高层合作，游说特朗普在中期选举后对伊朗发动快速但大规模的空袭。美防长赫格塞斯解雇高级军事规划师；伊朗警告新一轮战争可能比上一轮持续更久。</p>
+<div class="src">南华早报 · 据外媒报道</div>
+</div>
 </div>
 
 <div class="sec">
-  <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
-  <div class="card">
-    <h4><span class="t">11-01</span>伊朗战争阴影再起，美方或于中期选举后发动新打击</h4>
-    <p>美方官员称已通知中东盟友，为11月3日中期选举后可能的新一轮对伊朗军事打击做好准备；伊朗最高领袖下令更新对美以打击目标清单。卡塔尔谴责其一艘LNG运输船在波斯湾遭袭击，警告威胁全球能源供应。</p>
-    <div class="src">据外媒报道</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">11-01</span>俄乌：赫尔松临时停火将结束，双方互相打击能源设施</h4>
-    <p>由美方斡旋的赫尔松地区临时停火即将到期；俄军空袭致乌克兰数千人断电，乌方则恢复对俄炼油厂的无人机打击，战事有升级之势。</p>
-    <div class="src">据外媒报道</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">11-01</span>加沙：以军空袭致至少9名巴勒斯坦人死亡，含一名儿童</h4>
-    <p>以色列无人机与导弹袭击加沙多地，医院方面称至少9名巴勒斯坦人死亡，包括一名儿童，另有多名哈马斯下属警察丧生。</p>
-    <div class="src">BBC · 据外媒报道</div>
-  </div>
+<div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
+<div class="card">
+<h4><span class="t">11-02</span>俄军空袭扎波罗热人道援助中心，致24死、27人失踪</h4>
+<p>乌克兰扎波罗热州科米舒瓦哈一处分发人道援助物资的学校2日遭俄军空袭。民防部门称已造成至少24人死亡、27人失踪；泽连斯基表示俄军投下十余枚航空炸弹。</p>
+<div class="src">乌克兰民防部门 · 南华早报</div>
+</div>
+<div class="card">
+<h4><span class="t">11-02</span>乌恢复袭击俄炼油厂，两国预警系统同日遭黑客入侵</h4>
+<p>乌克兰无视美方压力，重启对俄境内炼油厂的远程无人机打击；乌俄两国的空袭预警App同日被黑客入侵，乌方用户收到虚假辐射警告，俄方多地收到虚假警报。赫尔松短暂停火同日结束。</p>
+<div class="src">卫报 · BBC · WarMonit</div>
+</div>
+<div class="card">
+<h4><span class="t">11-02</span>沙特空袭也门荷台达港，胡塞称7人受伤；沙特称在麦加附近击落胡塞无人机</h4>
+<p>据胡塞武装方面称，沙特对也门荷台达省红海港口和石油设施发动空袭，造成7人受伤。沙特称在麦加附近击落一架胡塞无人机，胡塞方面予以否认。</p>
+<div class="src">海峡时报 · 据胡塞武装方面称</div>
+</div>
 </div>
 
 <div class="sec">
-  <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
-  <div class="card">
-    <h4><span class="t">11-02</span>中国三部门金融监管机构召集银行券商，探讨稳市工具</h4>
-    <p>中国三大金融监管机构召集主要银行与券商，探讨市场稳定工具。此前沪深300指数十月份下跌8.5%，监管层出手信号引发市场关注。</p>
-    <div class="src">据外媒报道</div>
-  </div>
+<div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
+<div class="card">
+<h4><span class="t">11-02</span>迈威尔宣布以1150亿美元全股票收购光通信巨头朗盛</h4>
+<p>美国芯片制造商迈威尔11月2日宣布达成最终协议，将以全股票交易方式收购光通信器件制造商朗盛，企业价值约1150亿美元。消息提振半导体板块情绪。</p>
+<div class="src">多家外媒报道</div>
+</div>
+<div class="card">
+<h4><span class="t">11-01</span>币安遭63亿美元黑客攻击后，净资金流出47亿美元</h4>
+<p>据报道，币安在恢复提现后净资本流出达47亿美元。此前该交易所遭遇约63亿美元的网络攻击，据调查与朝鲜黑客有关。</p>
+<div class="src">Hansen Intel · 据报道</div>
+</div>
+<div class="card">
+<h4><span class="t">11-01</span>OPEC+七国维持12月产量目标不变，下次会议11月29日</h4>
+<p>OPEC+七个参与国11月1日线上会议决定维持12月所需产量目标不变。分析指出，产量目标不等于实际产量，战事与航运状况仍可能影响市场供应。</p>
+<div class="src">路透社</div>
+</div>
 </div>
 
 <div class="sec">
-  <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
-  <div class="card">
-    <h4><span class="t">11-01</span>刚果埃博拉疫情：死亡突破5000人，确诊超1万例</h4>
-    <p>刚果（金）本轮埃博拉疫情死亡人数已突破5000人，确诊病例超过1万例，成为该国有记录以来最致命的一次，疫情进一步扩散的担忧加剧。</p>
-    <div class="src">BBC</div>
-  </div>
-  <div class="card">
-    <h4><span class="t">11-01</span>德国法兰克福青年抗议演变成骚乱，百余警察受伤</h4>
-    <p>以年轻人为主的示威在法兰克福演变成骚乱，商店遭打砸、100多名警察受伤。德国多名部长表态将严惩涉事者，欧洲多国的青年抗议浪潮仍在蔓延。</p>
-    <div class="src">据外媒报道</div>
-  </div>
+<div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
+<div class="card">
+<h4><span class="t">11-01</span>美国佛州商务机坠毁，机上9人全部遇难</h4>
+<p>一架Learjet 60商务机11月1日在佛罗里达州棕榈滩郡坠毁爆炸，机上9人全部罹难，事故原因仍在调查。</p>
+<div class="src">路透社 · 美联社</div>
+</div>
 </div>
 
 <footer>小坏蛋 · 全球新闻速览 · 每日早上推送</footer>
@@ -177,38 +177,28 @@ footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);lett
 
 <script>
 var PLAIN = [
-"全球新闻速览",
-"2026年11月2日，星期一。过去24小时，全球重要事件10条。",
+"全球新闻速览 · 11月3日（星期二）",
+"过去 24 小时 · 全球重要事件 10 条",
 "",
-"头条：币安63亿美元加密资产遭朝鲜黑客窃取，FBI锁定TraderTraitor组织。",
-"当地时间10月29日，全球最大加密货币交易所币安遭遇史上最大规模黑客攻击，约63亿美元加密资产被盗。美国FBI及区块链情报机构指认朝鲜黑客组织为幕后黑手。币安宣布已覆盖约90%的用户损失，客户提现预计周日恢复。",
+"西班牙高速列车相撞，至少69人死亡。据外媒报道，11月2日西班牙乌尔达附近发生高速列车相撞事故，造成至少69人死亡，是近年来欧洲最严重的铁路灾难之一，事故原因仍在调查中。",
 "",
-"国际政治第一条：美国中期选举周二投票，提前投票与总支出双破纪录。",
-"距离11月3日中期选举仅剩三天，提前投票人数已超5100万，总支出预计119亿美元，双双创下中期选举历史纪录。",
+"美国中期选举今日投票，民调显示民主党在七个战场州领先。《纽约时报》与锡耶纳学院最新民调显示，民主党在得州、堪萨斯等多个共和党议席的参议院战场建立领先优势；特朗普支持率约32%。",
 "",
-"国际政治第二条：保加利亚约托娃赢得总统决选，将成首位当选女性总统。",
-"出口民调显示，代总统伊利亚娜约托娃以50.7%至52.5%的得票率击败对手。她主张与俄罗斯对话、反对对乌克兰军事援助。",
+"内塔尼亚胡施压特朗普在中期选举后空袭伊朗。据官员透露，内塔尼亚胡正游说特朗普在中期选举后对伊朗发动快速但大规模的空袭；伊朗警告新一轮战争可能比上一轮持续更久。",
 "",
-"国际政治第三条：G20外长会议在亚特兰大落幕，安全议题未达共识。",
-"为期两天的G20外长会议未能就俄乌战争、伊朗战事等关键安全议题达成共识，会后未发布联合公报。",
+"俄军空袭扎波罗热人道援助中心，致24死、27人失踪。乌克兰扎波罗热州一处分发人道援助物资的学校2日遭俄军空袭，已造成至少24人死亡、27人失踪。",
 "",
-"地区冲突第一条：伊朗战争阴影再起，美方或于中期选举后发动新打击。",
-"美方官员称已通知中东盟友，为11月3日中期选举后可能的新一轮对伊朗军事打击做好准备。伊朗最高领袖下令更新对美以打击目标清单。",
+"乌恢复袭击俄炼油厂，两国预警系统同日遭黑客入侵。乌克兰重启对俄境内炼油厂的远程无人机打击；乌俄两国的空袭预警App同日被黑客入侵，乌方用户收到虚假辐射警告；赫尔松短暂停火结束。",
 "",
-"地区冲突第二条：俄乌，赫尔松临时停火将结束，双方互相打击能源设施。",
-"由美方斡旋的赫尔松地区临时停火即将到期。俄军空袭致乌克兰数千人断电，乌方则恢复对俄炼油厂的无人机打击。",
+"沙特空袭也门荷台达港。据胡塞武装方面称，沙特对也门荷台达省红海港口和石油设施发动空袭，造成7人受伤；沙特称在麦加附近击落一架胡塞无人机，胡塞方面予以否认。",
 "",
-"地区冲突第三条：加沙，以军空袭致至少9名巴勒斯坦人死亡，含一名儿童。",
-"以色列无人机与导弹袭击加沙多地，医院方面称至少9名巴勒斯坦人死亡，包括一名儿童。",
+"迈威尔宣布以1150亿美元全股票收购光通信巨头朗盛。美国芯片制造商迈威尔11月2日宣布达成最终协议，将以全股票交易方式收购朗盛，企业价值约1150亿美元。",
 "",
-"全球经济：中国三部门金融监管机构召集银行券商，探讨稳市工具。",
-"中国三大金融监管机构召集主要银行与券商，探讨市场稳定工具。此前沪深300指数十月份下跌8.5%。",
+"币安遭63亿美元黑客攻击后，净资金流出47亿美元。据报道，币安在恢复提现后净资本流出达47亿美元；此前该交易所遭遇约63亿美元的网络攻击，据调查与朝鲜黑客有关。",
 "",
-"突发灾难第一条：刚果埃博拉疫情，死亡突破5000人，确诊超1万例。",
-"刚果金本轮埃博拉疫情死亡人数已突破5000人，确诊病例超过1万例，成为该国有记录以来最致命的一次。",
+"OPEC+七国维持12月产量目标不变。七个参与国11月1日线上会议决定维持12月产量目标不变，下次会议11月29日。",
 "",
-"突发灾难第二条：德国法兰克福青年抗议演变成骚乱，百余警察受伤。",
-"以年轻人为主的示威在法兰克福演变成骚乱，商店遭打砸、100多名警察受伤。欧洲多国的青年抗议浪潮仍在蔓延。"
+"美国佛州商务机坠毁，机上9人全部遇难。一架商务机11月1日在佛罗里达州棕榈滩郡坠毁爆炸，机上9人全部罹难，事故原因仍在调查。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
