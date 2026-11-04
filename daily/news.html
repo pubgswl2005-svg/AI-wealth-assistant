@@ -4,63 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>全球新闻速览 · 11月3日</title>
+<title>全球新闻速览 · 11月4日</title>
 <style>
 :root{
---bg:#080B12; --bg2:#0D121C; --card:#121824;
---glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
---text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
---red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
+  --bg:#080B12; --card:#121824;
+  --glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
+  --text:#F3F6FC; --dim:#929DB0; --cyan:#72D5FF; --teal:#66F0D0; --purple:#A78BFA;
+  --red:#FF7A7A; --amber:#FFC46B; --green:#7DDB9A;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-background:var(--bg); color:var(--text);
-font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
--webkit-font-smoothing:antialiased; line-height:1.6;
-background-image:
-radial-gradient(600px 300px at 15% 0%, rgba(114,213,255,.07), transparent 70%),
-radial-gradient(500px 260px at 90% 12%, rgba(167,139,250,.06), transparent 70%),
-radial-gradient(700px 400px at 50% 100%, rgba(102,240,208,.04), transparent 70%);
-background-attachment:fixed;
-padding-bottom:calc(28px + env(safe-area-inset-bottom));
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.6;
+  background-image:
+    radial-gradient(600px 300px at 15% 0%, rgba(114,213,255,.07), transparent 70%),
+    radial-gradient(500px 260px at 90% 12%, rgba(167,139,250,.06), transparent 70%),
+    radial-gradient(700px 400px at 50% 100%, rgba(102,240,208,.04), transparent 70%);
+  background-attachment:fixed;
+  padding-bottom:calc(28px + env(safe-area-inset-bottom));
 }
 /* ===== 顶部功能栏：复制 + 收听 ===== */
 .topbar{
-position:sticky; top:0; z-index:50;
-display:flex; gap:10px; align-items:stretch;
-padding:10px 12px;
-background:rgba(8,11,18,.88);
--webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-border-bottom:1px solid var(--stroke);
+  position:sticky;top:0;z-index:50;
+  margin:0;padding:10px 0;
+  background:rgba(8,11,18,.94);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(114,213,255,.28);
+  display:flex;gap:10px;align-items:stretch;
 }
 .topbar button{
-flex:1; min-height:54px; border:none; border-radius:12px;
-font-size:19px; font-weight:800; color:#081018; cursor:pointer;
-display:flex; align-items:center; justify-content:center; gap:6px;
--webkit-tap-highlight-color:transparent;
+  flex:1;min-height:56px;border:none;border-radius:14px;
+  font-size:19px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
 }
-#btnCopy{ background:linear-gradient(120deg,var(--cyan),#4FB3EE);}
-#btnCopy:active{ opacity:.75;}
-#btnListen{ background:linear-gradient(120deg,var(--teal),#3FD8A8);}
-#btnListen:active{ opacity:.75;}
-#btnStop{ flex:0 0 64px; background:#E05252; color:#fff; font-size:22px; display:none;}
+#btnCopy{background:linear-gradient(120deg,#72D5FF,#66F0D0);color:#04121f}
+#btnCopy:active{opacity:.85}
+#btnListen{background:linear-gradient(120deg,#FFC46B,#FF9E7A);color:#1a0e04}
+#btnListen:active{opacity:.85}
+#btnStop{flex:0 0 64px;background:#e5484d;color:#fff;display:none}
+.hint{margin:12px 2px 0;font-size:13px;font-weight:700;color:var(--dim)}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
-header.top{padding:30px 0 6px}
+header.top{padding:26px 0 6px}
 .date{font-size:12px;letter-spacing:.18em;color:var(--cyan);font-weight:600}
 h1{font-size:30px;font-weight:800;letter-spacing:.02em;margin:6px 0 2px}
 .sub{font-size:13px;color:var(--dim)}
 .hero{
-margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
-border:1px solid var(--stroke);
-background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
-backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-padding:22px 20px;
+  margin:20px 0 8px;border-radius:20px;overflow:hidden;position:relative;
+  background:linear-gradient(160deg, rgba(114,213,255,.14), rgba(167,139,250,.08) 55%, rgba(18,24,36,.9));
+  border:1px solid var(--stroke);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  padding:22px 20px;
 }
 .hero::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;
-background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
 .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;
-padding:3px 10px;border-radius:999px;margin-bottom:10px;
-border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
+  padding:3px 10px;border-radius:999px;margin-bottom:10px;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
 .tag.hot{color:#0A0E16;background:linear-gradient(120deg,var(--cyan),var(--teal));border:none}
 .hero h2{font-size:21px;font-weight:800;line-height:1.45;margin-bottom:8px}
 .hero p{font-size:14px;color:#C9D3E4}
@@ -69,143 +69,142 @@ border:1px solid var(--stroke);background:rgba(255,255,255,.06)}
 .sec-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .dot{width:8px;height:8px;border-radius:50%}
 .sec-head h3{font-size:15px;font-weight:700;letter-spacing:.08em}
-.sec-head.line{flex:1;height:1px;background:linear-gradient(90deg,var(--stroke),transparent)}
+.sec-head .line{flex:1;height:1px;background:linear-gradient(90deg,var(--stroke),transparent)}
 .card{
-background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
-padding:15px 16px;margin-bottom:10px;
-backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-position:relative;
+  background:var(--glass);border:1px solid var(--stroke);border-radius:16px;
+  padding:15px 16px;margin-bottom:10px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  position:relative;
 }
 .card::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;
-background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
 .card h4{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
-.card h4.t{color:var(--cyan);font-weight:600;font-size:12px;margin-right:8px;letter-spacing:.04em}
+.card h4 .t{color:var(--cyan);font-weight:600;font-size:12px;margin-right:8px;letter-spacing:.04em}
 .card p{font-size:13.5px;color:#B9C3D6}
-.card.src{margin-top:8px;font-size:11px;color:var(--dim)}
+.card .src{margin-top:8px;font-size:11px;color:var(--dim)}
 footer{margin:30px 0 10px;text-align:center;font-size:11px;color:var(--dim);letter-spacing:.08em}
-.c-pol{color:var(--cyan)}.c-war{color:var(--red)}.c-eco{color:var(--teal)}.c-bra{color:var(--amber)}
-.d-pol{background:var(--cyan)}.d-war{background:var(--red)}.d-eco{background:var(--teal)}.d-bra{background:var(--amber)}
+.c-pol{color:var(--cyan)} .c-war{color:var(--red)} .c-eco{color:var(--teal)} .c-bra{color:var(--amber)}
+.d-pol{background:var(--cyan)} .d-war{background:var(--red)} .d-eco{background:var(--teal)} .d-bra{background:var(--amber)}
 </style>
 </head>
 <body>
-
+<div class="wrap">
 <div class="topbar">
 <button id="btnCopy" type="button">📋 复制全文</button>
 <button id="btnListen" type="button">🔊 收听</button>
 <button id="btnStop" type="button">⏹</button>
 </div>
-
-<div class="wrap">
+<p class="hint">👆 顶部两个按钮：左边一键复制全文，右边朗读给你听。</p>
 
 <header class="top">
-<div class="date">2026 · 11 · 03 &nbsp;星期二</div>
-<h1>全球新闻速览</h1>
-<div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
+  <div class="date">2026 · 11 · 04 &nbsp;星期三</div>
+  <h1>全球新闻速览</h1>
+  <div class="sub">过去 24 小时 · 全球重要事件 10 条</div>
 </header>
 
 <div class="hero">
-<span class="tag hot">头 条</span>
-<h2>西班牙高速列车相撞，至少69人死亡，为近年欧洲最严重铁路事故</h2>
-<p>据外媒报道，11月2日西班牙乌尔达（Urda）附近发生高速列车相撞事故，造成至少69人死亡。这是近年来欧洲最严重的铁路灾难之一，事故原因仍在调查中。</p>
-<div class="meta">CLSTR 全球媒体聚合 · 11月2-3日</div>
+  <span class="tag hot">头条 TOP STORY</span>
+  <h2>2026年美国中期选举投票日，特朗普迎来终期大考</h2>
+  <p>美国各地11月3日举行2026年中期选举投票，将决定未来两年国会控制权。选前分析称众议院席位争夺激烈、民主党有望夺回多数，参议院仍在多个摇摆州肉搏；提前投票人数创下约5400万人的全美纪录。这场选举被视为对特朗普总统执政的全面公投，背景还叠加了伊朗冲突、通胀和贸易紧张。</p>
+  <div class="meta">2026-11-03 · 据外媒报道</div>
 </div>
 
 <div class="sec">
-<div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
-<div class="card">
-<h4><span class="t">11-03</span>美国中期选举今日投票，民调显示民主党在七个战场州领先</h4>
-<p>《纽约时报》与锡耶纳学院最新民调显示，民主党在得州、堪萨斯等多个共和党议席的参议院战场建立领先优势；特朗普支持率约32%，处于历史低位区间。</p>
-<div class="src">纽约时报 · 南华早报</div>
-</div>
-<div class="card">
-<h4><span class="t">11-02</span>内塔尼亚胡施压特朗普在中期选举后空袭伊朗，伊朗警告战争将更持久</h4>
-<p>据官员透露，内塔尼亚胡正与美方高层合作，游说特朗普在中期选举后对伊朗发动快速但大规模的空袭。美防长赫格塞斯解雇高级军事规划师；伊朗警告新一轮战争可能比上一轮持续更久。</p>
-<div class="src">南华早报 · 据外媒报道</div>
-</div>
-</div>
-
-<div class="sec">
-<div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
-<div class="card">
-<h4><span class="t">11-02</span>俄军空袭扎波罗热人道援助中心，致24死、27人失踪</h4>
-<p>乌克兰扎波罗热州科米舒瓦哈一处分发人道援助物资的学校2日遭俄军空袭。民防部门称已造成至少24人死亡、27人失踪；泽连斯基表示俄军投下十余枚航空炸弹。</p>
-<div class="src">乌克兰民防部门 · 南华早报</div>
-</div>
-<div class="card">
-<h4><span class="t">11-02</span>乌恢复袭击俄炼油厂，两国预警系统同日遭黑客入侵</h4>
-<p>乌克兰无视美方压力，重启对俄境内炼油厂的远程无人机打击；乌俄两国的空袭预警App同日被黑客入侵，乌方用户收到虚假辐射警告，俄方多地收到虚假警报。赫尔松短暂停火同日结束。</p>
-<div class="src">卫报 · BBC · WarMonit</div>
-</div>
-<div class="card">
-<h4><span class="t">11-02</span>沙特空袭也门荷台达港，胡塞称7人受伤；沙特称在麦加附近击落胡塞无人机</h4>
-<p>据胡塞武装方面称，沙特对也门荷台达省红海港口和石油设施发动空袭，造成7人受伤。沙特称在麦加附近击落一架胡塞无人机，胡塞方面予以否认。</p>
-<div class="src">海峡时报 · 据胡塞武装方面称</div>
-</div>
+  <div class="sec-head"><span class="dot d-pol"></span><h3 class="c-pol">国际政治</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">11-03</span>特朗普：美国将于今年底终止对以色列每年约40亿美元军事援助</h4>
+    <p>美国总统特朗普11月3日接受福克斯新闻采访时表示，美国将在今年底终止向以色列提供每年近40亿美元的军事援助，称此举由以色列总理内塔尼亚胡提出，之后将改为对以军售。这是美国对以援助政策的重大转向。</p>
+    <div class="src">来源：福克斯新闻</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">11-03</span>格陵兰议会批准美丹格防务协议，美军可建两座新基地</h4>
+    <p>格陵兰议会以16票赞成、0票反对、7票弃权批准与美国、丹麦的安全协议，允许美国在格陵兰新建两座军事基地并部署金穹导弹防御系统，同时重申丹麦主权与格陵兰自决权。丹麦议会计划11月19日进行最终表决。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
 </div>
 
 <div class="sec">
-<div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
-<div class="card">
-<h4><span class="t">11-02</span>迈威尔宣布以1150亿美元全股票收购光通信巨头朗盛</h4>
-<p>美国芯片制造商迈威尔11月2日宣布达成最终协议，将以全股票交易方式收购光通信器件制造商朗盛，企业价值约1150亿美元。消息提振半导体板块情绪。</p>
-<div class="src">多家外媒报道</div>
-</div>
-<div class="card">
-<h4><span class="t">11-01</span>币安遭63亿美元黑客攻击后，净资金流出47亿美元</h4>
-<p>据报道，币安在恢复提现后净资本流出达47亿美元。此前该交易所遭遇约63亿美元的网络攻击，据调查与朝鲜黑客有关。</p>
-<div class="src">Hansen Intel · 据报道</div>
-</div>
-<div class="card">
-<h4><span class="t">11-01</span>OPEC+七国维持12月产量目标不变，下次会议11月29日</h4>
-<p>OPEC+七个参与国11月1日线上会议决定维持12月所需产量目标不变。分析指出，产量目标不等于实际产量，战事与航运状况仍可能影响市场供应。</p>
-<div class="src">路透社</div>
-</div>
+  <div class="sec-head"><span class="dot d-war"></span><h3 class="c-war">地区冲突</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">11-03</span>美军被曝打击伊朗格什姆岛目标；美俄乌拟下周阿布扎比会谈</h4>
+    <p>华尔街日报报道，美军在中期选举前对伊朗格什姆岛目标发动打击，伊朗总统称重返战争对谁都没有好处。与此同时，美国特使宣布规划11月10日至11日在阿布扎比举行美俄乌三方会谈，美国副总统万斯对达成协议表示乐观。</p>
+    <div class="src">来源：华尔街日报、据外媒报道</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">11-03</span>俄军对乌克兰十州能源设施发动年内最大规模空袭</h4>
+    <p>俄罗斯军队11月3日凌晨动用289架无人机及76枚导弹，打击乌克兰10个州的发电站与变电站，为年内最大规模空袭，多地紧急停电。另据基辅方面称，扎波罗热一所用作人道中心的学校遭俄军轰炸，至少31人死亡。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">11-03</span>也门冲突升级：胡塞武装威胁亚丁补给线，沙特空袭荷台达港</h4>
+    <p>据外媒报道，胡塞武装推进威胁亚丁补给线，沙特对荷台达港发动空袭；胡塞对沙特机场和输油管道的持续袭击，正迫使沙特阿美评估替代供应通道，中东能源运输风险上升。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
 </div>
 
 <div class="sec">
-<div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
-<div class="card">
-<h4><span class="t">11-01</span>美国佛州商务机坠毁，机上9人全部遇难</h4>
-<p>一架Learjet 60商务机11月1日在佛罗里达州棕榈滩郡坠毁爆炸，机上9人全部罹难，事故原因仍在调查。</p>
-<div class="src">路透社 · 美联社</div>
-</div>
+  <div class="sec-head"><span class="dot d-eco"></span><h3 class="c-eco">全球经济</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">11-03</span>美国拟自2027年起终止南非、卢旺达贸易优惠资格</h4>
+    <p>美国贸易代表署表示，总统已通知国会及南非、卢旺达政府，拟自2027年1月1日起终止两国的非洲增长与机会法案优惠资格。这一非洲贸易优惠的收紧，引发市场对美非贸易关系走向的关注。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">11-03</span>欧洲多国超市冷冻设备遭网络攻击，食品被迫销毁</h4>
+    <p>欧洲多家零售商通报冷藏、冷冻设备异常：攻击者远程调高了超市冷柜温度，部分门店因温度变化被迫丢弃食品，英国食品供应商也受影响。多国正紧急修补系统漏洞，凸显关键基础设施的网络安全风险。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
 </div>
 
-<footer>小坏蛋 · 全球新闻速览 · 每日早上推送</footer>
+<div class="sec">
+  <div class="sec-head"><span class="dot d-bra"></span><h3 class="c-bra">突发灾难</h3><span class="line"></span></div>
+  <div class="card">
+    <h4><span class="t">11-03</span>西班牙列车相撞事故致69人死亡，交通部长引咎辞职</h4>
+    <p>西班牙发生严重列车相撞事故，造成69人死亡，交通部长已引咎辞职。警方正对事故原因展开调查，相关铁路线路暂时中断。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
+  <div class="card">
+    <h4><span class="t">11-03</span>印度东岸撤离应对气旋；刚果埃博拉死亡超5000</h4>
+    <p>印度东岸11月2日启动居民撤离，应对孟加拉湾形成的气旋穆拉苏，气象部门预警多地强风暴雨。另据南华早报报道，刚果金埃博拉死亡人数已超5000，非洲其他地区也出现病例。</p>
+    <div class="src">来源：据外媒报道</div>
+  </div>
+</div>
 
+<footer>全球新闻速览 · 2026-11-04 · 每天早上自动生成 · 内容来自公开新闻报道</footer>
 </div>
 
 <script>
 var PLAIN = [
-"全球新闻速览 · 11月3日（星期二）",
-"过去 24 小时 · 全球重要事件 10 条",
+"全球新闻速览，2026年11月4日，星期三。过去24小时，全球重要事件10条。",
 "",
-"西班牙高速列车相撞，至少69人死亡。据外媒报道，11月2日西班牙乌尔达附近发生高速列车相撞事故，造成至少69人死亡，是近年来欧洲最严重的铁路灾难之一，事故原因仍在调查中。",
+"头条：2026年美国中期选举投票日，特朗普迎来终期大考。",
+"美国各地11月3日举行2026年中期选举投票，将决定未来两年国会控制权。选前分析称众议院席位争夺激烈、民主党有望夺回多数，参议院仍在多个摇摆州肉搏；提前投票人数创下约5400万人的全美纪录。这场选举被视为对特朗普总统执政的全面公投，背景还叠加了伊朗冲突、通胀和贸易紧张。",
 "",
-"美国中期选举今日投票，民调显示民主党在七个战场州领先。《纽约时报》与锡耶纳学院最新民调显示，民主党在得州、堪萨斯等多个共和党议席的参议院战场建立领先优势；特朗普支持率约32%。",
+"国际政治。",
+"一、特朗普：美国将于今年底终止对以色列每年约40亿美元军事援助。美国总统特朗普11月3日接受福克斯新闻采访时表示，美国将在今年底终止向以色列提供每年近40亿美元的军事援助，称此举由以色列总理内塔尼亚胡提出，之后将改为对以军售。这是美国对以援助政策的重大转向。",
+"二、格陵兰议会批准美丹格防务协议，美军可建两座新基地。格陵兰议会以16票赞成、0票反对、7票弃权批准与美国、丹麦的安全协议，允许美国在格陵兰新建两座军事基地并部署金穹导弹防御系统，同时重申丹麦主权与格陵兰自决权。丹麦议会计划11月19日进行最终表决。",
 "",
-"内塔尼亚胡施压特朗普在中期选举后空袭伊朗。据官员透露，内塔尼亚胡正游说特朗普在中期选举后对伊朗发动快速但大规模的空袭；伊朗警告新一轮战争可能比上一轮持续更久。",
+"地区冲突。",
+"三、美军被曝打击伊朗格什姆岛目标；美俄乌拟下周阿布扎比会谈。华尔街日报报道，美军在中期选举前对伊朗格什姆岛目标发动打击，伊朗总统称重返战争对谁都没有好处。与此同时，美国特使宣布规划11月10日至11日在阿布扎比举行美俄乌三方会谈，美国副总统万斯对达成协议表示乐观。",
+"四、俄军对乌克兰十州能源设施发动年内最大规模空袭。俄罗斯军队11月3日凌晨动用289架无人机及76枚导弹，打击乌克兰10个州的发电站与变电站，为年内最大规模空袭，多地紧急停电。另据基辅方面称，扎波罗热一所用作人道中心的学校遭俄军轰炸，至少31人死亡。",
+"五、也门冲突升级：胡塞武装威胁亚丁补给线，沙特空袭荷台达港。据外媒报道，胡塞武装推进威胁亚丁补给线，沙特对荷台达港发动空袭；胡塞对沙特机场和输油管道的持续袭击，正迫使沙特阿美评估替代供应通道，中东能源运输风险上升。",
 "",
-"俄军空袭扎波罗热人道援助中心，致24死、27人失踪。乌克兰扎波罗热州一处分发人道援助物资的学校2日遭俄军空袭，已造成至少24人死亡、27人失踪。",
+"全球经济。",
+"六、美国拟自2027年起终止南非、卢旺达贸易优惠资格。美国贸易代表署表示，总统已通知国会及南非、卢旺达政府，拟自2027年1月1日起终止两国的非洲增长与机会法案优惠资格。这一非洲贸易优惠的收紧，引发市场对美非贸易关系走向的关注。",
+"七、欧洲多国超市冷冻设备遭网络攻击，食品被迫销毁。欧洲多家零售商通报冷藏、冷冻设备异常：攻击者远程调高了超市冷柜温度，部分门店因温度变化被迫丢弃食品，英国食品供应商也受影响。多国正紧急修补系统漏洞，凸显关键基础设施的网络安全风险。",
 "",
-"乌恢复袭击俄炼油厂，两国预警系统同日遭黑客入侵。乌克兰重启对俄境内炼油厂的远程无人机打击；乌俄两国的空袭预警App同日被黑客入侵，乌方用户收到虚假辐射警告；赫尔松短暂停火结束。",
+"突发灾难。",
+"八、西班牙列车相撞事故致69人死亡，交通部长引咎辞职。西班牙发生严重列车相撞事故，造成69人死亡，交通部长已引咎辞职。警方正对事故原因展开调查，相关铁路线路暂时中断。",
+"九、印度东岸撤离应对气旋；刚果埃博拉死亡超5000。印度东岸11月2日启动居民撤离，应对孟加拉湾形成的气旋穆拉苏，气象部门预警多地强风暴雨。另据南华早报报道，刚果金埃博拉死亡人数已超5000，非洲其他地区也出现病例。",
 "",
-"沙特空袭也门荷台达港。据胡塞武装方面称，沙特对也门荷台达省红海港口和石油设施发动空袭，造成7人受伤；沙特称在麦加附近击落一架胡塞无人机，胡塞方面予以否认。",
-"",
-"迈威尔宣布以1150亿美元全股票收购光通信巨头朗盛。美国芯片制造商迈威尔11月2日宣布达成最终协议，将以全股票交易方式收购朗盛，企业价值约1150亿美元。",
-"",
-"币安遭63亿美元黑客攻击后，净资金流出47亿美元。据报道，币安在恢复提现后净资本流出达47亿美元；此前该交易所遭遇约63亿美元的网络攻击，据调查与朝鲜黑客有关。",
-"",
-"OPEC+七国维持12月产量目标不变。七个参与国11月1日线上会议决定维持12月产量目标不变，下次会议11月29日。",
-"",
-"美国佛州商务机坠毁，机上9人全部遇难。一架商务机11月1日在佛罗里达州棕榈滩郡坠毁爆炸，机上9人全部罹难，事故原因仍在调查。"
+"以上是11月4日全球新闻速览。每天早上自动生成，内容来自公开新闻报道。"
 ].join("\n");
 
 /* ---------- 复制全文 ---------- */
 var btnCopy = document.getElementById('btnCopy');
 function copyDone(){
 var old = btnCopy.textContent;
-btnCopy.textContent = '✅ 已复制';
+btnCopy.textContent = '\u2705 已复制';
 setTimeout(function(){ btnCopy.textContent = old;}, 1600);
 }
 btnCopy.addEventListener('click', function(){
@@ -262,13 +261,13 @@ window.speechSynthesis.speak(u);
 btnListen.addEventListener('click', function(){
 if (!('speechSynthesis' in window)) { btnListen.textContent = '此浏览器不支持朗读'; return;}
 var ss = window.speechSynthesis;
-if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '▶️ 继续'; return;}
-if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '⏸ 暂停'; return;}
+if (speaking &&!paused) { ss.pause(); paused = true; btnListen.textContent = '\u25b6\uFE0F 继续'; return;}
+if (speaking && paused) { ss.resume(); paused = false; btnListen.textContent = '\u23f8 暂停'; return;}
 ss.cancel();
 chunks = splitChunks(PLAIN);
 ci = 0;
 speaking = true; paused = false;
-btnListen.textContent = '⏸ 暂停';
+btnListen.textContent = '\u23f8 暂停';
 btnStop.style.display = 'flex';
 speakNext();
 });
